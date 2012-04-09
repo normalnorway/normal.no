@@ -1,0 +1,34 @@
+{% if list %}
+  <ul>
+  {% for news in list %}
+  <li>
+  <a href="/news/{{ news.id }}/">{{ news.title }}</a>
+  <div style="color: grey; font-size: 66%;">
+    {{ news.pub_date }}
+  </div>
+  <div style="font-size: 86%;">
+    {{ news.summary }}
+  </div>
+  </li>
+  {% endfor %}
+  </ul>
+
+  {% comment %}
+  <p>
+  <a href="/news/{{ news.id }}/">{{ news.title }}</a>
+  <div style="color: grey; font-size: 66%;">
+    {{ news.pub_date }}
+  </div>
+  <div style="color: grey; font-size: 86%;">
+    {{ news.summary }}
+  </div>
+  </p>
+  {% endcomment %}
+
+{% else %}
+    <p>No news are available.</p>
+{% endif %}
+
+<!--
+vim:ft=htmldjango
+-->
