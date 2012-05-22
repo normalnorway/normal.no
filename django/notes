@@ -1,0 +1,5 @@
+'Flatpages' app requres the "site framework"
+
+@deb python-imaging
+
+upload: can use UploadedFile.temporary_file_path and move into place?

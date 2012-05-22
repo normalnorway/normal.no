@@ -1,1 +1,12 @@
 http://packages.python.org/django-markdown/
+
+put all apps under app-dir?
+  A: not needed, when put inside "site" folder
+mv normal site
+ then might symlink apps->site
+
+<!--[if lte IE 6]>
+<div class="IENotice">This browser is outdated. Please <a
+href="http://www.microsoft.com/windows/internet-explorer/default.aspx">upgrade</a>
+your browser to enjoy this website to its fullest extent.</div>
+<![endif]-->

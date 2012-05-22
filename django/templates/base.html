@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html lang="no">
+
+  <head>
+    <title>{%block title%}{%endblock title%}</title>
+    <link rel="shortcut icon" href="{{STATIC_URL}}favicon.ico" />
+    <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
+    {% block htmlhead %}
+    {% endblock %}
+  </head>
+
+  <body>
+
+    <img src="{{STATIC_URL}}images/logo.png" />
+    <br>
+
+    {% block content %}
+      (default content)
+    {% endblock %}
+  </body>
+
+</html>
