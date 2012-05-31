@@ -1,1 +1,38 @@
-Hello world
+{% extends 'base.html' %}
+
+{% load url from future %}
+
+This is not shown since using extends. Only possible to override
+blocks in base.html
+
+URL: {% url 'apps.files.views.list' %}
+
+
+{% block content %}
+
+URL: {% url 'apps.files.views.list' %}
+
+
+<!-- File list-->
+<h2>File archive</h2>
+{% if files %}
+<ul>
+  {% for file in files %}
+    <li><a href="{{file.file.url}}">{{file.file.name}}</a></li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No files</p>
+{% endif %}
+
+
+<!-- Upload form -->
+<h2>Add new file</h2>
+<!-- @note can drop action=url if posting to same url -->
+<form action="{% url 'list' %}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Upload">
+</form>
+
+{% endblock %}

@@ -6,6 +6,9 @@
  * http://livedocs.dojotoolkit.org/dijit/Editor
  * https://gist.github.com/868595
  * http://dojotoolkit.org/reference-guide/1.7/dijit/Editor.html
+ *
+ * @note styleSheets is hardcoded to /static/css/editor.css
+ *       @todo might set in javascript and access from here
  */
 
 dojo.require("dijit.Editor");

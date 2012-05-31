@@ -1,10 +1,24 @@
 # Django settings for normal.no
+# @todo vim folding of sections (and TOC?)
 
 # Do this to get access to these settings:
 # from django.conf import settings
 # settings.FAVORITE_COLOR
 
-# @todo vim folding of sections (and TOC?)
+# Settings used by django
+# DEFAULT_FROM_EMAIL    # Default: 'webmaster@localhost'
+
+# Custom settings
+# MAX_UPLOAD_SIZE = "5242880"?
+
+# NEW
+AUTH_PROFILE_MODULE = 'apps.users.Profile'
+#LOGIN_URL = '/users/login'
+#LOGIN_REDIRECT_URL     # default: /accounts/profile/
+
+#LOGIN_URL = '/admin/login'
+  # can not use this, since /admin/ already requires auth
+
 
 
 DEBUG = True
@@ -57,6 +71,7 @@ USE_TZ = True
 ## MEDIA & STATIC FILES
 ##
 
+# Q: ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Absolute filesystem path to store user-uploaded files.
 MEDIA_ROOT = '/srv/www/normal.no/upload/'
@@ -105,12 +120,22 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'd%3luowws4k+77pe&amp;d@mkd7qx_-x$!c(jvs(9ah_-i92o9d8en'
 
+
+# Don't forget to use absolute paths, not relative paths.
+TEMPLATE_DIRS = (
+    '/srv/www/normal.no/django/templates',
+)
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 #    'django.template.loaders.eggs.Loader',
 )
+# django.template.loaders.cached.Loader
+# By default, the templating system will read and compile your templates
+# every time they need to be rendered.
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -130,11 +155,6 @@ ROOT_URLCONF = 'normal.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'normal.wsgi.application'
 
-# Don't forget to use absolute paths, not relative paths.
-TEMPLATE_DIRS = (
-    '/srv/www/normal.no/django/templates',
-)
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -150,6 +170,8 @@ INSTALLED_APPS = (
     # Custom apps
     'apps.files',
     'apps.images',
+    'apps.users',
+    'apps.news',
 )
 
 

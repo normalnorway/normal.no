@@ -15,11 +15,30 @@ urlpatterns = patterns('',
     (r'^$', TemplateView.as_view (template_name='index.html')),
 #    (r'^$', 'django.views.generic.simple.redirect_to', {'url': '/home/'}),
 
-    (r'^images/$', 'apps.images.views.index'),
+#    (r'^images/$', 'apps.images.views.index'),
 
-    (r'^files/list$', 'apps.files.views.list'),
-#    (r'^files/foo$', 'listview', name='apps.files.foo'),
-#    (r'^files/list$', 'listview', name='apps.files.list'),
+    # @todo move to user app
+    # Map default settings.LOGIN_URL to login view.
+    # This requires this template: registration/login.html
+#    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^accounts/login/$', 'django.contrib.auth.views.login', {
+        'template_name': 'users/login.html',
+    }),
+    (r'^accounts/logout/$', 'apps.users.views.logout'),
+    #(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
+    #  logout view shows admin logout template
+    #  update: can redirect with: next_page
+    #          or use: template_name='registration/logged_out.html'
+    # @todo settings.LOGIN_REDIRECT_URL is used if no next URL parameter. It
+    #       defaults defaults to /accounts/profile/
+
+    url(r'^files/list$', 'apps.files.views.list', name='list'),
+    # @note name is for shortname used in reverse (url template tag)
+#    (r'^files/list$', 'apps.files.views.list'),
+#    (r'^files/test$', 'apps.files.views.test', {'name':123, 'color':'red'}),
+
+    #url(r'^files/test$', 'apps.files.views.test', {}, name='torkel'),
+    # 'name' (url name) => used with reverse() or url template tag
 
 #    (r'^news/', include ('news.urls')),
 
@@ -29,10 +48,5 @@ urlpatterns = patterns('',
 
 
 # Hack to serve MEDIA_ROOT in dev mode
-# https://docs.djangoproject.com/en/1.4/howto/static-files/#serving-other-directories
-# https://docs.djangoproject.com/en/1.4/ref/contrib/staticfiles/#static-file-development-view
-# '/static' is automatically enabled by runserver (when DEBUG is True)
-# + static ('/my/url', document_root='/my/path')
-
 if settings.DEBUG:
     urlpatterns += static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

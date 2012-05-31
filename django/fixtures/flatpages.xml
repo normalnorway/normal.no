@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+  <object pk="2" model="flatpages.flatpage">
+    <field type="CharField" name="url">/</field>
+    <field type="CharField" name="title">[forside]</field>
+    <field type="TextField" name="content">&lt;p&gt;Velkommen &lt;b&gt;til&lt;/b&gt; NORMAL!&lt;/p&gt;
+
+Bla, bla, bla ...</field>
+    <field type="BooleanField" name="enable_comments">False</field>
+    <field type="CharField" name="template_name"/>
+    <field type="BooleanField" name="registration_required">False</field>
+    <field to="sites.site" name="sites" rel="ManyToManyRel">
+      <object pk="1"/>
+    </field>
+  </object>
+  <object pk="1" model="flatpages.flatpage">
+    <field type="CharField" name="url">/om/</field>
+    <field type="CharField" name="title">Om NORMAL</field>
+    <field type="TextField" name="content">Dette er en liten test.</field>
+    <field type="BooleanField" name="enable_comments">False</field>
+    <field type="CharField" name="template_name"/>
+    <field type="BooleanField" name="registration_required">False</field>
+    <field to="sites.site" name="sites" rel="ManyToManyRel">
+      <object pk="1"/>
+    </field>
+  </object>
+</django-objects>
