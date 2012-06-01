@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response, get_object_or_404
-from news.models import Article
+from apps.news.models import Article
 
 
 def index (request):

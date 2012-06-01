@@ -1,6 +1,14 @@
 {% extends "admin/base.html" %}
 {% load i18n %}
 
+{% block extrahead %}
+<script>
+  window.djangovar = {
+    STATIC_URL: '{{STATIC_URL|safe}}'
+  };
+</script>
+{% endblock %}
+
 {% block title %}{{ title }} | {% trans 'normal.no site admin' %}{% endblock %}
 
 {% block branding %}

@@ -8,8 +8,14 @@
     <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
 
     <!--
-    <script src="http://yandex.st/dojo/1.7.2/dojo/dojo.js"></script>
-    <script src="{{STATIC_URL}}/js/editor.js"></script>
+    @note possible to use 'async' on jquery-ui if only used after DOM ready?
+    <script src="///ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" defer></script>
+    <script src="///ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" defer></script>
+    -->
+
+    <!--
+    <script src="http://yandex.st/dojo/1.7.2/dojo/dojo.js" defer></script>
+    <script src="{{STATIC_URL}}/js/editor.js" defer></script>
     <link rel="stylesheet" href="{{STATIC_URL}}css/editor.css" />
     -->
   </head>
@@ -18,9 +24,10 @@
 
     <img src="{{STATIC_URL}}images/logo.png" />
 
+    <p>Velkommen til NORAML.</p>
     <!--
     <textarea></textarea>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     -->
   </body>
 

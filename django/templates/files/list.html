@@ -10,6 +10,8 @@ URL: {% url 'apps.files.views.list' %}
 
 {% block content %}
 
+{{block.super}}
+
 URL: {% url 'apps.files.views.list' %}
 
 
@@ -29,7 +31,7 @@ URL: {% url 'apps.files.views.list' %}
 <!-- Upload form -->
 <h2>Add new file</h2>
 <!-- @note can drop action=url if posting to same url -->
-<form action="{% url 'list' %}" method="post" enctype="multipart/form-data">
+<form action="{% url 'file-list' %}" method="post" enctype="multipart/form-data">
   {% csrf_token %}
   {{ form.as_p }}
   <input type="submit" value="Upload">

@@ -1,4 +1,4 @@
-from news.models import Article, ArticleLink
+from apps.news.models import Article, ArticleLink
 from django.contrib import admin
 
 #admin.site.register (Article)

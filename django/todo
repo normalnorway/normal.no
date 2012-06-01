@@ -10,3 +10,32 @@ mv normal site
 href="http://www.microsoft.com/windows/internet-explorer/default.aspx">upgrade</a>
 your browser to enjoy this website to its fullest extent.</div>
 <![endif]-->
+
+We recommend using a separate Web server -- i.e., one that's not also
+running Django -- for serving media.
+static.normal.no
+media.normal.no
+OR:
+static.normal.no/static/
+static.normal.no/media/
+
+500 server error view that let user report error.
+  Guess it already logs the error. (Via web-server?)
+Update: @see settings.py
+  send email to the site admins on every HTTP 500 error when DEBUG=False.
+
+Enable ETags and check: NOT MODIFIED
+Or not so usefull for script output.
+Use Apache's mod_expires instead for static. (But not media/, since
+it can be changed by user upload? Can use long expire if filenames
+are never recycled)
+
+Use this for links: ///
+
+Use Google CDN. But will it get from cache (expires in the future), or
+will it contact server and check if modified?
+A: from cache! :)
+Update: Google=Yes (but not when refreshing)
+        FF=No
+
+

@@ -13,9 +13,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^$', TemplateView.as_view (template_name='index.html')),
-#    (r'^$', 'django.views.generic.simple.redirect_to', {'url': '/home/'}),
 
-#    (r'^images/$', 'apps.images.views.index'),
+#    (r'^test/$', 'apps.files.views.test'),
 
     # @todo move to user app
     # Map default settings.LOGIN_URL to login view.
@@ -31,16 +30,12 @@ urlpatterns = patterns('',
     #          or use: template_name='registration/logged_out.html'
     # @todo settings.LOGIN_REDIRECT_URL is used if no next URL parameter. It
     #       defaults defaults to /accounts/profile/
+    
+    # Files
+    url(r'^files/list$',    'apps.files.views.list', name='file-list'),
+    url(r'^files/upload$',  'apps.files.views.upload'),
 
-    url(r'^files/list$', 'apps.files.views.list', name='list'),
-    # @note name is for shortname used in reverse (url template tag)
-#    (r'^files/list$', 'apps.files.views.list'),
-#    (r'^files/test$', 'apps.files.views.test', {'name':123, 'color':'red'}),
-
-    #url(r'^files/test$', 'apps.files.views.test', {}, name='torkel'),
-    # 'name' (url name) => used with reverse() or url template tag
-
-#    (r'^news/', include ('news.urls')),
+    (r'^news/', include ('apps.news.urls')),
 
     (r'^admin/', include (admin.site.urls)),
     #(r'^admin/doc/', include('django.contrib.admindocs.urls')),

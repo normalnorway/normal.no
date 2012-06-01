@@ -1,12 +1,18 @@
 # Django settings for normal.no
 # @todo vim folding of sections (and TOC?)
 
+# https://docs.djangoproject.com/en/1.4/ref/settings/
+
 # Do this to get access to these settings:
 # from django.conf import settings
 # settings.FAVORITE_COLOR
 
 # Settings used by django
-# DEFAULT_FROM_EMAIL    # Default: 'webmaster@localhost'
+# DEFAULT_FROM_EMAIL    # webmaster@servername
+# SERVER_EMAIL
+# FILE_UPLOAD_MAX_MEMORY_SIZE   # 2.5M
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+FILE_UPLOAD_PERMISSIONS = 0644
 
 # Custom settings
 # MAX_UPLOAD_SIZE = "5242880"?
@@ -20,13 +26,22 @@ AUTH_PROFILE_MODULE = 'apps.users.Profile'
   # can not use this, since /admin/ already requires auth
 
 
+# static.normal.no/static/
+# static.normal.no/media/
+# /srv/www/normal.no/static/
+# /srv/www/normal.no/media/     # upload?
+
+
 
 DEBUG = True
+#DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+# Admins will get email whenever an error happens.
 ADMINS = (
     ('torkel', 'torkel@normal.no'),
 )
+# Managers will get broken-link notification (SEND_BROKEN_LINK_EMAILS)
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -79,6 +94,7 @@ MEDIA_ROOT = '/srv/www/normal.no/upload/'
 
 # URL that handles the media served from MEDIA_ROOT (need trailing slash).
 MEDIA_URL = '/media/'
+  # @todo http://static.normal.no.com/media/
   # @note must be mapped by webserver. how?
   # @note Django does not serve MEDIA_ROOT by default.
   #       @see http://stackoverflow.com/a/8542030
@@ -91,7 +107,7 @@ STATIC_ROOT = '/srv/www/normal.no/htdocs'
   # q: rename static-root?
 
 # URL prefix for static files.
-# Example: "http://example.com/static/"
+# Example: "http://static.normal.no.com/"
 STATIC_URL = '/static/'
 
 # Additional locations of static files (must be absolute path).
@@ -138,6 +154,12 @@ TEMPLATE_LOADERS = (
 
 
 MIDDLEWARE_CLASSES = (
+    # It is suggested to place this first in the middleware list, so that the
+    # compression of the response content is the last thing that happens.
+    #'django.middleware.gzip.GZipMiddleware',
+
+    # ConditionalGetMiddleware
+
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
