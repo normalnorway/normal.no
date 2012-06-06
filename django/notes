@@ -3,6 +3,3 @@
 upload: can use UploadedFile.temporary_file_path and move into place?
 
 
-## Dependencies
-Python 2.6
-@deb python-imaging

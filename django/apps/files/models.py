@@ -14,6 +14,7 @@ class File (models.Model):
     # upload/media/files/out.png
     # upload_to='/%Y/%m/%d' # supports strftime
     # @note admin interface do *not* delete the files (only db entries)
+    #   FieldFile.delete(save=True)
 
     def __unicode__ (self):
         return self.name

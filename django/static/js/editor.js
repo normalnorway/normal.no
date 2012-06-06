@@ -56,9 +56,9 @@ function init_dojo_editor()
 	    'insertOrderedList', 'insertUnorderedList', 'indent', 'outdent', '|',
 	    'justifyLeft', 'justifyCenter', 'justifyRight', '|',
 //	    'createLink', 'insertImage', 'insertHorizontalRule', '|',
-	    'createLink',
-		{ name: 'LocalImage', uploadable: true, uploadUrl: '/files/upload' },
-		'insertHorizontalRule', '|',
+	    'createLink', // @note fileMask allows bmp by default!
+		{ name: 'LocalImage', uploadable: true, uploadUrl: '/images/editor_upload' },
+	    'insertHorizontalRule', '|',
 	    'undo', 'redo', '|', 
 	    'fullScreen',
 	    '||',

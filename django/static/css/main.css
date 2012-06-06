@@ -6,7 +6,18 @@ body
     */
 }
 
-p
+
+/**
+ * Clases.
+ */
+
+.shadow0
 {
-    border: 1px dashed black;
+    box-shadow: 2px 2px 3px #444;
+}
+.shadow
+{
+    -moz-box-shadow: 3px 3px 4px #000;
+    -webkit-box-shadow: 3px 3px 4px #000;
+    box-shadow: 3px 3px 4px #000;
 }

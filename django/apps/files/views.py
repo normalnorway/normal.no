@@ -12,6 +12,9 @@ from apps.files.forms import FileForm
 # from .models import File
 # from .forms import FileForm
 
+#from apps.files import forms
+# forms.EditorUploadForm()
+
 # response['Content-Disposition'] = 'attachment; filename=foo.xls'
 
 
@@ -39,6 +42,7 @@ def upload (request):
 
     from PIL import Image
     import json
+    # @todo from django.utils.simplejson import JSONEncoder
 
     # Get metadata (and return to server)
     img = Image.open (filename)
@@ -61,6 +65,11 @@ def upload (request):
 
 @login_required
 def list (request):
+    p = request.user.get_profile()
+    print type(p)
+    print p
+    return HttpResponse ()
+
     if request.method == 'POST':
         form = FileForm (request.POST, request.FILES)
         if form.is_valid(): 

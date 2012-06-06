@@ -18,7 +18,8 @@ FILE_UPLOAD_PERMISSIONS = 0644
 # MAX_UPLOAD_SIZE = "5242880"?
 
 # NEW
-AUTH_PROFILE_MODULE = 'apps.users.Profile'
+AUTH_PROFILE_MODULE = 'users.profile'
+#AUTH_PROFILE_MODULE = 'apps.users.Profile'
 #LOGIN_URL = '/users/login'
 #LOGIN_REDIRECT_URL     # default: /accounts/profile/
 

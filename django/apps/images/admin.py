@@ -1,4 +1,4 @@
-#from apps.images.model import Image
-#from django.contrib import admin
+from apps.images.models import Image
+from django.contrib import admin
 
-#admin.site.register (Image)
+admin.site.register (Image)
