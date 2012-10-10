@@ -27,6 +27,9 @@ AUTH_PROFILE_MODULE = 'users.profile'
   # can not use this, since /admin/ already requires auth
 
 
+# @todo use this, and define other *_ROOT from it?
+# ROOT = django/normal/settings.py
+
 # static.normal.no/static/
 # static.normal.no/media/
 # /srv/www/normal.no/static/
@@ -90,7 +93,7 @@ USE_TZ = True
 # Q: ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Absolute filesystem path to store user-uploaded files.
-MEDIA_ROOT = '/srv/www/normal.no/upload/'
+MEDIA_ROOT = '/srv/www/new.normal.no/htdocs/media/'
   # q: rename media-root or media?
 
 # URL that handles the media served from MEDIA_ROOT (need trailing slash).
@@ -104,7 +107,7 @@ MEDIA_URL = '/media/'
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = '/srv/www/normal.no/htdocs'
+STATIC_ROOT = '/srv/www/new.normal.no/htdocs/static/'
   # q: rename static-root?
 
 # URL prefix for static files.
@@ -113,7 +116,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files (must be absolute path).
 STATICFILES_DIRS = (
-    '/srv/www/normal.no/django/static',
+    '/srv/www/new.normal.no/django/static',
     # @todo add path for non-code static files? (split code and media)
     # Now code lives in:  static/css/ & static/js/
     # And media lives in: static/images/
@@ -140,7 +143,7 @@ SECRET_KEY = 'd%3luowws4k+77pe&amp;d@mkd7qx_-x$!c(jvs(9ah_-i92o9d8en'
 
 # Don't forget to use absolute paths, not relative paths.
 TEMPLATE_DIRS = (
-    '/srv/www/normal.no/django/templates',
+    '/srv/www/new.normal.no/django/templates',
 )
 
 # List of callables that know how to import templates from various sources.
