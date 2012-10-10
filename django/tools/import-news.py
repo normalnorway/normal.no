@@ -30,5 +30,8 @@ if (len(sys.argv) != 2):
 for line in codecs.open (sys.argv[1], encoding='latin1'):
     stdout.write(line.encode('utf8'))
 
+# or just read as str and then: line.decode('latin1') to get
+# unicode object. django expects that when creating objects
+
 #for line in codecs.open (sys.argv[1], encoding='latin1'):
 #    stdout.write(repr(line))

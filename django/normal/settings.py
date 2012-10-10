@@ -1,6 +1,13 @@
 # Django settings for normal.no
 # @todo vim folding of sections (and TOC?)
 
+# @see /opt/django-1.4/django/conf/global_settings.py
+# DATE_FORMAT
+# *_FORMAT
+# DECIMAL_SEPARATOR
+
+#ROOT = '/srv/www/normal.no/'  @todo
+
 # https://docs.djangoproject.com/en/1.4/ref/settings/
 
 # Do this to get access to these settings:
@@ -8,6 +15,8 @@
 # settings.FAVORITE_COLOR
 
 # Settings used by django
+# USE_ETAGS
+# SEND_BROKEN_LINK_EMAILS = True # if response.status_code == 404:
 # DEFAULT_FROM_EMAIL    # webmaster@servername
 # SERVER_EMAIL
 # FILE_UPLOAD_MAX_MEMORY_SIZE   # 2.5M

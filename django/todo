@@ -1,5 +1,8 @@
 http://packages.python.org/django-markdown/
 
+https://github.com/h5bp/html5-boilerplate/blob/master/.htaccess
+https://github.com/h5bp/html5-boilerplate/
+
 put all apps under app-dir?
   A: not needed, when put inside "site" folder
 mv normal site

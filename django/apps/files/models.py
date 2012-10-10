@@ -16,5 +16,13 @@ class File (models.Model):
     # @note admin interface do *not* delete the files (only db entries)
     #   FieldFile.delete(save=True)
 
+    # @todo add owner field
+    # does this work?
+#    owner = models.OneToOneField (User, default=request.user)
+
+    # @todo add created field
+    # howto not show (w/ modelform), and only update on insert (not update)
+#    created = models.DateTimeField (auto_now=True)
+
     def __unicode__ (self):
         return self.name
