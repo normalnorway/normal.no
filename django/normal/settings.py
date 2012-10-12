@@ -59,12 +59,14 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'normal',   # Or path to database file if using sqlite3.
-        'USER': 'normal',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'normal.db',
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'normal',   # Or path to database file if using sqlite3.
+#        'USER': 'normal',
+#        'PASSWORD': '',
+#        'HOST': '',
+#        'PORT': '',
     }
 }
 
@@ -83,14 +85,23 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+#USE_I18N = True
+USE_I18N = False
+# @todo try norwegian
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+#USE_TZ = True
+USE_TZ = False
+
+# models.DateField (default=datetime.datetime.now())
+# RuntimeWarning:
+# SQLite received a naive datetime (2012-10-11 05:55:30.953379) while
+# time zone support is active.
+# FIX: use django helper instead of datetime
 
 
 
@@ -205,8 +216,8 @@ INSTALLED_APPS = (
     # Custom apps
     'apps.files',
     'apps.images',
-    'apps.users',
     'apps.news',
+#    'apps.users',
 )
 
 

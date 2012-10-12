@@ -1,28 +1,25 @@
-# App: News
-
 from django.db import models
+import datetime
 
 
+# @todo tags
+# @todo clean() method that strip() string fields?
 class Article (models.Model):
-    ''' This is a help string. It's added to django.db.models.base.Model help str '''
-    pub_date = models.DateField ('date published', auto_now_add=True)
-      # @todo rename 'date'. should be date of news article
-    url = models.URLField ()
-    title = models.CharField (max_length=100)
-    summary = models.TextField (max_length=1024)
-    body = models.TextField ()
-    # Default for fields: null=False, blank=False
-    # NOTE: so fields are required (in admin, modelform, etc.). but
-    # they (charfields) are not required when using DB api.
-    # A: validation is not run by default when doing save :)
-    #    so do a: o.full_clean(). it will throw ValidationError
+    '''
+    Link to an external news article, with an optional own comment.
+    '''
+    pubdate = models.DateField (editable=False, auto_now_add=True, verbose_name='Date published')
+    date = models.DateField (default=datetime.datetime.now(), help_text='Date of news article, not today!')
+    url = models.URLField (blank=True)  # null=True?
+    title = models.CharField (max_length=255)
+    summary = models.TextField()	# abstract?
+    body = models.TextField (blank=True, null=True) # label='own comment'
 
     def __unicode__ (self):
         return self.title
 
 
-# @todo rename Link?
-# @note db table name is: news_articlelink  (so use underscore in name?)
+'''
 class ArticleLink (models.Model):
     news        = models.ForeignKey (Article)
     url         = models.URLField ()
@@ -30,7 +27,6 @@ class ArticleLink (models.Model):
     type        = models.IntegerField (choices = ((0, 'Les mer'),
                                                   (1, 'Video'),
                                                   (2, 'Bilder',)))
-
     def __unicode__ (self):
-        return self.url
-    # @todo link_type?
+        return self.type + self.url
+'''

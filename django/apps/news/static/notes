@@ -1,4 +1,0 @@
-All apps/*/static/ files are collected into same folder so must
-prefix with app-name.
-
-@todo mv icon.svg news-icon.svg
