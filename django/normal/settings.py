@@ -60,7 +60,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'normal.db',
+        'NAME': 'normal.db',    # @todo full path
 #        'ENGINE': 'django.db.backends.mysql',
 #        'NAME': 'normal',   # Or path to database file if using sqlite3.
 #        'USER': 'normal',
@@ -96,12 +96,11 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 #USE_TZ = True
 USE_TZ = False
-
-# models.DateField (default=datetime.datetime.now())
-# RuntimeWarning:
-# SQLite received a naive datetime (2012-10-11 05:55:30.953379) while
-# time zone support is active.
-# FIX: use django helper instead of datetime
+  # models.DateField (default=datetime.datetime.now())
+  # RuntimeWarning:
+  # SQLite received a naive datetime (2012-10-11 05:55:30.953379) while
+  # time zone support is active.
+  # FIX: use django helper instead of datetime
 
 
 
@@ -217,6 +216,7 @@ INSTALLED_APPS = (
     'apps.files',
     'apps.images',
     'apps.news',
+    'apps.links',
 #    'apps.users',
 )
 

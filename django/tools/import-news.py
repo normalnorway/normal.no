@@ -3,7 +3,9 @@ Export articles from the old website, and import them into
 new Django based website.
 
 @todo rename importnews.py?
+@bug pubdate not set (since editable=False)
 @bug when using sqlite, must be run in same directory as db file
+@bug 1285650416 # feed://www
 '''
 
 
@@ -186,5 +188,5 @@ if __name__ == '__main__':
         if o.summary == '':
             print 'XXX'
             continue
-        o.full_clean()
+        #o.full_clean()
         o.save(force_insert=True)
