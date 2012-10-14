@@ -7,10 +7,10 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', TemplateView.as_view (template_name='index.html')),
 
+    url(r'^nyheter/', include ('apps.news.urls'), name='nyheter'),
+
     url(r'^nettguide/', 'apps.links.views.index', name='nettguide'),
     # RedirectView: nettguide.html -> links/
-
-    #(r'^news/', include ('apps.news.urls')),
 
     (r'^admin/', include (admin.site.urls)),
 )

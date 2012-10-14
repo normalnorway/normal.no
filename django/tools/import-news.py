@@ -6,6 +6,10 @@ new Django based website.
 @bug pubdate not set (since editable=False)
 @bug when using sqlite, must be run in same directory as db file
 @bug 1285650416 # feed://www
+
+@note some articles contains link to other news
+      Inga Marte angrer ikke utblåsningen
+      http://www.normal.no/cgi-bin/viewnews?view=1004974341 
 '''
 
 

@@ -1,0 +1,17 @@
+{% extends "news/base.html" %}
+
+{% block news %}
+
+<h1>Nyhetsarkiv</h1>
+
+{% for news in list %}
+  {% if news.body %}
+    <h3><a href="{{news.get_absolute_url}}">{{news.title}}</a></h3>
+  {% else %}
+    <h3><a href="{{news.url}}/">{{news.title}}</a></h3>
+  {% endif %}
+  <div class="date">{{news.date}}</div>
+  <div class="abstract">{{news.summary}}</div>
+{% endfor %}
+
+{% endblock %}

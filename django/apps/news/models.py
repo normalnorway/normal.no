@@ -19,15 +19,6 @@ class Article (models.Model):
     def __unicode__ (self):
         return self.title
 
-
-'''
-class ArticleLink (models.Model):
-    news        = models.ForeignKey (Article)
-    url         = models.URLField ()
-    title       = models.CharField (max_length=100)
-    type        = models.IntegerField (choices = ((0, 'Les mer'),
-                                                  (1, 'Video'),
-                                                  (2, 'Bilder',)))
-    def __unicode__ (self):
-        return self.type + self.url
-'''
+    @models.permalink
+    def get_absolute_url (self):
+        return ('news-detail', [str(self.pk)])

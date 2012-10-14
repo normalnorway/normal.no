@@ -1,0 +1,14 @@
+{% extends "news/base.html" %}
+
+{% block news %}
+
+<h3>{{item.title}}</h3>
+
+<div class="date">{{item.date}}</div>
+<br>
+<div class="abstract">{{item.summary}}</div>
+<div class="body">{{item.body|safe}}</div>
+
+<br>
+Kilde: <a href="{{item.url}}/">{{item.url}}</a>
+{% endblock %}
