@@ -4,6 +4,8 @@
 
 <h1>Nyhetsarkiv</h1>
 
+<p>Viser {{low}}-{{high}} av {{list.paginator.count}} artikler.</p>
+
 {% for news in list %}
   {% if news.body %}
     <h3><a href="{{news.get_absolute_url}}">{{news.title}}</a></h3>
@@ -13,5 +15,28 @@
   <div class="date">{{news.date}}</div>
   <div class="abstract">{{news.summary}}</div>
 {% endfor %}
+
+<!--
+@todo put in include. and put on top & bottom
+@todo first & last?
+-->
+{% if list.has_other_pages %}
+<br>
+<div class="pagination">
+  {% if list.has_previous %}
+  <a href="?page={{list.previous_page_number}}">&lt;&lt; Forrige</a>
+  &nbsp;
+  {% endif %}
+
+  <span class="current">
+    Side {{ list.number }} av {{ list.paginator.num_pages }}
+  </span>
+
+  {% if list.has_next %}
+  &nbsp;
+  <a href="?page={{list.next_page_number}}">Neste &gt;&gt;</a>
+  {% endif %}
+</div>
+{% endif %}
 
 {% endblock %}
