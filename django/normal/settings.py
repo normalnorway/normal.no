@@ -213,10 +213,10 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 
     # Custom apps
-    'apps.files',
-    'apps.images',
     'apps.news',
     'apps.links',
+#    'apps.files',
+#    'apps.images',
 #    'apps.users',
 )
 

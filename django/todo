@@ -1,12 +1,14 @@
+mv todo TODO
+mv static media ?
+  @see https://github.com/django/djangoproject.com
+
 http://packages.python.org/django-markdown/
 
 https://github.com/h5bp/html5-boilerplate/blob/master/.htaccess
 https://github.com/h5bp/html5-boilerplate/
 
-put all apps under app-dir?
-  A: not needed, when put inside "site" folder
-mv normal site
- then might symlink apps->site
+mv normal site  (or website)
+put apps inside website-folder instead?
 
 <!--[if lte IE 6]>
 <div class="IENotice">This browser is outdated. Please <a
@@ -42,6 +44,3 @@ Update: Google=Yes (but not when refreshing)
         FF=No
 
 http://ogp.me/
-
-move apache config into git?
-
