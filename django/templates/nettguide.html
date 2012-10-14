@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Nettguide</h1>
+
+<p>Send ditt forslag her: TODO</p>
+
+
+<h2>Kategorier</h2>
+
+<ul>
+{% for cat in categories %}
+  <li><a href="#{{cat.name|slugify}}">{{cat.name}}</a></li>
+{% endfor %}
+</ul>
+
+<br><hr><br>
+
+<h2>Lenker</h2>
+
+{% for cat in categories %}
+<h3 id="{{cat.name|slugify}}">{{cat.name}}</h3>
+
+<ul>
+  {% for link in cat.data|dictsort:"name" %}
+  <li>
+    <a href="{{link.url}}">{{link.name}}</a>
+    {% if link.lang %}<img src="{{STATIC_URL}}images/lang/{{link.lang}}.gif"> {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endfor %}
+
+{% endblock %}

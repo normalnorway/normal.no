@@ -63,7 +63,8 @@ while dlindex+1 < len(dllist):          ## For each section
         if dd != None:
             s = etree.tostring(dd, encoding=unicode)
             s = s[4:-5]     # remove surrounding <dd> tag
-            entry['text'] = s.replace('\n', '').strip()
+            s = s.replace ('\r', '')    # use regex instead?
+            entry['text'] = s.replace('\n', ' ').strip()
         else:
             entry['text'] = ''
 
@@ -82,10 +83,10 @@ while dlindex+1 < len(dllist):          ## For each section
 
 import initdjango
 from apps.links.models import Category as LinkCategory
-from apps.links.models import Guide as LinkGuide
+from apps.links.models import Link
 
 LinkCategory.objects.all().delete()
-LinkGuide.objects.all().delete()
+Link.objects.all().delete()
 
 # Q: why slow?
 # @todo obj.full_clean()?
@@ -94,4 +95,4 @@ for (section, data) in nettguide:
     category = LinkCategory.objects.create (name=section)
     for entry in data:
         entry['category'] = category
-        LinkGuide.objects.create (**entry)
+        Link.objects.create (**entry)

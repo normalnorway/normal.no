@@ -1,6 +1,9 @@
+''' NORMALs nettguide '''
+
 from django.db import models
 
 
+# @todo order field
 class Category (models.Model):
     ''' Categories for links in the "nettguide" '''
     name =  models.CharField (max_length=100)
@@ -10,7 +13,7 @@ class Category (models.Model):
 
 
 ''' Nettguide '''
-class Guide (models.Model):
+class Link (models.Model):
     category = models.ForeignKey (Category)
     name =     models.CharField (max_length=255)
     url =      models.URLField()

@@ -1,19 +1,21 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
-
-from django.conf import settings
-from django.conf.urls.static import static
-
 from django.contrib import admin
-admin.autodiscover()
-# import has to come after autodiscover, because we can't 
-# unregister FlatPage until it's already been registered.
-#import site.admin
 
+admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^$', TemplateView.as_view (template_name='index.html')),
 
+    url(r'^nettguide/', 'apps.links.views.index', name='nettguide'),
+    # RedirectView: nettguide.html -> links/
+
+    #(r'^news/', include ('apps.news.urls')),
+
+    (r'^admin/', include (admin.site.urls)),
+)
+
+'''
     # @todo /profile or /user/profile or /accounts/profile
 #    (r'^accounts/profile$', 'apps.users.views.profile'),
     (r'^accounts/profile$', TemplateView.as_view (template_name='users/profile.html')),
@@ -42,13 +44,11 @@ urlpatterns = patterns('',
     # Images
     url(r'^images/editor_upload$', 'apps.images.views.editor_upload'),
 
-#    (r'^news/', include ('apps.news.urls')),
-
-    (r'^admin/', include (admin.site.urls)),
     #(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-)
-
+'''
 
 # Hack to serve MEDIA_ROOT in dev mode
+from django.conf import settings
+from django.conf.urls.static import static
 if settings.DEBUG:
     urlpatterns += static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

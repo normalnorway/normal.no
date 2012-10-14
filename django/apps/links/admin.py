@@ -1,16 +1,18 @@
 from django.contrib import admin
 from django.forms.models import fields_for_model
-from .models import Guide, Category
+from .models import Link, Category
 import re
 
-class GuideAdmin (admin.ModelAdmin):
+class LinkAdmin (admin.ModelAdmin):
     #ordering = ('category',)
     #ordering = ('category__name',)
     list_display = ('name', 'category', 'url_')
+    list_filter = ('category',)
+    search_fields = ('name',)
 
     # Dynamically construct fieldset
     def __init__ (self, *args, **kwargs):
-        super(GuideAdmin,self).__init__ (*args, **kwargs)
+        super(LinkAdmin,self).__init__ (*args, **kwargs)
         fields = fields_for_model (self.model).keys()
         fields.remove ('comment')
         fields.remove ('lang')
@@ -39,5 +41,5 @@ class GuideAdmin (admin.ModelAdmin):
     url_.regex = re.compile (r'^http://([^/]+)(/?)', re.I)
 
 
-admin.site.register (Guide, GuideAdmin)
+admin.site.register (Link, LinkAdmin)
 admin.site.register (Category)
