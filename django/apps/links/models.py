@@ -15,7 +15,7 @@ class Guide (models.Model):
     name =     models.CharField (max_length=255)
     url =      models.URLField()
     text =     models.TextField ('description', blank=True)
-    lang =     models.CharField (max_length=2, blank=True)
+    lang =     models.CharField (max_length=2, blank=True, help_text='Use a two character language code to show a flag beside the entry.')
     comment =  models.TextField (blank=True, help_text='For internal use. Not shown on webpage.')
     def __unicode__ (self):
         return self.name
