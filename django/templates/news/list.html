@@ -4,6 +4,16 @@
 
 <h1>Nyhetsarkiv</h1>
 
+<div class="search">
+  <form method="get">
+    <!--
+    {% csrf_token %}
+    -->
+    {{form.query.label}} : {{form.query}}
+    <!-- @todo vis alle / clear search -->
+</form>
+</div>
+
 <p>Viser {{low}}-{{high}} av {{list.paginator.count}} artikler.</p>
 
 {% for news in list %}
@@ -16,7 +26,7 @@
   <div class="abstract">{{news.summary}}</div>
 {% endfor %}
 
-<!--
+<!-- Paginator
 @todo put in include. and put on top & bottom
 @todo first & last?
 -->
@@ -34,7 +44,11 @@
 
   {% if list.has_next %}
   &nbsp;
+  {% if query %}
+  <a href="?query={{query|urlencode}}&page={{list.next_page_number}}">Neste &gt;&gt;</a>
+  {% else %}
   <a href="?page={{list.next_page_number}}">Neste &gt;&gt;</a>
+  {% endif %}
   {% endif %}
 </div>
 {% endif %}

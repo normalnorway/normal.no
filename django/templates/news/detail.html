@@ -9,6 +9,8 @@
 <div class="abstract">{{item.summary}}</div>
 <div class="body">{{item.body|safe}}</div>
 
+{% if item.url %}
 <br>
 Kilde: <a href="{{item.url}}/">{{item.url}}</a>
+{% endif %}
 {% endblock %}
