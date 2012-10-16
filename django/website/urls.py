@@ -7,36 +7,15 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', TemplateView.as_view (template_name='index.html')),
 
-    (r'^nyheter/', include ('apps.news.urls')),
+    url(r'^nyheter/', include ('apps.news.urls'), name='news'),
 
-    url(r'^nettguide/', 'apps.links.views.index', name='nettguide'),
+    url(r'^nettguide/', 'apps.links.views.index', name='links'),
     # RedirectView: nettguide.html -> links/
 
     (r'^admin/', include (admin.site.urls)),
 )
 
 '''
-    # @todo /profile or /user/profile or /accounts/profile
-#    (r'^accounts/profile$', 'apps.users.views.profile'),
-    (r'^accounts/profile$', TemplateView.as_view (template_name='users/profile.html')),
-    # Q: what if user is anonymous user?
-
-    # @todo move to user app
-    # Map default settings.LOGIN_URL to login view.
-    # This requires this template: registration/login.html
-#    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    (r'^accounts/login/$', 'django.contrib.auth.views.login', {
-        'template_name': 'users/login.html',
-    }),
-    (r'^accounts/logout/$', 'apps.users.views.logout'),
-    (r'^accounts/register$', 'apps.users.views.register'),
-    #(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
-    #  logout view shows admin logout template
-    #  update: can redirect with: next_page
-    #          or use: template_name='registration/logged_out.html'
-    # @todo settings.LOGIN_REDIRECT_URL is used if no next URL parameter. It
-    #       defaults defaults to /accounts/profile/
-    
     # Files
     url(r'^files/list$',    'apps.files.views.list', name='file-list'),
 #    url(r'^files/upload$',  'apps.files.views.upload'),

@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     # 'django.contrib.admindocs',
 
+    'core',
     'apps.news',
     'apps.links',
 )

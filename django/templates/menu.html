@@ -1,0 +1,29 @@
+{% load menu %}
+
+<!-- TODO
+Use url's to resolve views
+-->
+
+<ul class="top">
+  <li><a href="/">Hjem</a></li>
+  <li><a href="/nettguide/">Nettguide</a></li>
+    {% menu_links %}
+  <li><a href="/nyheter/arkiv/">Nyheter</a></li>
+    {% news_links %}
+  <li><a href="/nil">Sider</a></li>
+  <ul>
+    <li><a href="/nil">Om NORMAL</a></li>
+    <li><a href="/nil">Hva er cannabis?</a></li>
+    <li><a href="/nil">Ofte spurte spørsmål</a></li>
+  </ul>
+  <li><a href="/nil">Bli medlem</a></li>
+  <li><a href="/nil">Logg inn</a></li>
+  <!--
+  <li>|</li>
+  <li><a href="/nil">Aktuelt</a></li>
+  <li><a href="/nil">Artikler</a></li>
+  <li><a href="/nil">MarihuanaMarsjen</a></li>
+  <li><a href="/nil">På Høy Tid</a></li>
+  <li><a href="/nil">Tekst-arkiv</a></li>
+  -->
+</ul>
