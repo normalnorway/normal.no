@@ -1,0 +1,40 @@
+{% extends "news/base.html" %}
+{% load url from future %}
+
+{% block news %}
+
+<h1>Nyhetsarkiv</h1>
+
+<!-- @note paginator is None if not paginated or less articles
+Alle: {{paginator.count}} artikler
+-->
+{% if is_paginated %}
+{% endif %}
+
+<p>
+År:
+{% for date in date_list %}
+<a href="{{date.year}}">{{date.year}}</a>{%if not forloop.last%} | {%endif%}
+{% endfor %}
+</p>
+
+<p>
+Viser {{page_obj.start_index}}-{{page_obj.end_index}} av {{paginator.count}}
+artikler.
+</p>
+
+<p>
+<!-- todo: howto make general?
+1) pass page in GET: href="?page="
+2) pass name/view to use with reverse url
+-->
+<a href="{% url 'news-archive' %}page/{{page_obj.previous_page_number}}">Forrige</a>
+&nbsp;
+Side {{page_obj.number}} av {{page_obj.paginator.num_pages}}
+&nbsp;
+<a href="{% url 'news-archive' %}page/{{page_obj.next_page_number}}">Neste</a>
+</p>
+
+{% include "news/article_archive_common.html" %}
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "news/base.html" %}
+
+{% block news %}
+
+<h1>Nyhetsarkiv {{year}}</h1>
+
+<p>
+Viser {{object_list|length}} artikler.
+</p>
+
+<p>
+Måned:
+{% comment %}
+for date in date_list *reversed*
+  but then must also reverse listing in article_archive_common.html
+  so better to do it on the queryset on the view
+{% endcomment %}
+{% for date in date_list reversed %}
+<a href="{{date.month}}">{{date|date:"F"}}</a>{%if not forloop.last%} | {%endif%}
+{% endfor %}
+</p>
+
+{% include "news/article_archive_common.html" %}
+
+{% endblock %}

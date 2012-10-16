@@ -1,0 +1,18 @@
+{% extends "news/base.html" %}
+
+{% block news %}
+
+<h1>Nyhetsarkiv: {{month|date:"F Y"}}</h1>
+
+<p>
+Viser {{object_list|length}} artikler.
+</p>
+
+<!-- @todo reverse url. handle boundaries -->
+<a href="/nyheter/archive/{{previous_month|date:"Y/m"}}">Forrige måned</a>
+|
+<a href="/nyheter/archive/{{year}}{{next_month|date:"Y/m"}}">Neste måned</a>
+
+{% include "news/article_archive_common.html" %}
+
+{% endblock %}

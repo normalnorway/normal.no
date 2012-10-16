@@ -5,7 +5,40 @@ from .models import Article
 from .forms import SearchForm
 #import forms   # forms.Search
 
+#from django.views.generic.dates
+from django.views.generic import dates
 
+
+class ArchiveView (dates.ArchiveIndexView):
+    model = Article
+    date_field = 'date'
+    paginate_by = 25
+    #context_object_name = 'list'    # object_list
+    #date_list_period = 'year'
+    #allow_future = False
+    # get_dated_queryset(**lookup)
+    # get_date_list(queryset, date_type=None, ordering='ASC')
+archive = ArchiveView.as_view()
+
+# ArchiveYearView
+# @todo show months in revered order?
+class YearView (dates.YearArchiveView):
+    model = Article
+    date_field = 'date'
+    make_object_list = True     # False => only generate month list
+archive_year = YearView.as_view()
+
+# ArchiveMonthView
+class MonthView (dates.MonthArchiveView):
+    model = Article
+    date_field = 'date'
+    month_format = '%m'
+    make_object_list = True
+archive_month = MonthView.as_view()
+
+
+
+# @note can use ArchiveIndexView as base for this view
 def list (request):
     # Search
     query = request.GET.get ('query')
