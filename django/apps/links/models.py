@@ -10,6 +10,8 @@ class Category (models.Model):
     #comment = model.TextField (help_text='For internal use. Not shown on webpage.')
     def __unicode__ (self):
         return self.name
+    class Meta:
+        ordering = ['name']
 
 
 ''' Nettguide '''

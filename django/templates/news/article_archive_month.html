@@ -1,4 +1,5 @@
 {% extends "news/base.html" %}
+{% load url from future %}
 
 {% block news %}
 
@@ -8,10 +9,10 @@
 Viser {{object_list|length}} artikler.
 </p>
 
-<!-- @todo reverse url. handle boundaries -->
-<a href="/nyheter/archive/{{previous_month|date:"Y/m"}}">Forrige måned</a>
+<!-- @todo handle boundaries -->
+<a href="{%url "news-archive"%}{{previous_month|date:"Y/m"}}">Forrige måned</a>
 |
-<a href="/nyheter/archive/{{year}}{{next_month|date:"Y/m"}}">Neste måned</a>
+<a href="{%url "news-archive"%}{{next_month|date:"Y/m"}}">Neste måned</a>
 
 {% include "news/article_archive_common.html" %}
 
