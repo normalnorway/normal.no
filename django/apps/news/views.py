@@ -9,6 +9,28 @@ from .forms import SearchForm
 from django.views.generic import dates
 
 
+
+####################
+## NewsStory views
+####################
+
+from .models import Story
+from markdown import markdown
+
+def story_detail (request, story_id):
+    data = get_object_or_404 (Story, pk=story_id, published=True)
+    data.text = markdown (data.text, safe_mode='escape')
+    return render (request, 'news/story_detail.html', {
+        'object': data,
+#        'object': get_object_or_404 (Story, pk=story_id, published=True)
+    })
+
+
+
+
+####################
+## NewsLink views
+
 class ArchiveView (dates.ArchiveIndexView):
     model = Article
     date_field = 'date'

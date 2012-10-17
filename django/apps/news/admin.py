@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Article
+from .models import Story
 import re
 
 class LinkOnlyFilter (admin.SimpleListFilter):
@@ -55,4 +56,9 @@ class ArticleAdmin (admin.ModelAdmin):
     '''
 
 
+
+#class StoryAdmin (admin.ModelAdmin):
+
 admin.site.register (Article, ArticleAdmin)
+admin.site.register (Story)
+#admin.site.register (Story, StoryAdmin)

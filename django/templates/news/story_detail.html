@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{object.title}}</h2>
+
+{% if object.image %}
+<div class="image" style="float:{{object.get_image_align_display}}">
+  <img src="{{object.image.url}}">
+  {% if object.image_text %}
+  <div>{{object.image_text}}</div>
+  {% endif %}
+</div>
+{% endif %}
+
+<div class="date">{{object.date}}</div>
+
+{% if object.abstract %}
+<div class="abstract">{{object.abstract}}</div>
+{% endif %}
+
+<div class="text">{{object.text|safe}}</div>
+
+<div style="clear:both"></div>
+
+{% endblock %}
