@@ -18,6 +18,9 @@ class ArchiveView (dates.ArchiveIndexView):
     #allow_future = False
     # get_dated_queryset(**lookup)
     # get_date_list(queryset, date_type=None, ordering='ASC')
+    # @todo get from cache (same query as sub-menu does. cache queryset?)
+#    def get_date_list(queryset, date_type=None, ordering='ASC'):
+#        return [datetime(2002,1,1), datetime(2004,1,1), datetime(2006,1,1)]
 archive = ArchiveView.as_view()
 
 # ArchiveYearView
