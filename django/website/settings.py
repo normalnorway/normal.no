@@ -54,12 +54,14 @@ TIME_ZONE = 'Europe/Oslo'       # None => /etc/timezone
 
 #LANGUAGE_CODE = 'en-us'         # XXX used for what??
 LANGUAGE_CODE = 'nb-no'
+# django.utils.translation.to_locale
+# Turns a language name (en-us) into a locale name (en_US).
 
 # contrib.site (required by contrib.flatpages)
 SITE_ID = 1
 
-#USE_I18N = False
-USE_I18N = True
+USE_I18N = False
+#USE_I18N = True
 
 # Format according to the current locale.
 USE_L10N = False

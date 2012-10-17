@@ -7,10 +7,14 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', TemplateView.as_view (template_name='index.html')),
 
+    # @todo add '$'?
     url(r'^nyheter/', include ('apps.news.urls'), name='news'),
 
-    url(r'^nettguide/', 'apps.links.views.index', name='links'),
+    url(r'^nettguide/$', 'apps.links.views.index', name='links'),
     # RedirectView: nettguide.html -> links/
+
+#    url(r'^aktuelt/$', 'apps.news.views.story'),
+    url(r'^aktuelt/(?P<story_id>\d+)/$', 'apps.news.views.story_detail'),
 
     (r'^admin/', include (admin.site.urls)),
 )

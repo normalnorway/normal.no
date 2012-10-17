@@ -1,5 +1,6 @@
 from django import template
 from django.core.urlresolvers import reverse
+#from django.utils.text import slugify  # django 1.5
 from apps.links.models import Category
 from apps.news.models import Article
 

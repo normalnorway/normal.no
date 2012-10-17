@@ -1,0 +1,37 @@
+# Important!!
+# Must enable UTF8 for Apache environment!
+# /etc/apache2/envvars	# change 'export LANG=C' to utf8 locale
+#   what if running in daemon mode?
+
+
+# System
+apt-get install libapache2-mod-wsgi
+apt-get install mysql-server	# meta-package depending on latest version
+#apt-get install mysql-server-5.1
+
+apt-get install python-mysqldb
+apt-get install python-imaging
+apt-get install python-markdown
+
+
+# Django
+curl https://www.djangoproject.com/download/1.4/tarball/ \
+    Django-1.4.tar.gz | tar zxf -
+cd Django-1.4
+python setup.py install
+
+
+# MySQL
+create database normal;
+grant all on normal.* to 'normal'@'localhost';
+
+
+## Other
+cd /srv/www/normal.no
+
+git clone $url django
+
+mkdir -p htdocs/media
+chgrp www-data htdocs/media
+# @note !www-data if using daemon-mode and own user
+chmod g+w htdocs/media
