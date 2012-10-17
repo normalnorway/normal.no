@@ -1,0 +1,59 @@
+// can drop #nav and use '#menu > ul' - but less compatible
+
+
+@fg: #000033;		// text color for active element
+@fgactive: white;	// text color for active element
+@bg: #6699ff;		// background color
+@bgactive: #446699;	// background color for active element
+
+
+// @todo replace with reset.css
+li {
+    list-style: none;
+}
+ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+#nav {
+    width: 100%;
+    float: left;
+    background-color: @bg;
+}
+
+// making only the top-level menu entries float. ie6 error. ie7 ok?
+// @todo use ul.top is more compatible
+#nav > li {
+    float: left;
+    border-right: 1px solid #555;   // @todo parameter or use @fg
+}
+
+#nav a {
+    display: block;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: @fg;
+    background-color: @bg
+}
+
+#nav a:hover {
+    color: @fgactive;
+    background-color: @bgactive;
+}
+//#nav li:hover {
+//    background-color: @bgactive;
+//}
+
+// sub-menu
+#nav ul {
+    display: none;
+    position: absolute;
+}
+
+//#nav li:hover > ul {
+#nav li:hover ul {
+    display: block;
+}

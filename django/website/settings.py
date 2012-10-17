@@ -17,6 +17,7 @@ ROOT = '/srv/www/new.normal.no/'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+INTERNAL_IPS = ('127.0.0.1',)
 
 # Admins will get email whenever an error happens.
 # Managers will get broken-link notification.
@@ -65,7 +66,6 @@ USE_L10N = False
 USE_TZ = False
 
 
-
 # Absolute filesystem path to store user-uploaded files.
 # @todo rename upload?
 MEDIA_ROOT = ROOT + 'htdocs/media/'
@@ -93,7 +93,6 @@ STATICFILES_FINDERS = (
 )
 
 
-
 TEMPLATE_DIRS = (
     ROOT + '/django/templates',
 )
@@ -103,6 +102,11 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
     # @todo if not DEBUG:
     #   django.template.loaders.cached.Loader
+)
+
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.debug',
 )
 
 

@@ -6,16 +6,25 @@
     <title>{%block title%}Norsk organisasjon for reform av
       marihuanalovgivningen{%endblock title%}</title>
 
-    <link rel="shortcut icon" href="{{STATIC_URL}}favicon.ico" />
-    <link rel="stylesheet/less" href="{{STATIC_URL}}css/main.less" />
+    <link rel="shortcut icon" href="{{STATIC_URL}}images/favicon.ico" />
+
+    {% if debug %}
     <!--
-    <link rel="stylesheet/less" type="text/css" href="hmenu.less">
-    <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
+    <link rel="stylesheet" href="{{STATIC_URL}}css/reset.css" />
     -->
+    <link rel="stylesheet/less" href="{{STATIC_URL}}css/main.less" />
+    <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" />
+      <!-- @todo use extrahead block in menu template instead? -->
+    {% else %}
+    <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
+    {% endif %}
+
     {% block extrahead %}
     {% endblock %}
 
+    {% if debug %}
     <script src="{{STATIC_URL}}js/less-1.3.0.min.js"></script>
+    {% endif %}
   </head>
 
   <body>
@@ -26,17 +35,23 @@
       -->
     </div>
 
-    {% block menu %}
     <div id="menu">
       {% include "menu.html" %}
     </div>
-    {% endblock %}
 
-    {% block content %}
-    {% endblock %}
+    <div id="content">
+      {% block content %}
+      {% endblock %}
+    </div>
 
-    {% block footer %}
-    {% endblock %}
+    <!-- possible to override footer here.
+    @todo better with block to add stuff after/before footer?
+    -->
+    <div id="footer">
+      {% block footer %}
+      <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
+      {% endblock %}
+    </div>
+
   </body>
-
 </html>

@@ -1,21 +1,26 @@
 {% load menu %}
 
-<!-- TODO
-Use url's to resolve views
--->
+<!-- TODO Use url's to resolve url? -->
 
-<ul class="top">
+<ul id="nav">
   <li><a href="/">Hjem</a></li>
-  <li><a href="/nettguide/">Nettguide</a></li>
+
+  <li><a href="/nettguide/">Nettguide</a>
     {% menu_links %}
-  <li><a href="/nyheter/arkiv/">Nyheter</a></li>
+    </li>
+
+  <li><a href="/nyheter/arkiv/">Nyheter</a>
     {% news_links %}
-  <li><a href="/nil">Sider</a></li>
-  <ul>
-    <li><a href="/nil">Om NORMAL</a></li>
-    <li><a href="/nil">Hva er cannabis?</a></li>
-    <li><a href="/nil">Ofte spurte spørsmål</a></li>
-  </ul>
+  </li>
+
+  <li><a href="/nil">Sider</a>
+    <ul>
+      <li><a href="/nil">Om NORMAL</a></li>
+      <li><a href="/nil">Hva er cannabis?</a></li>
+      <li><a href="/nil">Ofte spurte spørsmål</a></li>
+    </ul>
+  </li>
+
   <li><a href="/nil">Bli medlem</a></li>
   <li><a href="/nil">Logg inn</a></li>
   <!--
@@ -27,3 +32,4 @@ Use url's to resolve views
   <li><a href="/nil">Tekst-arkiv</a></li>
   -->
 </ul>
+<div style="clear:both;"></div>
