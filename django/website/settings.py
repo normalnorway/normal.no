@@ -52,15 +52,21 @@ AUTH_PROFILE_MODULE = 'users.profile'
 
 TIME_ZONE = 'Europe/Oslo'       # None => /etc/timezone
 
-LANGUAGE_CODE = 'en-us'
+#LANGUAGE_CODE = 'en-us'         # XXX used for what??
+LANGUAGE_CODE = 'nb-no'
 
 # contrib.site (required by contrib.flatpages)
 SITE_ID = 1
 
-USE_I18N = False
+#USE_I18N = False
+USE_I18N = True
 
 # Format according to the current locale.
 USE_L10N = False
+#USE_L10N = True
+
+# UPDATE: USE_I18N=True & LANGUAGE_CODE to format dates!
+# @todo but only want date/number formating, not translations! how?
 
 # Use timezone-aware datetimes?
 USE_TZ = False
