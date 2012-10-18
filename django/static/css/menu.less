@@ -1,10 +1,18 @@
 // can drop #nav and use '#menu > ul' - but less compatible
 
 
+@bg: #222;
+@fg: #ddd;
+@border: #d5d5d5;
+@fgactive: white;
+@bgactive: darkred;
+
+/*
 @fg: #000033;		// text color for active element
 @fgactive: white;	// text color for active element
 @bg: #6699ff;		// background color
 @bgactive: #446699;	// background color for active element
+*/
 
 
 // @todo replace with reset.css
@@ -28,7 +36,7 @@
 // @todo use ul.top is more compatible
 #nav > li {
     float: left;
-    border-right: 1px solid #555;   // @todo parameter or use @fg
+    border-right: 1px solid @border;
 }
 
 #nav a {

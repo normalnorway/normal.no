@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Aktuelt</h1>
+<div id="xheader">
+  <h1 class="title">Aktuelt</h1>
+</div>
 
 {% for object in list %}
 {% include "news/story_item.html" %}
