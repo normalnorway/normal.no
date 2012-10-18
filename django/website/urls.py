@@ -13,8 +13,8 @@ urlpatterns = patterns('',
     url(r'^nettguide/$', 'apps.links.views.index', name='links'),
     # RedirectView: nettguide.html -> links/
 
-#    url(r'^aktuelt/$', 'apps.news.views.story'),
-    url(r'^aktuelt/(?P<story_id>\d+)/$', 'apps.news.views.story_detail'),
+    url(r'^aktuelt/$', 'apps.news.views.story_list', name='news-story-list'),
+    url(r'^aktuelt/(?P<story_id>\d+)/$', 'apps.news.views.story_detail', name='news-story-detail'),
 
     (r'^admin/', include (admin.site.urls)),
 )

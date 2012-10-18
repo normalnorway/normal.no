@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1>Aktuelt</h1>
+
+{% for object in list %}
 {% include "news/story_item.html" %}
+{% if not forloop.last %}
+<hr>
+{% endif %}
+{% endfor %}
 {% endblock %}

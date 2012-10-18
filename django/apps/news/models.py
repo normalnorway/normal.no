@@ -25,9 +25,11 @@ class Article (models.Model):
 
 
 # @todo delete image file
-# @note text field is markdown!
+# @todo need image_width to wrap image text
 class Story (models.Model):
     ''' Short news story / "Aktuelt" '''
+    class Meta:
+        verbose_name_plural = 'stories'
 
     ALIGNMENT = (('l', 'Left'), ('r', 'Right'))
 
@@ -41,8 +43,9 @@ class Story (models.Model):
     image_align = models.CharField (max_length=1, choices=ALIGNMENT, default='r')
     comment = models.TextField (blank=True, help_text='Internal comment. Not shown on the website.')
 
-    class Meta:
-        verbose_name_plural = 'stories'
-
     def __unicode__ (self):
         return self.title
+
+    @models.permalink
+    def get_absolute_url (self):
+        return ('news-story-detail', [str(self.pk)])

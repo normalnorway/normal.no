@@ -17,11 +17,25 @@ from django.views.generic import dates
 from .models import Story
 from markdown import markdown
 
+# or store on view func?
+#_markdown = markdown.Markdown()
+#_markdown.convert(text1)
+#_markdown.reset().convert(text1)
+
+
+def story_list (request):
+    data = Story.objects.all().filter(published=True).order_by('date')
+    for item in data:
+        item.text = markdown (item.text, safe_mode='escape')
+    return render (request, 'news/story_list.html', { 'list': data })
+
+
 def story_detail (request, story_id):
-    data = get_object_or_404 (Story, pk=story_id, published=True)
-    data.text = markdown (data.text, safe_mode='escape')
+    #data = get_object_or_404 (Story, pk=story_id, published=True)
+    item = get_object_or_404 (Story, pk=story_id)
+    item.text = markdown (item.text, safe_mode='escape')
     return render (request, 'news/story_detail.html', {
-        'object': data,
+        'object': item,
 #        'object': get_object_or_404 (Story, pk=story_id, published=True)
     })
 
