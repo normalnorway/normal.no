@@ -1,14 +1,19 @@
 # https://docs.djangoproject.com/en/1.4/ref/settings/
 
-
+import os, sys
 ##
 ## Custom settings (not used by Django)
 ##
-ROOT = '/srv/www/new.normal.no/'
 
 # FILE_UPLOAD_MAX_SIZE = "5242880"
 
+# Adding a dynamic path system
+main_dir = os.path.dirname(os.path.realpath(__file__))
+# root_dir is the root of the repo
+root_dir = os.path.realpath(os.path.join(main_dir, '..','..'))
 
+sys.path.append(os.path.join(root_dir,'conf'))
+import settings_local
 
 ##
 ## Django settings
@@ -17,29 +22,19 @@ ROOT = '/srv/www/new.normal.no/'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-INTERNAL_IPS = ('127.0.0.1',)
+INTERNAL_IPS = settings_local.internal_ips
 
 # Admins will get email whenever an error happens.
 # Managers will get broken-link notification.
-ADMINS = (
-    ('torkel', 'torkel@normal.no'),
-)
+ADMINS = settings_local.admins
 MANAGERS = ADMINS
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ROOT + 'django/normal.db',
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'normal',
-#        'USER': 'normal',
-    }
-}
+DATABASES = settings_local.databases
 
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'd%3luowws4k+77pe&amp;d@mkd7qx_-x$!c(jvs(9ah_-i92o9d8en'
+SECRET_KEY = settings_local.secret_key
 
 
 FILE_UPLOAD_PERMISSIONS = 0644
@@ -50,7 +45,7 @@ AUTH_PROFILE_MODULE = 'users.profile'
 #LOGIN_URL = '/users/login'
 #LOGIN_REDIRECT_URL     # default: /accounts/profile/
 
-TIME_ZONE = 'Europe/Oslo'       # None => /etc/timezone
+TIME_ZONE = settings_local.timezone       # None => /etc/timezone
 
 #LANGUAGE_CODE = 'en-us'         # XXX used for what??
 LANGUAGE_CODE = 'nb-no'
@@ -76,7 +71,7 @@ USE_TZ = False
 
 # Absolute filesystem path to store user-uploaded files.
 # @todo rename upload?
-MEDIA_ROOT = ROOT + 'htdocs/media/'
+MEDIA_ROOT = os.path.join(root_dir,'django','htdocs','media')
 
 # URL of MEDIA_ROOT. Must be mapped by webserver.
 MEDIA_URL = '/media/'
@@ -84,14 +79,14 @@ MEDIA_URL = '/media/'
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = ROOT + 'htdocs/static/'
+STATIC_ROOT = os.path.join(root_dir,'django','htdocs','static')
 
 # URL of STATIC_ROOT. Must be mapped by webserver.
 STATIC_URL = '/static/'
 
 # Global (non-app) static files.
 STATICFILES_DIRS = (
-    ROOT + 'django/static',     # static/{css,js,images}
+    os.path.join(root_dir,'django','static'),     # static/{css,js,images}
     # @todo split out binary files?
 )
 
@@ -102,7 +97,7 @@ STATICFILES_FINDERS = (
 
 
 TEMPLATE_DIRS = (
-    ROOT + '/django/templates',
+    os.path.join(root_dir,'django','templates'),
 )
 
 TEMPLATE_LOADERS = (
