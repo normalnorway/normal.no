@@ -1,4 +1,6 @@
 *~
 *.pyc
 *.swp
-conf/settings_local.py
+
+docs/how-to-contribute.html
+django/website/settings_local.py
