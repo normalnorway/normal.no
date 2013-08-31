@@ -4,6 +4,12 @@ http://git.normal.no/git/normal.no/tree/docs/how-to-contribute.md
 Se the Makefile for how to build and upload.
 
 rename getting-started.md ?
+
+TODO:
+Python Web Development: Understanding Django for Beginners
+http://www.youtube.com/watch?v=zTNA0MtZwso
+Kan du ikke python, eller har veldig lyst til å lære => kanskje
+heller finne noe annet å gjøre? :) [bidra med]
 -->
 
 <style type="text/css">
@@ -195,3 +201,11 @@ Eller ennå bedre; lær deg Git:
 * <http://stackoverflow.com/questions/315911/git-for-beginners-the-definitive-practical-guide>
 
 **Send en nyttig patch eller to, og vi gir deg skrivetilgang.**
+
+
+<!--
+@deb python-virtualenv
+$ virtualenv myenv –no-site-packages
+$ . myenv/bin/activate
+$ pip install django
+-->

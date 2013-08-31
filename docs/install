@@ -3,6 +3,13 @@
 # /etc/apache2/envvars	# change 'export LANG=C' to utf8 locale
 #   what if running in daemon mode?
 
+# NOTE: This is instructions for deploying on an Apache server with WSGI.
+# Django contains an built in development server. Use that instead when
+# doing development.
+# @see how-to-contribute.md
+
+# Deployment checklist
+# https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # System
 apt-get install libapache2-mod-wsgi

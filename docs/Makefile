@@ -9,7 +9,7 @@ all: how-to-contribute.html
 # http://git.normal.no/git/normal.no/about/
 # But note: cgit uses caching, so will not show up immediately!
 upload: how-to-contribute.html
-	scp how-to-contribute.html git.normal.no:/srv/www/git.normal.no/readme.html
+	scp $^ git.normal.no:/srv/www/git.normal.no/readme.html
 
 
 # Suffix rule from markdown to html

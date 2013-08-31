@@ -20,6 +20,16 @@ urlpatterns = patterns('',
 )
 
 '''
+# The real, dirty secret is that if you're also using
+# django.contrib.admin, and
+# django.template.loaders.app_directories.load_template_source is in your
+# template loaders, you can get your templates free too!
+urlpatterns += patterns('django.contrib.auth',
+    (r'^accounts/login/$','views.login', {'template_name': 'admin/login.html'}),
+        (r'^accounts/logout/$','views.logout'),
+    )
+
+
     # Files
     url(r'^files/list$',    'apps.files.views.list', name='file-list'),
 #    url(r'^files/upload$',  'apps.files.views.upload'),

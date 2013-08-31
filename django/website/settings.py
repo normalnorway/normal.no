@@ -6,6 +6,7 @@ import os.path
 tmp = os.path.dirname (os.path.abspath (__file__))
 tmp = os.path.join (tmp, '..', '..')
 ROOT = os.path.realpath (tmp)
+#J = lambda filename: os.path.join(ROOT, filename) # todo handle *args
 
 
 # Private settings that should *not* go inside a public repository!
