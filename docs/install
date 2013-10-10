@@ -1,17 +1,14 @@
-# Important!!
-# Must enable UTF8 for Apache environment!
-# /etc/apache2/envvars	# change 'export LANG=C' to utf8 locale
-#   what if running in daemon mode?
-
-# NOTE: This is instructions for deploying on an Apache server with WSGI.
+#
+# These instructions are for deploying on an Apache server with WSGI.
 # Django contains an built in development server. Use that instead when
-# doing development.
-# @see how-to-contribute.md
-
+# doing development (@see how-to-contribute.md).
+#
 # Deployment checklist
 # https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
+#
 
-# System
+
+## Required packages (Debian/Ubuntu)
 apt-get install libapache2-mod-wsgi
 apt-get install mysql-server	# meta-package depending on latest version
 #apt-get install mysql-server-5.1
@@ -21,24 +18,71 @@ apt-get install python-imaging
 apt-get install python-markdown
 
 
-# Django
-curl https://www.djangoproject.com/download/1.4/tarball/ \
-    Django-1.4.tar.gz | tar zxf -
-cd Django-1.4
+## Django
+pip install Django==1.5.4
+
+# Or do a manuall install. (Requires: python-setuptools)
+curl https://www.djangoproject.com/m/releases/1.5/Django-1.5.4.tar.gz \
+    | tar zxf -
+cd Django-1.5
 python setup.py install
 
 
-# MySQL
+## MySQL
 create database normal;
 grant all on normal.* to 'normal'@'localhost';
+# TODO: import data or django/manage.py syncdb
+#       but must run at later stage ...
 
 
-## Other
-cd /srv/www/normal.no
+## Get the source code
 
-git clone $url django
+# @note path is hardcoded in ../conf/apache.conf.in
+mkdir /srv/www/dev.normal.no
+cd /srv/www/dev.normal.no
+git clone http://git.normal.no/git/normal.no .
 
+cp conf/settings_local.py-dist django/website/settings_local.py
+
+
+## Create required files and directories
+cd /srv/www/dev.normal.no
+
+# upload dir
+# @note !www-data if using daemon-mode
 mkdir -p htdocs/media
 chgrp www-data htdocs/media
-# @note !www-data if using daemon-mode and own user
 chmod g+w htdocs/media
+
+# static dir
+django/manage.py collectstatic
+
+# TODO: convert less files to css
+
+# TODO: update domain name here
+http://dev.normal.no/admin/sites/site/
+
+
+# XXX SQLite
+cd /srv/www/dev.normal.no/
+mkdir db
+chgrp www-data db
+chmod g+w db
+wget -P db http://torkel.normal.no/normal.db
+chown www-data:www-data db/normal.db
+
+edit django/website/settings_local.py
+  # - 'NAME': os.path.join (ROOT, 'normal.db'),
+  # + 'NAME': '/srv/www/dev.normal.no/db/normal.db',
+
+
+## Apache
+
+# The default locale for Apache is 'C'. Must change to UTF8!
+edit /etc/apache2/envvars	# change 'export LANG=C' to an UTF8 locale
+# q: what if running in daemon mode?
+
+# Install Apache site
+ln -s /srv/www/dev.normal.no/conf/apache.conf /etc/apache2/sites-available/dev.normal.no
+a2ensite dev.normal.no
+/etc/init.d/apache2 reload
