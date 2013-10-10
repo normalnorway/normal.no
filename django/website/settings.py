@@ -72,7 +72,7 @@ USE_TZ = False
 
 # Absolute filesystem path to store user-uploaded files.
 # TODO rename upload?
-MEDIA_ROOT = os.path.join (ROOT, 'django', 'htdocs', 'media')
+MEDIA_ROOT = os.path.join (ROOT, 'htdocs', 'media')
 
 # URL of MEDIA_ROOT. Must be mapped by webserver.
 MEDIA_URL = '/media/'
@@ -80,7 +80,7 @@ MEDIA_URL = '/media/'
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = os.path.join (ROOT, 'django', 'htdocs', 'static')
+STATIC_ROOT = os.path.join (ROOT, 'htdocs', 'static')
 
 # URL of STATIC_ROOT. Must be mapped by webserver.
 STATIC_URL = '/static/'
