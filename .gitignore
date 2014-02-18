@@ -4,3 +4,9 @@
 
 docs/how-to-contribute.html
 django/website/settings_local.py
+
+# generated from conf/apache.conf.in
+conf/apache.conf
+
+db/
+htdocs/
