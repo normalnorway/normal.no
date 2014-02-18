@@ -2,4 +2,9 @@
 
 upload: can use UploadedFile.temporary_file_path and move into place?
 
+@deb python-django-markupfield
 
+GZipMiddleware: Warning
+Security researchers recently revealed that when compression techniques
+(including GZipMiddleware) are used on a website, the site becomes
+exposed to a number of possible attacks.

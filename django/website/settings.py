@@ -134,7 +134,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.sessions',      # only needed for database-backed session
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -145,6 +145,7 @@ INSTALLED_APPS = (
     'core',
     'apps.news',
     'apps.links',
+    'apps.invoice',
 )
 
 

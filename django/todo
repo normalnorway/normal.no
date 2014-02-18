@@ -44,3 +44,16 @@ Update: Google=Yes (but not when refreshing)
         FF=No
 
 http://ogp.me/
+
+# Security measure:
+ALLOWED_HOSTS = [
+    '.normal.no',	# Allow domain and subdomains
+    '.normal.no.',	# Also allow FQDN and subdomains
+]
+
+# Switch from db to file based sessions?
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
+SESSION_FILE_PATH = tempfile.gettempdir()	# default
+
+settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True	# default is False
+
