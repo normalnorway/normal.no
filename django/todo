@@ -56,4 +56,3 @@ SESSION_ENGINE = "django.contrib.sessions.backends.file"
 SESSION_FILE_PATH = tempfile.gettempdir()	# default
 
 settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True	# default is False
-

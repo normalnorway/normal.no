@@ -10,6 +10,13 @@ Python Web Development: Understanding Django for Beginners
 http://www.youtube.com/watch?v=zTNA0MtZwso
 Kan du ikke python, eller har veldig lyst til å lære => kanskje
 heller finne noe annet å gjøre? :) [bidra med]
+
+NEW
+external/django-invoice-no/ is a git submodule
+To avoid this issue, create a branch when you work in a submodule
+directory with git checkout -b work or something equivalent. When you do
+the submodule update a second time, it will still revert your work, but
+at least you have a pointer to get back to.
 -->
 
 <style type="text/css">
