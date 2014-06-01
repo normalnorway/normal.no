@@ -1,0 +1,4 @@
+git: only allow fast-forward updates?
+
+add requirements.txt
+  pip freeze > requirements.txt

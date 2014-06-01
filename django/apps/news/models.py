@@ -10,7 +10,7 @@ class Article (models.Model):
     '''
     pubdate = models.DateField (editable=False, auto_now_add=True, verbose_name='Date published')
     date = models.DateField (default=datetime.datetime.now(), help_text='Date of news article (url), not the day we posted it.')
-    url = models.URLField (blank=True)
+    url = models.URLField (blank=True)  # @todo unique! and way to list duplicate titles
     title = models.CharField (max_length=255)   # @todo 100?
     summary = models.TextField()	# abstract?
     body = models.TextField (blank=True, null=True, help_text='Own text, like our comment.')

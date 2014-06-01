@@ -4,6 +4,11 @@
 
 # TODO logs!
 
+# Alias /robots.txt /path/to/mysite.com/static/robots.txt
+# Alias /favicon.ico /path/to/mysite.com/static/favicon.ico
+# AliasMatch ^/([^/]*\.css) /path/to/mysite.com/static/styles/$1
+
+
 <VirtualHost *:80>
     ServerName	@@ServerName@@
     ServerAdmin	torkel@normal.no

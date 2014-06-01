@@ -2,11 +2,11 @@
 
 {% block extrahead %}
 {{ block.super }}
-<!--
-<script src="//yandex.st/dojo/1.7.2/dojo/dojo.js" defer></script>
--->
-<script data-dojo-config="async:1"
-  src="//yandex.st/dojo/1.7.2/dojo/dojo.js" defer></script>
+<script data-dojo-config="async:1" src="//yandex.st/dojo/1.7.2/dojo/dojo.js" defer></script>
 <script src="{{STATIC_URL}}/js/editor.js" defer></script>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
 <link rel="stylesheet" href="{{STATIC_URL}}css/editor.css" />
 {% endblock %}
