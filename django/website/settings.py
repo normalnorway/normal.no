@@ -145,7 +145,6 @@ INSTALLED_APPS = (
     'core',
     'apps.news',
     'apps.links',
-    'apps.invoice',
 )
 
 

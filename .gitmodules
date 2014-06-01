@@ -1,3 +1,0 @@
-[submodule "external/django-invoice-no"]
-	path = external/django-invoice-no
-	url = git@github.com:torbjo/django-invoice-no.git
