@@ -3,6 +3,7 @@ from .models import Article
 from .models import Story
 import re
 
+
 class LinkOnlyFilter (admin.SimpleListFilter):
     title = 'Link only?'
     parameter_name = 'body'
@@ -14,6 +15,7 @@ class LinkOnlyFilter (admin.SimpleListFilter):
         return queryset.filter (body__isnull = bool(int(v)))
 
 
+    # @todo howto add static help text (without overriding the template)?
 class ArticleAdmin (admin.ModelAdmin):
     list_display = ('datefmt', 'title', 'domain', 'has_body')
     list_display_links = ('title',)
@@ -25,7 +27,15 @@ class ArticleAdmin (admin.ModelAdmin):
 
     # http://stackoverflow.com/questions/4067712/django-admin-adding-pagination-links-in-list-of-objects-to-top
 
-    _re_domain = re.compile (r'^http://(www\.)?([^/]+)', re.I)
+    # Clean fields.
+    # @todo move to model
+    # @todo add user? obj.user = request.user ?
+    def save_model(self, request, obj, form, change):
+        # XXX does not work. will strip blanks, but not trigger 'field required'
+        #obj.summary = obj.summary.strip()
+        obj.body = obj.body.strip()
+        obj.save()
+
 
     # Dynamic fields
     def datefmt (self, obj):
@@ -34,11 +44,16 @@ class ArticleAdmin (admin.ModelAdmin):
     datefmt.admin_order_field = 'date'
 
     def has_body (self, obj):
-        return obj.body != None
+        # XXX not consistent use of None vs ''
+        #return obj.body != None
+        if obj.body=='' or obj.body==None:
+            return False
+        return True
     has_body.boolean = True
     has_body.short_description = 'Body?'
     #has_body.admin_order_field = 'body'
 
+    _re_domain = re.compile (r'^http://(www\.)?([^/]+)', re.I)
     def domain (self, obj):
         #return self._re_domain.match (obj.url).group(2)
         domain = self._re_domain.match (obj.url).group(2)
