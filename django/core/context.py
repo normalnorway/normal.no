@@ -1,7 +1,6 @@
-# Context processes give you the ability to pass any variable to
-# your templates.
+# Context processors gives the ability to pass any variable to templates.
 
-# In your settings.py add 'my_project.apps.core.context.my_context' to
+# In your settings.py add 'core.context.my_context' to
 # TEMPLATE_CONTEXT_PROCESSORS in settings.py.
 
 # NOT IN USE

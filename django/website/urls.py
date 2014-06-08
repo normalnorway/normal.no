@@ -1,11 +1,20 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic import TemplateView
+#from django.views.generic import TemplateView
 from django.contrib import admin
+
+#from core.views import IndexView
+#from core.views import index
+#import core
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^$', TemplateView.as_view (template_name='index.html')),
+    #(r'^$', TemplateView.as_view (template_name='index.html')),
+    #(r'^$', IndexView.as_view()),
+    url(r'^$', 'core.views.index', name='index'),
+
+    #url(r'^news-tips/$', 'core.views.news_tips'),
+    url(r'^news-tips/(?P<url>.*)$', 'core.views.news_tips', name='news-tips'),
 
     # @todo add '$'?
     url(r'^nyheter/', include ('apps.news.urls'), name='news'),

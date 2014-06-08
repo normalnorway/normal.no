@@ -1,13 +1,10 @@
 from django.db import models
 import datetime
 
-# @todo utenriks-field (or use tags for that)
+# @todo utenriks-field (or use tags for that. or domain)
 # @todo owner-field
-# @todo clean() method that strip() string fields?
 class Article (models.Model):
-    '''
-    Link to an external news article, with an optional own comment.
-    '''
+    ''' Link to external news article, with an optional own comment '''
     pubdate = models.DateField (editable=False, auto_now_add=True, verbose_name='Date published')
     date = models.DateField (default=datetime.datetime.now(), help_text='Date of news article (url), not the day we posted it.')
     url = models.URLField (unique=True)
@@ -15,12 +12,22 @@ class Article (models.Model):
     summary = models.TextField (help_text=u'Just copy the "ingress" into this field.')
     body = models.TextField (blank=True, null=True, help_text='Our comment to this news story')
 
-    def __unicode__ (self):
-        return self.title
+    def __unicode__ (self): return self.title
+
+    # Note: will not cause validation to fail
+    # Bug: will strip on first save; then unique constraint
+    # will kick in on next save (very confusing)
+#    def clean (self):
+#        self.title = self.title.strip()
+#        self.body = self.body.replace('\r', '') # ok
 
     @models.permalink
     def get_absolute_url (self):
         return ('news-detail', [str(self.pk)])
+
+    class Meta:
+        verbose_name = 'News link'  # News story?
+        get_latest_by = 'date'
 
 
 

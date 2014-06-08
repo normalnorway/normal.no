@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% comment %}
+{% block extrahead %}
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script>
+    // http://stackoverflow.com/questions/20700185/how-to-use-datepicker-in-django
+    $(document).ready(function() {
+	$('date').datepicker();
+	//$('.datepicker').datepicker();
+    });
+</script>
+{% endblock %}
+{% endcomment %}
+
+
+{% block content %}
+<h2>Takk for nyhetstipset!</h2>
+
+<p>Adresse: <a href="{{ url }}">{{ url }}</a></p>
+
+<p>Hvis du vil spare oss for litt arbeid, vennligst fyll inn feltene
+under.<br>Dette er valgfritt, men høyst verdsatt!</p>
+
+<!-- @todo remove url param from url. use: url news-tips '' -->
+<form method="post">{% csrf_token %}
+<table>
+  {{ form.as_table }}
+</table>
+
+<p>
+  <input type="submit" value="Lagre" />
+  <input type="reset" value="Tøm felter" />
+  <input type="submit" value="Avbryt"
+    onClick="alert('todo'); return false;" />
+</p>
+
+<p>
+</p>
+</form>
+
+{% endblock %}

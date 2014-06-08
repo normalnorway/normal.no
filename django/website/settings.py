@@ -7,6 +7,7 @@ tmp = os.path.dirname (os.path.abspath (__file__))
 tmp = os.path.join (tmp, '..', '..')
 ROOT = os.path.realpath (tmp)
 #J = lambda filename: os.path.join(ROOT, filename) # todo handle *args
+BASE_DIR = ROOT     # @todo ROOT -> BASE_DIR
 
 
 # Private settings that should *not* go inside a public repository!
@@ -113,7 +114,6 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.debug',
 )
 
-
 # Note: these are invoked in reverse order for the response.
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -125,6 +125,8 @@ MIDDLEWARE_CLASSES = (
         # note: flatpages should be last.
 )
 
+# needed for django >= 1.6
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 ROOT_URLCONF = 'website.urls'
 
@@ -148,31 +150,75 @@ INSTALLED_APPS = (
 )
 
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
+# Sends email to site admins on HTTP 500 error when DEBUG=False.
+# http://docs.djangoproject.com/en/dev/topics/logging
+#
+# @todo
+# _LOG_LEVEL = 'DEBUG' if DEBUG else 'INFO'
+# 'level': LOG_LEVEL
+# console log that goes to stderr with Errors only?
+# Update: if DEBUG: log to console
+#         if not DEBUG: log to file
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
+    'disable_existing_loggers': True,
+
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+        '': {
+            'handlers': ['default'],
+            'level': 'DEBUG',
+        },
+        'django.security': {
+            'handlers': ['request'],    # @todo mail_admins?
+            'level': 'DEBUG',
             'propagate': True,
         },
-    }
+        'django.request': {
+            'handlers': ['mail_admins', 'request'],
+            'level': 'DEBUG',   # INFO
+            'propagate': False,
+        },
+    },
+
+    'handlers': {
+        'default': {
+            'class': 'logging.FileHandler',
+            #'filename': os.path.join (BASE_DIR, 'logs', 'django.log'),
+            'filename': os.path.join (os.pardir, 'logs', 'django.log'),
+            'formatter': 'verbose',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
+        'request': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join (BASE_DIR, 'logs', 'request.log'),
+            'formatter': 'verbose',
+        },
+        'security': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join (BASE_DIR, 'logs', 'security.log'),
+            'formatter': 'verbose',
+        },
+        # @todo debug.log
+    },
+
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'default': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+
+    'filters': {
+        'debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+    },
 }

@@ -15,26 +15,44 @@ class LinkOnlyFilter (admin.SimpleListFilter):
         return queryset.filter (body__isnull = bool(int(v)))
 
 
-    # @todo howto add static help text (without overriding the template)?
+
+# testing. better to use MyCharField & MyTextField ?
+from django import forms
+class ArticleAdminForm (forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = '__all__'
+    def clean_title (self):
+        return self.cleaned_data['title'].strip()
+
+
 class ArticleAdmin (admin.ModelAdmin):
+    ordering = ('-date',)
+    date_hierarchy = 'date'
+    search_fields = ('title', 'summary', 'body')
     list_display = ('datefmt', 'title', 'domain', 'has_body')
     list_display_links = ('title',)
-    ordering = ('-date',)
-    list_per_page = 50  # default is 100
     list_filter = ('date', LinkOnlyFilter)
-    search_fields = ('title', 'summary', 'body')
-    date_hierarchy = 'date'
+    list_per_page = 50  # default is 100
+
+    # testing overriding form
+    form = ArticleAdminForm
+
+    # testing add static text (without overriding the template)
+#    fields = ('foobar', 'date', 'url', 'title', 'summary', 'body')
+#    readonly_fields = ('foobar',)
+#    def foobar (self, instance):
+#        return 'Hello <b>bold</b> world'
 
     # http://stackoverflow.com/questions/4067712/django-admin-adding-pagination-links-in-list-of-objects-to-top
 
-    # Clean fields.
-    # @todo move to model
-    # @todo add user? obj.user = request.user ?
+    '''
     def save_model(self, request, obj, form, change):
         # XXX does not work. will strip blanks, but not trigger 'field required'
         #obj.summary = obj.summary.strip()
         obj.body = obj.body.strip()
         obj.save()
+    '''
 
 
     # Dynamic fields

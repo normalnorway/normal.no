@@ -8,5 +8,6 @@ django/website/settings_local.py
 # generated from conf/apache.conf.in
 conf/apache.conf
 
+normal.db
 db/
 htdocs/
