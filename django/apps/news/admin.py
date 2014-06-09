@@ -71,9 +71,9 @@ class ArticleAdmin (admin.ModelAdmin):
     has_body.short_description = 'Body?'
     #has_body.admin_order_field = 'body'
 
-    _re_domain = re.compile (r'^http://(www\.)?([^/]+)', re.I)
+    # @todo urlparse instead of regex
+    _re_domain = re.compile (r'^(http://)?(www\.)?([^/]+)', re.I)
     def domain (self, obj):
-        #return self._re_domain.match (obj.url).group(2)
         domain = self._re_domain.match (obj.url).group(2)
         return '<a href="%s" title="%s" target="_blank">%s</a>' % (obj.url, obj.url, domain)
     domain.allow_tags = True
@@ -90,8 +90,5 @@ class ArticleAdmin (admin.ModelAdmin):
 
 
 
-#class StoryAdmin (admin.ModelAdmin):
-
 admin.site.register (Article, ArticleAdmin)
 admin.site.register (Story)
-#admin.site.register (Story, StoryAdmin)

@@ -28,13 +28,16 @@ class LinkAdmin (admin.ModelAdmin):
     # http://stackoverflow.com/questions/2420516/how-to-collapse-just-one-field-in-django-admin
     # @fieldsets_collapse (['comment'], label='Internal')
 
+    # @todo use urlparse.urlsplit instead of regex
     def url_ (self, obj):
         m = self.url_.regex.match (obj.url)
+        if not m:
+            return '<a href="%s">(internal)</a>' % (obj.url,)
         s = m.group(1)
         if m.end() == len(obj.url):
-            return '<a href="%s" target="_blank">%s</a>' % (obj.url, s)
+            return '<a href="%s">%s</a>' % (obj.url, s)
         else:
-            return '<a href="%s" target="_blank" title="%s">%s &hellip;</a>' % (obj.url, obj.url, s)
+            return '<a href="%s" title="%s">%s &hellip;</a>' % (obj.url, obj.url, s)
     url_.allow_tags = True
     url_.short_description = 'URL'
     url_.admin_order_field = 'url'
