@@ -50,10 +50,11 @@ AUTH_PROFILE_MODULE = 'users.profile'
 
 TIME_ZONE = 'Europe/Oslo'       # None => /etc/timezone
 
-#LANGUAGE_CODE = 'en-us'         # XXX used for what??
+#LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'nb-no'
 # django.utils.translation.to_locale
 # Turns a language name (en-us) into a locale name (en_US).
+
 
 # contrib.site (required by contrib.flatpages)
 SITE_ID = 1
@@ -62,8 +63,8 @@ USE_I18N = False
 #USE_I18N = True
 
 # Format according to the current locale.
-USE_L10N = False
 #USE_L10N = True
+USE_L10N = False
 
 # UPDATE: USE_I18N=True & LANGUAGE_CODE to format dates!
 # TODO but only want date/number formating, not translations! how?
@@ -113,6 +114,8 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.debug',
 )
+# @todo remove 'django.core.context_processors.i18n'
+#print TEMPLATE_CONTEXT_PROCESSORS
 
 # Note: these are invoked in reverse order for the response.
 MIDDLEWARE_CLASSES = (

@@ -14,7 +14,7 @@ class NewsTips1 (forms.Form):
 class NewsTips2 (forms.Form):
     date = forms.DateField (label='Dato',
                             #help_text=u'dd/mm/åå eller åååå-mm-dd',
-                            input_formats = ('%Y-%m-%d', '%d/%m/%y', '%d. %A %Y'),
+                            input_formats = ('%Y-%m-%d', '%d/%m/%y', '%d. %B %Y'),
                             error_messages = {'invalid': u'Ugyldig dato. Bruk dd/mm/åå eller åååå-mm-dd'})
     #date = forms.DateField (label='Dato', help_text='Datoen artikkelen er publisert')
     title = forms.CharField (label='Overskrift', max_length=128)

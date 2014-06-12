@@ -7,7 +7,7 @@ class Article (models.Model):
     ''' Link to external news article, with an optional own comment '''
     pubdate = models.DateField (editable=False, auto_now_add=True, verbose_name='Date published')
     date = models.DateField (default=datetime.datetime.now(), help_text='Date of news article (url), not the day we posted it.')
-    url = models.URLField (unique=True)
+    url = models.URLField ('Link', unique=True)
     title = models.CharField (max_length=128)
     summary = models.TextField (help_text=u'Just copy the "ingress" into this field.')
     body = models.TextField (blank=True, null=True, help_text='Our comment to this news story')
@@ -43,7 +43,7 @@ class Story (models.Model):
     date = models.DateField (default=datetime.datetime.now())
     published = models.BooleanField (default=True)
     title = models.CharField (max_length=100)
-    abstract = models.TextField (blank=True)
+    abstract = models.TextField ('Summary', blank=True)
     text = models.TextField (help_text='NOTE: Supports Markdown syntax. (<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Se here for help.</a>)')
     image = models.ImageField (blank=True, upload_to='images/news_story')
     image_text = models.CharField (blank=True, max_length=255)

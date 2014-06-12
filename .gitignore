@@ -1,6 +1,7 @@
 *~
 *.pyc
 *.swp
+*.bak
 
 docs/how-to-contribute.html
 django/website/settings_local.py
