@@ -80,6 +80,10 @@ skal virke.
 
     pip install django
 
+Nettsiden bruker følgende Python-moduler. De må installeres:
+
+    pip install markdown
+
 Resten burde gjøres som din vanlige bruker – eller hvis du er paranoid,
 lag en egen bruker kun for dette.
 

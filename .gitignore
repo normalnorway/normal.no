@@ -12,3 +12,4 @@ conf/apache.conf
 normal.db
 db/
 htdocs/
+logs/*.log
