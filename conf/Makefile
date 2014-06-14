@@ -1,4 +1,3 @@
-
 # TODO make overridable from env or with: make ServerName=normal.no
 #ServerName?=dev.normal.no
 #ServerPath?=/srv/www/$(ServerName)

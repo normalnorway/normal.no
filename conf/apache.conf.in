@@ -2,8 +2,7 @@
 # 1) Symlink this into: /etc/apache2/sites-available/
 # 2) Then do a: a2ensite <symlink-name>
 
-# TODO logs!
-
+# TODO
 # Alias /robots.txt /path/to/mysite.com/static/robots.txt
 # Alias /favicon.ico /path/to/mysite.com/static/favicon.ico
 # AliasMatch ^/([^/]*\.css) /path/to/mysite.com/static/styles/$1
@@ -18,32 +17,35 @@
     Alias /static/	/srv/www/@@ServerName@@/htdocs/static/
     Alias /media/	/srv/www/@@ServerName@@/htdocs/media/
 
-    # does not work. looks like wsgi.py gets it instead
-    #DocumentRoot	/srv/www/new.normal.no/htdocs/
+    CustomLog       /srv/www/@@ServerName@@/logs/access.log combined
+    ErrorLog        /srv/www/@@ServerName@@/logs/error.log
 
-    # WSGIPythonPath cannot occur within <VirtualHost> section
-    #WSGIPythonPath	/srv/www/new.normal.no/django
-    #WSGIPythonOptimize 1
-    #WSGIRestrictStdout 0	# what about sys.stderr?
 
-    # ACL
+    ## Access control (ACL)
     <Directory /srv/www/@@ServerName@@/django/website>
+	<Files wsgi.py>
+	    Order deny,allow
+	    Allow from all
+	</Files>
+    </Directory>
+
+    <Directory /srv/www/@@ServerName@@/htdocs>
+	Allow from all
+	Options none
+	AllowOverride none
+    </Directory>
+
+    <Directory /srv/www/@@ServerName@@/htdocs>
 	<Files wsgi.py>
 	    Order Deny,Allow
 	    Allow from All
 	</Files>
     </Directory>
 
-    # be paranoid. should not be needed since only htdocs is mapped
-    # but what about symlinks. A: disabled bellow (in htdocs).
-    <Directory />
-	Order Deny,Allow
-	Deny from All
-    </Directory>
+    # A paranoid sysadmin already have this this as default!
+#    <Directory />
+#	Order deny,allow
+#	Deny from all
+#    </Directory>
 
-    <Directory /srv/www/@@ServerName@@/htdocs>
-	Allow from all
-	Options None
-	AllowOverride None
-    </Directory>
 </VirtualHost>
