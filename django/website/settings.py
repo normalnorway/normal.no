@@ -1,5 +1,6 @@
 # https://docs.djangoproject.com/en/1.5/ref/settings/
 
+from django.conf import global_settings as defaults
 
 # Find full path to Djang's root folder.
 import os.path
@@ -8,9 +9,10 @@ tmp = os.path.join (tmp, '..', '..')
 ROOT = os.path.realpath (tmp)
 #J = lambda filename: os.path.join(ROOT, filename) # todo handle *args
 BASE_DIR = ROOT     # @todo ROOT -> BASE_DIR
-
+# @todo BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Private settings that should *not* go inside a public repository!
+# Note: Imports ROOT, so must be after that.
 import website.settings_local as local
 
 
@@ -99,6 +101,7 @@ STATICFILES_FINDERS = (
 )
 
 
+# Templates
 TEMPLATE_DIRS = (
     os.path.join (ROOT, 'django', 'templates'),
 )
@@ -110,12 +113,15 @@ TEMPLATE_LOADERS = (
     #   django.template.loaders.cached.Loader
 )
 
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-TEMPLATE_CONTEXT_PROCESSORS += (
+#TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.debug',)
+#TEMPLATE_CONTEXT_PROCESSORS += defaults.TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.debug',
 )
+
 # @todo remove 'django.core.context_processors.i18n'
 #print TEMPLATE_CONTEXT_PROCESSORS
+
 
 # Note: these are invoked in reverse order for the response.
 MIDDLEWARE_CLASSES = (
@@ -178,7 +184,7 @@ LOGGING = {
         },
         'django.request': {
             'handlers': ['mail_admins', 'request'],
-            'level': 'DEBUG',   # INFO
+            'level': 'INFO',
             'propagate': False,
         },
     },
@@ -186,8 +192,7 @@ LOGGING = {
     'handlers': {
         'default': {
             'class': 'logging.FileHandler',
-            #'filename': os.path.join (BASE_DIR, 'logs', 'django.log'),
-            'filename': os.path.join (os.pardir, 'logs', 'django.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'django.log'),
             'formatter': 'verbose',
         },
         'mail_admins': {

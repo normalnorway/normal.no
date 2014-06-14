@@ -16,7 +16,9 @@ ADMINS = (
 # Managers will get broken-link notification.
 MANAGERS = ADMINS
 
-# @todo document me
+# Note: django.core.context_processors.debug is only active when
+# request.META['REMOTE_ADDR']) is in INTERNAL_IPS.
+# So put your client ip-address here for debugging.
 INTERNAL_IPS = ('127.0.0.1',)
 
 

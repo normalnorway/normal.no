@@ -75,6 +75,11 @@ edit django/website/settings_local.py
   # - 'NAME': os.path.join (ROOT, 'normal.db'),
   # + 'NAME': '/srv/www/dev.normal.no/db/normal.db',
 
+# Logs
+chmod g+w logs
+chgrp www-data logs
+chmod 770 logs		# <-- optional
+
 
 ## Apache
 
