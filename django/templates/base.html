@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
 
-    <!--
+    {% comment %}
     <title>{%block title%}Norsk organisasjon for reform av
       marihuanalovgivningen{%endblock title%}</title>
-    -->
+    {% endcomment %}
+
     <title>{%block title%}Normal{%endblock title%}{%block extratitle%}{%endblock%}</title>
 
     <!-- <link rel="stylesheet" href="{{STATIC_URL}}css/reset.css" /> -->
 
     {% if debug %}
-    <script src="{{STATIC_URL}}js/less.js"></script>
     <style>
       html {
 	border-right: 6px solid maroon;
@@ -22,6 +22,7 @@
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/main.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" />
       <!-- @todo use extrahead block in menu template instead? -->
+    <script src="{{STATIC_URL}}js/less.js"></script>
     {% else %}
     <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
     <link rel="stylesheet" href="{{STATIC_URL}}css/menu.css" />
@@ -38,9 +39,7 @@
     <div id="wrapper">
 
       <div id="header">
-	<!--
-	<img src="{{STATIC_URL}}images/logo.png" />
-	-->
+	{# <img src="{{STATIC_URL}}images/logo.png" /> #}
       </div>
 
       <div id="menu">

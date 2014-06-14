@@ -1,22 +1,3 @@
-<!DOCTYPE html>
-
-<html>
-
-  <head>
-    <title>{{ flatpage.title }}</title>
-  </head>
-
-  <body>
-    {{ flatpage.content }}
-  </body>
-
-</html>
-
-{% comment %}
-vim: ft=htmldjango
-
-{% extends base.html %}
-{% block title %}{{ flatpage.title }}{% endblock %}
+{% extends "base.html" %}
+{% block extratitle %} : {{ flatpage.title }}{% endblock %}
 {% block content %}{{ flatpage.content }}{% endblock %}
-
-{% endcomment %}
