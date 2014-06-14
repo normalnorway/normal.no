@@ -29,7 +29,7 @@ import website.settings_local as local
 ## Django settings
 ##
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 INTERNAL_IPS = local.INTERNAL_IPS
