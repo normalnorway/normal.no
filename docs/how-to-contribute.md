@@ -1,7 +1,7 @@
 <!--
 http://git.normal.no/git/normal.no/tree/docs/how-to-contribute.md
 
-Se the Makefile for how to build and upload.
+See the Makefile for how to build and upload.
 
 rename getting-started.md ?
 
@@ -12,15 +12,13 @@ Kan du ikke python, eller har veldig lyst til å lære => kanskje
 heller finne noe annet å gjøre? :) [bidra med]
 -->
 
+<meta charset="utf-8" />
 <style type="text/css">
   pre {
     background-color: rgb(238, 238, 238);
     border: 1px solid black;
     padding: 1ex;
     width: 52em;
-    /*
-    width: auto;
-    */
   }
   p { width: 50em; }
   h2 { margin-top: 3ex; }
@@ -38,8 +36,7 @@ Er noe uklart ta kontakt med <mailto:mikal@normal.no> eller
 Nettsiden er laget i rammeverket [Django], er skrevet i [Python] og bruker
 [SQLite] som database.
 
-Denne guiden tar utgangspunkt i at du bruker et Debian eller Ubuntu
-GNU/Linux system.
+Denne guiden tar utgangspunkt i at du bruker Debian eller Ubuntu GNU/Linux.
 
 [Django]: https://www.djangoproject.com/
 [Python]: http://www.python.org/
@@ -63,20 +60,21 @@ Og hvis du får det til, skriv gjerne ned en oppskrift for andre.
 
 ### Linux/Unix ###
 
-Start et terminalprogram slik at du kan lime inn kommandoene under.
+Start terminalprogrammet og lim inn kommandoene under.
 
 Først må du installere noen programmer (pakker) som prosjektet trenger
 for å fungere. Dette må gjøres som administrator (root).
 
-    apt-get install python-imaging
     apt-get install python-pip
     apt-get install sqlite3
     apt-get install git
 
+    pip install pillow
+
 Django kan installeres både som root og som en vanlig bruker.
 Installerer du som vanlig bruker, legger alt seg under $HOME/.local og
 $HOME/.local/bin/ må legges til i PATH for at komandoen django-admin.py
-skal virke.
+skal virke (valgfritt).
 
     pip install django
 
@@ -121,37 +119,35 @@ Siste steg er å lage deg en bruker så du får logget inn:
 
 
 
-## Starte og bruke Django ##
+## Django ##
 
-Django inneholder en egen webserver man kan bruke for utvikling. Den er
-så «smart» at det merker når du har redigert én eller flere filer
-og laster de da automatisk inn på nytt. Så det er veldig sjelden du
-trenger å restarte Django.
+Django kommer med en innebygget webserver man kan bruke under utvikling.
+Den oppdager hvilke filer som blir redigert og laster de automatisk inn
+på nytt.
 
-Django starter du slik:
+Django's webserver starter du slik:
 
     python django/manage.py runserver
 
-(Dette innebærer at du står i katalogen `/home/torkel/normal.no/`)
+(Du må stå i katalogen som inneholder filen `manage.py`; som er
+`/home/torkel/normal.no/` i mitt tilfelle.)
 
-Så er det bare å gå til denne adresse i nettleseren din
-<http://localhost:8000/>. Administrasjons-panelet finner du på denne
-adressen <http://localhost:8000/admin>.
+Webserveren lytter på localhost:8000 så nå er det bare å åpne [den
+adressen i nettleseren](http://localhost:8000/).  
+Administrasjons-panelet finner du her: <http://localhost:8000/admin>.
 
-Hvis du ikke ønsker å røre musa, gjør disse to kommandoene høyst
-sannsynlig jobben :)
+Eventuelt prøv denne kommandoen:
 
     xdg-open http://localhost:8000/
-    xdg-open http://localhost:8000/admin
 
 
 
 ## Gjøre endringer i koden ##
 
-Sett at du skal gjøre en liten endringen i html templaten til
+Sett at du skal gjøre en liten endringen i html-malen til
 nettguiden. Da redigerer du denne filen `django/templates/nettguide.html`.
 
-For å se hvilke endringer du har gjort, bruk `git diff`:
+Når du er ferdig bruk `git diff` for å vise hvilke endringer som er gjort:
 
     git diff
 
@@ -161,13 +157,13 @@ For å se hvilke endringer du har gjort, bruk `git diff`:
     +<p>Vennligst send ditt forslag til <a href="mailto:webmaster@normal.no">
     +webmaster@normal.no</a>.</p>
 
-Linjer som starter med '-' er fjærnet og de som starter med '+' er lagt
-til.
+Linjer som starter med '-' er fjernet, og linjer som starter med '+' er
+lagt til.
 
-Man kan også bruke `git status` for å se hvilke filer som er endret.
+Du kan også bruke `git status` for å se _hvilke_ filer som er endret.
 
-Sett at jeg angrer på endringen jeg gjorde i nettguiden over. Da kan jeg
-tilbakestille filen slik:
+Hvis du angrer på endringene du har gjort i en fil, kan den
+tilbakestilles slik:
 
     git checkout django/templates/nettguide.html
 
@@ -181,35 +177,26 @@ git diff &ndash;&ndash;staged
 
 ## Hvordan sende endringer? ##
 
-Sett at du har gjort noen endringer i koden du ønsker å sende tilbake
-til NORMAL. Den enkleste måten å gjøre dette på er å sende oss det
-`git diff` viser. Dette er nemmelig en "oppskrift" (patch) for
-endringene dine.
+Du har gjort noen endringer i koden, og du ønsker å sende de til oss.
+Den enkleste måten å gjøre det på, er å kjøre kommandoen `git diff` og
+sende oss teksten den genererer. Dette er nemmelig en "oppskrift"
+(patch) for endringene dine.
 
-Først må du stille deg i root-mappen for prosjektet. Så kjører du `git
-diff` og sender output til en fil:
-
-    cd /path/to/normal.no
+    cd /home/torkel/normal.no
     git diff > min-endring.patch
 
-Så kan du sende filen `min-endring.patch` til <mailto:mikal@normal.no>
-eller <torkel@normal.no> med en kort beskrivelse.
+Så sender du filen `min-endring.patch` til <mailto:torkel@normal.no>
+eller <mikal@normal.no> med en kort beskrivelse (med mindre de er
+selvforklarende).
 
-Eller for de som har lært seg å bruke kommandolinja:
+Dette kan gjøres fra kommandolinja:
 
     git diff | mail torkel@normal.no -s 'beskriv endringen din her'
 
-Eller ennå bedre; lær deg Git:
+Eller ennå bedre; lær deg Git og be oss om skrivetilgang.
 
 * <http://rogerdudler.github.io/git-guide/>
 * <http://stackoverflow.com/questions/315911/git-for-beginners-the-definitive-practical-guide>
+* <http://git-scm.com/book>
 
 **Send en nyttig patch eller to, og vi gir deg skrivetilgang.**
-
-
-<!--
-@deb python-virtualenv
-$ virtualenv myenv –no-site-packages
-$ . myenv/bin/activate
-$ pip install django
--->
