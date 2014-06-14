@@ -13,3 +13,9 @@ normal.db
 db/
 htdocs/
 logs/*.log
+
+# Q: howto handle this? we have mix of less and css files.
+#    fix: only use LESS, or split into own directory
+#django/static/css/*.css
+django/static/css/main.css
+django/static/css/menu.css

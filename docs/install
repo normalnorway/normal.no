@@ -76,6 +76,8 @@ edit django/website/settings_local.py
   # + 'NAME': '/srv/www/dev.normal.no/db/normal.db',
 
 # Logs
+# @todo group sticky, so users in www-data can write to logs
+#       e.g., when running: ./manage.py collectstatic
 chmod g+w logs
 chgrp www-data logs
 chmod 770 logs		# <-- optional
