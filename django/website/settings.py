@@ -16,6 +16,15 @@ BASE_DIR = ROOT     # @todo ROOT -> BASE_DIR
 import website.settings_local as local
 
 
+# Only serve website on these hostnames
+ALLOWED_HOSTS = (
+    'dev.normal.no',    # <-- development site
+    'normal.no',
+    'www.normal.no',
+)
+#ALLOWED_HOSTS = ('*',)
+
+
 ##
 ## Custom settings (not used by Django)
 ##
