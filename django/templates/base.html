@@ -3,21 +3,22 @@
   <head>
     <meta charset="utf-8" />
 
+    <!--
     <title>{%block title%}Norsk organisasjon for reform av
       marihuanalovgivningen{%endblock title%}</title>
+    -->
+    <title>{%block title%}Normal{%endblock title%}{%block extratitle%}{%endblock%}</title>
 
-    <link rel="shortcut icon" href="{{STATIC_URL}}images/favicon.ico" />
+    <!-- <link rel="stylesheet" href="{{STATIC_URL}}css/reset.css" /> -->
 
     {% if debug %}
+    <script src="{{STATIC_URL}}js/less.js"></script>
     <style>
-    html {
-      border-right: 6px solid maroon;
-      border-left: 6px solid maroon;
-    }
+      html {
+	border-right: 6px solid maroon;
+	border-left: 6px solid maroon;
+      }
     </style>
-    <!--
-    <link rel="stylesheet" href="{{STATIC_URL}}css/reset.css" />
-    -->
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/main.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" />
       <!-- @todo use extrahead block in menu template instead? -->
@@ -29,42 +30,42 @@
     {% block extrahead %}
     {% endblock %}
 
-    {% if debug %}
-    <script src="{{STATIC_URL}}js/less.js"></script>
-    {% endif %}
+    <!-- @todo extrastyle? -->
   </head>
 
   <body>
 
     <div id="wrapper">
 
-    <div id="header">
-      <!--
-      <img src="{{STATIC_URL}}images/logo.png" />
+      <div id="header">
+	<!--
+	<img src="{{STATIC_URL}}images/logo.png" />
+	-->
+      </div>
+
+      <div id="menu">
+	{% include "menu.html" %}
+      </div>
+
+      <div id="content">
+	<div id="article">
+	  {% block content %}
+	  {% endblock %}
+	</div>
+      </div>
+
+      <!-- possible to override footer here.
+      @todo better with block to add stuff after/before footer?
       -->
-    </div>
+      <div id="footer">
+	{% block footer %}
+	{% if debug %}
+	<pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
+	{% endif %}
+	{% endblock %}
+      </div>
 
-    <div id="menu">
-      {% include "menu.html" %}
-    </div>
-
-    <div id="content">
-    <div id="article">
-      {% block content %}
-      {% endblock %}
-    </div>
-    </div>
-
-    <!-- possible to override footer here.
-    @todo better with block to add stuff after/before footer?
-    -->
-    <div id="footer">
-      {% block footer %}
-      <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
-      {% endblock %}
-    </div>
-  
-  </div>
+    </div>  <!-- wrapper -->
 
   </body>
 </html>
