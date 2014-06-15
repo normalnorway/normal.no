@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     #(r'^$', IndexView.as_view()),
     url(r'^$', 'core.views.index', name='index'),
 
+    url(r'^test$', 'core.views.test'),
+
     #url(r'^news-tips/$', 'core.views.news_tips'),
     url(r'^news-tips/(?P<url>.*)$', 'core.views.news_tips', name='news-tips'),
 
