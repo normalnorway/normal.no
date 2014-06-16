@@ -3,8 +3,6 @@
 # 2) Then do a: a2ensite <symlink-name>
 
 # TODO
-# Alias /robots.txt /path/to/mysite.com/static/robots.txt
-# Alias /favicon.ico /path/to/mysite.com/static/favicon.ico
 # AliasMatch ^/([^/]*\.css) /path/to/mysite.com/static/styles/$1
 
 
@@ -16,6 +14,10 @@
 
     Alias /static/	/srv/www/@@ServerName@@/htdocs/static/
     Alias /media/	/srv/www/@@ServerName@@/htdocs/media/
+
+    # @todo possible? MyAlias /favicon.ico /static/images/favicon.ico
+    Alias /favicon.ico	/srv/www/@@ServerName@@/htdocs/static/favicon.ico
+    #Alias /robots.txt	/srv/www/@@ServerName@@/htdocs/static/robots.txt
 
     CustomLog       /srv/www/@@ServerName@@/logs/access.log combined
     ErrorLog        /srv/www/@@ServerName@@/logs/error.log

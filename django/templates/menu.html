@@ -1,37 +1,21 @@
 {% load menu %}
 
-<!-- TODO Use url's to resolve url? -->
+{# @todo use url's to resolve urls #}
 
 <ul id="nav">
   <li><a href="/">Hjem</a></li>
-
-  <li><a href="/nyheter/arkiv/">Nyheter ▼</a>
-    {% news_links %}
-  </li>
-
+  <li><a href="/nyheter/arkiv/">Nyheter</a></li>
   <li><a href="/aktuelt/">Aktuelt</a></li>
-
-  <li><a href="/nettguide/">Nettguide ▼</a>
-    {% menu_links %}
-    </li>
-
-  <li><a href="/nil">Sider ▼</a>
+  <li><a href="/nettguide/">Lenker</a></li>
+  <li><a href="#">Tema ▼</a>
     <ul>
-      <li><a href="/nil">Om NORMAL</a></li>
-      <li><a href="/nil">Hva er cannabis?</a></li>
-      <li><a href="/nil">Ofte spurte spørsmål</a></li>
+      <li><a href="#">Hva er cannabis?</a></li>
+      <li><a href="#">Ofte spurte spørsmål</a></li>
     </ul>
   </li>
-
-  <li><a href="javascript:alert('todo');">Bli medlem</a></li>
-  <li><a href="/admin">Logg inn</a></li>
-  <!--
-  <li>|</li>
-  <li><a href="/nil">Aktuelt</a></li>
-  <li><a href="/nil">Artikler</a></li>
-  <li><a href="/nil">MarihuanaMarsjen</a></li>
-  <li><a href="/nil">På Høy Tid</a></li>
-  <li><a href="/nil">Tekst-arkiv</a></li>
-  -->
+  <li><a href="/om-normal/">Om Normal</a></li>
+  <li><a href="/bli-medlem">Støtt oss</a></li>
+  <li><a href="http://blogg.normal.no">Blogg</a></li>
+  <li style="float:right"><a href="/admin">Logg inn</a></li>
 </ul>
 <div style="clear:both;"></div>

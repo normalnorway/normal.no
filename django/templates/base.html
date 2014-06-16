@@ -2,63 +2,77 @@
 <html lang="no">
   <head>
     <meta charset="utf-8" />
+    <title>{%block title%}Normal{%endblock title%}{%block extratitle%}{%endblock%}</title>
 
-    <title>{%block title%}Norsk organisasjon for reform av
-      marihuanalovgivningen{%endblock title%}</title>
-
-    <link rel="shortcut icon" href="{{STATIC_URL}}images/favicon.ico" />
-
-    {% if debug %}
-    <!--
-    <link rel="stylesheet" href="{{STATIC_URL}}css/reset.css" />
-    -->
-    <link rel="stylesheet/less" href="{{STATIC_URL}}css/main.less" />
-    <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" />
-      <!-- @todo use extrahead block in menu template instead? -->
-    {% else %}
+    {% if not debug %}
     <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
     <link rel="stylesheet" href="{{STATIC_URL}}css/menu.css" />
+    {% endif %}
+
+    {% if debug %}
+    <style>
+      html { border-right: 6px solid maroon; border-left: 6px solid maroon; }
+    </style>
+    <link rel="stylesheet/less" href="{{STATIC_URL}}css/main.less" />
+    <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" />
+    <!-- @todo use extrahead block in menu template instead? -->
+    <script src="{{STATIC_URL}}js/less.js"></script>
     {% endif %}
 
     {% block extrahead %}
     {% endblock %}
 
-    {% if debug %}
-    <script src="{{STATIC_URL}}js/less.js"></script>
-    {% endif %}
+    {% block extrastyle %}
+    {% endblock %}
   </head>
 
   <body>
-
     <div id="wrapper">
 
-    <div id="header">
-      <!--
-      <img src="{{STATIC_URL}}images/logo.png" />
+      <div id="header">
+	{# <img src="{{STATIC_URL}}images/logo.png" /> #}
+      </div>
+
+      <div id="menu">
+	{% include "menu.html" %}
+      </div>
+
+
+      <!-- MAIN CONTENT -->
+      <div id="content">
+
+	{% if messages %}
+	<ul id="messages">
+	  {% for message in messages %}
+	  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	  {% endfor %}
+	</ul>
+	{% endif %}
+
+	<div id="article">
+	  {% block content %}
+	  {% endblock %}
+	</div>
+      </div>
+
+
+      <!-- @todo try html5 tags instead -->
+      <div id="aside">
+	{% block aside %}
+	{% endblock %}
+      </div>
+
+      <!-- possible to override footer here.
+      @todo better with block to add stuff after/before footer?
       -->
-    </div>
+      <div id="footer">
+	{% block footer %}
+	{% if debug %}
+	<pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
+	{% endif %}
+	{% endblock %}
+      </div>
 
-    <div id="menu">
-      {% include "menu.html" %}
-    </div>
-
-    <div id="content">
-    <div id="article">
-      {% block content %}
-      {% endblock %}
-    </div>
-    </div>
-
-    <!-- possible to override footer here.
-    @todo better with block to add stuff after/before footer?
-    -->
-    <div id="footer">
-      {% block footer %}
-      <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
-      {% endblock %}
-    </div>
-  
-  </div>
-
+    </div>  <!-- wrapper -->
   </body>
 </html>
