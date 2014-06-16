@@ -2,40 +2,31 @@
 <html lang="no">
   <head>
     <meta charset="utf-8" />
-
-    {% comment %}
-    <title>{%block title%}Norsk organisasjon for reform av
-      marihuanalovgivningen{%endblock title%}</title>
-    {% endcomment %}
-
     <title>{%block title%}Normal{%endblock title%}{%block extratitle%}{%endblock%}</title>
 
-    <!-- <link rel="stylesheet" href="{{STATIC_URL}}css/reset.css" /> -->
+    {% if not debug %}
+    <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
+    <link rel="stylesheet" href="{{STATIC_URL}}css/menu.css" />
+    {% endif %}
 
     {% if debug %}
     <style>
-      html {
-	border-right: 6px solid maroon;
-	border-left: 6px solid maroon;
-      }
+      html { border-right: 6px solid maroon; border-left: 6px solid maroon; }
     </style>
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/main.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" />
-      <!-- @todo use extrahead block in menu template instead? -->
+    <!-- @todo use extrahead block in menu template instead? -->
     <script src="{{STATIC_URL}}js/less.js"></script>
-    {% else %}
-    <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
-    <link rel="stylesheet" href="{{STATIC_URL}}css/menu.css" />
     {% endif %}
 
     {% block extrahead %}
     {% endblock %}
 
-    <!-- @todo extrastyle? -->
+    {% block extrastyle %}
+    {% endblock %}
   </head>
 
   <body>
-
     <div id="wrapper">
 
       <div id="header">
@@ -46,11 +37,29 @@
 	{% include "menu.html" %}
       </div>
 
+
+      <!-- MAIN CONTENT -->
       <div id="content">
+
+	{% if messages %}
+	<ul id="messages">
+	  {% for message in messages %}
+	  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	  {% endfor %}
+	</ul>
+	{% endif %}
+
 	<div id="article">
 	  {% block content %}
 	  {% endblock %}
 	</div>
+      </div>
+
+
+      <!-- @todo try html5 tags instead -->
+      <div id="aside">
+	{% block aside %}
+	{% endblock %}
       </div>
 
       <!-- possible to override footer here.
@@ -65,6 +74,5 @@
       </div>
 
     </div>  <!-- wrapper -->
-
   </body>
 </html>
