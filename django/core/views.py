@@ -3,13 +3,19 @@
 #from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from core.shortcuts import render_to, get_http_status
+from apps.content.models import Content
 from apps.news.forms import NewsTips1, NewsTips2
 from apps.news.models import Article
-
 
 @render_to ('test.html')
 def test (request):
     return dict (name='Torkel')
+
+
+@render_to ('index.html')
+def index (request):
+    content = Content.objects.get (name='forside')
+    return (dict(content=content.content))
 
 
 def news_tips (request, url):
@@ -24,12 +30,6 @@ def news_tips (request, url):
     else:
         form = NewsTips2()
     return render (request, 'news/tips.html', dict(form=form, url=url))
-    '''
-    return render (request, 'news/tips.html', {
-        'form': form,
-        'url':  url,
-    })
-    '''
 
 
 
@@ -37,7 +37,7 @@ def news_tips (request, url):
 # Note: Will redirect if url is accepted.
 #@render_to ('news:index.html')
 @render_to ('index.html')
-def index (request):
+def _index (request):
     if not request.method == 'POST':
         return dict(form=NewsTips1())
 
