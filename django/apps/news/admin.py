@@ -54,7 +54,10 @@ class ArticleAdmin (admin.ModelAdmin):
     # @todo urlparse instead of regex
     _re_domain = re.compile (r'^(http://)?(www\.)?([^/]+)', re.I)
     def domain (self, obj):
-        domain = self._re_domain.match (obj.url).group(2)
+        #domain = self._re_domain.match (obj.url).group(2)
+	match = self._re_domain.match (obj.url)
+	if not match: return ''
+        domain = match.group(3)
         return '<a href="%s" title="%s" target="_blank">%s</a>' % (obj.url, obj.url, domain)
     domain.allow_tags = True
     domain.short_description = 'URL'

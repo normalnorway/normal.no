@@ -5,6 +5,7 @@ import datetime
 from django.shortcuts import redirect
 from django.contrib import messages
 from core.shortcuts import render_to
+from apps.content.models import Content
 from .forms import MemberForm
 
 from website.settings import BASE_DIR
@@ -20,8 +21,13 @@ en giro per e-post eller brev.
 
 @render_to ('support:index.html')
 def index (request):
+    # sql in operator does not preserve order
+    #top, bottom = Content.objects.filter (name__in=['innmelding-top', 'innmelding-bunn'])
+    top     = Content.objects.get (name='innmelding-top')
+    bottom  = Content.objects.get (name='innmelding-bunn')
+
     if not request.method == 'POST':
-        return dict (form=MemberForm(label_suffix=''))
+        return dict (form=MemberForm(label_suffix=''), top=top.content, bottom=bottom.content)
     form = MemberForm (request.POST, label_suffix='')
     if form.is_valid():
         data = form.cleaned_data
@@ -33,4 +39,4 @@ def index (request):
         member_fp.flush()
         messages.success (request, WELCOME_MSG)
 #        form = MemberForm(label_suffix='')
-    return dict (form=form)
+    return dict (form=form, top=top.content, bottom=bottom.content)

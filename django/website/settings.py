@@ -6,7 +6,7 @@ from django.conf import global_settings as defaults
 import os.path
 tmp = os.path.dirname (os.path.abspath (__file__))
 tmp = os.path.join (tmp, '..', '..')
-ROOT = os.path.realpath (tmp)
+ROOT = os.path.normpath (tmp)
 #J = lambda filename: os.path.join(ROOT, filename) # todo handle *args
 BASE_DIR = ROOT     # @todo ROOT -> BASE_DIR
 # @todo BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -165,6 +165,7 @@ INSTALLED_APPS = (
     'core',
     'apps.news',
     'apps.links',
+    'apps.content',
 )
 
 

@@ -2,7 +2,6 @@
 
 {% block extratitle %} : støtt oss{% endblock %}
 
-
 {% block extrahead %}
 {{ form.media }}
 <style>
@@ -19,14 +18,8 @@
 
 
 {% block content %}
-<!--
-<div id="xheader">
-  <h1 class="title">Bli medlem</h1>
-</div>
--->
-<h2>Bli medlem</h2>
 
-<p>Medlemskap koster kr 100,-</p>
+{{ top|safe|linebreaks }}
 
 {% if form.errors %}
 <p class='error'>Vennligst rett feilen(e) under!</p>
@@ -37,30 +30,7 @@
   <input type="submit" value="Send" />
 </form>
 
-<br><br><br>
-
-
-<!--
-<div id="xheader">
-  <h1 class="title">Donér</h1>
-</div>
--->
-
-<h2>Donér</h2>
-@todo gofundme, paypal, konto, etc
-
-
-<h2>Støtt</h2>
-
-@todo bla, bla, bla, hva kan du gjøre
-
-
-<h2>Vi trenger</h2>
-
-<ul>
-  <li>penger</li>
-  <li>mektigere venner</li>
-  <li>modige og trygge politikere</li>
-</ul>
+<br>
+{{ bottom|safe|linebreaks }}
 
 {% endblock %}
