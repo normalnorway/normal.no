@@ -55,6 +55,7 @@ class ArticleAdmin (admin.ModelAdmin):
     _re_domain = re.compile (r'^(http://)?(www\.)?([^/]+)', re.I)
     def domain (self, obj):
         #domain = self._re_domain.match (obj.url).group(2)
+        if not obj.url: return ''  # url can be NULL
 	match = self._re_domain.match (obj.url)
 	if not match: return ''
         domain = match.group(3)
