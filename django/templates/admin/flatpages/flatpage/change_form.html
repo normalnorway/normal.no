@@ -1,13 +1,16 @@
 {% extends "admin/change_form.html" %}
 
 <!--
-Not needed.
+Needed to get tinymce editor
 <script src="{{STATIC_URL}}/js/editor.js" defer></script>
 <link rel="stylesheet" href="{{STATIC_URL}}css/editor.css" />
+@todo defer?
 -->
 
 {% block extrahead %}
 {{ block.super }}
+<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+<script src="{{STATIC_URL}}/js/tinymce-init.js"></script>
 {% endblock %}
 
 {% block extrastyle %}
