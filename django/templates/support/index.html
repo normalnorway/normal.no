@@ -19,7 +19,7 @@
 
 {% block content %}
 
-{{ top|safe|linebreaks }}
+{{ innmelding_top|safe|linebreaks }}
 
 {% if form.errors %}
 <p class='error'>Vennligst rett feilen(e) under!</p>
@@ -31,6 +31,6 @@
 </form>
 
 <br>
-{{ bottom|safe|linebreaks }}
+{{ innmelding_bunn|safe|linebreaks }}
 
 {% endblock %}
