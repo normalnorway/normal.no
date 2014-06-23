@@ -14,6 +14,5 @@ class Image (models.Model):
         return self.name
 
 
-# Used by Dojo.editor
-class EditorImage (models.Model):
-    file = models.ImageField (upload_to = 'editor')
+#class EditorImage (models.Model):
+#    file = models.ImageField (upload_to = 'editor')

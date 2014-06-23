@@ -1,12 +1,15 @@
 {% extends "admin/change_form.html" %}
 
+<!--
+Not needed.
+<script src="{{STATIC_URL}}/js/editor.js" defer></script>
+<link rel="stylesheet" href="{{STATIC_URL}}css/editor.css" />
+-->
+
 {% block extrahead %}
 {{ block.super }}
-<script data-dojo-config="async:1" src="//yandex.st/dojo/1.7.2/dojo/dojo.js" defer></script>
-<script src="{{STATIC_URL}}/js/editor.js" defer></script>
 {% endblock %}
 
 {% block extrastyle %}
 {{ block.super }}
-<link rel="stylesheet" href="{{STATIC_URL}}css/editor.css" />
 {% endblock %}
