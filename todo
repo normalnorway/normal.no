@@ -1,8 +1,8 @@
-add logs/ to git?
-
 strip all fields (e.g., news_article.body)
 
 git: only allow fast-forward updates?
 
 add requirements.txt
   pip freeze > requirements.txt
+
+mv django/tools tools ?
