@@ -4,13 +4,8 @@ from django import forms
 
 
 class MemberForm (forms.Form):
-    error_css_class = 'xerror'
+    error_css_class = 'xerror'  # formerror, validation_error
     required_css_class = 'required'
-
-#    def __init__ (self, *args, **kwargs):
-#        super (MemberForm,self).__init__ (*args, **kwargs)
-#        self.label_suffix = ''
-#        self.initial = dict (name='Frode', phone='12345678')
 
     name =      forms.CharField (label=u'Navn', max_length=64)
     born =      forms.DateField (label=u'Fødselsdato',
@@ -30,6 +25,13 @@ class MemberForm (forms.Form):
         born = self.cleaned_data['born']
         if 18 > (((datetime.date.today() - born).days + 1) / 365):
             raise forms.ValidationError (u'Du må være fyllt 18 år for å melde deg inn!')
+
+    # self.email.lower().strip()
+
+#    def __init__ (self, *args, **kwargs):
+#        super (MemberForm,self).__init__ (*args, **kwargs)
+#        self.label_suffix = ''
+#        self.initial = dict (name='Frode', phone='12345678')
 
 #    def clean (self):
 #        cleaned_data = super (MemberForm, self).clean()

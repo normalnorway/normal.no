@@ -1,16 +1,29 @@
 from django.db import models
 import datetime
 
+# Specifying default=None could be helpful as well.
+# => empty form field saved as NULL in db?
+
+# @todo datetime.datetime.now(): need callable instead
+# @todo show pubdate as read-only field
+
 # @todo utenriks-field (or use tags for that. or domain)
 # @todo owner-field
+# @todo kronikk-field?
+# @todo bool published?
+# @note django adds slash to URLField. But existing data does not.
+# @todo filter body for extra <p>'s at the end
 class Article (models.Model):
     ''' Link to external news article, with an optional own comment '''
     pubdate = models.DateField (editable=False, auto_now_add=True, verbose_name='Date published')
     date = models.DateField (default=datetime.datetime.now(), help_text='Date of news article (url), not the day we posted it.')
-    url = models.URLField ('Link', unique=True)
+    url = models.URLField ('Link', unique=True) # @note some old news links have url=''
+        # @note underlaying db coloumn allows NULL since old articles
+        #       might contain a blank url
     title = models.CharField (max_length=128)
     summary = models.TextField (help_text=u'Just copy the "ingress" into this field.')
     body = models.TextField (blank=True, null=True, help_text='Our comment to this news story')
+    # Q: why null=True on body?
 
     def __unicode__ (self): return self.title
 
@@ -20,6 +33,13 @@ class Article (models.Model):
 #    def clean (self):
 #        self.title = self.title.strip()
 #        self.body = self.body.replace('\r', '') # ok
+
+    # Convert '' to sql NULL. Blank fields in forms are passed as '',
+    # even for blank=True,null=True fields.
+#    def save (self, *args, *kwargs):
+#        if self.url == '':
+#            self.url = None
+#        super(Article, self).save (*args, **kwargs)
 
     @models.permalink
     def get_absolute_url (self):

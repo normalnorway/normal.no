@@ -3,7 +3,7 @@
 #from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from core.shortcuts import render_to, get_http_status
-from apps.content.models import Content
+from apps.content.models import get_content_dict
 from apps.news.forms import NewsTips1, NewsTips2
 from apps.news.models import Article
 
@@ -14,8 +14,7 @@ def test (request):
 
 @render_to ('index.html')
 def index (request):
-    content = Content.objects.get (name='forside')
-    return (dict(content=content.content))
+    return get_content_dict ('forside')
 
 
 def news_tips (request, url):
