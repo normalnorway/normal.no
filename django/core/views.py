@@ -17,6 +17,11 @@ def index (request):
     return get_content_dict ('forside')
 
 
+@render_to ('newsletter.html')
+def newsletter (request):
+    return {}
+
+
 def news_tips (request, url):
     if request.method == 'POST':
         form = NewsTips2 (request.POST)

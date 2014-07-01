@@ -6,6 +6,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'core.views.index', name='index'),
 
+    url(r'^nyhetsbrev/$', 'core.views.newsletter', name='newsletter'),
+
     url(r'^test/$', 'core.views.test'),
 
     url(r'^bli-medlem/$', 'apps.support.views.index'),   # enroll
