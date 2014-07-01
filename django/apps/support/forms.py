@@ -3,6 +3,23 @@
 from django import forms
 
 
+CHOICES = (
+    ('1', u'Nedkriminalisere cannabis (Portugal-modellen)'),
+    ('2', u'Avkriminalisere cannabis for de over 18 år'),
+    ('3', u'Avkriminalisere cannabis for de over 20 år'),
+    ('4', u'Regulere cannabis. Staten tar seg av produksjon og distribusjon'),
+)
+
+
+class PetitionForm (forms.Form):
+    choice =    forms.ChoiceField (label=u'Jeg ønsker å', required=True,
+                                   widget=forms.RadioSelect, choices=CHOICES)
+    name =      forms.CharField (label=u'Navn', max_length=64, required=True)
+    city =      forms.CharField (label=u'Sted', max_length=64, required=True)
+    public =    forms.BooleanField (label=u'Vis mitt navn')
+
+
+
 class MemberForm (forms.Form):
     error_css_class = 'xerror'  # formerror, validation_error
     required_css_class = 'required'

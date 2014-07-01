@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block extratitle %} : Opprop{% endblock %}
+
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Opprop!</h2>
+
+
+{% if form.errors %}
+<p class='error'>Vennligst rett feilen(e) under!</p>
+{% endif %}
+
+<form method='post'>{% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Skriv deg på" />
+</form>
+
+{% endblock %}

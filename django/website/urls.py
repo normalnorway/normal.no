@@ -10,7 +10,9 @@ urlpatterns = patterns('',
 
     url(r'^test/$', 'core.views.test'),
 
-    url(r'^bli-medlem/$', 'apps.support.views.index'),   # enroll
+    url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
+    url(r'^bli-medlem/$',   'apps.support.views.index',     name='enroll'),
+
     url(r'^news-tips/(?P<url>.*)$', 'core.views.news_tips', name='news-tips'),
 
     # Sections
