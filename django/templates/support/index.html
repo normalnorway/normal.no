@@ -19,7 +19,7 @@
 
 {% block content %}
 
-{{ innmelding_top|safe|linebreaks }}
+{{ innmelding_top|safe }}
 
 {% if form.errors %}
 <p class='error'>Vennligst rett feilen(e) under!</p>
@@ -27,10 +27,10 @@
 
 <form method='post'>{% csrf_token %}
   {{ form.as_p }}
-  <input type="submit" value="Send" />
+  <input type="submit" value="Bli medlem" />
 </form>
 
 <br>
-{{ innmelding_bunn|safe|linebreaks }}
+{{ innmelding_bunn|safe }}
 
 {% endblock %}

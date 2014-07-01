@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # @todo get_http_page, returns tuple (status/headers, content)
 
-# @todo rename get_http_status
+# @todo rename get_http_status (move to core.http?)
 # @todo what about fragments? normal.no/#doner
 # http://docs.python-requests.org/en/latest/
 import httplib
@@ -29,8 +29,6 @@ def render_to (template):
     Additionally view can return two-tuple, which must contain dict as first
     element and string with template name as second. This string will
     override template name, given as parameter.
-
-    @todo 'app:template.html'
 
     Parameters:
      - template: Template to use. It can be prefixed with app-name,

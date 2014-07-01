@@ -12,12 +12,17 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from core.shortcuts import render_to
 from apps.content.models import get_content_dict
-from .forms import MemberForm
+from .forms import MemberForm, PetitionForm
 
 from website.settings import BASE_DIR
 member_fp = open (os.path.join (BASE_DIR, 'db', 'newmembers'), 'a+')
 
 #welcome_msg = get_content ('innmelding-ferdig') # @todo must be short!
+
+
+@render_to ('support:petition.html')
+def petition (request):
+    return dict (form=PetitionForm())
 
 
 @render_to ('support:index.html')
