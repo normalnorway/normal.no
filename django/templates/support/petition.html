@@ -6,19 +6,89 @@
 {{ form.media }}
 {% endblock %}
 
+{% block extrastyle %}
+<style>
+form ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+table {
+  border-collapse: collapse;
+}
+table thead {
+  border-bottom: 1px solid black;
+  text-align: left;
+}
+table td {
+  padding-right: 3em;
+}
+</style>
+{% endblock %}
+
+
+{% block top %}
+<h1>Opprop!</h1>
+{% endblock %}
+
 
 {% block content %}
 
-<h2>Opprop!</h2>
-
-
-{% if form.errors %}
-<p class='error'>Vennligst rett feilen(e) under!</p>
-{% endif %}
-
 <form method='post'>{% csrf_token %}
-  {{ form.as_p }}
+
+  {% if form.errors %}
+  <p class='error'>Vennligst rett feilen(e) under!</p>
+  {% endif %}
+
+
+  {% if form.name.errors or form.city.errors %}
+  <ul class="errorlist"><li>Du må oppgi både fullt navn og by/bosted.</li></ul>
+  {% endif %}
+  <p class="required">
+    {{ form.name.label_tag }} {{ form.name }} &nbsp; &nbsp;
+    {{ form.city.label_tag }} {{ form.city }}
+  </p>
+
+  <!--
+  <p class="required {% if form.choice.errors %}validation-error{% endif %}">
+  Note: Can not do this bellow, since two fields inside same p-element
+  {{ form.choice.errors }}
+  -->
+  {% if form.choice.errors %}
+  <ul class="errorlist"><li>Velg hvilken modell du ønsker under.</li></ul>
+  {% endif %}
+  <p class="required">
+    Jeg ønsker følgende modell: {{ form.choice }}
+  </p>
+
+  <p>{{ form.public }} {{ form.public.label_tag }}</p>
+
   <input type="submit" value="Skriv deg på" />
 </form>
+
+
+<br>
+<h2>Underskrifter</h2>
+
+<p><strong>Antall underskrifter: {{ count }}</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Navn</th>
+      <th>By</th>
+      <th>Modell</th>
+    </tr>
+  </thead>
+  {% for item in objects %}
+  <tr>
+    <td>{{ item.name }}</td>
+    <td>{{ item.city }}</td>
+    <td>{{ item.get_choice_display }}</td>
+  </tr>
+</table>
+
+<br>
+{% endfor %}
 
 {% endblock %}

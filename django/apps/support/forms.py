@@ -1,20 +1,30 @@
 # -*- encoding: utf-8 -*-
 
 from django import forms
+from .models import Petition
 
 
-CHOICES = (
-    ('1', u'Nedkriminalisere cannabis (Portugal-modellen)'),
-    ('2', u'Avkriminalisere cannabis for de over 18 år'),
-    ('3', u'Avkriminalisere cannabis for de over 20 år'),
-    ('4', u'Regulere cannabis. Staten tar seg av produksjon og distribusjon'),
-)
+class PetitionForm (forms.ModelForm):
+    choice = forms.ChoiceField (label=u'Jeg ønsker å', required=True,
+                                widget=forms.RadioSelect, choices=Petition.CHOICES)
+    class Meta:
+        model = Petition
+        fields = 'choice', 'name', 'city', 'public'
+
+        #widgets = dict (choice=forms.RadioSelect)  # got extra "----" choice
+        # xxx do not work when we override, like 'choice' above / only work when using fields from the model
+        #labels = { 'choice': u'Modell. Jeg ønsker å', }
+        #error_messages = {
+        #    'choice': { 'required': 'Hello world', },
+        #}
 
 
+
+# @todo move into MemberForm
 MEMBER_CHOICES = (
     ('1', u'JA! Jeg ønsker å bli medlem og betale kr 100,- pr år'),
     ('2', u'JA! Jeg ønsker å bli oppført som støttemedlem uten kostnad'),
-    ('3', u'JA! Jeg ønsker å donere følgende beløp til Normals arbeid: _____'),
+    #('3', u'JA! Jeg ønsker å donere følgende beløp til Normals arbeid: _____'),
 )
 
 EXTRA_CHOICES = (
@@ -26,18 +36,9 @@ EXTRA_CHOICES = (
 )
 
 
-
-class PetitionForm (forms.Form):
-    choice =    forms.ChoiceField (label=u'Jeg ønsker å', required=True,
-                                   widget=forms.RadioSelect, choices=CHOICES)
-    name =      forms.CharField (label=u'Navn', max_length=64, required=True)
-    city =      forms.CharField (label=u'Sted', max_length=64, required=True)
-    public =    forms.BooleanField (label=u'Vis mitt navn')
-
-
-
 class MemberForm (forms.Form):
-    error_css_class = 'xerror'  # formerror, validation_error
+    # @todo set for forms.Form class?
+    error_css_class = 'validation-error'
     required_css_class = 'required'
 
     choice =    forms.ChoiceField (label='Type medlemskap', required=True,

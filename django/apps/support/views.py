@@ -13,16 +13,29 @@ from django.contrib import messages
 from core.shortcuts import render_to
 from apps.content.models import get_content_dict
 from .forms import MemberForm, PetitionForm
+from .models import Petition
 
 from website.settings import BASE_DIR
 member_fp = open (os.path.join (BASE_DIR, 'db', 'newmembers'), 'a+')
 
-#welcome_msg = get_content ('innmelding-ferdig') # @todo must be short!
 
 
 @render_to ('support:petition.html')
 def petition (request):
-    return dict (form=PetitionForm())
+    L = Petition.objects.all()
+    ctx = {
+        'count':    L.count(),
+        'objects':  L.filter (public=True)[0:50],
+        'form':     PetitionForm(),
+    }
+    if not request.method == 'POST': return ctx
+    form = PetitionForm (request.POST)
+    if form.is_valid():
+        obj = form.save()
+        messages.success (request, u'Takk for at du skrev deg på oppropet! Få gjerne en bekjent til å gjøre det også.')
+    else: ctx['form'] = form
+    return ctx
+
 
 
 @render_to ('support:index.html')
