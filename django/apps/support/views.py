@@ -55,4 +55,5 @@ def index (request):
         member_fp.write ('\n')
         member_fp.flush()
         messages.success (request, WELCOME_MSG)
+        ctx['form'] = MemberForm()  # clear form
     return ctx

@@ -64,6 +64,7 @@ class MemberForm (forms.Form):
         born = self.cleaned_data['born']
         if 18 > (((datetime.date.today() - born).days + 1) / 365):
             raise forms.ValidationError (u'Du må være fyllt 18 år for å melde deg inn!')
+        return born
 
     # self.email.lower().strip()
 
