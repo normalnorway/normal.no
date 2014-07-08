@@ -58,7 +58,6 @@
       </div>
 
       <footer>{% include "footer.html" %}</footer>
-      <div style="clear:both"></div>
 
       {% if debug %}
       <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
