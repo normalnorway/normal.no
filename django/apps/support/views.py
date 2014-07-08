@@ -11,21 +11,35 @@ import datetime
 from django.shortcuts import redirect
 from django.contrib import messages
 from core.shortcuts import render_to
-from apps.content.models import get_content_dict
+from apps.content.models import get_content, get_content_dict
 from .forms import MemberForm, PetitionForm
+from .models import Petition
 
 from website.settings import BASE_DIR
 member_fp = open (os.path.join (BASE_DIR, 'db', 'newmembers'), 'a+')
 
-#welcome_msg = get_content ('innmelding-ferdig') # @todo must be short!
 
 
 @render_to ('support:petition.html')
 def petition (request):
-    return dict (form=PetitionForm())
+    L = Petition.objects.all()
+    ctx = {
+        'count':    L.count(),
+        'objects':  L.filter (public=True)[0:50],
+        'form':     PetitionForm(),
+        'toptext':  get_content ('opprop-top')
+    }
+    if not request.method == 'POST': return ctx
+    form = PetitionForm (request.POST)
+    if form.is_valid():
+        obj = form.save()
+        messages.success (request, u'Takk for at du skrev deg på oppropet! Få gjerne en bekjent til å gjøre det også.')
+    else: ctx['form'] = form
+    return ctx
 
 
-@render_to ('support:index.html')
+
+@render_to ('support:enroll.html')
 def index (request):
     ctx = get_content_dict ('innmelding-top', 'innmelding-bunn')
     if not request.method == 'POST':
@@ -41,4 +55,5 @@ def index (request):
         member_fp.write ('\n')
         member_fp.flush()
         messages.success (request, WELCOME_MSG)
+        ctx['form'] = MemberForm()  # clear form
     return ctx

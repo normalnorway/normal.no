@@ -1,18 +1,30 @@
 {% extends "base.html" %}
 
-{% block extratitle %} : støtt oss{% endblock %}
+{% block extratitle %} » Bli medlem{% endblock %}
 
 {% block extrahead %}
 {{ form.media }}
 <style>
-  form label {
-    display: inline-block;
-    min-width: 140px;
-  }
-  form p.required:after {
-    content: ' *';
-    font-size: small;
-  }
+textarea#id_comment {
+  vertical-align:text-top;
+}
+form .helptext {
+  margin-left: 150px;
+  font-size: smaller;
+}
+form ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+form label {
+  display: inline-block;
+  min-width: 140px;
+}
+form p.required:after {
+  content: ' *';
+  font-size: small;
+}
 </style>
 {% endblock %}
 

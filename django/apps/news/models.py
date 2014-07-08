@@ -17,7 +17,7 @@ class Article (models.Model):
     ''' Link to external news article, with an optional own comment '''
     pubdate = models.DateField (editable=False, auto_now_add=True, verbose_name='Date published')
     date = models.DateField (default=datetime.datetime.now(), help_text='Date of news article (url), not the day we posted it.')
-    url = models.URLField ('Link', unique=True) # @note some old news links have url=''
+    url = models.URLField ('Link', unique=True, null=True) # @note some old news links have url=''
         # @note underlaying db coloumn allows NULL since old articles
         #       might contain a blank url
     title = models.CharField (max_length=128)

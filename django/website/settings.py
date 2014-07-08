@@ -166,6 +166,7 @@ INSTALLED_APPS = (
     'apps.news',
     'apps.links',
     'apps.content',
+    'apps.support',
 )
 
 

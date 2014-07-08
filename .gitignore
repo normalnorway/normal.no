@@ -19,3 +19,5 @@ logs/*.log
 #django/static/css/*.css
 django/static/css/main.css
 django/static/css/menu.css
+django/static/css/style.css
+django/static/css/form.css

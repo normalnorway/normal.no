@@ -1,26 +1,36 @@
 {% extends "base.html" %}
+{# @todo move to links/index.html #}
+
+{% block extratitle %} » Nettguide{% endblock %}
+
+{% block extrastyle %}
+<style>
+#foobar {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: smaller;
+}
+#foobar li {
+  display: inline;
+}
+#foobar li:after {
+  content: " | ";
+}
+</style>
+{% endblock %}
 
 {% block content %}
 
+<h1 class="title">Nettguide</h1>
 
-<div id="xheader">
-  <h1 class="title">Nettguide</h1>
-</div>
-
-<p>Send ditt forslag her: TODO</p>
-
-
-<h2>Kategorier</h2>
-
-<ul>
-{% for cat in categories %}
+<ul id="foobar">
+  <strong>Seksjoner:</strong>
+  {% for cat in categories %}
   <li><a href="#{{cat.name|slugify}}">{{cat.name}}</a></li>
-{% endfor %}
+  {% endfor %}
 </ul>
 
-<br><hr><br>
-
-<h2>Lenker</h2>
 
 {% for cat in categories %}
 <h3 id="{{cat.name|slugify}}">{{cat.name}}</h3>

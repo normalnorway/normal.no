@@ -5,8 +5,9 @@ http://docs.fabfile.org/en/
 Note: Production server is on own branch.
 """
 
-from fabric.api import local, run, cd, env
-from fabric.contrib.console import confirm
+import os
+from fabric.api import env, local, cd, run, get, put
+#from fabric.contrib.console import confirm
 
 env.hosts = ['srv1']
 BASE_DIR = '/srv/www/dev.normal.no/'
@@ -34,11 +35,32 @@ def bugfix():
 
 
 
+## Database push/pull
+# @todo check if changed?
+
+def pushdb():
+    '''Copy/push db/normal.db to the server'''
+    with cd (BASE_DIR):
+        # Note: using cp instead of mv to preserve permissions
+        run ('cp db/normal.db db/normal.db-$(date +%m%d%H%M)')
+        put ('db/normal.db', 'db/normal.db')
+
+
+def pulldb():
+    '''Copy/pull db/normal.db from the server'''
+    local ('mv db/normal.db db/normal.db-$(date +%m%d%H%M)')
+    get (os.path.join (BASE_DIR,'db','normal.db'), 'db/normal.db')
+
+
+
 ## Base git commands
 def push():
     local ('git push')
 
+
 # @todo msg as arg
+# fab ci my commit message
+# fab cip <message> # commit + push
 #def commit():
 #    local ('git commit')
 #def commiti():

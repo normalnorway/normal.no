@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
     <link rel="stylesheet" href="{{STATIC_URL}}css/menu.css" />
     <link rel="stylesheet" href="{{STATIC_URL}}css/style.css" />
+    <link rel="stylesheet" href="{{STATIC_URL}}css/forms.css" />
     {% endif %}
 
     {% if debug %}
@@ -15,9 +16,9 @@
       html { border-right: 6px solid maroon; border-left: 6px solid maroon; }
     </style>
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/main.less" />
-    <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" />
+    <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" /> <!-- @todo use extrahead block in menu template instead? -->
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/style.less" />
-    <!-- @todo use extrahead block in menu template instead? -->
+    <link rel="stylesheet/less" href="{{STATIC_URL}}css/forms.less" />
     <script src="{{STATIC_URL}}js/less.js"></script>
     {% endif %}
 
@@ -32,10 +33,15 @@
 
       <header>
 	<div id="menu">{% include "menu.html" %}</div>
+	{% block header %} <!-- not in use -->
+	{% endblock %}
       </header>
 
       <!-- MAIN CONTENT -->
       <div id="content">
+
+	{% block top %}
+	{% endblock %}
 
 	{% if messages %}
 	<ul id="messages">
@@ -52,7 +58,6 @@
       </div>
 
       <footer>{% include "footer.html" %}</footer>
-      <div style="clear:both"></div>
 
       {% if debug %}
       <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>

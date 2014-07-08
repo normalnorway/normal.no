@@ -5,6 +5,8 @@ tinymce.init ({
     width: 800,
     height: 450,
     resize: 'both',
+
+    entity_encoding : "raw",
     custom_undo_redo_levels: 8,
 
     menubar: 'edit insert format table',
