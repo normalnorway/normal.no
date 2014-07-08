@@ -44,5 +44,13 @@ class LinkAdmin (admin.ModelAdmin):
     url_.regex = re.compile (r'^http://([^/]+)(/?)', re.I)
 
 
+
+class CategoryAdmin (admin.ModelAdmin):
+    list_display = 'name',
+#    list_display = 'pk', 'name',
+#    list_editable = 'name',
+
+
 admin.site.register (Link, LinkAdmin)
-admin.site.register (Category)
+admin.site.register (Category, CategoryAdmin)
+#admin.site.register (Category)
