@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block extratitle %} : Opprop{% endblock %}
+{% block extratitle %} » Opprop{% endblock %}
 
 {% block extrahead %}
 {{ form.media }}
@@ -8,6 +8,7 @@
 
 {% block extrastyle %}
 <style>
+form { margin-top: 1.5em; }
 form ul {
   list-style: none;
   margin: 0;
@@ -34,6 +35,8 @@ table td {
 
 {% block content %}
 
+{{ toptext|safe }}
+
 <form method='post'>{% csrf_token %}
 
   {% if form.errors %}
@@ -57,21 +60,20 @@ table td {
   {% if form.choice.errors %}
   <ul class="errorlist"><li>Velg hvilken modell du ønsker under.</li></ul>
   {% endif %}
-  <p class="required">
-    Jeg ønsker følgende modell: {{ form.choice }}
-  </p>
+
+  <p class="required">Modell. Jeg ønsker å:</p> {{ form.choice }}
 
   <p>{{ form.public }} {{ form.public.label_tag }}</p>
 
-  <input type="submit" value="Skriv deg på" />
+  <input type="submit" value="Signer oppropet" />
 </form>
 
 
-<br>
-<h2>Underskrifter</h2>
+<h3 style="padding-top:1em">Underskrifter</h3>
 
-<p><strong>Antall underskrifter: {{ count }}</strong></p>
+<p style="font-weight:bold">Antall underskrifter: {{ count }}</p>
 
+{% if objects %}
 <table>
   <thead>
     <tr>
@@ -86,9 +88,8 @@ table td {
     <td>{{ item.city }}</td>
     <td>{{ item.get_choice_display }}</td>
   </tr>
+  {% endfor %}
 </table>
-
-<br>
-{% endfor %}
+{% endif %}
 
 {% endblock %}

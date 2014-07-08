@@ -11,7 +11,7 @@ import datetime
 from django.shortcuts import redirect
 from django.contrib import messages
 from core.shortcuts import render_to
-from apps.content.models import get_content_dict
+from apps.content.models import get_content, get_content_dict
 from .forms import MemberForm, PetitionForm
 from .models import Petition
 
@@ -27,6 +27,7 @@ def petition (request):
         'count':    L.count(),
         'objects':  L.filter (public=True)[0:50],
         'form':     PetitionForm(),
+        'toptext':  get_content ('opprop-top')
     }
     if not request.method == 'POST': return ctx
     form = PetitionForm (request.POST)
@@ -38,7 +39,7 @@ def petition (request):
 
 
 
-@render_to ('support:index.html')
+@render_to ('support:enroll.html')
 def index (request):
     ctx = get_content_dict ('innmelding-top', 'innmelding-bunn')
     if not request.method == 'POST':

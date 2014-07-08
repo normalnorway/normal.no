@@ -20,31 +20,28 @@ class PetitionForm (forms.ModelForm):
 
 
 
-# @todo move into MemberForm
-MEMBER_CHOICES = (
-    ('1', u'JA! Jeg ønsker å bli medlem og betale kr 100,- pr år'),
-    ('2', u'JA! Jeg ønsker å bli oppført som støttemedlem uten kostnad'),
-    #('3', u'JA! Jeg ønsker å donere følgende beløp til Normals arbeid: _____'),
-)
-
-EXTRA_CHOICES = (
-    ('1', u'Jeg ønsker å være et aktivt medlem'),
-    ('2', u'Jeg kan være kontaktperson for området jeg bor i'),
-    ('3', u'Send meg informasjonsmateriell'),
-    ('4', u'Jeg kan hjelpe til med å skrive'),
-    ('5', u'Jeg kan hjelpe til med IT'),
-)
-
 
 class MemberForm (forms.Form):
     # @todo set for forms.Form class?
     error_css_class = 'validation-error'
     required_css_class = 'required'
 
-    choice =    forms.ChoiceField (label='Type medlemskap', required=True,
-                                   widget=forms.RadioSelect,
-                                   choices=MEMBER_CHOICES)
+    MEMBER_TYPE = (
+        ('1', u'JA! Jeg ønsker å bli medlem og betale kr 100,- pr år.'),
+        ('2', u'JA! Jeg ønsker å bli oppført som støttemedlem uten kostnad.'),
+        #('3', u'JA! Jeg ønsker å donere følgende beløp til Normals arbeid: _____'),
+    )
 
+    EXTRA_CHOICES = (
+        ('1', u'Jeg ønsker å være et aktivt medlem.'),
+        ('2', u'Jeg kan være kontaktperson for området jeg bor i.'),
+        ('3', u'Send meg informasjonsmateriell.'),
+        ('4', u'Jeg kan hjelpe til med å skrive.'),
+        ('5', u'Jeg kan hjelpe til med IT.'),
+    )
+
+    choice =    forms.ChoiceField (label='Type medlemskap', choices=MEMBER_TYPE,
+                                   widget=forms.RadioSelect)
     name =      forms.CharField (label=u'Navn', max_length=64)
     born =      forms.DateField (label=u'Fødselsdato',
                     input_formats = ('%d.%m.%y', '%d/%m/%y', '%d%m%y'),
@@ -55,7 +52,7 @@ class MemberForm (forms.Form):
     city =      forms.CharField (label=u'Sted', max_length=64)
     phone =     forms.CharField (label=u'Telefon', max_length=15, required=False)
     email =     forms.EmailField (label=u'E-post', required=False)
-    comment =   forms.CharField (label=u'Kommentar', required=False,
+    comment =   forms.CharField (label=u'Kommentar', required=False, help_text=u'Send heller spørsmål til <a href="mailto:post@normal.no">post@normal.no</a> enn å skrive de over.',
                     widget=forms.Textarea (attrs=dict(rows=8, cols=70)))
     extra =     forms.MultipleChoiceField (label=u'Jeg kan bidra med',
                                            required=False,
