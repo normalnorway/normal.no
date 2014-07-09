@@ -1,3 +1,7 @@
+tests: lessc --lint *.less
+
+redirect after form posting, so not posting twice / browser shows warning
+
 strip all fields (e.g., news_article.body)
 
 git: only allow fast-forward updates?
