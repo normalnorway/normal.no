@@ -1,49 +1,18 @@
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import dates
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .models import Article
 from .forms import SearchForm
-#import forms   # forms.Search
-
-#from django.views.generic.dates
-from django.views.generic import dates
 
 
-
-####################
-## NewsStory views
-####################
-
-from .models import Story
-from markdown import markdown
-
-# or store on view func?
-#_markdown = markdown.Markdown()
-#_markdown.convert(text1)
-#_markdown.reset().convert(text1)
-
-
-def story_list (request):
-    data = Story.objects.all().filter(published=True).order_by('date')
-    for item in data:
-        item.text = markdown (item.text, safe_mode='escape')
-    return render (request, 'news/story_list.html', { 'list': data })
-
-
-def story_detail (request, story_id):
-    #data = get_object_or_404 (Story, pk=story_id, published=True)
-    item = get_object_or_404 (Story, pk=story_id)
-    item.text = markdown (item.text, safe_mode='escape')
-    return render (request, 'news/story_detail.html', {
-        'object': item,
-#        'object': get_object_or_404 (Story, pk=story_id, published=True)
+def detail (request, news_id):
+    return render (request, 'news/detail.html', {
+        'item': get_object_or_404 (Article, pk=news_id)
+        # @todo use same name as DetailView uses. (object?)
     })
 
 
-
-
-####################
-## NewsLink views
 
 class ArchiveView (dates.ArchiveIndexView):
     model = Article
@@ -59,6 +28,7 @@ class ArchiveView (dates.ArchiveIndexView):
 #        return [datetime(2002,1,1), datetime(2004,1,1), datetime(2006,1,1)]
 archive = ArchiveView.as_view()
 
+
 # ArchiveYearView
 # @todo show months in revered order?
 class YearView (dates.YearArchiveView):
@@ -66,6 +36,7 @@ class YearView (dates.YearArchiveView):
     date_field = 'date'
     make_object_list = True     # False => only generate month list
 archive_year = YearView.as_view()
+
 
 # ArchiveMonthView
 class MonthView (dates.MonthArchiveView):
@@ -77,6 +48,7 @@ archive_month = MonthView.as_view()
 
 
 
+'''
 # @note can use ArchiveIndexView as base for this view
 def list (request):
     # Search
@@ -114,11 +86,4 @@ def list (request):
         # if query: search = '&search=%s' % urlencode(query)
         # better to pass in session?
     })
-
-
-
-def detail (request, news_id):
-    return render (request, 'news/detail.html', {
-        'item': get_object_or_404 (Article, pk=news_id)
-        # @todo same name as DetailView uses. (object?)
-    })
+'''

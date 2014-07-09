@@ -40,9 +40,11 @@
   <li>
     <a href="{{link.url}}">{{link.name}}</a>
     {% if link.lang %}<img src="{{STATIC_URL}}images/lang/{{link.lang}}.gif"> {% endif %}
+    <!--
     {% if link.text %}
     – {{ link.text }}
     {% endif %}
+    -->
   </li>
   {% endfor %}
 </ul>

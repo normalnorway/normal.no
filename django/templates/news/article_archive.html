@@ -4,74 +4,33 @@
 {% block extratitle %} » Nyheter{% endblock %}
 
 {% block content %}
+<!-- Q: better with two levels? div#app-news div.view-archive -->
+<div id="news-archive">
 
-<h1>Nyhetsarkiv</h1>
+  <h1>Nyhetsarkiv</h1>
 
-<pre>Template: article_archive</pre>
+  <!--
+  <p class="strong">I nyhetsarktivet finner du lenker til de fleste
+  cannabis-relaterte saker omtalt i norsk media. I tillegg til en del
+  utenlandske saker.</p>
+  -->
 
-<!-- @note paginator is None if not paginated or less articles
-Alle: {{paginator.count}} artikler
--->
-{% if is_paginated %}
-{% endif %}
+  <div class="aside">
+    <h3>Årstall</h3>
+    {% for date in date_list %}
+    <p class="strong"><a href="{% url 'news-archive-year' date.year %}">{{date.year}}</a></p>
+    {% endfor %}
+  </div>
 
-<p>
-År:
-{% for date in date_list %}
-<a href="{{date.year}}">{{date.year}}</a>{%if not forloop.last%} | {%endif%}
-{% endfor %}
-</p>
+  <small>Det er {{page_obj.paginator.count}} nyheter i arkivet.</small>
 
-<p>
-Viser {{page_obj.start_index}}-{{page_obj.end_index}} av {{paginator.count}}
-artikler.
-</p>
+  <div class="main">
+    <p>{% include "news/paginator.html" %}</p>
+    {% include "news/article_archive_common.html" %}
+    <br><p>{% include "news/paginator.html" %}</p>
+  </div>
 
-<!-- Navbar for pagination -->
-<!--
-@todo make general?
-- pass page in GET: href="?page="
-- pass name/view to use with reverse url
--->
-<p>
-  Side {{page_obj.number}} av {{page_obj.paginator.num_pages}}
+  <div class="clear"></div>
 
-  &nbsp;&nbsp;&nbsp;
-
-  {% if page_obj.has_previous %}
-  <a href="{% url 'news-archive' %}page/{{page_obj.previous_page_number}}">« Forrige</a>
-  {% else %}
-  <span style="color: gray">« Forrige</span>
-  {% endif %}
-
-  &nbsp;|&nbsp;
-
-  {% if page_obj.has_next %}
-  <a href="{% url 'news-archive' %}page/{{page_obj.next_page_number}}">Neste »</a>
-  {% else %}
-  <span style="color: gray">Neste »</span>
-  {% endif %}
-</p>
-
-<!--
-https://docs.djangoproject.com/en/1.7/topics/pagination/
-<div class="pagination">
-    <span class="step-links">
-        {% if contacts.has_previous %}
-            <a href="?page={{ contacts.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
-        </span>
-
-        {% if contacts.has_next %}
-            <a href="?page={{ contacts.next_page_number }}">next</a>
-        {% endif %}
-    </span>
 </div>
--->
-
-{% include "news/article_archive_common.html" %}
-
 {% endblock %}
