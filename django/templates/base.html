@@ -5,10 +5,7 @@
     <title>{%block title%}Normal{%endblock title%}{%block extratitle%}{%endblock%}</title>
 
     {% if not debug %}
-    <link rel="stylesheet" href="{{STATIC_URL}}css/main.css" />
-    <link rel="stylesheet" href="{{STATIC_URL}}css/menu.css" />
-    <link rel="stylesheet" href="{{STATIC_URL}}css/style.css" />
-    <link rel="stylesheet" href="{{STATIC_URL}}css/forms.css" />
+    <link rel="stylesheet" href="{{STATIC_URL}}css/all.css" />
     {% endif %}
 
     {% if debug %}
