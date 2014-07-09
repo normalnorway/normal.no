@@ -71,12 +71,12 @@ LANGUAGE_CODE = 'nb-no'
 # contrib.site (required by contrib.flatpages)
 SITE_ID = 1
 
-USE_I18N = False
-#USE_I18N = True
+#USE_I18N = False
+USE_I18N = True
 
 # Format according to the current locale.
-#USE_L10N = True
-USE_L10N = False
+USE_L10N = True
+#USE_L10N = False
 
 # UPDATE: USE_I18N=True & LANGUAGE_CODE to format dates!
 # TODO but only want date/number formating, not translations! how?
