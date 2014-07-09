@@ -1,3 +1,5 @@
+tests: lessc --lint *.less
+
 strip all fields (e.g., news_article.body)
 
 git: only allow fast-forward updates?
