@@ -15,3 +15,45 @@ footer h3 {
 footer > div {
   margin-right: 55px;
 }
+
+
+
+/** Semantic classes */
+
+.strong {
+  font-weight: bolder;
+}
+
+.smaller {
+  font-size: smaller;
+}
+
+.clear {
+  clear: both;
+}
+
+
+
+/** Nyheter */
+// @todo possible to limit to app. e.g. #app_news
+// @todo own file per app? @include 'apps/news'
+
+/* detailed view
+// @todo #app_news .view_detail OR #app_news_detail
+p.date {
+  color: #555;
+}
+p.abstract {
+  font-weight: bolder;
+}
+*/
+
+#news-archive .main {
+  width: 80%;
+  float: left;
+}
+#news-archive .aside {
+  width: 10%;
+  float: right;
+  text-align: center;
+}

@@ -1,25 +1,30 @@
 {% extends "base.html" %}
+{% load url from future %}
+
+{# @todo reverse sort order? jan-dec #}
+{# @todo paginate? #}
+
+{% block extratitle %} » Nyheter {{ year|date:"Y" }}{% endblock %}
 
 {% block content %}
+<div id="news-archive">
 
-<h1>Nyhetsarkiv {{year}}</h1>
+  <h1>Nyhetsarkiv, {{ year|date:"Y" }}</h1>
 
-<p>
-Viser {{object_list|length}} artikler.
-</p>
+  <div class="aside">
+    <h3>Måned</h3>
+    {% for date in date_list %}
+    <p class="strong"><a href="{% url 'news-archive-month' date.year date.month %}">{{date|date:"F"}}</a></p>
+    {% endfor %}
+  </div>
 
-<p>
-Måned:
-{% comment %}
-for date in date_list *reversed*
-  but then must also reverse listing in article_archive_common.html
-  so better to do it on the queryset on the view
-{% endcomment %}
-{% for date in date_list reversed %}
-<a href="{{date.month}}">{{date|date:"F"}}</a>{%if not forloop.last%} | {%endif%}
-{% endfor %}
-</p>
+  <p class="strong">Viser {{object_list|length}} nyheter.</p>
 
-{% include "news/article_archive_common.html" %}
+  <div class="main">
+    {% include "news/article_archive_common.html" %}
+  </div>
 
+  <div class="clear"></div>
+
+</div>
 {% endblock %}

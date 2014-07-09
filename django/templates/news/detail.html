@@ -1,18 +1,36 @@
 {% extends "base.html" %}
 
+{# @todo redirect to url if no body. q: but what if url is dead? #}
+
+{% block extratitle %} » Nyhetskommentar{% endblock %}
+
+{% block extrastyle %}
+<style>
+p.date {
+  color: #555;
+}
+p.abstract {
+  font-weight: bolder;
+}
+</style>
+{% endblock %}
+
+
 {% block content %}
+<h1>Nyhetskommentar</h1>
 
-<h3>{{item.title}}</h3>
+<!--
+<div id="app-news-detail">
+putting styles inline instead
+-->
 
-<pre>Template: detail.html</pre>
-
-<div class="date">{{item.date}}</div>
-<br>
-<div class="abstract">{{item.summary}}</div>
-<div class="body">{{item.body|safe}}</div>
+<h2>{{item.title}}</h2>
+<p class="abstract">{{item.summary}}</p>
+<p class="date">{{item.date}}</p>
+<p class="body">{{item.body|safe}}</p>
 
 {% if item.url %}
-<br>
-Kilde: <a href="{{item.url}}">{{item.url}}</a>
+<p><em>Kilde: <a href="{{item.url}}">{{item.url}}</a></em></p>
 {% endif %}
+
 {% endblock %}

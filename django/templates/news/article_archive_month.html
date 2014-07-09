@@ -1,19 +1,49 @@
 {% extends "base.html" %}
 {% load url from future %}
 
+{% block extratitle %} » Nyheter {{ month|date:"F Y" }}{% endblock %}
+
 {% block content %}
+<div id="news-archive">
 
-<h1>Nyhetsarkiv: {{month|date:"F Y"}}</h1>
+  <!--
+  <h1>Nyhetsarkiv, {{ month|date:"F Y" }}</h1>
+  -->
+  <h1>Nyhetsarkiv</h1>
 
-<p>
-Viser {{object_list|length}} artikler.
-</p>
+  <div class="aside strong">
+  <!--
+    @todo print all months, and mark the selected one
+    <h3>Måned</h3>
+    {% for date in date_list %}
+    <p class="strong"><a href="{% url 'news-archive-month' date.year date.month %}">{{date|date:"F"}}</a></p>
+    {% endfor %}
+  -->
+  </div>
 
-<!-- @todo handle boundaries -->
-<a href="{%url "news-archive"%}{{previous_month|date:"Y/m"}}">Forrige måned</a>
-|
-<a href="{%url "news-archive"%}{{next_month|date:"Y/m"}}">Neste måned</a>
+  <h3>{{ month|date:"F Y" }}</h3>
 
-{% include "news/article_archive_common.html" %}
+  <p class="smaller">Viser {{object_list|length}} nyheter</p>
 
+  <!-- @todo handle boundaries -->
+  <p style="margin-bottom: -1ex">
+    <a href="{%url "news-archive"%}{{previous_month|date:"Y/m"}}/">« Forrige måned</a> &nbsp;|&nbsp;
+    <a href="{%url "news-archive"%}{{next_month|date:"Y/m"}}/">Neste måned »</a>
+  </p>
+
+  <div class="main">
+    {% include "news/article_archive_common.html" %}
+  </div>
+
+  <div class="clear"></div>
+
+</div>
 {% endblock %}
+
+
+  <!--
+  <p style="margin-bottom: -1ex">
+    <a href="{% url "news-archive-month" previous_month|date:"Y" previous_month|date:"m"  %}">« Forrige</a> &nbsp;|&nbsp;
+    <a href="{%url "news-archive"%}{{next_month|date:"Y/m"}}">Neste »</a>
+  </p>
+  -->
