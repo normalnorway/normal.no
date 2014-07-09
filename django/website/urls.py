@@ -10,17 +10,13 @@ urlpatterns = patterns ('',
     url(r'^bli-medlem/$',   'apps.support.views.index',     name='enroll'),
     url(r'^medlem/$',       'apps.support.views.index'),    # alias
     url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
+    url(r'^nettguide/$',    'apps.links.views.index',   name='links'),
 
-    # @see apps/news/urls.py
+    # xxx does name have any meaning with include? can use as prefix?
+    #url(r'^nyheter/',       include ('apps.news.urls'),     name='news'),
 
-#    url(r'^news-tips/(?P<url>.*)$', 'core.views.news_tips', name='news-tips'),
-
-    url(r'^nettguide/$', 'apps.links.views.index', name='links'),
-    url(r'^aktuelt/(?P<story_id>\d+)/$', 'apps.news.views.story_detail', name='news-story-detail'),
-
-    url (r'^nyheter/', include ('apps.news.urls'), name='news'), # add '$'?
-
-    (r'^admin/', include (admin.site.urls)),
+    (r'^nyheter/',  include ('apps.news.urls')),
+    (r'^admin/',    include (admin.site.urls)),
 )
 
 
