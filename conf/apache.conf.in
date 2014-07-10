@@ -2,41 +2,39 @@
 # 1) Symlink this into: /etc/apache2/sites-available/
 # 2) Then do a: a2ensite <symlink-name>
 
-# @todo construct PATH from ServerName, then use that
-
 <VirtualHost *:80>
-    ServerName	@@ServerName@@
-    ServerAlias	www.@@ServerName@@
-    ServerAlias	dev.@@ServerName@@
-    ServerAdmin	torkel@normal.no
+    ServerName	    @DOMAIN@
+    ServerAlias	    www.@DOMAIN@
+    ServerAlias	    dev.@DOMAIN@
+    ServerAdmin	    torkel@normal.no
 
-    Alias /static/	/srv/www/@@ServerName@@/htdocs/static/
-    Alias /media/	/srv/www/@@ServerName@@/htdocs/media/
-    #Alias /favicon.ico	@@PATH@@/htdocs/static/favicon.ico
-    #Alias /robots.txt	@@PATH@@/htdocs/static/robots.txt
+    Alias /static/      @PREFIX@/htdocs/static/
+    Alias /media/       @PREFIX@/htdocs/media/
+    #Alias /favicon.ico @PREFIX@/htdocs/static/favicon.ico
+    #Alias /robots.txt  @PREFIX@/htdocs/static/robots.txt
 
-    WSGIScriptAlias /	/srv/www/@@ServerName@@/django/website/wsgi.py
+    WSGIScriptAlias /   @PREFIX@/django/website/wsgi.py
 
-    CustomLog       /srv/www/@@ServerName@@/logs/access.log combined
-    ErrorLog        /srv/www/@@ServerName@@/logs/error.log
+    CustomLog           @PREFIX@/logs/access.log combined
+    ErrorLog            @PREFIX@/logs/error.log
 
     ## Access control (ACL)
-    <Directory /srv/www/@@ServerName@@/django/website>
-	<Files wsgi.py>
-	    Order deny,allow
-	    Allow from all
-	</Files>
+    <Directory @PREFIX@/htdocs>
+        Allow from all
+        Options none
+        AllowOverride none
     </Directory>
 
-    <Directory /srv/www/@@ServerName@@/htdocs>
-	Allow from all
-	Options none
-	AllowOverride none
+    <Directory @PREFIX@/django/website>
+        <Files wsgi.py>
+            Order deny,allow
+            Allow from all
+        </Files>
     </Directory>
 
     # This should already be your default setting
 #    <Directory />
-#	Order deny,allow
-#	Deny from all
+#       Order deny,allow
+#       Deny from all
 #    </Directory>
 </VirtualHost>
