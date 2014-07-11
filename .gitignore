@@ -12,5 +12,5 @@ db/
 htdocs/
 logs/
 # auto-generated files
-conf/apache.conf
+apache.conf
 django/static/css/*.css

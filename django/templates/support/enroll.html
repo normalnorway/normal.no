@@ -22,7 +22,7 @@ form label {
   min-width: 140px;
 }
 form p.required:after {
-  content: ' *';
+  content: " *";
   font-size: small;
 }
 </style>
@@ -34,10 +34,10 @@ form p.required:after {
 {{ innmelding_top|safe }}
 
 {% if form.errors %}
-<p class='error'>Vennligst rett feilen(e) under!</p>
+<p class="error">Vennligst rett feilen(e) under!</p>
 {% endif %}
 
-<form method='post'>{% csrf_token %}
+<form method="post">{% csrf_token %}
   {{ form.as_p }}
   <input type="submit" value="Bli medlem" />
 </form>

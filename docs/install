@@ -1,95 +1,112 @@
 #
 # These instructions are for deploying on an Apache server with WSGI.
-# Django contains an built in development server. Use that instead when
+# Django contains a built in development server; use that instead when
 # doing development (@see how-to-contribute.md).
 #
 # Deployment checklist
 # https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 #
 
+# @todo use fabric: fab bootstrap
+# @todo allow non-privileged user to run collectstatic
+# @todo
+#   USER=www-data
+#   PREFIX=/srv/www/normal.no
+
 
 ## Required packages (Debian/Ubuntu)
 apt-get install libapache2-mod-wsgi
-apt-get install mysql-server	# meta-package depending on latest version
-#apt-get install mysql-server-5.1
+apt-get install python-imaging	# @todo use pip for this?
 
+# Optinal: only when using MySQL as backend. The default is SQLite, but that
+# will be changed in the future.
+apt-get install mysql-server
 apt-get install python-mysqldb
-apt-get install python-imaging
-apt-get install python-markdown
 
 
 ## Django
-pip install Django==1.5.4
+pip install Django
 
-# Or do a manuall install. (Requires: python-setuptools)
-curl https://www.djangoproject.com/m/releases/1.5/Django-1.5.4.tar.gz \
-    | tar zxf -
-cd Django-1.5
+# Or do it manually without pip. (Requires: python-setuptools)
+curl https://www.djangoproject.com/m/releases/1.6/Django-1.6.5.tar.gz | tar zxf -
+cd Django-1.6
 python setup.py install
 
 
 ## MySQL
-create database normal;
-grant all on normal.* to 'normal'@'localhost';
-# TODO: import data or django/manage.py syncdb
-#       but must run at later stage ...
+mysql> create database normal;
+mysql> grant all on normal.* to 'normal'@'localhost';
+
+#$ django/manage.py syncdb
+#$ django/manage.py migrate
+
 
 
 ## Get the source code
 
-# @note path is hardcoded in ../conf/apache.conf.in
-mkdir /srv/www/dev.normal.no
-cd /srv/www/dev.normal.no
-git clone http://git.normal.no/git/normal.no .
+git clone http://git.normal.no/git/normal.no /srv/www/normal.no
+cd /srv/www/normal.no
 
 cp conf/settings_local.py-dist django/website/settings_local.py
 
 
 ## Create required files and directories
-cd /srv/www/dev.normal.no
 
-# upload dir
-# @note !www-data if using daemon-mode
-mkdir -p htdocs/media
-chgrp www-data htdocs/media
-chmod g+w htdocs/media
+# css
+(cd django/static/css/ && make)
 
-# static dir
-django/manage.py collectstatic
+# htdocs/static
+django/manage.py collectstatic --noinput
 
-# TODO: convert less files to css
+# htdocs/media
+install -g www-data -m 770 -d htdocs/media
+
+# @todo more secure perms on htdocs
+# chgrp www-data htdocs ; chmod u=rw,g=r,o=
+# install -g www-data -m 750 -d htdocs
 
 # TODO: update domain name here
-http://dev.normal.no/admin/sites/site/
+#http://dev.normal.no/admin/sites/site/
 
 
-# XXX SQLite
-cd /srv/www/dev.normal.no/
-mkdir db
-chgrp www-data db
-chmod g+w db
+# SQLite
 wget -P db http://torkel.normal.no/normal.db
-chown www-data:www-data db/normal.db
+chmod 770 db
+chmod 660 db/normal.no
+chown www-data:normalweb db
+chown www-data:normalweb db/normal.db
 
-edit django/website/settings_local.py
+# old stuff
+#edit django/website/settings_local.py
   # - 'NAME': os.path.join (ROOT, 'normal.db'),
   # + 'NAME': '/srv/www/dev.normal.no/db/normal.db',
+
 
 # Logs
 # @todo group sticky, so users in www-data can write to logs
 #       e.g., when running: ./manage.py collectstatic
-chmod g+w logs
-chgrp www-data logs
-chmod 770 logs		# <-- optional
+rm logs/*.log	# xxx remove logs created by collectstatic. better to move this step before collectstatic
+chown root:www-data logs
+chmod 770 logs
 
 
 ## Apache
 
-# The default locale for Apache is 'C'. Must change to UTF8!
-edit /etc/apache2/envvars	# change 'export LANG=C' to an UTF8 locale
-# q: what if running in daemon mode?
+# Genereate config
+(cd conf/ && make)
+#(cd conf/ && make DOMAIN=dev.normal.no)
+mv conf/apache.conf .
+
 
 # Install Apache site
-ln -s /srv/www/dev.normal.no/conf/apache.conf /etc/apache2/sites-available/dev.normal.no
-a2ensite dev.normal.no
+ln -s /srv/www/normal.no/apache.conf /etc/apache2/sites-available/normal.no
+a2ensite normal.no
 /etc/init.d/apache2 reload
+
+
+# The default locale for Apache is 'C'. Must change to UTF8!
+edit /etc/apache2/envvars	# change 'export LANG=C' to an UTF8 locale
+# q: what if running in daemon mode? a: guess it's the same
+
+# Uncomment line bellow. Needed for Django. Still true?
+# . /etc/default/locale
