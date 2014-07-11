@@ -2,10 +2,12 @@
 # 1) Symlink this into: /etc/apache2/sites-available/
 # 2) Then do a: a2ensite <symlink-name>
 
+# Put this in your main Apache config, or just uncomment the line bellow.
+# WSGIDaemonProcess django processes=4 threads=8 stack-size=524288 display-name=(wsgi:normal.no)
+
 <VirtualHost *:80>
     ServerName	    @DOMAIN@
     ServerAlias	    www.@DOMAIN@
-    ServerAlias	    dev.@DOMAIN@
     ServerAdmin	    torkel@normal.no
 
     Alias /static/      @PREFIX@/htdocs/static/
@@ -14,6 +16,7 @@
     #Alias /robots.txt  @PREFIX@/htdocs/static/robots.txt
 
     WSGIScriptAlias /   @PREFIX@/django/website/wsgi.py
+    WSGIProcessGroup    django
 
     CustomLog           @PREFIX@/logs/access.log combined
     ErrorLog            @PREFIX@/logs/error.log
