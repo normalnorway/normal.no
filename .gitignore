@@ -6,18 +6,11 @@
 docs/how-to-contribute.html
 django/website/settings_local.py
 
-# generated from conf/apache.conf.in
-conf/apache.conf
 
-normal.db
+## For production server
 db/
 htdocs/
-logs/*.log
-
-# Q: howto handle this? we have mix of less and css files.
-#    fix: only use LESS, or split into own directory
-#django/static/css/*.css
-django/static/css/main.css
-django/static/css/menu.css
-django/static/css/style.css
-django/static/css/form.css
+logs/
+# auto-generated files
+conf/apache.conf
+django/static/css/*.css

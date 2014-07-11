@@ -16,7 +16,7 @@ from .forms import MemberForm, PetitionForm
 from .models import Petition
 
 from website.settings import BASE_DIR
-member_fp = open (os.path.join (BASE_DIR, 'db', 'newmembers'), 'a+')
+member_fp = open (os.path.join (BASE_DIR, 'db', 'newmembers'), 'a')
 
 
 
