@@ -6,9 +6,10 @@ class PetitionAdmin (admin.ModelAdmin):
     #list_editable = 'name', 'city',
     list_display_links = 'choice',
     list_display_links = 'date', 'name',
-    ordering = '-date',
+    ordering = '-date', # @todo move to model: class Meta: get_latest_by = 'date'
+                        #       so it's active for view
     search_field = 'name', 'city'
-    list_filter = 'date', 'choice',
+    list_filter = 'public', 'date', 'choice',
     #date_hierarchy = 'date'
 
 

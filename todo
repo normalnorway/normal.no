@@ -1,6 +1,27 @@
+http://normal.no/opprop/
+  unique(name,city)
+  titlecase all fields
+  Date -> DateTime
+  cache controll: no-cache, etags, other?
+  public view:
+    show date
+    reverse sort order
+
+http://normal.no/bli-medlem/
+  zipcode => integer field? validate 0-9999?
+
+remove static/ dir before collectstatic?
+  else looks like old files are kept
+
+collectstatic --ignore=\*.less	# only need all.css (for now)
+
+no-cache and/or Expires: -1 on generated pages
+
 tests: lessc --lint *.less
 
 redirect after form posting, so not posting twice / browser shows warning
+
+redirect www.normal.no -> normal.no ?
 
 strip all fields (e.g., news_article.body)
 
@@ -10,3 +31,5 @@ add requirements.txt
   pip freeze > requirements.txt
 
 mv django/tools tools ?
+
+http://www.websiteoptimization.com/speed/tweak/redirect/  ??

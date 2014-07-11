@@ -14,6 +14,7 @@ cssfiles := $(patsubst %.less,%.css,$(wildcard *.less))
 
 all.css: $(cssfiles)
 	cat $(cssfiles) > all.css
+	rm $(cssfiles)
 
 clean:
 	rm -fv all.css

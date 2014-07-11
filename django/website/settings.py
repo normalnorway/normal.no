@@ -1,5 +1,10 @@
 # https://docs.djangoproject.com/en/1.5/ref/settings/
 
+# TODO
+# increase cache timeout: TIMEOUT = 300
+# enable persistent db connections: CONN_MAX_AGE = 0
+# ATOMIC_REQUESTS = True    # ? wrap each HTTP request in a db transaction
+
 from django.conf import global_settings as defaults
 
 # Find full path to Djang's root folder.
@@ -118,12 +123,13 @@ TEMPLATE_DIRS = (
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.app_directories.Loader',   # not used?
 )
 if not DEBUG:
     TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),)
 
 # @todo if DEBUG, or auto disabled?
+# Note: default on in 1.7
 TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.debug',
 )
