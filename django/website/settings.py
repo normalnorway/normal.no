@@ -111,7 +111,7 @@ STATICFILES_FINDERS = (
 )
 
 
-# Templates
+## Templates
 TEMPLATE_DIRS = (
     os.path.join (ROOT, 'django', 'templates'),
 )
@@ -119,12 +119,11 @@ TEMPLATE_DIRS = (
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    # TODO if not DEBUG:
-    #   django.template.loaders.cached.Loader
 )
+if not DEBUG:
+    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),)
 
-#TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.debug',)
-#TEMPLATE_CONTEXT_PROCESSORS += defaults.TEMPLATE_CONTEXT_PROCESSORS
+# @todo if DEBUG, or auto disabled?
 TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.debug',
 )

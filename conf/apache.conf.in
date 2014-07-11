@@ -2,52 +2,39 @@
 # 1) Symlink this into: /etc/apache2/sites-available/
 # 2) Then do a: a2ensite <symlink-name>
 
-# TODO
-# AliasMatch ^/([^/]*\.css) /path/to/mysite.com/static/styles/$1
-
-
 <VirtualHost *:80>
-    ServerName	@@ServerName@@
-    ServerAdmin	torkel@normal.no
+    ServerName	    @DOMAIN@
+    ServerAlias	    www.@DOMAIN@
+    ServerAlias	    dev.@DOMAIN@
+    ServerAdmin	    torkel@normal.no
 
-    WSGIScriptAlias /	/srv/www/@@ServerName@@/django/website/wsgi.py
+    Alias /static/      @PREFIX@/htdocs/static/
+    Alias /media/       @PREFIX@/htdocs/media/
+    #Alias /favicon.ico @PREFIX@/htdocs/static/favicon.ico
+    #Alias /robots.txt  @PREFIX@/htdocs/static/robots.txt
 
-    Alias /static/	/srv/www/@@ServerName@@/htdocs/static/
-    Alias /media/	/srv/www/@@ServerName@@/htdocs/media/
+    WSGIScriptAlias /   @PREFIX@/django/website/wsgi.py
 
-    # @todo possible? MyAlias /favicon.ico /static/images/favicon.ico
-    Alias /favicon.ico	/srv/www/@@ServerName@@/htdocs/static/favicon.ico
-    #Alias /robots.txt	/srv/www/@@ServerName@@/htdocs/static/robots.txt
-
-    CustomLog       /srv/www/@@ServerName@@/logs/access.log combined
-    ErrorLog        /srv/www/@@ServerName@@/logs/error.log
-
+    CustomLog           @PREFIX@/logs/access.log combined
+    ErrorLog            @PREFIX@/logs/error.log
 
     ## Access control (ACL)
-    <Directory /srv/www/@@ServerName@@/django/website>
-	<Files wsgi.py>
-	    Order deny,allow
-	    Allow from all
-	</Files>
+    <Directory @PREFIX@/htdocs>
+        Allow from all
+        Options none
+        AllowOverride none
     </Directory>
 
-    <Directory /srv/www/@@ServerName@@/htdocs>
-	Allow from all
-	Options none
-	AllowOverride none
+    <Directory @PREFIX@/django/website>
+        <Files wsgi.py>
+            Order deny,allow
+            Allow from all
+        </Files>
     </Directory>
 
-    <Directory /srv/www/@@ServerName@@/htdocs>
-	<Files wsgi.py>
-	    Order Deny,Allow
-	    Allow from All
-	</Files>
-    </Directory>
-
-    # A paranoid sysadmin already have this this as default!
+    # This should already be your default setting
 #    <Directory />
-#	Order deny,allow
-#	Deny from all
+#       Order deny,allow
+#       Deny from all
 #    </Directory>
-
 </VirtualHost>
