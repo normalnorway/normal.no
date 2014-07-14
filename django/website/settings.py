@@ -1,97 +1,65 @@
-# https://docs.djangoproject.com/en/1.5/ref/settings/
-
+#
+# Django settings for normal.no
+#
+# $ python manage.py diffsettings
+#
 # TODO
-# increase cache timeout: TIMEOUT = 300
-# enable persistent db connections: CONN_MAX_AGE = 0
-# ATOMIC_REQUESTS = True    # ? wrap each HTTP request in a db transaction
+# increase cache timeout? TIMEOUT = 300
+# enable persistent db connections? CONN_MAX_AGE = 0
+#
 
 from django.conf import global_settings as defaults
 
-# Find full path to Djang's root folder.
-import os.path
-tmp = os.path.dirname (os.path.abspath (__file__))
-tmp = os.path.join (tmp, '..', '..')
-ROOT = os.path.normpath (tmp)
-#J = lambda filename: os.path.join(ROOT, filename) # todo handle *args
-BASE_DIR = ROOT     # @todo ROOT -> BASE_DIR
-# @todo BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+import os
+BASE_DIR = os.path.dirname (os.path.dirname (__file__))
+ROOT_DIR = os.path.dirname (BASE_DIR)
 
-# Private settings that should *not* go inside a public repository!
-# Note: Imports ROOT, so must be after that.
-import website.settings_local as local
-
-
-# Only serve website on these hostnames
-ALLOWED_HOSTS = (
-    'normal.no',
-    'www.normal.no',
-    'dev.normal.no',    # <-- development site
-)
-#ALLOWED_HOSTS = ('*',)
-
-
-
-##
-## Custom settings (not used by Django)
-##
-
-# FILE_UPLOAD_MAX_SIZE = "5242880"
-
-
-
-
-##
-## Django settings
-##
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-INTERNAL_IPS = local.INTERNAL_IPS
+# Admins will get email whenever an error happens.
+ADMINS = (
+     ('Torkel', 'torkel@normal.no'),
+)
 
-ADMINS = local.ADMINS
-MANAGERS = local.MANAGERS
-
-DATABASES = local.DATABASES
-
-SECRET_KEY = local.SECRET_KEY
+# Managers will get broken-link notification.
+MANAGERS = ADMINS
 
 
-FILE_UPLOAD_PERMISSIONS = 0644
-# FILE_UPLOAD_MAX_MEMORY_SIZE   # 2.5M
+# Only serve website on these hostnames. Only active when DEBUG=False.
+ALLOWED_HOSTS = (
+    'normal.no',
+    'www.normal.no',
+    'dev.normal.no',
+)
 
-# contrib.auth
-AUTH_PROFILE_MODULE = 'users.profile'
-#LOGIN_URL = '/users/login'
-#LOGIN_REDIRECT_URL     # default: /accounts/profile/
-
-TIME_ZONE = 'Europe/Oslo'       # None => /etc/timezone
-
-#LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'nb-no'
-# django.utils.translation.to_locale
-# Turns a language name (en-us) into a locale name (en_US).
+# Note: django.core.context_processors.debug is only active when
+# request.META['REMOTE_ADDR']) is in INTERNAL_IPS.
+# So put your client ip-address here for debugging.
+INTERNAL_IPS = ['127.0.0.1']
+if DEBUG:
+    INTERNAL_IPS += ('176.58.124.187', '2a01:7e00::f03c:91ff:feae:a668')
 
 
 # contrib.site (required by contrib.flatpages)
 SITE_ID = 1
 
-#USE_I18N = False
-USE_I18N = True
 
-# Format according to the current locale.
-USE_L10N = True
-#USE_L10N = False
+## Localization
+#LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'nb-no'
+USE_I18N = True     # translate messages
+USE_L10N = True     # format according to the current locale (LANGUAGE_CODE)
 
-# UPDATE: USE_I18N=True & LANGUAGE_CODE to format dates!
-# TODO but only want date/number formating, not translations! how?
-
-# Use timezone-aware datetimes?
+TIME_ZONE = 'Europe/Oslo'
 USE_TZ = False
 
-# Absolute filesystem path to store user-uploaded files.
-# TODO rename upload?
-MEDIA_ROOT = os.path.join (ROOT, 'htdocs', 'media')
+
+## Static and media files
+
+# Absolute filesystem path to store user-uploaded files
+MEDIA_ROOT = os.path.join (ROOT_DIR, 'htdocs', 'media')
 
 # URL of MEDIA_ROOT. Must be mapped by webserver.
 MEDIA_URL = '/media/'
@@ -99,75 +67,48 @@ MEDIA_URL = '/media/'
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = os.path.join (ROOT, 'htdocs', 'static')
+STATIC_ROOT = os.path.join (ROOT_DIR, 'htdocs', 'static')
 
 # URL of STATIC_ROOT. Must be mapped by webserver.
 STATIC_URL = '/static/'
 
 # Global (non-app) static files.
 STATICFILES_DIRS = (
-    os.path.join (ROOT, 'django', 'static'),    # static/{css,js,images}
-    # TODO split out binary files?
+    os.path.join (BASE_DIR, 'static'),
 )
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder', # not used
 )
 
 
 ## Templates
 TEMPLATE_DIRS = (
-    os.path.join (ROOT, 'django', 'templates'),
+    os.path.join (BASE_DIR, 'templates'),
 )
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',   # not used?
+    'django.template.loaders.app_directories.Loader',   # not used
 )
 if not DEBUG:
     TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),)
 
-# @todo if DEBUG, or auto disabled?
-# Note: default on in 1.7
-TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-    'django.core.context_processors.debug',
-)
 
-# @todo remove 'django.core.context_processors.i18n'
-#print TEMPLATE_CONTEXT_PROCESSORS
-
-
-# Note: these are invoked in reverse order for the response.
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-        # note: flatpages should be last.
-)
-
-# needed for django >= 1.6
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-
-ROOT_URLCONF = 'website.urls'
-
-WSGI_APPLICATION = 'website.wsgi.application'
-
+## Applications, etc.
 
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',      # only needed for database-backed session
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'django.contrib.flatpages',
-    # 'django.contrib.admindocs',
+    'django.contrib.sites',         # @todo remove
+    'django.contrib.flatpages',     # @todo remove
 
+    # Local apps
     'core',
     'apps.news',
     'apps.links',
@@ -176,10 +117,58 @@ INSTALLED_APPS = (
 )
 
 
+# Note: these are invoked in reverse order for the response.
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware', # Note: must be last!
+)
+
+ROOT_URLCONF = 'website.urls'
+
+WSGI_APPLICATION = 'website.wsgi.application'
+
+# needed for django >= 1.6
+# Note: not needed on inormal. why?
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join (ROOT_DIR, 'db', 'normal.db'),
+    }
+}
+
+
+# SECRET_KEY - Don't share this with anybody!
+if DEBUG:
+    SECRET_KEY = 'd%3luowws4k+77pe&amp;d@mkd7qx_-x$!c(jvs(9ah_-i92o9d8en'
+    #SECRET_KEY = 'not so secret, not so secret, not so secret, not so se'
+else:
+    try:
+        SECRET_KEY = open (os.path.join(ROOT_DIR, 'secret-key')).readline()
+    except IOError:
+        print 'Warning: "secret-key" file not found! Using temporary key instead!'
+        from base64 import b64encode
+        SECRET_KEY = b64encode(os.urandom(48))
+        #import random
+        #SECRET_KEY = ''.join (chr(random.randint(33,126)) for x in xrange(54))
+
+
+## Logging
+
+
 # Sends email to site admins on HTTP 500 error when DEBUG=False.
 # http://docs.djangoproject.com/en/dev/topics/logging
 #
 # @todo
+# Clean up!
 # _LOG_LEVEL = 'DEBUG' if DEBUG else 'INFO'
 # 'level': LOG_LEVEL
 # console log that goes to stderr with Errors only?
@@ -209,7 +198,7 @@ LOGGING = {
     'handlers': {
         'default': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join (BASE_DIR, 'logs', 'django.log'),
+            'filename': os.path.join (ROOT_DIR, 'logs', 'django.log'),
             'formatter': 'verbose',
         },
         'mail_admins': {
@@ -220,12 +209,12 @@ LOGGING = {
         },
         'request': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join (BASE_DIR, 'logs', 'request.log'),
+            'filename': os.path.join (ROOT_DIR, 'logs', 'request.log'),
             'formatter': 'verbose',
         },
         'security': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join (BASE_DIR, 'logs', 'security.log'),
+            'filename': os.path.join (ROOT_DIR, 'logs', 'security.log'),
             'formatter': 'verbose',
         },
         # @todo debug.log

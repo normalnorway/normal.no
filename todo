@@ -1,3 +1,10 @@
+css: use sans-serif font!!! (Check in Google Chrome)
+
+links-admin: bool published. text comment (internal comment)
+links-category: add internal comment
+                Publikasjoner -> kultur?
+		  nei, flytt High-Times o.l. til Kultur
+
 http://normal.no/opprop/
   unique(name,city)
   titlecase all fields
@@ -33,3 +40,4 @@ add requirements.txt
 mv django/tools tools ?
 
 http://www.websiteoptimization.com/speed/tweak/redirect/  ??
+

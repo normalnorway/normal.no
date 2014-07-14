@@ -4,7 +4,6 @@
 *.bak
 
 docs/how-to-contribute.html
-django/website/settings_local.py
 
 
 ## For production server
