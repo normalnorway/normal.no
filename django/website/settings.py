@@ -4,6 +4,7 @@
 # $ python manage.py diffsettings
 #
 # TODO
+# DEFAULT_FROM_EMAIL = ikke-svar@normal.no
 # increase cache timeout? TIMEOUT = 300
 # enable persistent db connections? CONN_MAX_AGE = 0
 #
@@ -18,12 +19,13 @@ ROOT_DIR = os.path.dirname (BASE_DIR)
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-# Admins will get email whenever an error happens.
+# Admins will get email whenever an error happens and DEBUG=False.
 ADMINS = (
      ('Torkel', 'torkel@normal.no'),
 )
 
 # Managers will get broken-link notification.
+# But only when BrokenLinkEmailsMiddleware is active.
 MANAGERS = ADMINS
 
 
@@ -58,29 +60,22 @@ USE_TZ = False
 
 ## Static and media files
 
-# Absolute filesystem path to store user-uploaded files
-MEDIA_ROOT = os.path.join (ROOT_DIR, 'htdocs', 'media')
-
-# URL of MEDIA_ROOT. Must be mapped by webserver.
-MEDIA_URL = '/media/'
-
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = os.path.join (ROOT_DIR, 'htdocs', 'static')
-
-# URL of STATIC_ROOT. Must be mapped by webserver.
-STATIC_URL = '/static/'
-
-# Global (non-app) static files.
 STATICFILES_DIRS = (
     os.path.join (BASE_DIR, 'static'),
 )
 
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder', # not used
-)
+STATIC_ROOT = os.path.join (ROOT_DIR, 'htdocs', 'static')
+STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join (ROOT_DIR, 'htdocs', 'media')
+MEDIA_URL = '/media/'
+
+
+# Default
+#STATICFILES_FINDERS = (
+#    'django.contrib.staticfiles.finders.FileSystemFinder',
+#    'django.contrib.staticfiles.finders.AppDirectoriesFinder', # not used
+#)
 
 
 ## Templates
@@ -88,12 +83,15 @@ TEMPLATE_DIRS = (
     os.path.join (BASE_DIR, 'templates'),
 )
 
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',   # not used
-)
+# This is the default
+#TEMPLATE_LOADERS = (
+#    'django.template.loaders.filesystem.Loader',
+#    'django.template.loaders.app_directories.Loader',   # not used
+#)
+#if not DEBUG:
+#    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),)
 if not DEBUG:
-    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),)
+    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', defaults.TEMPLATE_LOADERS),)
 
 
 ## Applications, etc.
@@ -135,7 +133,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 # needed for django >= 1.6
 # Note: not needed on inormal. why?
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+#TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 
 DATABASES = {
@@ -146,14 +144,13 @@ DATABASES = {
 }
 
 
-# SECRET_KEY - Don't share this with anybody!
 if DEBUG:
-    SECRET_KEY = 'd%3luowws4k+77pe&amp;d@mkd7qx_-x$!c(jvs(9ah_-i92o9d8en'
-    #SECRET_KEY = 'not so secret, not so secret, not so secret, not so se'
+    SECRET_KEY = 'this is not very secret; it is used for debugging!'
 else:
     try:
         SECRET_KEY = open (os.path.join(ROOT_DIR, 'secret-key')).readline()
     except IOError:
+        # @todo create secret-key file?
         print 'Warning: "secret-key" file not found! Using temporary key instead!'
         from base64 import b64encode
         SECRET_KEY = b64encode(os.urandom(48))
@@ -162,8 +159,6 @@ else:
 
 
 ## Logging
-
-
 # Sends email to site admins on HTTP 500 error when DEBUG=False.
 # http://docs.djangoproject.com/en/dev/topics/logging
 #
