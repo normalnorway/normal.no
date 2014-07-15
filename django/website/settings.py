@@ -83,6 +83,10 @@ TEMPLATE_DIRS = (
     os.path.join (BASE_DIR, 'templates'),
 )
 
+#TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
+#    'django.core.context_processors.request',
+#)
+
 # This is the default
 #TEMPLATE_LOADERS = (
 #    'django.template.loaders.filesystem.Loader',
@@ -90,7 +94,7 @@ TEMPLATE_DIRS = (
 #)
 #if not DEBUG:
 #    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),)
-if not DEBUG:
+if not DEBUG:   # Enable template caching on the production site.
     TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', defaults.TEMPLATE_LOADERS),)
 
 
