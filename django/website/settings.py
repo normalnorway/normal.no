@@ -166,60 +166,78 @@ else:
 # Sends email to site admins on HTTP 500 error when DEBUG=False.
 # http://docs.djangoproject.com/en/dev/topics/logging
 #
-# @todo
-# Clean up!
-# _LOG_LEVEL = 'DEBUG' if DEBUG else 'INFO'
-# 'level': LOG_LEVEL
-# console log that goes to stderr with Errors only?
-# Update: if DEBUG: log to console
-#         if not DEBUG: log to file
+# Testing things out, so more complex than it should be.
+#
+# @todo if DEBUG log to console (or debug.log)
+#       or only level=>errors to console/stderr, and rest to debug.log?
+#       or if DEBUG: log to console else: log to file
+# @todo catch all level=ERROR into own file? (apache uses error.log)
+
+# _LEVEL = 'DEBUG' if DEBUG else 'WARNING'
+#logfile = lambda f: os.path.join (ROOT_DIR, 'logs', f)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
 
     'loggers': {
+        # @todo can drop handler and get default?
+        # Q: what is default level. move level to handlers?
         '': {
-            'handlers': ['default'],
+            'handlers': ['file:website'],
             'level': 'DEBUG',
         },
-        'django.security': {
-            'handlers': ['request'],    # @todo mail_admins?
+        'django': {
+            'handlers': ['file:django'],
             'level': 'DEBUG',
             'propagate': True,
         },
-        'django.request': {
-            'handlers': ['mail_admins', 'request'],
-            'level': 'INFO',
+        'django.security': {
+            'handlers': ['file:security', 'mail_admins'],
+            'level': 'DEBUG',
             'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['file:request', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': True,
         },
     },
 
     'handlers': {
-        'default': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': ['debug_false'],
+            'include_html': True,
+        },
+        'file:website': {
+            #'level': _LEVEL?
+            'class': 'logging.FileHandler',
+            'filename': os.path.join (ROOT_DIR, 'logs', 'website.log'),
+            'formatter': 'verbose',
+        },
+        'file:django': {
             'class': 'logging.FileHandler',
             'filename': os.path.join (ROOT_DIR, 'logs', 'django.log'),
             'formatter': 'verbose',
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler',
-            'include_html': True,
-        },
-        'request': {
+        'file:request': {
             'class': 'logging.FileHandler',
             'filename': os.path.join (ROOT_DIR, 'logs', 'request.log'),
             'formatter': 'verbose',
         },
-        'security': {
+        'file:security': {
             'class': 'logging.FileHandler',
             'filename': os.path.join (ROOT_DIR, 'logs', 'security.log'),
             'formatter': 'verbose',
         },
-        # @todo debug.log
+        # @todo can drop formatter on handlers (and get default)?
+        # @todo debug.log?
     },
 
     'formatters': {
+        # @todo drop %(lineno) for django; only usefull for own code
         'verbose': {
             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
             'datefmt' : "%d/%b/%Y %H:%M:%S"

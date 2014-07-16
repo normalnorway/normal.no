@@ -3,13 +3,13 @@
 *.swp
 *.bak
 
-docs/how-to-contribute.html
+/docs/how-to-contribute.html
 
 
 ## For production server
-db/
-htdocs/
-logs/
+/db/
+/htdocs/
+/logs/
 # auto-generated files
-apache.conf
-django/static/css/*.css
+/apache.conf
+/django/static/css/*.css

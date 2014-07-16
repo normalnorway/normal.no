@@ -41,3 +41,7 @@ mv django/tools tools ?
 
 http://www.websiteoptimization.com/speed/tweak/redirect/  ??
 
+turn of .htaccess support in apache
+
+enable broken link notification middleware.
+RewriteRule pattern -  [R=404] [other_flags]	# favicon.ico robots.txt ++
