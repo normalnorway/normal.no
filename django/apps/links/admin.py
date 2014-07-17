@@ -4,11 +4,12 @@ from .models import Link, Category
 import re
 
 class LinkAdmin (admin.ModelAdmin):
-    #ordering = ('category',)
-    #ordering = ('category__name',)
     list_display = ('name', 'category', 'url_')
     list_filter = ('category',)
+    ordering = ('name',)
     search_fields = ('name',)
+    #ordering = ('category',)
+    #ordering = ('category__name',)
 
     # Dynamically construct fieldset
     def __init__ (self, *args, **kwargs):

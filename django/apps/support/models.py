@@ -15,6 +15,9 @@ class Petition (models.Model):
     date =   models.DateField (auto_now_add=True)
     #choice = models.PositiveSmallIntegerField (u'Jeg ønsker å', choices=CHOICES, blank=True) # trying to get rid of "-------"
     choice = models.CharField (u'Jeg ønsker å', max_length=1, choices=CHOICES)
+      # The form field class can be specified via the form_class and
+      # choices_form_class arguments. If these arguments are not provided,
+      # CharField or TypedChoiceField will be used.
     name =   models.CharField (u'Navn', max_length=64)
     city =   models.CharField (u'Sted', max_length=64)
     public = models.BooleanField (u'Vis mitt navn i listen under', default=True)

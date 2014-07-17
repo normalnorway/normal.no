@@ -10,10 +10,12 @@ from fabric.api import env, local, cd, run, get, put
 #from fabric.contrib.console import confirm
 
 env.hosts = ['srv1']
-BASE_DIR = '/srv/www/dev.normal.no/'
+BASE_DIR = '/srv/www/normal.no/'
+#BASE_DIR = '/srv/www/dev.normal.no/'
 #BRANCH=production
 
 
+# @todo don't do collectstatic by default, move that to: deploy-full
 def deploy():
     push()
     with cd (BASE_DIR):
@@ -24,7 +26,7 @@ def deploy():
         run ('git fetch -q')
         run ('git merge origin/master')
         run ('(cd django/static/css/ ; make)')
-        run ('django/manage.py collectstatic --noinput')
+        #run ('django/manage.py collectstatic --noinput')
         run ('touch django/website/wsgi.py')
 
 
