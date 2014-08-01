@@ -38,6 +38,7 @@ class MemberForm (forms.Form):
         ('3', u'Send meg informasjonsmateriell.'),
         ('4', u'Jeg kan hjelpe til med å skrive.'),
         ('5', u'Jeg kan hjelpe til med IT.'),
+        # @todo add to e-mail list? add to sms-list
     )
 
     choice =    forms.ChoiceField (label='Type medlemskap', choices=MEMBER_TYPE,

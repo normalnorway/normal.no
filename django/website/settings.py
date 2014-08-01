@@ -9,17 +9,17 @@
 # enable persistent db connections? CONN_MAX_AGE = 0
 #
 
-from django.conf import global_settings as defaults
-
 import os
 BASE_DIR = os.path.dirname (os.path.dirname (__file__))
 ROOT_DIR = os.path.dirname (BASE_DIR)
+
+from django.conf import global_settings as defaults
 
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-# Admins will get email whenever an error happens and DEBUG=False.
+# Admins will get email whenever an error happens (and DEBUG=False).
 ADMINS = (
      ('Torkel', 'torkel@normal.no'),
 )
@@ -42,6 +42,11 @@ ALLOWED_HOSTS = (
 INTERNAL_IPS = ['127.0.0.1']
 if DEBUG:
     INTERNAL_IPS += ('176.58.124.187', '2a01:7e00::f03c:91ff:feae:a668')
+
+# @todo join all if DEBUG sections?
+#if DEBUG:
+#    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 
 # contrib.site (required by contrib.flatpages)
@@ -131,14 +136,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware', # Note: must be last!
 )
 
-ROOT_URLCONF = 'website.urls'
-
-WSGI_APPLICATION = 'website.wsgi.application'
-
-# needed for django >= 1.6
-# Note: not needed on inormal. why?
-#TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-
 
 DATABASES = {
     'default': {
@@ -148,18 +145,24 @@ DATABASES = {
 }
 
 
+ROOT_URLCONF = 'website.urls'
+
+WSGI_APPLICATION = 'website.wsgi.application'
+
 if DEBUG:
-    SECRET_KEY = 'this is not very secret; it is used for debugging!'
+    SECRET_KEY = 'x' * 50
+    #SECRET_KEY = ''.join (chr(random.randint(33,126)) for x in xrange(50))
 else:
     try:
         SECRET_KEY = open (os.path.join(ROOT_DIR, 'secret-key')).readline()
+        # @todo make poly class so can both be str and called
+        #SECRET_KEY = open (ROOT_DIR('secret-key')).readline()
     except IOError:
         # @todo create secret-key file?
+        # @todo log! (if possible)
         print 'Warning: "secret-key" file not found! Using temporary key instead!'
-        from base64 import b64encode
-        SECRET_KEY = b64encode(os.urandom(48))
-        #import random
-        #SECRET_KEY = ''.join (chr(random.randint(33,126)) for x in xrange(54))
+        import base64
+        SECRET_KEY = base64.b64encode (os.urandom(48))
 
 
 ## Logging
@@ -178,25 +181,47 @@ else:
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': True, # @todo keep djangos default logging
+                                      # q: how to see 'em?
 
     'loggers': {
         # @todo can drop handler and get default?
         # Q: what is default level. move level to handlers?
+        # @todo drop?
         '': {
             'handlers': ['file:website'],
             'level': 'DEBUG',
         },
+
+        # Catch-all logger. No messages are posted directly to this logger.
         'django': {
             'handlers': ['file:django'],
             'level': 'DEBUG',
             'propagate': True,
         },
+
+        # django.db.backends
+        # Every application-level SQL statement executed by a request is
+        # logged at the DEBUG level.
+        # Extra context: duration, sql, params
+
+        # django.security.*
+        # Messages on any occurrence of SuspiciousOperation. There is
+        # a sub-logger for each sub-type of SuspiciousOperation.
+        # Most occurrences are logged as a warning, while any
+        # SuspiciousOperation that reaches the WSGI handler will be
+        # logged as an error.
+        # The django.security logger is configured the same as the request
+        # logger, and any error events will be mailed to admins.
         'django.security': {
             'handlers': ['file:security', 'mail_admins'],
             'level': 'DEBUG',
             'propagate': False,
         },
+
+        # 5XX responses are raised as ERROR messages
+        # 4XX responses are raised as WARNING messages
+        # Extra context: status_code, request
         'django.request': {
             'handlers': ['file:request', 'mail_admins'],
             'level': 'INFO',
@@ -209,6 +234,9 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
             'filters': ['debug_false'],
+            # Attach the full content of the debug Web page that would
+            # have been produced if DEBUG were True.
+            # Note: contains a full traceback; potentially very sensitive
             'include_html': True,
         },
         'file:website': {
@@ -248,7 +276,7 @@ LOGGING = {
     },
 
     'filters': {
-        'debug_false': {
+        'debug_false': {    # nodebug?
             '()': 'django.utils.log.RequireDebugFalse'
         },
     },

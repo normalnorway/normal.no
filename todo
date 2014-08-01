@@ -5,8 +5,14 @@ links-category: add internal comment
                 Publikasjoner -> kultur?
 		  nei, flytt High-Times o.l. til Kultur
 
+add published to (almost) every model. need index since always will
+use published=True (or can use custom manager).
+or can use model meta: index_together ?
+
+normal.no/nyhetsbrev/4		# issue #4
+
 http://normal.no/opprop/
-  unique(name,city)
+  unique(name,city)	# unique_together = ("driver", "restaurant")
   titlecase all fields
   Date -> DateTime
   cache controll: no-cache, etags, other?
