@@ -10,7 +10,7 @@
 #
 
 import os
-BASE_DIR = os.path.dirname (os.path.dirname (__file__))
+BASE_DIR = os.path.dirname (os.path.dirname (os.path.normpath (__file__)))
 ROOT_DIR = os.path.dirname (BASE_DIR)
 
 from django.conf import global_settings as defaults
@@ -125,16 +125,19 @@ INSTALLED_APPS = (
 
 
 # Note: these are invoked in reverse order for the response.
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware', # 1.7
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware', # Note: must be last!
-)
+]
+import django
+if django.VERSION[0:2] < (1,7):
+    MIDDLEWARE_CLASSES.remove ('django.contrib.auth.middleware.SessionAuthenticationMiddleware')
 
 
 DATABASES = {
