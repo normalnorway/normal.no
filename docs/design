@@ -8,6 +8,13 @@ a8ea92	light green
 353a3d	warm black
 e3e6ec	grey
 
+div.container {
+    background-color: #F0F0F0;
+    width: 60%;
+    min-width: 800px;
+    margin: auto;
+    box-shadow: 10px 10px 50px #888;
+}
 
 
 ## Stealing

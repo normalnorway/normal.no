@@ -15,6 +15,7 @@ import urlparse
 
 
 # @todo handle query string
+# @todo timeout. @see https://docs.python.org/2/library/httplib.html
 def get_http_status (urlstr):
     #print 'Checking', urlstr
     url = urlparse.urlsplit (PREFIX + urlstr)

@@ -22,3 +22,6 @@ class Petition (models.Model):
     city =   models.CharField (u'Sted', max_length=64)
     public = models.BooleanField (u'Vis mitt navn i listen under', default=True)
     #public = models.BooleanField (default=True)
+
+    def __unicode__ (self):
+        return u'%c: %s, %s' % (self.choice, self.name, self.city)

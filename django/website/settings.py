@@ -6,7 +6,6 @@
 # TODO
 # DEFAULT_FROM_EMAIL = ikke-svar@normal.no
 # increase cache timeout? TIMEOUT = 300
-# enable persistent db connections? CONN_MAX_AGE = 0
 #
 
 import os
@@ -39,7 +38,7 @@ ALLOWED_HOSTS = (
 # Note: django.core.context_processors.debug is only active when
 # request.META['REMOTE_ADDR']) is in INTERNAL_IPS.
 # So put your client ip-address here for debugging.
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ['127.0.0.1']    # @todo on if debug
 if DEBUG:
     INTERNAL_IPS += ('176.58.124.187', '2a01:7e00::f03c:91ff:feae:a668')
 
@@ -47,6 +46,17 @@ if DEBUG:
 #if DEBUG:
 #    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+
+# Enable persistent db connections.
+# Note: Sometimes a database won't be accessed by the majority of your
+# views, for example because it's the database of an external system, or
+# thanks to caching. In such cases, you should set CONN_MAX_AGE to a low
+# value or even 0, because it doesn't make sense to maintain a connection
+# that's unlikely to be reused.
+# XXX this should go inside DATABASES['default']
+#if not DEBUG:
+#    CONN_MAX_AGE = 3600
 
 
 # contrib.site (required by contrib.flatpages)

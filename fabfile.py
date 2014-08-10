@@ -26,6 +26,7 @@ def deploy():
         run ('git fetch -q')
         run ('git merge origin/master')
         run ('(cd django/static/css/ ; make)')
+        # @todo --ignore *.less files
         #run ('django/manage.py collectstatic --noinput')
         run ('touch django/website/wsgi.py')
 
@@ -68,3 +69,4 @@ def push():
 #def commiti():
 #    local ('git add -p')    # interactively add hunks
 #    commor()
+#
