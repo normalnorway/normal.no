@@ -63,11 +63,11 @@ class MemberForm (forms.Form):
     def clean_born (self):
         import datetime
         born = self.cleaned_data['born']
-        if 18 > (((datetime.date.today() - born).days + 1) / 365):
+        cutoff = datetime.date (born.year+18, born.month, born.day)
+        if cutoff > datetime.date.today():
             raise forms.ValidationError (u'Du må være fyllt 18 år for å melde deg inn!')
         return born
 
-    # self.email.lower().strip()
 
 #    def __init__ (self, *args, **kwargs):
 #        super (MemberForm,self).__init__ (*args, **kwargs)
