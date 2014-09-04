@@ -3,8 +3,9 @@
 from django.db import models
 
 
+# @todo warn if len(name.split()==1)?
 # @todo unique on name+city
-# @todo born_year?
+# @todo optional: born_year?
 class Petition (models.Model):
     CHOICES = (
         ('a', u'a) Nedkriminalisere cannabis (f.eks. etter Portugal-modellen).'),
