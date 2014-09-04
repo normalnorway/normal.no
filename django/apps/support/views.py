@@ -15,7 +15,8 @@ from apps.content.models import get_content, get_content_dict
 from .forms import MemberForm, PetitionForm
 from .models import Petition
 
-# @todo move to __init__ ?
+# @todo move to __init__ ? NEW_MEMBERS_FILENAME? or get_filename,
+# new_member_get_fp, new_member_add? NewMember.add?
 from website.settings import ROOT_DIR
 member_fp = open (os.path.join (ROOT_DIR, 'db', 'newmembers'), 'a')
 

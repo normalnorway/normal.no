@@ -2,27 +2,30 @@
 import os
 import datetime
 import json
-from django.test import TestCase, Client
+from django.core.urlresolvers import reverse
+from django.test import TestCase
 from website.settings import ROOT_DIR
-
 from .models import Petition
 from .forms import MemberForm
 
 
 # @todo split in MemberTest and PettitionTest?
+#       A: yes, that is recomended
 class MyTestCase (TestCase):
 
-    def setUp (self):
-        self.client = Client()
-
-
-    def test_petition (self):
+    def test_petition_signup (self):
         data = {'name': u'frode frosk', 'city': u'ålesund', 'public': False, 'choice': u'c'}
-        res = self.client.post ('/opprop/', data)
+        res = self.client.post (reverse('petition'), data)
         self.assertEqual (res.status_code, 200)
         obj = Petition.objects.values(*data.keys()).get(pk=1)
         self.assertEqual (data, obj)
-
+        # self.assertEqual (res.context['objects'], data)
+        # self.assertEqual (res.context['count'], 1)
+        # @todo insert both public=True & False, then check that count=2
+        #       and that only public=True is rendered
+        # assertEqual (ctx['count'], 2)
+        # assertEqual (len(ctx['objects']), 1)
+        # @todo test name.title & city.title
 
     def test_new_member (self):
         filename = os.path.join (ROOT_DIR, 'db', 'newmembers')
@@ -45,26 +48,17 @@ class MyTestCase (TestCase):
             u'comment':  u'line one\nline two\nthe end',
             u'extra':    [u'1', u'3', u'5'],
         }
-        res = self.client.post ('/bli-medlem/', data)
+        res = self.client.post (reverse('enroll'), data)
         self.assertEqual (res.status_code, 200)
         # @note will get 200 even if form not valid. must check for validation error message
         obj = json.load (open(filename))
         data.update (born = unicode (born.strftime('%Y-%m-%d')))    # date is read back in iso format
         self.assertEqual (data, obj)
 
-
     def test_to_young_member (self):
         ''' Make sure we do not accept under age members '''
         now = datetime.date.today()
         born = datetime.date (now.year-18, now.month, now.day) + datetime.timedelta(days=1)
-        data = {
-            'choice':   u'1',
-            'name':     u'Arne And',
-            'born':     born,
-            'address1': u'Portveien 2',
-            'city':     u'Oslo',
-            'zipcode':  u'1234',
-        }
-        form = MemberForm (data)
+        form = MemberForm (dict(choice=u'1', name=u'name', born=born, address1='address1', city='city', zipcode=u'1234'))
         self.assertFalse (form.is_valid())
         self.assertTrue (form.errors.has_key('born'))

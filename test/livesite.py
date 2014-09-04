@@ -28,7 +28,7 @@ def get_http_status (urlstr):
 class TestLiveSite (unittest.TestCase):
     def test_url_0 (self): self.assertEqual (200, get_http_status ('/'))
     def test_url_1 (self): self.assertEqual (200, get_http_status ('/om-normal/'))
-    def test_url_2 (self): self.assertEqual (200, get_http_status ('/bli-medlem/'))
+    def test_url_2 (self): self.assertEqual (200, get_http_status ('/bli-medlem/')) # @todo test /medlem/ alias?
     def test_url_3 (self): self.assertEqual (200, get_http_status ('/støtt/'))
     def test_url_4 (self): self.assertEqual (200, get_http_status ('/nyhetsbrev/'))
     def test_url_5 (self): self.assertEqual (200, get_http_status ('/opprop/'))
