@@ -1,3 +1,7 @@
+# NOT IN USE ANYMORE!
+
+# https://docs.djangoproject.com/en/1.7/howto/custom-template-tags/#template-tag-thread-safety
+
 from django import template
 from django.core.urlresolvers import reverse
 #from django.utils.text import slugify  # django 1.5

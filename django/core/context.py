@@ -1,5 +1,7 @@
 # Context processors gives the ability to pass any variable to templates.
 
+# https://docs.djangoproject.com/en/1.7/_modules/django/core/context_processors/
+
 # In your settings.py add 'core.context.my_context' to
 # TEMPLATE_CONTEXT_PROCESSORS in settings.py.
 
