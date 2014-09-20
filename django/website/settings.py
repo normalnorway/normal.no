@@ -38,9 +38,8 @@ ALLOWED_HOSTS = (
 # Note: django.core.context_processors.debug is only active when
 # request.META['REMOTE_ADDR']) is in INTERNAL_IPS.
 # So put your client ip-address here for debugging.
-INTERNAL_IPS = ['127.0.0.1']    # @todo on if debug
-if DEBUG:
-    INTERNAL_IPS += ('176.58.124.187', '2a01:7e00::f03c:91ff:feae:a668')
+INTERNAL_IPS = ['127.0.0.1']
+# @todo only if DEBUG ?
 
 # @todo join all if DEBUG sections?
 #if DEBUG:
@@ -98,9 +97,11 @@ TEMPLATE_DIRS = (
     os.path.join (BASE_DIR, 'templates'),
 )
 
-#TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-#    'django.core.context_processors.request',
-#)
+# Only used by dev-site to check if request.META.SERVER_NAME == dev.normal.no
+# So might be better to use own context processor for this.
+TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
+    'django.core.context_processors.request',
+)
 
 # This is the default
 #TEMPLATE_LOADERS = (
