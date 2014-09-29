@@ -4,18 +4,15 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns ('',
-    url(r'^$',              'core.views.index',         name='index'),
-    url(r'^nyhetsbrev/$',   'core.views.newsletter',    name='newsletter'),
-
+    url(r'^$',              'core.views.index',             name='index'),
+    url(r'^nyhetsbrev/$',   'core.views.newsletter',        name='newsletter'),
     url(r'^bli-medlem/$',   'apps.support.views.index',     name='enroll'),
     url(r'^medlem/$',       'apps.support.views.index'),    # alias
     url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
-    url(r'^nettguide/$',    'apps.links.views.index',   name='links'),
-
-    # xxx does name have any meaning with include? can use as prefix?
-    #url(r'^nyheter/',       include ('apps.news.urls'),     name='news'),
+    url(r'^nettguide/$',    'apps.links.views.index',       name='links'),
 
     (r'^nyheter/',  include ('apps.news.urls')),
+    #(r'^nyheter/',  include ('apps.news.urls', namespace='news')),
     (r'^admin/',    include (admin.site.urls)),
 )
 

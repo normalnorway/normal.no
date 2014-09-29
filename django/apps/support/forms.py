@@ -38,6 +38,7 @@ class MemberForm (forms.Form):
         ('3', u'Send meg informasjonsmateriell.'),
         ('4', u'Jeg kan hjelpe til med å skrive.'),
         ('5', u'Jeg kan hjelpe til med IT.'),
+        # @todo add to e-mail list? add to sms-list
     )
 
     choice =    forms.ChoiceField (label='Type medlemskap', choices=MEMBER_TYPE,
@@ -62,11 +63,11 @@ class MemberForm (forms.Form):
     def clean_born (self):
         import datetime
         born = self.cleaned_data['born']
-        if 18 > (((datetime.date.today() - born).days + 1) / 365):
+        cutoff = datetime.date (born.year+18, born.month, born.day)
+        if cutoff > datetime.date.today():
             raise forms.ValidationError (u'Du må være fyllt 18 år for å melde deg inn!')
         return born
 
-    # self.email.lower().strip()
 
 #    def __init__ (self, *args, **kwargs):
 #        super (MemberForm,self).__init__ (*args, **kwargs)

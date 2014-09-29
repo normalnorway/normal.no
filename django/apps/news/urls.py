@@ -6,7 +6,7 @@ TODO:
 drop arkiv-prefix? but then need prefix on detailed view, else name conflict between year and pk
 """
 
-urlpatterns = patterns ('apps.news',
+urlpatterns = patterns ('apps.news',    # apps.news.views?
     #url (r'^$',                      'views.list',  name='news-list'),
     url (r'^(?P<news_id>\d+)/$',    'views.detail', name='news-detail'),
 

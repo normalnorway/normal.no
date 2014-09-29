@@ -1,6 +1,32 @@
 
+## Colors
+
+a8ea92	light green
+81bc5f	darker green
+2e9fff	blue
+399ffb	lighter blue
+353a3d	warm black
+e3e6ec	grey
+
+161008	earthly brown
+1d120b  earthly brown
+ccb9a0	earthly light brown
+e8d6b0	earthly light brown
+
+
+
+div.container {
+    background-color: #F0F0F0;
+    width: 60%;
+    min-width: 800px;
+    margin: auto;
+    box-shadow: 10px 10px 50px #888;
+}
+
 
 ## Stealing
+
+http://markdown-here.com/about.html	# header bar
 
 http://www.meetup.com/djangosthlm/
 

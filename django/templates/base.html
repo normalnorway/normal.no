@@ -28,6 +28,10 @@
   <body>
     <div id="wrapper">
 
+      {% if request.META.SERVER_NAME == "dev.normal.no" %}
+      <div style="background-color:red; font-weight: bold; text-align: center;">dev.normal.no</div>
+      {% endif %}
+
       <header>
 	<div id="menu">{% include "menu.html" %}</div>
 	{% block header %} <!-- not in use -->

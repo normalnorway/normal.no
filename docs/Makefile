@@ -1,4 +1,4 @@
-MARKDOWN=markdown_py
+MARKDOWN=markdown_py -x toc
 #MARKDOWN=markdown_py -o html5
 
 

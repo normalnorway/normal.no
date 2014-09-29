@@ -24,6 +24,11 @@ table thead {
 table td {
   padding-right: 3em;
 }
+
+table td.number {
+  text-align: right;
+}
+
 </style>
 {% endblock %}
 
@@ -73,10 +78,46 @@ table td {
 
 <p style="font-weight:bold">Antall underskrifter: {{ count }}</p>
 
+
+<p><strong>Statistikk</strong></p>
+
+<table>
+  <thead> <tr><th>Prosent</th> <th>Modell</th></tr> </thead>
+  {% for item in stats %}
+  <tr>
+    <td class="number">{{ item.3 }}&#8239;%</td>
+    <td>{{ item.2 }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<br>
+
+<table style="border-collapse: separate">
+  <thead> <tr><th>By/sted</th> <th>Underskrifter</th></tr> </thead>
+  {% for item in citystats %}
+  <tr>
+    <td>{{ item.city }}</td>
+    <td style="text-align:right;padding:0;">{{ item.id__count }}</td>
+    <!--
+    <td class="number">{{ item.id__count }}</td>
+    -->
+  </tr>
+  {% endfor %}
+</table>
+
+
+<p style="color:gray"><small>Merk: Statistikken oppdateres én gang i døgnet.</small></p>
+
+
+<br>
+<p style="font-weight:bold">Siste 50 underskrifter:</p>
+
 {% if objects %}
 <table>
   <thead>
     <tr>
+      <th>Dato</th>
       <th>Navn</th>
       <th>By</th>
       <th>Modell</th>
@@ -84,9 +125,14 @@ table td {
   </thead>
   {% for item in objects %}
   <tr>
+    <td>{{ item.date|date:"c" }}</td>
     <td>{{ item.name }}</td>
     <td>{{ item.city }}</td>
+    <td>{{ item.choice }}</td>
+    <!--
+    <td>{{ item.date|date:"d/m/Y" }}</td>
     <td>{{ item.get_choice_display }}</td>
+    -->
   </tr>
   {% endfor %}
 </table>

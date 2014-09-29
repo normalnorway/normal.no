@@ -3,8 +3,9 @@
 from django.db import models
 
 
+# @todo warn if len(name.split()==1)?
 # @todo unique on name+city
-# @todo born_year?
+# @todo optional: born_year?
 class Petition (models.Model):
     CHOICES = (
         ('a', u'a) Nedkriminalisere cannabis (f.eks. etter Portugal-modellen).'),
@@ -22,3 +23,6 @@ class Petition (models.Model):
     city =   models.CharField (u'Sted', max_length=64)
     public = models.BooleanField (u'Vis mitt navn i listen under', default=True)
     #public = models.BooleanField (default=True)
+
+    def __unicode__ (self):
+        return u'%c: %s, %s' % (self.choice, self.name, self.city)

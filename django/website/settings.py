@@ -6,7 +6,6 @@
 # TODO
 # DEFAULT_FROM_EMAIL = ikke-svar@normal.no
 # increase cache timeout? TIMEOUT = 300
-# enable persistent db connections? CONN_MAX_AGE = 0
 #
 
 import os
@@ -19,7 +18,7 @@ from django.conf import global_settings as defaults
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-# Admins will get email whenever an error happens and DEBUG=False.
+# Admins will get email whenever an error happens (and DEBUG=False).
 ADMINS = (
      ('Torkel', 'torkel@normal.no'),
 )
@@ -44,8 +43,23 @@ ALLOWED_HOSTS = (
 # request.META['REMOTE_ADDR']) is in INTERNAL_IPS.
 # So put your client ip-address here for debugging.
 INTERNAL_IPS = ['127.0.0.1']
-if DEBUG:
-    INTERNAL_IPS += ('176.58.124.187', '2a01:7e00::f03c:91ff:feae:a668')
+# @todo only if DEBUG ?
+
+# @todo join all if DEBUG sections?
+#if DEBUG:
+#    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+
+# Enable persistent db connections.
+# Note: Sometimes a database won't be accessed by the majority of your
+# views, for example because it's the database of an external system, or
+# thanks to caching. In such cases, you should set CONN_MAX_AGE to a low
+# value or even 0, because it doesn't make sense to maintain a connection
+# that's unlikely to be reused.
+# XXX this should go inside DATABASES['default']
+#if not DEBUG:
+#    CONN_MAX_AGE = 3600
 
 
 # contrib.site (required by contrib.flatpages)
@@ -87,9 +101,11 @@ TEMPLATE_DIRS = (
     os.path.join (BASE_DIR, 'templates'),
 )
 
-#TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-#    'django.core.context_processors.request',
-#)
+# Only used by dev-site to check if request.META.SERVER_NAME == dev.normal.no
+# So might be better to use own context processor for this.
+TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
+    'django.core.context_processors.request',
+)
 
 # This is the default
 #TEMPLATE_LOADERS = (
@@ -124,24 +140,19 @@ INSTALLED_APPS = (
 
 
 # Note: these are invoked in reverse order for the response.
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware', # 1.7
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware', # Note: must be last!
-)
-
-ROOT_URLCONF = 'website.urls'
-
-WSGI_APPLICATION = 'website.wsgi.application'
-
-# needed for django >= 1.6
-# Note: not needed on inormal. why?
-#TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+]
+import django
+if django.VERSION[0:2] < (1,7):
+    MIDDLEWARE_CLASSES.remove ('django.contrib.auth.middleware.SessionAuthenticationMiddleware')
 
 
 DATABASES = {
@@ -152,18 +163,24 @@ DATABASES = {
 }
 
 
+ROOT_URLCONF = 'website.urls'
+
+WSGI_APPLICATION = 'website.wsgi.application'
+
 if DEBUG:
-    SECRET_KEY = 'this is not very secret; it is used for debugging!'
+    SECRET_KEY = 'x' * 50
+    #SECRET_KEY = ''.join (chr(random.randint(33,126)) for x in xrange(50))
 else:
     try:
         SECRET_KEY = open (os.path.join(ROOT_DIR, 'secret-key')).readline()
+        # @todo make poly class so can both be str and called
+        #SECRET_KEY = open (ROOT_DIR('secret-key')).readline()
     except IOError:
         # @todo create secret-key file?
+        # @todo log! (if possible)
         print 'Warning: "secret-key" file not found! Using temporary key instead!'
-        from base64 import b64encode
-        SECRET_KEY = b64encode(os.urandom(48))
-        #import random
-        #SECRET_KEY = ''.join (chr(random.randint(33,126)) for x in xrange(54))
+        import base64
+        SECRET_KEY = base64.b64encode (os.urandom(48))
 
 
 ## Logging
@@ -182,25 +199,47 @@ else:
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': True, # @todo keep djangos default logging
+                                      # q: how to see 'em?
 
     'loggers': {
         # @todo can drop handler and get default?
         # Q: what is default level. move level to handlers?
+        # @todo drop?
         '': {
             'handlers': ['file:website'],
             'level': 'DEBUG',
         },
+
+        # Catch-all logger. No messages are posted directly to this logger.
         'django': {
             'handlers': ['file:django'],
             'level': 'DEBUG',
             'propagate': True,
         },
+
+        # django.db.backends
+        # Every application-level SQL statement executed by a request is
+        # logged at the DEBUG level.
+        # Extra context: duration, sql, params
+
+        # django.security.*
+        # Messages on any occurrence of SuspiciousOperation. There is
+        # a sub-logger for each sub-type of SuspiciousOperation.
+        # Most occurrences are logged as a warning, while any
+        # SuspiciousOperation that reaches the WSGI handler will be
+        # logged as an error.
+        # The django.security logger is configured the same as the request
+        # logger, and any error events will be mailed to admins.
         'django.security': {
             'handlers': ['file:security', 'mail_admins'],
             'level': 'DEBUG',
             'propagate': False,
         },
+
+        # 5XX responses are raised as ERROR messages
+        # 4XX responses are raised as WARNING messages
+        # Extra context: status_code, request
         'django.request': {
             'handlers': ['file:request', 'mail_admins'],
             'level': 'INFO',
@@ -213,6 +252,9 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
             'filters': ['debug_false'],
+            # Attach the full content of the debug Web page that would
+            # have been produced if DEBUG were True.
+            # Note: contains a full traceback; potentially very sensitive
             'include_html': True,
         },
         'file:website': {
@@ -252,7 +294,7 @@ LOGGING = {
     },
 
     'filters': {
-        'debug_false': {
+        'debug_false': {    # nodebug?
             '()': 'django.utils.log.RequireDebugFalse'
         },
     },
