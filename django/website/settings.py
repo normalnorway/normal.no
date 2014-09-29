@@ -15,7 +15,7 @@ ROOT_DIR = os.path.dirname (BASE_DIR)
 from django.conf import global_settings as defaults
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # Admins will get email whenever an error happens (and DEBUG=False).
@@ -32,8 +32,12 @@ MANAGERS = ADMINS
 ALLOWED_HOSTS = (
     'normal.no',
     'www.normal.no',
-    'dev.normal.no',
+    'normal.i2p',
+    'qrw3w45sx7niqcpg.onion',
+    'dev.normal.no',    # <-- development site
 )
+#ALLOWED_HOSTS = ('*',)
+
 
 # Note: django.core.context_processors.debug is only active when
 # request.META['REMOTE_ADDR']) is in INTERNAL_IPS.

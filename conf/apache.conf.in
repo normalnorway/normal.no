@@ -20,6 +20,8 @@
 <VirtualHost *:80>
     ServerName	    @DOMAIN@
     ServerAlias	    www.@DOMAIN@
+    ServerAlias	    normal.i2p
+    ServerAlias	    qrw3w45sx7niqcpg.onion
     ServerAdmin	    torkel@normal.no
 
     Alias /static/      @PREFIX@/htdocs/static/
