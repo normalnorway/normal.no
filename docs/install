@@ -47,8 +47,6 @@ mysql> grant all on normal.* to 'normal'@'localhost';
 git clone http://git.normal.no/git/normal.no /srv/www/normal.no
 cd /srv/www/normal.no
 
-cp conf/settings_local.py-dist django/website/settings_local.py
-
 
 ## Create required files and directories
 
@@ -75,11 +73,6 @@ chmod 770 db
 chmod 660 db/normal.no
 chown www-data:normalweb db
 chown www-data:normalweb db/normal.db
-
-# old stuff
-#edit django/website/settings_local.py
-  # - 'NAME': os.path.join (ROOT, 'normal.db'),
-  # + 'NAME': '/srv/www/dev.normal.no/db/normal.db',
 
 
 # Logs

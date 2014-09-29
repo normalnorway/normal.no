@@ -105,12 +105,13 @@ Hos meg blir det `/home/torkel/normal.no/`.
 
 #### Konfigurer / oppsett ####
 
-Legg inn en standard konfigurasjonsfil:
+Sjekk at standard konfigurasjonen er ok:
 
-    cp conf/settings_local.py-dist django/website/settings_local.py
+    edit django/website/settings.py
 
 Så trenger du en databasefil med noen testdata:
 
+    cd db
     wget http://torkel.normal.no/normal.db
 
 Siste steg er å lage deg en bruker så du får logget inn:

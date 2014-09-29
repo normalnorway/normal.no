@@ -14,7 +14,11 @@ cssfiles := $(patsubst %.less,%.css,$(wildcard *.less))
 
 all.css: $(cssfiles)
 	cat $(cssfiles) > all.css
-	rm $(cssfiles)
+
+	# drawback: will regenerate all css files even if .less not
+	# changed. so better to move all src files out of static dir
+	# so not picked up by collectstatic
+	#rm $(cssfiles)
 
 clean:
 	rm -fv all.css
