@@ -25,6 +25,8 @@ import website.settings_local as local
 ALLOWED_HOSTS = (
     'normal.no',
     'www.normal.no',
+    'normal.i2p',
+    'qrw3w45sx7niqcpg.onion',
     'dev.normal.no',    # <-- development site
 )
 #ALLOWED_HOSTS = ('*',)
