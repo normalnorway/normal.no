@@ -45,7 +45,8 @@ class MemberForm (forms.Form):
                                    widget=forms.RadioSelect)
     name =      forms.CharField (label=u'Navn', max_length=64)
     born =      forms.DateField (label=u'Fødselsdato',
-                    input_formats = ('%d.%m.%y', '%d/%m/%y', '%d%m%y'),
+                    input_formats = ('%d.%m.%y', '%d/%m/%y', '%d%m%y',
+                                     '%d.%m.%Y', '%d/%m/%Y', '%d%m%Y'),
                     error_messages = {'invalid': u'Ugyldig dato. Bruk dd/mm/åå eller dd.mm.åå'})
     address1 =  forms.CharField (label=u'Adresse')
     address2 =  forms.CharField (label=u'Adresse', required=False)
