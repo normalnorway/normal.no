@@ -32,8 +32,12 @@ MANAGERS = ADMINS
 ALLOWED_HOSTS = (
     'normal.no',
     'www.normal.no',
-    'dev.normal.no',
+    'normal.i2p',
+    'qrw3w45sx7niqcpg.onion',
+    'dev.normal.no',    # <-- development site
 )
+#ALLOWED_HOSTS = ('*',)
+
 
 # Note: django.core.context_processors.debug is only active when
 # request.META['REMOTE_ADDR']) is in INTERNAL_IPS.
