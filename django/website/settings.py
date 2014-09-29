@@ -15,7 +15,7 @@ ROOT_DIR = os.path.dirname (BASE_DIR)
 from django.conf import global_settings as defaults
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # Admins will get email whenever an error happens (and DEBUG=False).
