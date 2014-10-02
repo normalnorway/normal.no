@@ -15,7 +15,7 @@ ROOT_DIR = os.path.dirname (BASE_DIR)
 from django.conf import global_settings as defaults
 
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Admins will get email whenever an error happens (and DEBUG=False).
@@ -178,6 +178,8 @@ else:
     except IOError:
         # @todo create secret-key file?
         # @todo log! (if possible)
+        # XXX BUG: will have diferent key for each instance! so must
+        # auto-create it.
         print 'Warning: "secret-key" file not found! Using temporary key instead!'
         import base64
         SECRET_KEY = base64.b64encode (os.urandom(48))
