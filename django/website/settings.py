@@ -5,7 +5,6 @@
 #
 # TODO
 # DEFAULT_FROM_EMAIL = ikke-svar@normal.no
-# increase cache timeout? TIMEOUT = 300
 #
 
 import os
@@ -161,6 +160,24 @@ DATABASES = {
         'NAME': os.path.join (ROOT_DIR, 'db', 'normal.db'),
     }
 }
+
+
+CACHES = {
+    # This is a thread-safe, per-process cache.
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 3600
+    }
+}
+# Dummy caching for development
+#if DEBUG:
+if False:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+        }
+    }
+
 
 
 ROOT_URLCONF = 'website.urls'
