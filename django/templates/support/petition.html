@@ -8,27 +8,32 @@
 
 {% block extrastyle %}
 <style>
-form { margin-top: 1.5em; }
-form ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-table {
-  border-collapse: collapse;
-}
-table thead {
-  border-bottom: 1px solid black;
-  text-align: left;
-}
-table td {
-  padding-right: 3em;
-}
+  h2 {
+    margin: 1.5em 0 .5em 0;
+  }
 
-table td.number {
-  text-align: right;
-}
+  form {
+    margin-top: 1.5em;
+  }
+  form ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
+  table {
+    border-collapse: collapse;
+  }
+  table thead {
+    border-bottom: 1px solid black;
+    text-align: left;
+  }
+  table td {
+    padding-right: 3em;
+  }
+  table td.number {
+    text-align: right;
+  }
 </style>
 {% endblock %}
 
@@ -74,44 +79,59 @@ table td.number {
 </form>
 
 
-<h3 style="padding-top:1em">Underskrifter</h3>
 
-<p style="font-weight:bold">Antall underskrifter: {{ count }}</p>
+<h2>Statistikk</h2>
 
-
-<p><strong>Statistikk</strong></p>
+<p><em>Opprop startet 8. juli 2014.</em></p>
 
 <table>
-  <thead> <tr><th>Prosent</th> <th>Modell</th></tr> </thead>
-  {% for item in stats %}
   <tr>
-    <td class="number">{{ item.3 }}&#8239;%</td>
-    <td>{{ item.2 }}</td>
+    <td>Antall underskrifter</td>
+    <td class="number">{{ count }}</td>
+  </tr>
+
+  <tr>
+    <td>Underskrifter per uke</td>
+    <td class="number">{{ stats.week }}</td>
+  </tr>
+
+  <tr>
+    <td>Underskrifter siste uke</td>
+    <td class="number">{{ stats.last_week }}</td>
+  </tr>
+</table>
+
+
+<table style="margin-top: 1em">
+  <thead> <tr><th>Prosent</th> <th>Modell</th></tr> </thead>
+  {% for item in stats.model %}
+  <tr>
+    <td class="number">{{ item.percent }}&#8239;%</td>
+    <td>{{ item.model }}</td>
   </tr>
   {% endfor %}
 </table>
 
-<br>
 
-<table style="border-collapse: separate">
-  <thead> <tr><th>By/sted</th> <th>Underskrifter</th></tr> </thead>
-  {% for item in citystats %}
+<table style="margin-top: 1.2em">
+  <thead> <tr><th>By/sted</th> <th>Antall</th></tr> </thead>
+  {% for item in stats.city %}
   <tr>
     <td>{{ item.city }}</td>
-    <td style="text-align:right;padding:0;">{{ item.id__count }}</td>
-    <!--
-    <td class="number">{{ item.id__count }}</td>
-    -->
+    <td class="number" style="padding:0">{{ item.id__count }}</td>
   </tr>
   {% endfor %}
 </table>
 
 
-<p style="color:gray"><small>Merk: Statistikken oppdateres én gang i døgnet.</small></p>
+<p class="gray"><small>Merk: Statistikken oppdateres én gang
+i timen.</small></p>
 
 
-<br>
-<p style="font-weight:bold">Siste 50 underskrifter:</p>
+
+<h2>Underskrifter</h2>
+
+<p>Viser siste 50 av {{ count }} underskrifter:</p>
 
 {% if objects %}
 <table>

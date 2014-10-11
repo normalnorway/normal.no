@@ -5,11 +5,18 @@ Velkommen som medlem og takk for støtten! Du vil i løpet av én uke motta
 en velkomst e-post. Betalende medlemmer vil også få en giro per e-post.
 '''
 
+PETITION_MSG = u'''
+Takk for at du skrev deg på oppropet! Sammen kan vi legge press på
+myndigheter og styrende organer. Oppfordr gjerne andre til å gjøre det
+samme ved å dele lenke til denne siden.
+'''
+
 import os
 import datetime
 from django.db.models import Count
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.core.cache import cache
 from core.shortcuts import render_to
 from apps.content.models import get_content, get_content_dict
 
@@ -17,61 +24,77 @@ from . import add_new_member
 from .models import Petition
 from .forms import MemberForm, PetitionForm
 
+# Key is model char, value is get_choice_display(char)
+CHOICE_DISPLAY = dict(Petition.CHOICES)
+
+
+def get_petition_stats (data):
+    '''Calculate and cache statistics for the petition'''
+    ckey = 'support-petition-stats'
+    stats = cache.get (ckey)
+    if stats: return stats
+
+    stats = dict()
+    count = data.count()
+
+    model_stats = []
+    for item in Petition.objects.values_list ('choice').annotate(Count('id')).order_by('-id__count'):
+        model_stats.append ({
+            'model':    CHOICE_DISPLAY[item[0]],
+            'percent':  int (round(100*float(item[1])/count)),
+        })
+    stats['model'] = model_stats
+    stats['city'] = Petition.objects.values ('city').annotate(Count('id')).order_by('-id__count')[0:5]
+    stats['week'] = count * 7 / (Petition.objects.latest().date - Petition.objects.earliest().date).days
+    stats['last_week'] = data.filter (date__gt = datetime.datetime.now() - datetime.timedelta(days=7)).count()
+
+    cache.set (ckey, stats)
+    return stats
+
+
 
 # @todo sanitize name
-# @todo make sure can't sign up twice (or just clear the form?)
 # @todo ask for full name
+# @todo nuke stats in cache on new signup?
 @render_to ('support:petition.html')
 def petition (request):
-    L = Petition.objects.all()
-    count = L.count()
-
-    # Calculate some statistics
-    # @todo when did pettition start; how many per week
-    # @todo cache!
-    # Petition.objects.values('choice').annotate(Count('id')).order_by()
-    # Petition.objects.values_list('choice').annotate(Count('id')).order_by('-id__count')
-    ctbl = dict(Petition.CHOICES) # @todo static
-    stats = []
-    for item in Petition.objects.values_list ('choice').annotate(Count('id')).order_by('-id__count'):
-        stats.append ((item[0], item[1], ctbl[item[0]],
-                      int(round(100*float(item[1])/count))))
-        # 0: choice, count, get_choice_display, percent
-
-    city_stats = []
-    foo = Petition.objects.values ('city').annotate(Count('id')).order_by('-id__count')[0:5]
-
+    data = Petition.objects.all()
     ctx = {
-        'count':    count,
-        'objects':  L.filter (public=True)[0:50],
+        'objects':  data.filter (public=True)[0:50],
         'form':     PetitionForm(),
         'toptext':  get_content ('opprop-top'),
-        'stats':    stats,
-        'citystats': foo,
+        'count':    data.count(),
+        'stats':    get_petition_stats (data)
     }
-    if not request.method == 'POST': return ctx
+
+    if not request.method == 'POST':
+        return ctx
+
     form = PetitionForm (request.POST)
     if form.is_valid():
         obj = form.save()
-        messages.success (request, u'Takk for at du skrev deg på oppropet! Få gjerne en bekjent til å gjøre det også.')
-    else: ctx['form'] = form
+        form = PetitionForm()   # clear the form
+        messages.success (request, PETITION_MSG)
+    ctx['form'] = form
     return ctx
+
 
 
 
 @render_to ('support:enroll.html')
 def index (request):
     ctx = get_content_dict ('innmelding-top', 'innmelding-bunn')
+
     if not request.method == 'POST':
         ctx['form'] = MemberForm()
         return ctx
-    ctx['form'] = form = MemberForm (request.POST)
-    if form.is_valid():
+
+    ctx['form'] = MemberForm (request.POST)
+    if ctx['form'].is_valid():
         data = form.cleaned_data
         data['enrolled'] = datetime.datetime.now().strftime('%F')
-        json.dump (data, member_fp)
-        member_fp.write ('\n')
-        member_fp.flush()
+        add_new_member (data)
         messages.success (request, WELCOME_MSG)
-        ctx['form'] = MemberForm()  # clear form
+        ctx['form'] = MemberForm()  # clear the form
+
     return ctx
