@@ -1,13 +1,11 @@
 # encoding: utf-8
 
 WELCOME_MSG = u'''
-Velkommen som medlem og takk for støtten! Du vil i løpet av få dager mota
-en giro per e-post eller brev.
+Velkommen som medlem og takk for støtten! Du vil i løpet av én uke motta
+en velkomst e-post. Betalende medlemmer vil også få en giro per e-post.
 '''
-# @todo brev kommer ikke. oppfordre til å oppgi e-post
 
 import os
-import json
 import datetime
 from django.db.models import Count
 from django.shortcuts import redirect
@@ -15,13 +13,9 @@ from django.contrib import messages
 from core.shortcuts import render_to
 from apps.content.models import get_content, get_content_dict
 
+from . import add_new_member
 from .models import Petition
 from .forms import MemberForm, PetitionForm
-
-# @todo move to __init__ ? NEW_MEMBERS_FILENAME? or get_filename,
-# new_member_get_fp, new_member_add? NewMember.add?
-from website.settings import ROOT_DIR
-member_fp = open (os.path.join (ROOT_DIR, 'db', 'newmembers'), 'a')
 
 
 # @todo sanitize name
@@ -29,7 +23,7 @@ member_fp = open (os.path.join (ROOT_DIR, 'db', 'newmembers'), 'a')
 # @todo ask for full name
 @render_to ('support:petition.html')
 def petition (request):
-    L = Petition.objects.all().order_by('-date')
+    L = Petition.objects.all()
     count = L.count()
 
     # Calculate some statistics
@@ -74,9 +68,7 @@ def index (request):
     ctx['form'] = form = MemberForm (request.POST)
     if form.is_valid():
         data = form.cleaned_data
-        data['born'] = data['born'].strftime ('%F') # json don't handle datetime
         data['enrolled'] = datetime.datetime.now().strftime('%F')
-        # @todo filter/remove empty
         json.dump (data, member_fp)
         member_fp.write ('\n')
         member_fp.flush()
