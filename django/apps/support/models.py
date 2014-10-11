@@ -27,4 +27,5 @@ class Petition (models.Model):
         return u'%c: %s, %s' % (self.choice, self.name, self.city)
 
     class Meta:
+        ordering = '-date',
         get_latest_by = 'date'
