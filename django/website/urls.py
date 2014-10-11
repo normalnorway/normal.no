@@ -18,7 +18,9 @@ urlpatterns = patterns ('',
 
 
 # Hack to serve MEDIA_ROOT in dev mode
+# And to map a test view to /test
 from django.conf import settings
 if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += patterns ('', url(r'^test/$', 'core.views.test'))

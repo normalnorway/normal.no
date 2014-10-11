@@ -11,3 +11,9 @@ def index (request):
 @render_to ('newsletter.html')
 def newsletter (request):
     return {}
+
+
+# Note: Only used for testing. Do not remove.
+@render_to ('test.html')
+def test (request):
+    return {}
