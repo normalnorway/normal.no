@@ -89,8 +89,8 @@ def index (request):
         ctx['form'] = MemberForm()
         return ctx
 
-    ctx['form'] = MemberForm (request.POST)
-    if ctx['form'].is_valid():
+    ctx['form'] = form = MemberForm (request.POST)
+    if form.is_valid():
         data = form.cleaned_data
         data['enrolled'] = datetime.datetime.now().strftime('%F')
         add_new_member (data)
