@@ -21,6 +21,7 @@ from core.shortcuts import render_to
 from apps.content.models import get_content, get_content_dict
 
 from . import add_new_member
+#import member  # then can do: member.add(...)
 from .models import Petition
 from .forms import MemberForm, PetitionForm
 

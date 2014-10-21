@@ -88,7 +88,7 @@ from apps.links.models import Link
 LinkCategory.objects.all().delete()
 Link.objects.all().delete()
 
-# Q: why slow?
+# Q: why slow?  A: wrap in transaction
 # @todo obj.full_clean()?
 for (section, data) in nettguide:
     print 'Importing ' + section

@@ -13,6 +13,7 @@ new_member_fp = open (os.path.join (ROOT_DIR, 'db', 'newmembers'), 'a')
 def add_new_member (data):
     '''Add a new member. Data is a dictionary'''
     data['born'] = data['born'].strftime ('%F') # json don't handle datetime objects, so convert to string
+    #data['born'] = str (data['born']) # does the same as above (i think)
     fp = new_member_fp
     json.dump (data, fp)
     fp.write ('\n')
