@@ -3,6 +3,8 @@ from django.contrib import admin
 
 admin.autodiscover()
 
+import website.admin
+
 urlpatterns = patterns ('',
     url(r'^$',              'core.views.index',             name='index'),
     url(r'^nyhetsbrev/$',   'core.views.newsletter',        name='newsletter'),
@@ -14,6 +16,8 @@ urlpatterns = patterns ('',
     (r'^nyheter/',  include ('apps.news.urls')),
     #(r'^nyheter/',  include ('apps.news.urls', namespace='news')),
     (r'^admin/',    include (admin.site.urls)),
+
+    (r'^tinymce/',  include ('tinymce4.urls')),
 )
 
 

@@ -131,6 +131,7 @@ INSTALLED_APPS = (
 
     # Local apps
     'core',
+    'tinymce4',     # only to get staticfiles
     'apps.news',
     'apps.links',
     'apps.content',
