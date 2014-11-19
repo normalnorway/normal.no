@@ -16,6 +16,8 @@ urlpatterns = patterns ('',
     (r'^nyheter/',  include ('apps.news.urls')),
     #(r'^nyheter/',  include ('apps.news.urls', namespace='news')),
     (r'^admin/',    include (admin.site.urls)),
+    # @todo reset password
+    # https://docs.djangoproject.com/en/dev/ref/contrib/admin/#adding-a-password-reset-feature
 
     (r'^tinymce/',  include ('tinymce4.urls')),
 )

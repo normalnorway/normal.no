@@ -34,6 +34,12 @@
 
     CustomLog           @PREFIX@/logs/access.log combined
     ErrorLog            @PREFIX@/logs/error.log
+    # @todo dont' use .log prefix since clashes with django logs
+    #CustomLog logs/referer_log "%{Referer}i -> %U"
+    #CustomLog logs/agent_log "%{User-agent}i"
+    # %D    The time taken to serve the request, in microseconds.
+    # SetEnvIf Request_URI \.gif$ gif-image
+    #   don't log access
 
     ## Access control (ACL)
     <Directory @PREFIX@/htdocs>

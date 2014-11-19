@@ -11,15 +11,25 @@ css for <code>
 more line-spacing?
 -->
 
+<!-- markdown don't touches stuff inside block tags, but head is not
+a block tag, so it messes it up. Therefor we wrapp head inside a div
+even tough it's not legal html -->
+<div>
 <meta charset="utf-8" />
 <style type="text/css">
-  pre {
+  pre {  /* box with code */
     background-color: rgb(238, 238, 238);
     border: 1px solid black;
     padding: 1ex;
     width: 52em;
   }
-  p { width: 50em; }
+  p > code {    /* inline code */
+    font-size: 90%;
+    background-color: rgba(0,0,0,0.04);
+    padding: 0.33em 0.1em;
+    border-radius: 3px;
+  }
+  p { width: 50em; line-height: 1.44; }
   h2 { margin-top: 3ex; }
   div.toc {
     border: 1px dashed black;
@@ -28,6 +38,8 @@ more line-spacing?
     padding-right: 1em;
   }
 </style>
+</div>
+
 
 [TOC]
 
@@ -47,8 +59,8 @@ Er noe uklart ta kontakt med <mailto:torkel@normal.no> eller
 Nettsiden bruker rammeverket [Django], er skrevet
 i programmeringsspråket [Python] og bruker [SQLite] som database.
 
-For å holde orden på alle filer, og tilate at flere redigerer disse
-samtidig, bruker vi et [versjonskontrollsystemet][SCM] som kalles Git.
+For å holde orden på alle filer – samt tilate at flere redigerer disse
+samtidig – bruker vi et [versjonskontrollsystem][SCM] som kalles [Git][].
 
 Denne guiden tar utgangspunkt i at du bruker Debian eller Ubuntu
 GNU/Linux, men de samme prinsipper gjelder for Windows, Mac, eller andre
