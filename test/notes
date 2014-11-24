@@ -1,0 +1,27 @@
+
+    URLS = (    # xxx can't do this. each test must be in own method
+        '/',
+        '/om-normalx/',
+        '/bli-medlem/',
+        '/støtt/',          # @todo urlencode?
+        '/nyhetsbrev/',
+        '/opprop/',
+        '/nyheter/arkiv/',  # @todo test all sub-views
+        '/nettguide/',
+        # Pages
+        '/om-cannabis/',
+        '/faq/',
+    )
+
+    def test_urls (self):
+        for url in self.URLS:
+            code = get_http_status (self.PREFIX + url)
+            self.assertEqual (code, 200)
+
+
+
+for index,path in enumerate(TestLiveSite.URLS):
+    url = TestLiveSite.PREFIX + path
+    name = 'test_url_' + str(index)
+    setattr (TestLiveSite, name, lambda self: self.assertEqual (200,
+        get_http_status (url)))

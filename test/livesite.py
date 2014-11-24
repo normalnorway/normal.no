@@ -1,33 +1,18 @@
 # encoding: utf-8
 """
-Test that all urls/views on normal.no is working. E.g., returning a
-2xx status code.
-
-Use this after deploying to test site; then can rollback if not ok.
+Test that all urls/views on normal.no is working.
 """
-
-PREFIX = 'http://normal.no'
-
 
 import unittest
 import httplib
-from urlparse import urlsplit
 
+connection = httplib.HTTPConnection ('normal.no', timeout=5)
 
-#connection = httplib.HTTPConnection ('normal.no')
-# then do multiple requests with keep-alive
-
-
-# @todo handle query string
-# @todo timeout. @see https://docs.python.org/2/library/httplib.html
-def get_http_status (urlstr):
-    #print 'Checking', urlstr
-    url = urlsplit (PREFIX + urlstr)
-    #assert url.query=='' and url.fragment==''
-    c = httplib.HTTPConnection (url.hostname)
-    c.request ('HEAD', url.path)
-    return c.getresponse().status
-
+def get_http_status (path):
+    connection.request ('HEAD', path)
+    res = connection.getresponse()
+    res.read()
+    return res.status
 
 
 class TestLiveSite (unittest.TestCase):
