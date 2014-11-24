@@ -11,18 +11,23 @@ PREFIX = 'http://normal.no'
 
 import unittest
 import httplib
-import urlparse
+from urlparse import urlsplit
+
+
+#connection = httplib.HTTPConnection ('normal.no')
+# then do multiple requests with keep-alive
 
 
 # @todo handle query string
 # @todo timeout. @see https://docs.python.org/2/library/httplib.html
 def get_http_status (urlstr):
     #print 'Checking', urlstr
-    url = urlparse.urlsplit (PREFIX + urlstr)
-    assert url.query=='' and url.fragment==''
-    conn = httplib.HTTPConnection (url.hostname)
-    conn.request ('HEAD', url.path)
-    return conn.getresponse().status
+    url = urlsplit (PREFIX + urlstr)
+    #assert url.query=='' and url.fragment==''
+    c = httplib.HTTPConnection (url.hostname)
+    c.request ('HEAD', url.path)
+    return c.getresponse().status
+
 
 
 class TestLiveSite (unittest.TestCase):

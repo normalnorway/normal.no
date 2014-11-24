@@ -1,9 +1,10 @@
 from django.db import models
+from tinymce4.models import HtmlField
 
 
 # @todo mark returned string as safe?
 def get_content (name):
-    ''' Return content block by name. If not found, substitute empty string'''
+    '''Return content block by name. If not found, substitute empty string'''
     try:
         obj = Content.objects.get (name=name)
     except Content.DoesNotExist:
@@ -23,7 +24,7 @@ def get_content_dict (*args):
 
 
 class Content (models.Model):
-    ''' Content block used by various views/templates '''
+    '''Content block used by various views/templates'''
     name = models.CharField (max_length=64, unique=True)
-    content = models.TextField (blank=True)
+    content = HtmlField (blank=True)
     def __unicode__ (self): return self.name

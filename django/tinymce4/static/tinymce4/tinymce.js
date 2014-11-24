@@ -60,8 +60,18 @@ tinymce.init ({
     height: 450,
     resize: 'both',
 
-    entity_encoding : "raw",
     custom_undo_redo_levels: 8,
+    entity_encoding: "raw",
+
+    // Do not convert to relative urls.
+    convert_urls : false,
+    // Can also do this. Might be more robust/safer.
+    //document_base_url: document.location.origin + '/',
+    //relative_urls : false,
+
+//    extended_valid_elements: "@[itemscope|itemtype|itemid|itemprop|content],div,span,time[datetime],h1[title],h2[title],h3[title]",
+    verify_html : false,
+
 
     menubar: 'edit insert format table',
     // Default is: 'tools table format view insert edit'
@@ -71,16 +81,6 @@ tinymce.init ({
 
     plugins: ['image', 'link', 'paste', 'anchor', 'code', 'table', 'textcolor'],
 
-    /* Note: will override defaults
-    // Defaults: http://www.tinymce.com/wiki.php/Configuration:style_formats
-    style_formats: [
-	{title: 'Ingress', block: 'div', classes: 'ingress'},
-	{title: 'Tittel', block: 'h1', styles: {color: 'green'}},
-	{title: 'Row border', selector: 'tr', classes: 'foobar'},
-	// @note selector can be complex css selector. e.g., odd rows in
-	// a table.
-    ],
-    */
 
     /** Plugin config */
 
@@ -90,7 +90,7 @@ tinymce.init ({
 	{title: 'Facebook',	value: 'https://www.facebook.com/NormalNorway'},
 	{title: 'Youtube',	value: 'http://www.youtube.com/user/normalnorway'},
 	{title: 'Nyhetsbrev',	value: 'http://eepurl.com/S3rFH'},
-	{title: 'Donér',	value: 'alert("todo")'},
+	{title: 'Donér',	value: 'http://normal.no/støtt/'},
     ],
 
     // Image

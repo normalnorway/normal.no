@@ -9,12 +9,9 @@
 # @todo better?
 # http://django-tinymce.googlecode.com/svn/tags/release-1.5/docs/.build/html/usage.html#using-the-widget
 
-#from django import forms
 from django.contrib import admin
 from django.contrib.flatpages.models import FlatPage
-#from django.contrib.flatpages.admin import FlatPageAdmin, FlatpageForm
 from django.contrib.flatpages.admin import FlatPageAdmin
-
 from tinymce4.widgets import TinyMCE
 
 
@@ -24,18 +21,10 @@ class MyFlatPageAdmin (FlatPageAdmin):
         models.TextField: { 'widget': TinyMCE },
         #models.TextField: { 'widget': TinyMCE (attrs={'cols': 20, 'rows': 20}) },
     }
+
 # Note: To only override widget for some fields (not every TextField), use
 # formfield_for_dbfield (self, db_field, **kwargs)
 # @see http://django-tinymce.googlecode.com/svn/tags/release-1.5/docs/.build/html/usage.html#the-flatpages-link-list-view
-
-
-#from django.utils.translation import ugettext_lazy as _
-#class MyFlatpageForm (FlatpageForm):
-#    content = forms.CharField (label = _(u'content'), required=False,
-#                               widget = TinyMCE())
-#
-#class MyFlatPageAdmin (FlatPageAdmin):
-#    form = MyFlatpageForm
 
 
 admin.site.unregister (FlatPage)
