@@ -1,3 +1,15 @@
 {% extends "base.html" %}
+
 {% block extratitle %} » {{ flatpage.title }}{% endblock %}
-{% block content %}{{ flatpage.content }}{% endblock %}
+
+{% block content %}
+{{ flatpage.content }}
+
+{% if user.is_staff %}
+<p>
+  <a href="/admin/flatpages/flatpage/{{flatpage.pk}}/">
+    <img src="/static/admin/img/icon_changelink.gif" /> Rediger</a>
+</p>
+{% endif %}
+
+{% endblock %}
