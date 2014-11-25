@@ -13,9 +13,9 @@ class Article (models.Model):
     ''' Link to external news article, with an optional own comment '''
     # Note: some fields allows NULL since old data did that. @todo fix db
     class Meta:
-        #verbose_name = 'News link'
-        verbose_name = 'Nyhets-lenke'
-        verbose_name_plural = 'Nyhets-lenker'
+        #verbose_name = 'news link'
+        verbose_name = 'nyhets-lenke'
+        verbose_name_plural = 'nyhets-lenker'
         get_latest_by = 'date'
 
     pubdate =   models.DateField (auto_now_add=True)

@@ -28,3 +28,6 @@ class Content (models.Model):
     name = models.CharField (max_length=64, unique=True)
     content = HtmlField (blank=True)
     def __unicode__ (self): return self.name
+    class Meta:
+        verbose_name = 'innholds-blokk'
+        verbose_name_plural = 'innholds-blokker'

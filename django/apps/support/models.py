@@ -27,5 +27,7 @@ class Petition (models.Model):
         return u'%c: %s, %s' % (self.choice, self.name, self.city)
 
     class Meta:
+        verbose_name = 'opprop'
+        verbose_name_plural = 'opprop'
         ordering = '-date',
         get_latest_by = 'date'
