@@ -37,6 +37,13 @@ ALLOWED_HOSTS = (
 #ALLOWED_HOSTS = ('*',)
 
 
+# Note: Default is '/accounts/login/'.
+# Also accepts view function names and named URL patterns
+LOGIN_URL = '/admin/login/'
+#LOGOUT_URL = '/admin/logout/'
+#PASSWORD_RESET_TIMEOUT_DAYS = 3
+
+
 # Note: django.core.context_processors.debug is only active when
 # request.META['REMOTE_ADDR']) is in INTERNAL_IPS.
 # So put your client ip-address here for debugging.
