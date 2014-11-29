@@ -56,17 +56,6 @@ INTERNAL_IPS = ['127.0.0.1']
 #    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 
-# Enable persistent db connections.
-# Note: Sometimes a database won't be accessed by the majority of your
-# views, for example because it's the database of an external system, or
-# thanks to caching. In such cases, you should set CONN_MAX_AGE to a low
-# value or even 0, because it doesn't make sense to maintain a connection
-# that's unlikely to be reused.
-# XXX this should go inside DATABASES['default']
-#if not DEBUG:
-#    CONN_MAX_AGE = 3600
-
-
 # contrib.site (required by contrib.flatpages)
 SITE_ID = 1
 
@@ -163,10 +152,19 @@ if django.VERSION[0:2] < (1,7):
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join (ROOT_DIR, 'db', 'normal.db'),
+        'ENGINE':   'django.db.backends.sqlite3',
+        'NAME':     os.path.join (ROOT_DIR, 'db', 'normal.db'),
+        'CONN_MAX_AGE': 0 if DEBUG else 3600
     }
 }
+#if not DEBUG:
+#    DATABASES['default']['CONN_MAX_AGE'] = 3600
+# Enable persistent db connections.
+# Note: Sometimes a database won't be accessed by the majority of your
+# views, for example because it's the database of an external system, or
+# thanks to caching. In such cases, you should set CONN_MAX_AGE to a low
+# value or even 0, because it doesn't make sense to maintain a connection
+# that's unlikely to be reused.
 
 
 CACHES = {
