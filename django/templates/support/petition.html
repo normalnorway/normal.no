@@ -79,10 +79,15 @@
 </form>
 
 
+{% if not objects %}
+<h2>Underskrifter</h2>
+<p><em>Ingen underskrifter ennå.</em></p>
+{% else %}
+
 
 <h2>Statistikk</h2>
 
-<p><em>Opprop startet 8. juli 2014.</em></p>
+<p><em>Opprop startet {{ earliest }}.</em></p>
 
 <table>
   <tr>
@@ -131,9 +136,14 @@ i timen.</small></p>
 
 <h2>Underskrifter</h2>
 
+<!--
 <p>Viser siste 50 av {{ count }} underskrifter:</p>
+@todo min() template tag
+@todo handle non-public signers
+-->
+<p>Viser siste {% if count > 50 %} 50 {% else %} {{count}} {% endif %}
+av {{ count }} underskrifter:</p>
 
-{% if objects %}
 <table>
   <thead>
     <tr>
@@ -156,6 +166,7 @@ i timen.</small></p>
   </tr>
   {% endfor %}
 </table>
+
 {% endif %}
 
 {% endblock %}

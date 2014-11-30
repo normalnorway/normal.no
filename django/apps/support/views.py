@@ -38,6 +38,8 @@ def get_petition_stats (data):
     stats = dict()
     count = data.count()
 
+    if not count: return    # don't cache empty petition list
+
     model_stats = []
     for item in Petition.objects.values_list ('choice').annotate(Count('id')).order_by('-id__count'):
         model_stats.append ({
@@ -46,29 +48,37 @@ def get_petition_stats (data):
         })
     stats['model'] = model_stats
     stats['city'] = Petition.objects.values ('city').annotate(Count('id')).order_by('-id__count')[0:5]
-    stats['week'] = count * 7 / (Petition.objects.latest().date - Petition.objects.earliest().date).days
+    numdays = (Petition.objects.latest().date - Petition.objects.earliest().date).days
+    stats['week'] = count if numdays<7 else round(count * 7.0 / numdays)
     stats['last_week'] = data.filter (date__gt = datetime.datetime.now() - datetime.timedelta(days=7)).count()
 
     cache.set (ckey, stats)
     return stats
 
 
+def update_petition_ctx (ctx):
+    '''Fill the petition context'''
+    data = Petition.objects.all()
+    ctx['objects']  = data.filter (public=True)[0:50]
+    ctx['count']    = data.count()
+    ctx['stats']    = get_petition_stats (data)
+    ctx['earliest'] = 'now'
+    ctx['earliest'] = data.earliest().date # @todo can cache this to avoid extra query
 
-# @todo sanitize name
+
+
+# @todo sanitize name (do on the form)
 # @todo ask for full name
 # @todo nuke stats in cache on new signup?
 @render_to ('support:petition.html')
 def petition (request):
-    data = Petition.objects.all()
     ctx = {
-        'objects':  data.filter (public=True)[0:50],
         'form':     PetitionForm(),
         'toptext':  get_content ('opprop-top'),
-        'count':    data.count(),
-        'stats':    get_petition_stats (data)
     }
 
     if not request.method == 'POST':
+        update_petition_ctx (ctx)
         return ctx
 
     form = PetitionForm (request.POST)
@@ -76,9 +86,10 @@ def petition (request):
         obj = form.save()
         form = PetitionForm()   # clear the form
         messages.success (request, PETITION_MSG)
-    ctx['form'] = form
-    return ctx
 
+    ctx['form'] = form
+    update_petition_ctx (ctx)
+    return ctx
 
 
 
