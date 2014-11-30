@@ -2,6 +2,9 @@ from django.test import TestCase, Client
 from django.core import urlresolvers
 from website import urls
 
+# TODO
+# nyheter/  (included urls)
+# own testcase per url (better to manually add?)
 
 class GlobalTestCase (TestCase):
     def setUp (self):
@@ -13,6 +16,8 @@ class GlobalTestCase (TestCase):
         ''' Check that all views from website.urls returns http success '''
         for o in urls.urlpatterns:
             if isinstance (o, urlresolvers.RegexURLPattern):
+                if o.name and 'password_reset' in o.name:
+                    continue
                 url = '/' + o.regex.pattern[1:-1] # @todo can use reverse on o.name instead?
                 res = self.client.head (url)
                 #print res.status_code, url
