@@ -7,6 +7,17 @@ from .models import Petition
 class PetitionForm (forms.ModelForm):
     choice = forms.ChoiceField (label=u'Jeg ønsker å', required=True,
                                 widget=forms.RadioSelect, choices=Petition.CHOICES)
+
+    # @todo move cleaning stuff to the model?
+    def clean_name (self):
+        if len(self.cleaned_data['name'].split()) == 1:
+            raise forms.ValidationError('not used') # u'Du må oppgi både fornavn og etternavn.
+        return self.cleaned_data['name'].strip().title()
+
+    def clean_city (self):
+        return self.cleaned_data['city'].strip().title()
+
+
     class Meta:
         model = Petition
         fields = 'choice', 'name', 'city', 'public'

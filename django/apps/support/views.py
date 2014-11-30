@@ -51,6 +51,10 @@ def get_petition_stats (data):
     numdays = (Petition.objects.latest().date - Petition.objects.earliest().date).days
     stats['week'] = count if numdays<7 else round(count * 7.0 / numdays)
     stats['last_week'] = data.filter (date__gt = datetime.datetime.now() - datetime.timedelta(days=7)).count()
+    try:
+        stats['started'] = data.earliest().date # @todo strftime
+    except Petition.DoesNotExist:
+        stats['started'] = ''
 
     cache.set (ckey, stats)
     return stats
@@ -62,13 +66,9 @@ def update_petition_ctx (ctx):
     ctx['objects']  = data.filter (public=True)[0:50]
     ctx['count']    = data.count()
     ctx['stats']    = get_petition_stats (data)
-    ctx['earliest'] = 'now'
-    ctx['earliest'] = data.earliest().date # @todo can cache this to avoid extra query
 
 
 
-# @todo sanitize name (do on the form)
-# @todo ask for full name
 # @todo nuke stats in cache on new signup?
 @render_to ('support:petition.html')
 def petition (request):

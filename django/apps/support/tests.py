@@ -11,6 +11,7 @@ from .forms import MemberForm
 
 # @todo split in MemberTest and PettitionTest?
 #       A: yes, that is recomended
+# @todo add fixture data and test petition statistics
 class MyTestCase (TestCase):
 
     def test_petition_signup (self):

@@ -53,10 +53,10 @@
   <p class='error'>Vennligst rett feilen(e) under!</p>
   {% endif %}
 
-
   {% if form.name.errors or form.city.errors %}
-  <ul class="errorlist"><li>Du må oppgi både fullt navn og by/bosted.</li></ul>
+  <ul class="errorlist"><li>Du må oppgi fullt navn, samt by/bosted.</li></ul>
   {% endif %}
+
   <p class="required">
     {{ form.name.label_tag }} {{ form.name }} &nbsp; &nbsp;
     {{ form.city.label_tag }} {{ form.city }}
@@ -87,7 +87,7 @@
 
 <h2>Statistikk</h2>
 
-<p><em>Opprop startet {{ earliest }}.</em></p>
+<p><em>Opprop startet {{ stats.started }}.</em></p>
 
 <table>
   <tr>
