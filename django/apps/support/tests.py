@@ -15,7 +15,9 @@ from .forms import MemberForm
 class MyTestCase (TestCase):
 
     def test_petition_signup (self):
-        data = {'name': u'frode frosk', 'city': u'ålesund', 'public': False, 'choice': u'c'}
+        # @todo test that name&city is titlecased
+        #data = {'name': u'frode frosk', 'city': u'ålesund', 'public': False, 'choice': u'c'}
+        data = {'name': u'Frode Frosk', 'city': u'Ålesund', 'public': False, 'choice': u'c'}
         res = self.client.post (reverse('petition'), data)
         self.assertEqual (res.status_code, 200)
         obj = Petition.objects.values(*data.keys()).get(pk=1)
