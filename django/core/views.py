@@ -1,6 +1,9 @@
-from django.shortcuts import render, redirect
+# @todo move to root ?
 from core.shortcuts import render_to
 from apps.content.models import get_content_dict
+# better?
+# from apps import content
+# content.get ('forside')
 
 
 @render_to ('index.html')

@@ -1,4 +1,9 @@
-.PHONY: activate test
+.PHONY: activate test bugfix bf
+
+
+bf: bugfix
+bugfix:
+	git commit -m bugfix
 
 
 # 1) Merge changes from 'master' to 'production'.
