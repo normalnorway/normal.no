@@ -18,7 +18,6 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.core.cache import cache
 from core.shortcuts import render_to
-from apps.content.models import get_content, get_content_dict
 
 from . import add_new_member
 #import member  # then can do: member.add(...)
@@ -72,7 +71,6 @@ def update_petition_ctx (ctx):
 def petition (request):
     ctx = {
         'form':     PetitionForm(),
-        'toptext':  get_content ('opprop-top'),
     }
 
     if not request.method == 'POST':
@@ -93,8 +91,7 @@ def petition (request):
 
 @render_to ('support:enroll.html')
 def index (request):
-    ctx = get_content_dict ('innmelding-top', 'innmelding-bunn')
-
+    ctx = {}
     if not request.method == 'POST':
         ctx['form'] = MemberForm()
         return ctx

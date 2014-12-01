@@ -45,7 +45,7 @@
 
 {% block content %}
 
-{{ toptext|safe }}
+{% get_content "opprop-top" %}
 
 <form method='post'>{% csrf_token %}
 

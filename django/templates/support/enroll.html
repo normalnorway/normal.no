@@ -31,7 +31,7 @@ form p.required:after {
 
 {% block content %}
 
-{{ innmelding_top|safe }}
+{% get_content "innmelding-top" %}
 
 {% if form.errors %}
 <p class="error">Vennligst rett feilen(e) under!</p>
@@ -43,6 +43,6 @@ form p.required:after {
 </form>
 
 <br>
-{{ innmelding_bunn|safe }}
+{% get_content "innmelding-bunn" %}
 
 {% endblock %}
