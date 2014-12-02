@@ -32,3 +32,4 @@ class Article (models.Model):
     def get_absolute_url (self):
         return ('news-detail', [str(self.pk)])
         # @todo just call reverse() instead?
+        # if no body, return url instead? make our view redirect?
