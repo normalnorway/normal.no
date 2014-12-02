@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url
+from feed import NewsFeed
 
 """
 TODO:
@@ -16,6 +17,8 @@ urlpatterns = patterns ('apps.news',    # apps.news.views?
       #       so better to drop /arkiv/page/last ?
     url (r'^arkiv/(?P<year>\d{4})/$',                   'views.archive_year',   name='news-archive-year'),
     url (r'^arkiv/(?P<year>\d{4})/(?P<month>\d{1,2})/$','views.archive_month',  name='news-archive-month'),
+
+    url (r'^rss/$', NewsFeed(), name='rss'),
 
     # @todo
     #import views

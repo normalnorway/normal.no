@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
-from django.contrib import admin
+from django.views.generic.base import RedirectView
 from django.contrib.auth import views as auth_views
+from django.contrib import admin
 
 admin.autodiscover()
 
@@ -14,10 +15,11 @@ urlpatterns = patterns ('',
     url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
     url(r'^nettguide/$',    'apps.links.views.index',       name='links'),
 
-    (r'^nyheter/',  include ('apps.news.urls')),
-    #(r'^nyheter/',  include ('apps.news.urls', namespace='news')),
+    (r'^rss/', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
 
+    (r'^nyheter/',  include ('apps.news.urls')),
     (r'^tinymce/',  include ('tinymce4.urls')),
+    (r'^admin/',    include (admin.site.urls)),
 
     # https://docs.djangoproject.com/en/1.7/topics/auth/default/
     #(r'^accounts/login/$', 'django.contrib.auth.views.login'),
@@ -28,8 +30,6 @@ urlpatterns = patterns ('',
     url(r'^admin/password_reset/done/$',                        auth_views.password_reset_done,     name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',  auth_views.password_reset_confirm,  name='password_reset_confirm'),
     url(r'^reset/done/$',                                       auth_views.password_reset_complete, name='password_reset_complete'),
-
-    (r'^admin/', include (admin.site.urls)),
 )
 
 

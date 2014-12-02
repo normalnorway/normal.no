@@ -26,6 +26,8 @@ class TestLiveSite (unittest.TestCase):
     def test_url_7 (self): self.assertEqual (200, get_http_status ('/nettguide/'))
     def test_url_8 (self): self.assertEqual (200, get_http_status ('/om-cannabis/'))
     def test_url_9 (self): self.assertEqual (200, get_http_status ('/faq/'))
+    def test_url_10 (self): self.assertEqual (200, get_http_status ('/nyheter/rss/'))
+    def test_url_11 (self): self.assertEqual (200, get_http_status ('/rss/'))
 
 
 if __name__ == '__main__':

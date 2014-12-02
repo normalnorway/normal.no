@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <title>{%block title%}Normal{%endblock title%}{%block extratitle%}{%endblock%}</title>
 
+    <link rel="alternate" type="application/rss+xml"
+          title="Siste nyheter" href="/nyheter/rss/" />
+
     {% if not debug %}
     <link rel="stylesheet" href="{{STATIC_URL}}css/all.css" />
     {% endif %}
@@ -20,12 +23,13 @@
     <script src="{{STATIC_URL}}js/less.js"></script>
     {% endif %}
 
-    <meta property="og:site_name"   content="Normal" />
+    <meta property="og:site_name" content="Norsk organisasjon for reform av marihuanalovgivningen" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/static/images/logo-200.png" />
+    <!-- don't put on front page!
+         need xmlns:og="http://ogp.me/ns#" ?
     <meta property="og:description" content="Norsk organisasjon for reform av marihuanalovgivningen" />
-    <meta property="og:type"        content="website" />
     <meta property="og:url"         content="http://normal.no" />
-    <meta property="og:image"       content="http://normal.no/static/images/logo-300.png" />
-    <!--
     <meta property="og:title"       content="*page title*" />
     -->
 
