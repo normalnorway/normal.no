@@ -2,14 +2,14 @@
 
 {% block extratitle %} » {{ flatpage.title }}{% endblock %}
 
+
 {% block content %}
-{{ flatpage.content }}
 
 {% if user.is_staff %}
-<p>
-  <a href="/admin/flatpages/flatpage/{{flatpage.pk}}/">
-    <img src="/static/admin/img/icon_changelink.gif" /> Rediger</a>
-</p>
+<a href="{% url "admin:flatpages_flatpage_change" flatpage.pk %}"
+   class="admin-edit-link">Rediger</a>
 {% endif %}
+
+{{ flatpage.content }}
 
 {% endblock %}
