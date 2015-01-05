@@ -16,5 +16,11 @@ if path != os.getcwd():
     sys.path.insert (0, path)
 
 
+# @todo logging does not work
+#import logging
+#logger = logging.getLogger()
+#logger.warn ('no more piza')
+
+
 #from apps.news.models import Article
 #print Article.objects.all()[:5]

@@ -5,6 +5,8 @@
 # Put this in your main Apache config, or just uncomment the line bellow.
 # WSGIDaemonProcess django processes=4 threads=8 stack-size=524288 display-name=(wsgi:normal.no)
 
+# TODO: add to main apache config
+# WSGIRestrictEmbedded On
 
 # Normalize urls: www.normal.no -> normal.no
 # Note: normal.no/foo -> normal.no/foo/ is done by Django (APPEND_SLASH)

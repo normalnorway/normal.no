@@ -10,6 +10,7 @@
 import os
 BASE_DIR = os.path.dirname (os.path.dirname (os.path.normpath (__file__)))
 ROOT_DIR = os.path.dirname (BASE_DIR)
+# BASE_DIR is django dir. ROOT_DIR is one level up
 
 from django.conf import global_settings as defaults
 
@@ -74,6 +75,9 @@ USE_TZ = False
 
 STATICFILES_DIRS = (
     os.path.join (BASE_DIR, 'static'),
+    #rootdir ('django', 'static'),
+    # or:
+    #django_dir ('static'),
 )
 
 STATIC_ROOT = os.path.join (ROOT_DIR, 'htdocs', 'static')
@@ -154,6 +158,7 @@ DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.sqlite3',
         'NAME':     os.path.join (ROOT_DIR, 'db', 'normal.db'),
+        #'NAME':     rootdir ('db', 'normal.db'),
         'CONN_MAX_AGE': 0 if DEBUG else 3600
     }
 }
@@ -168,21 +173,15 @@ DATABASES = {
 
 
 CACHES = {
-    # This is a thread-safe, per-process cache.
-    'default': {
+    'default': { # This is a thread-safe, per-process cache.
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'TIMEOUT': 3600
     }
 }
-# Dummy caching for development
-#if DEBUG:
-if False:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
-        }
+if DEBUG:
+    CACHES['default'] = { # Dummy caching for development
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
     }
-
 
 
 ROOT_URLCONF = 'website.urls'
@@ -219,6 +218,7 @@ else:
 # @todo catch all level=ERROR into own file? (apache uses error.log)
 
 # _LEVEL = 'DEBUG' if DEBUG else 'WARNING'
+# LOG_LEVEL = 'DEBUG' if DEBUG else 'INFO'
 #logfile = lambda f: os.path.join (ROOT_DIR, 'logs', f)
 
 LOGGING = {
@@ -281,6 +281,10 @@ LOGGING = {
             # Note: contains a full traceback; potentially very sensitive
             'include_html': True,
         },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
         'file:website': {
             #'level': _LEVEL?
             'class': 'logging.FileHandler',
@@ -307,6 +311,7 @@ LOGGING = {
     },
 
     'formatters': {
+        # q: howto define default? ''
         # @todo drop %(lineno) for django; only usefull for own code
         'verbose': {
             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
