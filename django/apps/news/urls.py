@@ -20,6 +20,8 @@ urlpatterns = patterns ('apps.news',    # apps.news.views?
 
     url (r'^rss/$', NewsFeed(), name='rss'),
 
+    url (r'^ny/$', 'views.add_new', name='news-add-new'),
+
     # @todo
     #import views
     #views.YearView.as_view()

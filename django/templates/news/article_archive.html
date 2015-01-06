@@ -9,6 +9,20 @@
 
   <h1>Nyhetsarkiv</h1>
 
+
+  {% if perms.news.add_article %}
+  <form method="post" action="/nyheter/ny/">
+    {% csrf_token %}
+    <input type="hidden" name="bootstrap" value="1" />
+   <strong>Ny lenke:</strong>
+    <input type="url" name="url" size="40" />
+    &nbsp;
+    <input type="submit" value="Legg til" />
+  </form>
+  <br>
+  {% endif %}
+
+
   <!--
   <p class="strong">I nyhetsarktivet finner du lenker til de fleste
   cannabis-relaterte saker omtalt i norsk media. I tillegg til en del

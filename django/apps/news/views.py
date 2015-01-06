@@ -1,9 +1,61 @@
-from django.shortcuts import render, get_object_or_404
 from django.views.generic import dates
-from django.core.paginator import Paginator
-from django.db.models import Q
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.exceptions import ValidationError
+#from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.contrib.auth.decorators import permission_required
+from django.contrib import messages
 from .models import Article
-from .forms import SearchForm
+from .forms import AddNewForm
+from .newsgrab import get_metadata
+
+
+# q: login_url='/loginpage/'
+# @todo check if url is alive? (if no newsgrap support)
+@permission_required ('news.add_article')
+def add_new (request):
+    if request.method != 'POST':
+        return render (request, 'news/add-new.html')
+        #form = AddNewForm1()
+        #return render (request, 'news/add-new.html', dict(form=form))
+
+    step = int(request.POST.get('step', 1))
+    url = request.POST['url'].strip()
+    if step == 1:
+        # Check if already exists. @todo check canonical url also
+        if Article.objects.filter(url=url).exists():
+            messages.warning(request, u'Den lenken har vi allerede. Ellers takk :)')
+            return redirect (request.path)
+        # Try to init form with metadata
+        #form = AddNewForm (initial=get_metadata(url))
+        data = get_metadata(url)
+        if not data: data = dict(url=url)
+        form = AddNewForm (initial=data)
+        form.fields['url'].widget.attrs['readonly'] = True
+    else:
+        # Step 2: Save form
+        form = AddNewForm (request.POST)
+        if form.is_valid():
+            # Note: Does not call full_clean(), so will get IntegrityError
+            # from db about url column not uniqie.
+            #obj = Article.objects.create (**form.cleaned_data)
+
+            # Note: If full_clean() raises error, it's not converted
+            # to an validation error.
+            try:
+                obj = Article (**form.cleaned_data)
+                obj.full_clean()
+                obj.save()
+                messages.success (request, u'Lagt til nyhet: "%s"' % obj.title)
+                return redirect (request.path)
+            except ValidationError as e:
+                form._errors.update (e.message_dict)
+                #form._errors = e.update_error_dict (form._errors)
+                # form._errors.setdefault (NON_FIELD_ERRORS, self.error_class()).extend(messages)
+                # Form.add_error(field, error)  # Django 1.7
+                #non_field_errors = e.message_dict[NON_FIELD_ERRORS]
+
+    return render (request, 'news/add-new.html', dict(form=form, step=step, url=url))
+
 
 
 def detail (request, news_id):
@@ -45,45 +97,3 @@ class MonthView (dates.MonthArchiveView):
     month_format = '%m'
     make_object_list = True
 archive_month = MonthView.as_view()
-
-
-
-'''
-# @note can use ArchiveIndexView as base for this view
-def list (request):
-    # Search
-    query = request.GET.get ('query')
-    if query:
-        form = SearchForm (request.GET)
-        qs = Article.objects.filter(
-                Q(title__icontains=query)   |
-                Q(summary__icontains=query) |
-                Q(body__icontains=query)
-        )
-    else:
-        form = SearchForm()
-        qs = Article.objects.all()
-
-    qs = qs.order_by('-date')
-
-    # Pagination
-    pagesize = 25
-    paginator = Paginator (qs, pagesize)
-    try:
-        articles = paginator.page (request.GET.get('page'))
-    except:
-        articles = paginator.page (1)
-    # @todo helper?
-    # @todo hi+low, and put on paginator instance
-    low = (articles.number-1) * pagesize + 1
-    high = low + pagesize
-    count = paginator.count
-    if high > count: high = count
-
-    return render (request, 'news/list.html', {
-        'list': articles, 'low': low, 'high': high,
-        'form': form, 'query': query,
-        # if query: search = '&search=%s' % urlencode(query)
-        # better to pass in session?
-    })
-'''
