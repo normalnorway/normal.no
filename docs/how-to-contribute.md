@@ -153,6 +153,8 @@ valgt hjemmemappen min, dvs. `/home/torkel/`. Dit kommer jeg ved
 
     git clone http://git.normal.no/git/normal.no
     cd normal.no
+    git submodule init
+    git submodule update
 
 Du har nå lastet ned alle filene og står i mappen til prosjektet.
 Hos meg blir det `/home/torkel/normal.no/`.

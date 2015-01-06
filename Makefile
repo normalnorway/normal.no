@@ -1,9 +1,12 @@
-.PHONY: activate test bugfix bf
+.PHONY: activate test bugfix bf minor
 
 
 bf: bugfix
 bugfix:
 	git commit -m bugfix
+
+minor:
+	git commit -m minor
 
 
 # 1) Merge changes from 'master' to 'production'.

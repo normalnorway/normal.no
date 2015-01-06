@@ -6,10 +6,14 @@ from . models import Article
 
 # @todo cache?
 
+# @todo description
+# I nyhetsarktivet finner du lenker til de fleste cannabis-relaterte saker
+# omtalt i norsk media. I tillegg til en del utenlandske saker.
+
 class NewsFeed (Feed):
     title = 'Normals nyhetsarkiv'
     link = '/rss/'
-    description = 'bla, bla, bla'
+    description = u'Cannabisrelaterte nyheter i norske medier. Arkiv: http://normal.no/nyheter/arkiv/'
     author_name = 'Normal'
     author_email = 'post@normal.no'
     #ttl = 600
