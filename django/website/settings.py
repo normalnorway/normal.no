@@ -242,6 +242,12 @@ LOGGING = {
             'propagate': True,
         },
 
+        'apps': {
+            'handlers': ['console'],
+            'propagate': True,
+            # @todo also log to apps.log, then disable propagate
+        },
+
         # django.db.backends
         # Every application-level SQL statement executed by a request is
         # logged at the DEBUG level.
@@ -284,6 +290,8 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
+            'formatter': 'default', # note: this is not the default
+            #'formatter': 'verbose',
         },
         'file:website': {
             #'level': _LEVEL?
@@ -318,7 +326,7 @@ LOGGING = {
             'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
         'default': {
-            'format': '%(levelname)s %(message)s'
+            'format': '%(levelname)s: %(message)s'
         },
     },
 
