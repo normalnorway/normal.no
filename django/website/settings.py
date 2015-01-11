@@ -30,10 +30,10 @@ MANAGERS = ADMINS
 # Only serve website on these hostnames. Only active when DEBUG=False.
 ALLOWED_HOSTS = (
     'normal.no',
-    'www.normal.no',
-    'normal.i2p',
-    'qrw3w45sx7niqcpg.onion',
+    #'www.normal.no',   # Note: Apache redirects www.normal.no => normal.no
     'dev.normal.no',    # <-- development site
+    'normal.i2p',       # I2P address
+    'qrw3w45sx7niqcpg.onion',   # Tor address
 )
 #ALLOWED_HOSTS = ('*',)
 

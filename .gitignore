@@ -11,5 +11,4 @@
 /htdocs/
 /logs/
 # auto-generated files
-/apache.conf
 /django/static/css/*.css
