@@ -7,6 +7,8 @@
 # https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 #
 
+# UPDATE: See ../setup.sh
+
 # @todo use fabric: fab bootstrap
 # @todo allow non-privileged user to run collectstatic
 # @todo
@@ -18,8 +20,8 @@
 apt-get install libapache2-mod-wsgi
 apt-get install python-imaging	# @todo use pip for this?
 
-# Optinal: only when using MySQL as backend. The default is SQLite, but that
-# will be changed in the future.
+# Optional: Only when using MySQL as backend. The default is SQLite,
+# but that will be changed in the future.
 apt-get install mysql-server
 apt-get install python-mysqldb
 

@@ -1,7 +1,6 @@
-.PHONY: activate test bugfix bf minor
+.PHONY: bugfix minor test
 
 
-bf: bugfix
 bugfix:
 	git commit -m bugfix
 
@@ -9,15 +8,21 @@ minor:
 	git commit -m minor
 
 
-# 1) Merge changes from 'master' to 'production'.
+## Done on local dev system
+# Note: Can not have local changes. Can do git stash push + pop.
+# 1) Merge changes from 'master' into 'production'.
 # 2) Push the changes.
-# 3) Activate on production server
-#activate: test
-activate:
+master-to-production:
 	git checkout production
 	git merge master
 	git push
 	git checkout master
+
+activate: master-to-production
+	ssh normal.no '(cd /srv/www/normal.no ; ./update.sh)'
+	# @todo run livetest after and abort if it fails
+	# @todo run django tests before (and abort on failure)
+
 
 test:
 	(cd django && ./manage.py test)
