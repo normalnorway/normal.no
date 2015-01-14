@@ -1,0 +1,121 @@
+// Good artists copy, great artists steal. -- Pablo Picasso
+
+// rename site.css
+// @import reset.css ?
+
+html {
+    min-height: 100%;
+}
+
+body {
+    font-family: sans-serif;
+    color: #111;
+    background-color: #b0b0b0;
+    margin: 2em auto;
+    max-width: 56em;
+}
+
+
+
+/**
+ * Page layout / document structure.
+ *
+ * Listed in same order as used in document.
+ *
+ * @todo use these semantic elements? article, section, nav, time
+ */
+
+#wrapper {  // @todo better name. this is outer element (body is parent)
+    background-color: white;
+}
+
+
+//header { }
+
+
+#content {
+    padding: 1em 4em;
+}
+
+
+#content #messages {
+    padding: 0.5em;
+    border: 1px solid black;
+    border-radius: 3px;
+    background-color: #c2ebba;
+    list-style-type: none;
+    font-weight: bolder;
+}
+
+#content #messages li.warning {
+    color: #c00;
+}
+
+
+#content #article {
+    line-height: 1.5em;
+}
+
+
+footer {
+    border-top: 1px solid maroon;
+    line-height: 1.44;
+    padding: 0;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin: 20px 30px 20px 30px;
+    // @todo don't use both padding and margin
+}
+
+footer h3 {
+    line-height: 1;
+    margin-left: -1pt;
+}
+//footer > div {
+//  margin-right: 55px;
+//}
+
+footer address {
+    font-style: normal;
+}
+
+
+pre.debug {
+    margin: 0;
+    padding: 1em;
+    border: 1px dotted #111;
+    background-color: #f6f6f6;
+    font-family: monospace;
+    font-size: 0.9em;
+    line-height: 1.3em;
+    overflow: auto;
+}
+
+
+
+
+/**
+ * Other stuff.
+ */
+
+a.admin-edit-link {
+  float: right;
+  height: 22px; // hack: used to manually align image since floating
+  font-size: x-small;
+  padding-left: 14px;
+  background: url('/static/admin/img/icon_changelink.gif') no-repeat left center;
+}
+
+// top-form-error. Used in template to mark p if has form.errors
+.error {
+  color: #cc0000;
+  font-weight: bold;
+}
+
+form ul.errorlist {
+  color: #cc0000;
+}
+
+form p.validation-error label {
+  color: #cc0000;
+}

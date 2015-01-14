@@ -15,11 +15,11 @@
     <style>
       html { border-right: 6px solid maroon; border-left: 6px solid maroon; }
     </style>
-    <link rel="stylesheet/less" href="{{STATIC_URL}}css/main.less" />
+    <link rel="stylesheet/less" href="{{STATIC_URL}}css/base.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/style.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/classes.less" />
-    <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" /> <!-- @todo use extrahead block in menu template instead? -->
-    <link rel="stylesheet/less" href="{{STATIC_URL}}css/forms.less" />
+    <link rel="stylesheet/less" href="{{STATIC_URL}}css/sections.less" />
+    <link rel="stylesheet/less" href="{{STATIC_URL}}css/menu.less" />
     <script src="{{STATIC_URL}}js/less.js"></script>
     {% endif %}
 
@@ -56,29 +56,30 @@
       {% endif %}
 
       <header>
-	<div id="menu">{% include "menu.html" %}</div>
-	{% block header %} <!-- not in use -->
-	{% endblock %}
+        <div id="menu">{% include "menu.html" %}</div>
+        {% block header %}
+        {# not in use #}
+        {% endblock %}
       </header>
 
       <!-- MAIN CONTENT -->
       <div id="content">
 
-	{% block top %}
-	{% endblock %}
+        {% block top %}
+        {% endblock %}
 
-	{% if messages %}
-	<ul id="messages">
-	  {% for message in messages %}
-	  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-	  {% endfor %}
-	</ul>
-	{% endif %}
+        {% if messages %}
+        <ul id="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
 
-	<div id="article">
-	  {% block content %}
-	  {% endblock %}
-	</div>
+        <div id="article">
+          {% block content %}
+          {% endblock %}
+        </div>
       </div>
 
       <footer>{% include "footer.html" %}</footer>

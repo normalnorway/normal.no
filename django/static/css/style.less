@@ -1,97 +1,43 @@
-// Note: footer stuff also in main.less. @todo use same file
-footer
-{
-  margin: 20px 30px 0 30px;
-  border-top: 1px solid maroon;
-  padding-top: 20px;
+/** Base elements. */
+
+p {
+    margin: 0.8em 0;
 }
 
-footer h3 {
-  margin: 0;
-  padding: 0;
-  margin-bottom: 6pt;
-  margin-left: -1pt;
-}
-/*
-footer > div {
-  margin-right: 55px;
-}
-*/
-
-
-
-/** Semantic classes */
-
-.strong {
-  font-weight: bolder;
+a {
+    color: #cc333f;
+    text-decoration: none;
 }
 
-.smaller {
-  font-size: smaller;
+h1, h2, h3, h4 {
+    padding: 0.325em 0;
+    font-weight: 500;
 }
 
-.clear {
-  clear: both;
+h1 {
+    font-size: 1.95em;
+    letter-spacing: -0.05em;
+    color: #cc333f;
+    color: #222;
+    margin: .33em 0 .75em 0;
+    border-bottom: 1.5px solid maroon;
 }
 
-.gray {
-  color: gray;
+h2 {
+    margin: 0;
+    padding: 0;
+    margin-top: 1.33em;
+    line-height: 1.44em;
 }
 
-td.valign-top {
-  vertical-align: top;
+h3 {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 0;
 }
 
-
-/** Nyheter */
-// @todo possible to limit to app. e.g. #app_news
-// @todo own file per app? @include 'apps/news'
-
-/* detailed view
-// @todo #app_news .view_detail OR #app_news_detail
-p.date {
-  color: #555;
-}
-p.abstract {
-  font-weight: bolder;
-}
-*/
-
-#news-archive .main {
-  width: 80%;
-  float: left;
-}
-#news-archive .aside {
-  width: 10%;
-  float: right;
-  text-align: center;
-}
-
-
-
-/**
- * URL: /om-normal/ledelsen/
- *
- * @todo wrap everything inside div. But how? This is using a flatpage.
- */
-
-table.style1 {
-  border-collapse: collapse;
-}
-
-table.style1 td {
-  padding: 1.33ex 1.33em 1.33ex 0;
-}
-
-div.name {
-  font-weight: bold;
-  font-size: larger;
-}
-
-div.role {
-  font-style: italic;
-}
-
-p.bio {
-  font-size: small;
+h4 {
+    font-size: 1.1em;
+    color: #666;
+    border: 1px solid red;
 }
