@@ -42,7 +42,7 @@ class LinkAdmin (admin.ModelAdmin):
     url_.allow_tags = True
     url_.short_description = 'URL'
     url_.admin_order_field = 'url'
-    url_.regex = re.compile (r'^http://([^/]+)(/?)', re.I)
+    url_.regex = re.compile (r'^https?://([^/]+)(/?)', re.I)
 
 
 
