@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from django.conf.urls import patterns, include, url
 from django.views.generic.base import RedirectView
 from django.contrib.auth import views as auth_views
@@ -15,7 +17,11 @@ urlpatterns = patterns ('',
     url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
     url(r'^nettguide/$',    'apps.links.views.index',       name='links'),
 
-    (r'^rss/', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
+    (r'^rss/$', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
+    # Hack to redirect deprecated url's
+    # Note: Does not work to urlencode; must use unicode strings.
+    #(r'^m%C3%B8/$', RedirectView.as_view (url='/medlem/', permanent=True)),
+    (u'^gruppesøksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
 
     (r'^nyheter/',  include ('apps.news.urls')),
     (r'^tinymce/',  include ('tinymce4.urls')),
