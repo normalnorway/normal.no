@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-{# @todo redirect to url if no body. q: but what if url is dead? #}
+{# @todo redirect to url if no body? q: but what if url is dead? #}
+{# @todo dont put styles in extrastyle. and wrap in div#app-news-detail #}
+{# @todo s/Nyhetskommentar/Nyhetssak/g? if allowing empty url #}
 
 {% block extratitle %} » Nyhetskommentar{% endblock %}
 
@@ -17,20 +19,23 @@ p.abstract {
 
 
 {% block content %}
-<h1>Nyhetskommentar</h1>
 
-<!--
-<div id="app-news-detail">
-putting styles inline instead
--->
+  <h1>Nyhetskommentar</h1>
 
-<h2>{{item.title}}</h2>
-<p class="abstract">{{item.summary}}</p>
-<p class="date">{{item.date}}</p>
-<p class="body">{{item.body|safe}}</p>
+  <h2>{{ item.title }}</h2>
+  <p class="date">Publisert: {{ item.date }}</p>
+  <p class="abstract">{{ item.summary }}</p>
 
-{% if item.url %}
-<p><em>Kilde: <a href="{{item.url}}">{{item.url}}</a></em></p>
-{% endif %}
+  {% if item.url %}
+  {% comment %}
+  <p><em>Kilde: <a href="{{item.url}}">{{item.url}}</a></em></p>
+  {% endcomment %}
+  <p><a href="{{item.url}}">{{item.url}}</a></em></p>
+  {% endif %}
+
+  {% if item.body %}
+  {# @todo if body&url => prefix with Normals kommentar? #}
+  <p class="body">{{ item.body|safe }}</p>
+  {% endif %}
 
 {% endblock %}
