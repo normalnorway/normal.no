@@ -49,6 +49,9 @@ def add_new (request):
                 return redirect (request.path)
             except ValidationError as e:
                 form._errors.update (e.message_dict)
+                # @todo can raise forms.ValidationError() to propagate error?
+                #       note: this is a non-field-error
+                # self._errors["subject"] = self.error_class([msg])
                 #form._errors = e.update_error_dict (form._errors)
                 # form._errors.setdefault (NON_FIELD_ERRORS, self.error_class()).extend(messages)
                 # Form.add_error(field, error)  # Django 1.7

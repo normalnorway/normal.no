@@ -8,6 +8,8 @@
 #
 
 # TODO:
+# rename install?
+# TLS certificates
 # Create secret-key
 # touch NODEBUG
 # Howto install database

@@ -1,3 +1,5 @@
+add last modified date to flatpages
+
 mv todo TODO
 mv static media ?
   @see https://github.com/django/djangoproject.com
@@ -50,3 +52,6 @@ SESSION_ENGINE = "django.contrib.sessions.backends.file"
 SESSION_FILE_PATH = tempfile.gettempdir()	# default
 
 settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True	# default is False
+
+assert no articles with !url and !body
+fetch image (and canonical url) for old articles
