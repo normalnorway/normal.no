@@ -8,13 +8,19 @@
 #
 
 import os
-BASE_DIR = os.path.dirname (os.path.dirname (os.path.normpath (__file__)))
-ROOT_DIR = os.path.dirname (BASE_DIR)
-# BASE_DIR is django dir. ROOT_DIR is one level up
-
 from django.conf import global_settings as defaults
 
-DEBUG = not os.path.exists (os.path.join (ROOT_DIR, 'NODEBUG'))
+def rootdir (*args):
+    """Constructs a path relative to the project root directory"""
+    return os.path.join (rootdir.base, *args)
+rootdir.base = reduce(lambda n,f: f(n), [__file__] + 3*[os.path.dirname]) # calls os.path.dirname 3 times on __file__ recursively
+# Q: Is these two always equal? __file__ == os.path.normpath(__file__)
+# If not, use normpath instead of __file__ ?
+# @todo rename mkpath or mkpathname?
+
+
+
+DEBUG = not os.path.exists (rootdir ('NODEBUG'))
 TEMPLATE_DEBUG = DEBUG
 
 # Admins will get email whenever an error happens (and DEBUG=False).
@@ -74,16 +80,13 @@ USE_TZ = False
 ## Static and media files
 
 STATICFILES_DIRS = (
-    os.path.join (BASE_DIR, 'static'),
-    #rootdir ('django', 'static'),
-    # or:
-    #django_dir ('static'),
+    rootdir ('django', 'static'),
 )
 
-STATIC_ROOT = os.path.join (ROOT_DIR, 'htdocs', 'static')
+STATIC_ROOT = rootdir ('htdocs', 'static')
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join (ROOT_DIR, 'htdocs', 'media')
+MEDIA_ROOT = rootdir ('htdocs', 'media')
 MEDIA_URL = '/media/'
 
 
@@ -96,7 +99,7 @@ MEDIA_URL = '/media/'
 
 ## Templates
 TEMPLATE_DIRS = (
-    os.path.join (BASE_DIR, 'templates'),
+    rootdir ('django', 'templates'),
 )
 
 # Only used by dev-site to check if request.META.SERVER_NAME == dev.normal.no
@@ -158,8 +161,7 @@ if django.VERSION[0:2] < (1,7):
 DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.sqlite3',
-        'NAME':     os.path.join (ROOT_DIR, 'db', 'normal.db'),
-        #'NAME':     rootdir ('db', 'normal.db'),
+        'NAME':     rootdir ('db', 'normal.db'),
         'CONN_MAX_AGE': 0 if DEBUG else 3600
     },
     'mysql': {
@@ -207,7 +209,6 @@ if DEBUG:
     #SECRET_KEY = ''.join (chr(random.randint(33,126)) for x in xrange(50))
 else:
     try:
-        SECRET_KEY = open (os.path.join(ROOT_DIR, 'secret-key')).readline()
         # @todo make poly class so can both be str and called
         #SECRET_KEY = open (ROOT_DIR('secret-key')).readline()
     except IOError:
@@ -218,6 +219,7 @@ else:
         print 'Warning: "secret-key" file not found! Using temporary key instead!'
         import base64
         SECRET_KEY = base64.b64encode (os.urandom(48))
+        SECRET_KEY = open (rootdir('secret-key')).readline()
 
 
 ## Logging
@@ -331,22 +333,22 @@ LOGGING = {
         'file:website': {
             #'level': _LEVEL?
             'class': 'logging.FileHandler',
-            'filename': os.path.join (ROOT_DIR, 'logs', 'website.log'),
+            'filename': rootdir ('logs', 'website.log'),
             'formatter': 'verbose',
         },
         'file:django': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join (ROOT_DIR, 'logs', 'django.log'),
+            'filename': rootdir ('logs', 'django.log'),
             'formatter': 'verbose',
         },
         'file:request': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join (ROOT_DIR, 'logs', 'request.log'),
+            'filename': rootdir ('logs', 'request.log'),
             'formatter': 'verbose',
         },
         'file:security': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join (ROOT_DIR, 'logs', 'security.log'),
+            'filename': rootdir ('logs', 'security.log'),
             'formatter': 'verbose',
         },
         # @todo catch all level>=ERROR into error.log
