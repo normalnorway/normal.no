@@ -204,22 +204,24 @@ ROOT_URLCONF = 'website.urls'
 
 WSGI_APPLICATION = 'website.wsgi.application'
 
+
+# Note: The secret key must be the same for all processes and not change
+# between sessions. It can therefore only be auto-generated once, and must
+# then be written to persistent storage and loaded on each subsequent run.
 if DEBUG:
     SECRET_KEY = 'x' * 50
     #SECRET_KEY = ''.join (chr(random.randint(33,126)) for x in xrange(50))
 else:
     try:
-        # @todo make poly class so can both be str and called
-        #SECRET_KEY = open (ROOT_DIR('secret-key')).readline()
-    except IOError:
-        # @todo create secret-key file?
-        # @todo log! (if possible)
-        # XXX BUG: will have diferent key for each instance! so must
-        # auto-create it.
-        print 'Warning: "secret-key" file not found! Using temporary key instead!'
-        import base64
-        SECRET_KEY = base64.b64encode (os.urandom(48))
         SECRET_KEY = open (rootdir('secret-key')).readline()
+    except IOError, ex:
+        import sys, base64
+        key = base64.b64encode (os.urandom(48))
+        print >>sys.stderr, 'ERROR: %s: %s' % (ex.filename, ex.strerror)
+        print >>sys.stderr, 'You can create it like this:'
+        print >>sys.stderr, 'echo %s > %s' % (key, ex.filename)
+        os.abort()
+
 
 
 ## Logging
