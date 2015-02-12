@@ -177,6 +177,10 @@ DATABASES = {
         # @todo make mysql default and rename sqlite -> dev? then don't need conn_max_age hack
     },
 }
+# Update: Will get error if host is missing mysql backend, even if it's
+# not used. Therefore must add conditionally.
+if DEBUG: del DATABASES['mysql']
+
 #if not DEBUG:
 #    DATABASES['default']['CONN_MAX_AGE'] = 3600
 # Enable persistent db connections.
