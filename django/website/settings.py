@@ -154,6 +154,7 @@ if django.VERSION[0:2] < (1,7):
     MIDDLEWARE_CLASSES.remove ('django.contrib.auth.middleware.SessionAuthenticationMiddleware')
 
 
+# manage.py dumpdata [app...] --indent 2 --database dev
 DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.sqlite3',
@@ -177,6 +178,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'TIMEOUT': 3600
     }
+    #'dev': { DummyCache. And select if DEBUG }
 }
 if DEBUG:
     CACHES['default'] = { # Dummy caching for development
@@ -225,6 +227,7 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': True, # @todo keep djangos default logging
                                       # q: how to see 'em?
+                                      # a: https://docs.djangoproject.com/en/1.7/topics/logging/#default-logging-configuration
 
     'loggers': {
         # @todo can drop handler and get default?
@@ -235,23 +238,41 @@ LOGGING = {
             'level': 'DEBUG',
         },
 
-        # Catch-all logger. No messages are posted directly to this logger.
-        'django': {
-            'handlers': ['file:django'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-
         'apps': {
             'handlers': ['console'],
             'propagate': True,
             # @todo also log to apps.log, then disable propagate
+            # or better to just propagate to website.log?
+        },
+
+
+        ## django.* loggers
+
+        # Catch-all logger. No messages are posted directly to this logger.
+        'django': {
+            'handlers': ['file:django'],
+            'level': 'DEBUG',
         },
 
         # django.db.backends
         # Every application-level SQL statement executed by a request is
         # logged at the DEBUG level.
         # Extra context: duration, sql, params
+        #
+        # django.db.backends.schema     create, insert, drop, alter, etc
+        # django.db.backends            query log
+
+#        'django.db.backends.schema': {
+#            'handlers': ['file:database'],  # querylog (changes)
+#            'level': 'DEBUG',
+#        },
+#        'django.db.backends': {
+#            'handlers': ['file:sql'],       # querylog (select)
+#            'level': 'DEBUG',
+#        },
+        # @todo still wan't INFO+ messages logged to django.log
+        #       or website.log. fix: pass to multiple handlers
+        #       with diferent level
 
         # django.security.*
         # Messages on any occurrence of SuspiciousOperation. There is
@@ -264,17 +285,18 @@ LOGGING = {
         'django.security': {
             'handlers': ['file:security', 'mail_admins'],
             'level': 'DEBUG',
-            'propagate': False,
+            #'propagate': True, # or also log to website.log
         },
 
         # 5XX responses are raised as ERROR messages
         # 4XX responses are raised as WARNING messages
         # Extra context: status_code, request
+        #   q: howto use em? custom formatter?
         'django.request': {
             'handlers': ['file:request', 'mail_admins'],
             'level': 'INFO',
             'propagate': True,
-        },
+        }, # @todo possible to filter out Not found? they are ~98%
     },
 
     'handlers': {
@@ -291,6 +313,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'default', # note: this is not the default
+            # 'stream': sys.stdout, # default is stderr
             #'formatter': 'verbose',
         },
         'file:website': {
@@ -314,13 +337,14 @@ LOGGING = {
             'filename': os.path.join (ROOT_DIR, 'logs', 'security.log'),
             'formatter': 'verbose',
         },
+        # @todo catch all level>=ERROR into error.log
+        # @todo does RotatingFileHandler exists?
         # @todo can drop formatter on handlers (and get default)?
-        # @todo debug.log?
     },
 
     'formatters': {
-        # q: howto define default? ''
-        # @todo drop %(lineno) for django; only usefull for own code
+        # q: howto define default? '' a: not possible
+        # @todo drop %(lineno) for everything except own code (apps, core?)
         'verbose': {
             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
             'datefmt' : "%d/%b/%Y %H:%M:%S"

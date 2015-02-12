@@ -14,4 +14,6 @@ django/manage.py collectstatic --noinput -i \*.less -i Makefile
 #(cd htdocs/static/css/ ; rm Makefile *.less ; ls *.css | grep -v all.css | xargs rm)
 # Note: This will *not* clear out old staticfiles.
 
+# django/manage.py check
+
 touch django/website/wsgi.py
