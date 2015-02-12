@@ -4,7 +4,10 @@
 # $ python manage.py diffsettings
 #
 # TODO
-# DEFAULT_FROM_EMAIL = ikke-svar@normal.no
+# * DEFAULT_FROM_EMAIL = ikke-svar@normal.no
+# * Howto avoid Django warning 1_6.W001? It was introduced in this
+#   commit ff1670e0c81bd188c67bd9f5e5fd25278c275531
+# * Session timeout
 #
 
 import os

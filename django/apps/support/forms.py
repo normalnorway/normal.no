@@ -3,6 +3,8 @@
 from django import forms
 from .models import Petition
 
+# @todo https://normal.no/bli-medlem/
+# hva innebærer det å være aktiv. bunntekst
 
 class PetitionForm (forms.ModelForm):
     choice = forms.ChoiceField (label=u'Jeg ønsker å', required=True,
@@ -61,7 +63,7 @@ class MemberForm (forms.Form):
                                      '%d.%m.%Y', '%d/%m/%Y', '%d%m%Y'),
                     error_messages = {'invalid': u'Ugyldig dato. Bruk dd/mm/åå eller dd.mm.åå'})
     address1 =  forms.CharField (label=u'Adresse')
-    address2 =  forms.CharField (label=u'Adresse', required=False)
+    address2 =  forms.CharField (label=u'Adresse (ekstra)', required=False)
     zipcode =   forms.CharField (label=u'Postnummer', max_length=4)
     city =      forms.CharField (label=u'Sted', max_length=64)
     phone =     forms.CharField (label=u'Telefon', max_length=15, required=False)

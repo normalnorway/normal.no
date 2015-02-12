@@ -15,4 +15,7 @@ def newsletter (request):
 # Note: Only used for testing. Do not remove.
 @render_to ('test.html')
 def test (request):
-    return {}
+    from pprint import pprint
+    #pprint (request.META)
+    return { 'foo': request.GET.get('url') }
+    #return { 'foo': request.META.get('HTTP_REFERER') }
