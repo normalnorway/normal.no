@@ -161,7 +161,19 @@ DATABASES = {
         'NAME':     os.path.join (ROOT_DIR, 'db', 'normal.db'),
         #'NAME':     rootdir ('db', 'normal.db'),
         'CONN_MAX_AGE': 0 if DEBUG else 3600
-    }
+    },
+    'mysql': {
+        'ENGINE':   'django.db.backends.mysql',
+        "HOST":     '/var/run/mysql',
+        'NAME':     'normalno',
+        'USER':     'normalno',
+        #'PASSWORD': inifile.get ('database', 'password', ''),
+        #'OPTIONS':  { 'read_default_file': '/path/to/my.cnf' },
+        # https://docs.djangoproject.com/en/1.7/ref/databases/#connecting-to-the-database
+        # Remember: CREATE DATABASE <dbname> CHARACTER SET utf8;
+        # Remember: INODB
+        # @todo make mysql default and rename sqlite -> dev? then don't need conn_max_age hack
+    },
 }
 #if not DEBUG:
 #    DATABASES['default']['CONN_MAX_AGE'] = 3600
