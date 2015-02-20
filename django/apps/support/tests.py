@@ -32,7 +32,7 @@ class MyTestCase (TestCase):
 
     def test_new_member (self):
         # @todo use apps.support.add_new_member
-        filename = os.path.join (rootdir ('db', 'newmembers'))
+        filename = rootdir ('db', 'newmembers')
         open (filename, 'w').close()    # clear file
         born = datetime.date (1977, 01, 20)
         data = {
