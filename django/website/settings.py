@@ -4,22 +4,24 @@
 # $ python manage.py diffsettings
 #
 # TODO
-# * DEFAULT_FROM_EMAIL = ikke-svar@normal.no
-# * Howto avoid Django warning 1_6.W001? It was introduced in this
-#   commit ff1670e0c81bd188c67bd9f5e5fd25278c275531
+# * DEFAULT_FROM_EMAIL = ikke-svar@normal.no or post@normal.no
 # * Session timeout
+# * Crontab to periodically clean session database
 #
+
+BASE_DIR = None # Not in use, but keeps Django happy (avoids 1_6.W001).
 
 import os
 from django.conf import global_settings as defaults
 
-def rootdir (*args):
+def rootdir (*args):    # rename mk_filename
     """Constructs a path relative to the project root directory"""
     return os.path.join (rootdir.base, *args)
 rootdir.base = reduce(lambda n,f: f(n), [__file__] + 3*[os.path.dirname]) # calls os.path.dirname 3 times on __file__ recursively
-# Q: Is these two always equal? __file__ == os.path.normpath(__file__)
+# Q: Are these two always equal? __file__ == os.path.normpath(__file__)
 # If not, use normpath instead of __file__ ?
-# @todo rename mkpath or mkpathname?
+# A: lets check
+assert __file__ == os.path.normpath(__file__)
 
 
 

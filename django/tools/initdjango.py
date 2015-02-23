@@ -13,14 +13,19 @@ while True:
     path = os.path.dirname (path)   # walk upwards
 
 if path != os.getcwd():
-    sys.path.insert (0, path)
+    sys.path.insert (0, path)   # q: safer to append instead?
 
 
-# @todo logging does not work
+# Might get AppRegistryNotReady exception if not doing this:
+# import django
+# django.setup()
+
+
+# Note: logging does not work without django.setup()
 #import logging
 #logger = logging.getLogger()
 #logger.warn ('no more piza')
 
-
+# Test
 #from apps.news.models import Article
 #print Article.objects.all()[:5]

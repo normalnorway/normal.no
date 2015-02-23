@@ -3,8 +3,17 @@
 from django import forms
 from .models import Petition
 
-# @todo https://normal.no/bli-medlem/
+# TODO:
+#
+# https://normal.no/bli-medlem/
 # hva innebærer det å være aktiv. bunntekst
+#
+# Validate zipcode on MemberForm. Someone wrote: u' 936'
+# Probably because field has max_length=4 and therefore
+# can only write 4 chars in the form. If the first char is
+# a space, then the fourth char is silently ignored.
+# Can use min_length=4 but it will probably accept spaces, so
+# need manual validation.
 
 class PetitionForm (forms.ModelForm):
     choice = forms.ChoiceField (label=u'Jeg ønsker å', required=True,
@@ -33,7 +42,7 @@ class PetitionForm (forms.ModelForm):
 
 
 
-
+# MemberEnrollmentForm
 class MemberForm (forms.Form):
     # @todo set for forms.Form class?
     error_css_class = 'validation-error'
