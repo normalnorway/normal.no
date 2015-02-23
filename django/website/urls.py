@@ -25,7 +25,6 @@ urlpatterns = patterns ('',
 
     (r'^nyheter/',  include ('apps.news.urls')),
     (r'^tinymce/',  include ('tinymce4.urls')),
-    (r'^admin/',    include (admin.site.urls)),
 
     # https://docs.djangoproject.com/en/1.7/topics/auth/default/
     #(r'^accounts/login/$', 'django.contrib.auth.views.login'),
@@ -36,6 +35,9 @@ urlpatterns = patterns ('',
     url(r'^admin/password_reset/done/$',                        auth_views.password_reset_done,     name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',  auth_views.password_reset_confirm,  name='password_reset_confirm'),
     url(r'^reset/done/$',                                       auth_views.password_reset_complete, name='password_reset_complete'),
+
+    # Note: Must be *after* passrod reset links!
+    (r'^admin/',    include (admin.site.urls)),
 )
 
 
