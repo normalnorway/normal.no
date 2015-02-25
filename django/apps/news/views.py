@@ -1,3 +1,9 @@
+"""
+BUGS:
+- http://localhost:8000/nyheter/arkiv/2014/07/
+  If no next month, then clicking "Neste maaned" fails
+"""
+
 from django.views.generic import dates
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ValidationError
@@ -63,19 +69,23 @@ def add_new (request):
 
 def detail (request, news_id):
     return render (request, 'news/detail.html', {
-        'item': get_object_or_404 (Article, pk=news_id)
+        'item': get_object_or_404 (Article, pk=news_id, published=True)
         # @todo use same name as DetailView uses. (object?)
     })
 
 
 
 class ArchiveView (dates.ArchiveIndexView):
-    model = Article
+    model = Article     # not needed anymore
     date_field = 'date'
     paginate_by = 25
+    def get_queryset (self):    # note: this will override model
+        return Article.pub_objects
+
     #context_object_name = 'list'    # object_list
     #date_list_period = 'year'
-    #allow_future = False
+    # @todo date_list: filter on published=True
+    #       update: looks like thats done for us (uses get_queryset)
     # get_dated_queryset(**lookup)
     # get_date_list(queryset, date_type=None, ordering='ASC')
     # @todo get from cache (same query as sub-menu does. cache queryset?)
@@ -90,6 +100,8 @@ class YearView (dates.YearArchiveView):
     model = Article
     date_field = 'date'
     make_object_list = True     # False => only generate month list
+    def get_queryset (self):
+        return Article.pub_objects
 archive_year = YearView.as_view()
 
 
@@ -99,4 +111,6 @@ class MonthView (dates.MonthArchiveView):
     date_field = 'date'
     month_format = '%m'
     make_object_list = True
+    def get_queryset (self):
+        return Article.pub_objects
 archive_month = MonthView.as_view()

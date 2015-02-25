@@ -32,8 +32,7 @@ class NewsFeed (Feed):
 
     def items (self):
         """ Articles to include in the feed """
-        return Article.objects.order_by ('-date')[:25]
-        #return Article.objects.exclude(url__isnull=True).order_by ('-date')[:25]
+        return Article.pub_objects.order_by ('-date')[:25]
 
 
     ## Handle item fields: item_<field>
