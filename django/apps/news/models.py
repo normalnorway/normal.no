@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from django.db import models
 from django.core.urlresolvers import reverse
 
@@ -14,6 +14,7 @@ DB-changes:
 - date & pubdate => datetime
 - image_url field
 - don't allow null for body
+- add field for canonical_url (or url_original)?
 - db_index=True on Article.title?
 """
 
@@ -40,7 +41,7 @@ class Article (models.Model):
 
     # Fields
     pubdate =   models.DateField (auto_now_add=True)
-    date =      models.DateField (default=datetime.datetime.now, help_text='Date of news article (url), not the day we posted it.')
+    date =      models.DateField (default=datetime.now, help_text='Date of news article (url), not the day we posted it.')
     url =       models.URLField (unique=True, null=True) # Note: some old news links don't have url set, therefore must allow null
     title =     models.CharField (max_length=128)
     summary =   models.TextField (help_text=u'Just copy the "ingress" into this field.')

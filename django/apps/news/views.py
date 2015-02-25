@@ -76,7 +76,7 @@ def detail (request, news_id):
 
 
 class ArchiveView (dates.ArchiveIndexView):
-    model = Article     # not needed anymore
+    #model = Article     # not needed anymore
     date_field = 'date'
     paginate_by = 25
     def get_queryset (self):    # note: this will override model
@@ -91,26 +91,21 @@ class ArchiveView (dates.ArchiveIndexView):
     # @todo get from cache (same query as sub-menu does. cache queryset?)
 #    def get_date_list(queryset, date_type=None, ordering='ASC'):
 #        return [datetime(2002,1,1), datetime(2004,1,1), datetime(2006,1,1)]
-archive = ArchiveView.as_view()
 
 
-# ArchiveYearView
 # @todo show months in revered order?
 class YearView (dates.YearArchiveView):
-    model = Article
+    #model = Article
     date_field = 'date'
     make_object_list = True     # False => only generate month list
     def get_queryset (self):
         return Article.pub_objects
-archive_year = YearView.as_view()
 
 
-# ArchiveMonthView
 class MonthView (dates.MonthArchiveView):
-    model = Article
+    #model = Article
     date_field = 'date'
     month_format = '%m'
     make_object_list = True
     def get_queryset (self):
         return Article.pub_objects
-archive_month = MonthView.as_view()
