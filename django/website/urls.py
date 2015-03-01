@@ -13,15 +13,16 @@ urlpatterns = patterns ('',
     url(r'^$',              'core.views.index',             name='index'),
     url(r'^nyhetsbrev/$',   'core.views.newsletter',        name='newsletter'),
     url(r'^bli-medlem/$',   'apps.support.views.index',     name='enroll'),
-    url(r'^medlem/$',       'apps.support.views.index'),    # alias
+    # redirect is better (than alias)
+    #url(r'^medlem/$',       'apps.support.views.index'),    # alias
     url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
     url(r'^nettguide/$',    'apps.links.views.index',       name='links'),
 
+    # Redirect deprecated urls
+    (u'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
     (r'^rss/$', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
-    # Hack to redirect deprecated url's
-    # Note: Does not work to urlencode; must use unicode strings.
-    #(r'^m%C3%B8/$', RedirectView.as_view (url='/medlem/', permanent=True)),
     (u'^gruppesøksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
+    (u'^frivillig/$', RedirectView.as_view (url='/sider/frivillig/', permanent=True)),
 
     (r'^nyheter/',  include ('apps.news.urls')),
     (r'^tinymce/',  include ('tinymce4.urls')),
