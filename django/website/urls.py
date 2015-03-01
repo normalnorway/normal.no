@@ -1,7 +1,7 @@
 # encoding: utf-8
-
 from django.conf.urls import patterns, include, url
 from django.views.generic.base import RedirectView
+from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 
@@ -17,6 +17,8 @@ urlpatterns = patterns ('',
     #url(r'^medlem/$',       'apps.support.views.index'),    # alias
     url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
     url(r'^nettguide/$',    'apps.links.views.index',       name='links'),
+
+    (r'^nyhetsbrev/1/$', TemplateView.as_view (template_name='newsletter-1.html')),
 
     # Redirect deprecated urls
     (u'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
