@@ -4,6 +4,7 @@ from django.views.generic.base import RedirectView
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
+#from django.http import HttpResponse # tmp; used for admin-is-closed
 
 admin.autodiscover()
 
@@ -38,6 +39,9 @@ urlpatterns = patterns ('',
     url(r'^admin/password_reset/done/$',                        auth_views.password_reset_done,     name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',  auth_views.password_reset_confirm,  name='password_reset_confirm'),
     url(r'^reset/done/$',                                       auth_views.password_reset_complete, name='password_reset_complete'),
+
+    #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
+    # TemplateView.as_view(template_name="admin-is-closed.html")),
 
     # Note: Must be *after* passrod reset links!
     (r'^admin/',    include (admin.site.urls)),
