@@ -40,8 +40,8 @@ class Article (models.Model):
     pub_objects = PubArticleManager() # publicly available objects
 
     # Fields
-    pubdate =   models.DateField (auto_now_add=True)
-    date =      models.DateField (default=datetime.now, help_text='Date of news article (url), not the day we posted it.')
+    pubdate =   models.DateTimeField (auto_now_add=True)
+    date =      models.DateTimeField (default=datetime.now, help_text='Date of news article (url), not the day we posted it.')
     url =       models.URLField (unique=True, null=True) # Note: some old news links don't have url set, therefore must allow null
     title =     models.CharField (max_length=128)
     summary =   models.TextField (help_text=u'Just copy the "ingress" into this field.')
