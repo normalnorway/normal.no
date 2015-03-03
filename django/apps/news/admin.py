@@ -8,7 +8,9 @@ class LinkOnlyFilter (admin.SimpleListFilter):
     def queryset (self, request, queryset):
         v = self.value()
         if v == None: return queryset
-        return queryset.filter (body__isnull = bool(int(v)))
+        if v == '0': return queryset.filter (body='')
+        if v == '1': return queryset.exclude (body='')
+        assert False
     title = 'Has body?'
     parameter_name = 'body'
 
@@ -26,8 +28,7 @@ class ArticleAdmin (admin.ModelAdmin):
     # http://stackoverflow.com/questions/4067712/django-admin-adding-pagination-links-in-list-of-objects-to-top
 
     def has_body (self, obj):
-        #return obj.body != None
-        return obj.body!='' and obj.body!=None  # @todo only use null or ''
+        return obj.body != ''
     has_body.boolean = True
     has_body.short_description = 'Has body'
     #has_body.admin_order_field = 'body'

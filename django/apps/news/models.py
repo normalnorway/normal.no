@@ -11,9 +11,7 @@ if no body, redirect instead of showing on webpage?
 
 DB-changes:
 - rename Article -> NewsLink
-- date & pubdate => datetime
 - image_url field
-- don't allow null for body
 - add field for canonical_url (or url_original)?
 - db_index=True on Article.title?
 """
@@ -37,7 +35,7 @@ class Article (models.Model):
     # Managers
     # Note: The first manager is the default; don't change that!
     objects = models.Manager()
-    pub_objects = PubArticleManager() # publicly available objects
+    pub_objects = PubArticleManager()   # publicly available objects
 
     # Fields
     pubdate =   models.DateTimeField (auto_now_add=True)
@@ -45,7 +43,7 @@ class Article (models.Model):
     url =       models.URLField (unique=True, null=True) # Note: some old news links don't have url set, therefore must allow null
     title =     models.CharField (max_length=128)
     summary =   models.TextField (help_text=u'Just copy the "ingress" into this field.')
-    body =      models.TextField (blank=True, null=True, help_text='Our comment to this news story. Usually empty.')
+    body =      models.TextField (blank=True, help_text='Our comment to this news story. Usually empty.')
     published = models.BooleanField (default=True) # help_text='Show on webpage?')
       # Note: this will *not* add a sql default, so published will only
       # default to True when created through Django. But sql will not
