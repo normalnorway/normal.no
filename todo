@@ -55,3 +55,18 @@ RewriteRule pattern -  [R=404] [other_flags]	# favicon.ico robots.txt ++
 Python has class calendar.HTMLCalendar([firstweekday])
 
 parskip = 50% of line height
+
+not needed on production server:
+  static/js/less-1.4.1.min.js
+  static/js/less.js
+
+# The [G] flag forces the server to return a 410 Gone status with the
+# response. This indicates that a resource used to be available, but is
+# no longer available.
+RewriteRule oldproduct - [G,NC]
+Do this for old news archive?
+  /cgi-bin/searchnews/
+  /cgi-bin/rss
+  /cgi-bin/viewnews?view=1242825757
+
+/gmm/2005	redirect to old site?

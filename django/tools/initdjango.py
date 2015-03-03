@@ -17,15 +17,11 @@ if path != os.getcwd():
 
 
 # Might get AppRegistryNotReady exception if not doing this:
-# import django
-# django.setup()
+import django
+django.setup()
 
 
 # Note: logging does not work without django.setup()
 #import logging
 #logger = logging.getLogger()
 #logger.warn ('no more piza')
-
-# Test
-#from apps.news.models import Article
-#print Article.objects.all()[:5]
