@@ -19,11 +19,17 @@ class LinkOnlyFilter (admin.SimpleListFilter):
 class ArticleAdmin (admin.ModelAdmin):
     ordering = ('-date',)
     date_hierarchy = 'date'
+    fields = ('date', ('url', 'url_is_canonical'), 'title', 'body', 'image_url', 'published')
     search_fields = ('title', 'summary', 'body')
-    list_display = ('date', 'title', 'domain', 'has_body')
+    list_display = ('_date', 'title', 'domain', 'has_body')
     list_display_links = ('title',)
     list_filter = ('date', LinkOnlyFilter)
     list_per_page = 50  # default is 100
+
+    def _date (self, obj):
+        return obj.date.strftime ('%F')
+    _date.admin_order_field = 'date'
+    _date.short_description = 'date'
 
     # http://stackoverflow.com/questions/4067712/django-admin-adding-pagination-links-in-list-of-objects-to-top
 
