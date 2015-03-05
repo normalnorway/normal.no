@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from .models import Article
-from .forms import AddNewForm, AutoNewForm
+from .forms import AutoNewForm
 from .newsgrab import get_metadata
 
 
