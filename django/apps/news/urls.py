@@ -30,5 +30,7 @@ urlpatterns = patterns ('apps.news',    # apps.news.views?
     url (r'^rss/$', NewsFeed(), name='rss'),
 
     # testing
-    url (r'^ny/$', 'views.add_new', name='news-add-new'),
+    url (r'^ny/$',      views.add_new, name='news-new'),
+    #url (r'^ny/$',      views.NewView.as_view(), name='news::new'),
+    url (r'^auto-ny/$', views.AutoNewView.as_view(), name='news-auto-new'),
 )

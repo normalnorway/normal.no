@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block extrastyle %}
+<style>
+  #id_url {
+    width: 41em;
+  }
+  #id_summary {
+    width: 43em;
+    height: 7em;
+  }
+  #id_title {
+    width: 41em;
+  }
+  ul.errorlist {
+    margin: 0;
+    padding: 0;
+  }
+  ul.errorlist > li {
+    list-style: none;
+  }
+  ul.form {
+    margin: 0;
+    padding: 0;
+  }
+  ul.form > li > label {
+    display: block;
+    font-weight: bold;
+  }
+  ul.form > li {
+    list-style: none;
+    margin-bottom: 6px;
+  }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Legge til ny lenke</h1>
+
+{% if missing %}
+<p class="strong">
+Har du mulighet, fyll gjerne ut de manglende feltene under før du lagrer.
+Det sparer oss for tid og den vil bli publisert raskere.
+</p>
+{% endif %}
+
+{% if form.errors %}
+<p class="error">Vennligst rett feilen(e) under!</p>
+{% endif %}
+
+
+<p><strong>Adresse:</strong>
+<br><a href="{{ form.url.value }}" class="smaller">{{ form.url.value }}</a></p>
+
+<form method="post" action='{% url "news-auto-new" %}'>
+  {% csrf_token %}
+  <ul class="form">
+    {{ form.as_ul }}
+  </ul>
+  <input type="submit" value="Lagre" />
+</form>
+
+{% endblock %}

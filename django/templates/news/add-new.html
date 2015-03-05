@@ -55,7 +55,7 @@ TODO: {{ form.non_field_errors }}
 {% if not step %}
 
 <br/>
-<form method="post" action='{% url "news-add-new" %}'>
+<form method="get" action='{% url "news-auto-new" %}'>
   {% csrf_token %}
   <input type="hidden" name="step" value="1" />
   <strong>Adresse</strong>

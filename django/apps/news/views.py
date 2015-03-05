@@ -11,63 +11,136 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from .models import Article
-from .forms import AddNewForm
+from .forms import AddNewForm, AutoNewForm
 from .newsgrab import get_metadata
 
 
+def _get_metadata (url):
+    import urlparse
+    urlobj = urlparse.urlparse (url)
+    if not urlobj.netloc.endswith ('.no'):
+        return {}   # only allow for norwegian sites
+    data = get_metadata (url)   # @todo pass urlobj? urlobj=urlobj?
+    return data if data else {}
+    # @todo warn user if not norwegian
+    # Note: og:url contains the canonical URL
+
+def _remove_empty (data):
+    """Remove empty values from a dict. A copy is returned"""
+    return dict((k, v) for k, v in data.iteritems() if v)
+
+def _get_missing (data): # rename _missing_keys
+    keys = {'url', 'date', 'title', 'summary', 'image_url'}
+    return keys - set(data.keys()) # note: returns a set
+
+def _have_keys (data):
+    keys = {'url', 'title', 'summary', 'image', 'date'}
+    return keys.intersection (set(data.keys()))
+
+
+
+from django.http import HttpResponse
+from django.views.generic import View
+
+class AutoNewView (View):
+    """
+    Sanity cheks:
+    Check if url is (syntactically) valid
+    Check if url exists (200, 30x)    Q: what if redirected?
+    Check if we have url (move before exists check?)
+    Check if norwegian url
+    Try to fetch metadata
+    If url!=canonical_url => check if we have canonical_url
+    If all metadata is present => save and redirect
+    Ask user to fill in missing metadata
+    """
+
+    template_name = 'news/add-new-auto.html'
+
+    # TODO
+    # try to clean up adress. but keep fragment?
+    #   urlparse.urlunparse(urlobj[:3] + ('',)*3)  # shall return same as url
+    # urlparse - urlsplit
+    # check that url returns 200
+
+    def get (self, request):
+        url = request.GET.get ('url', '').strip()
+        if not url: return HttpResponse ('missing parameters') # @todo raise
+
+        if Article.objects.filter (url=url).exists():
+            return self._have_it()
+
+        data = _get_metadata (url)
+        print data
+        if data.has_key ('url') and url != data['url']:
+            if Article.objects.filter (url=data['url']).exists():
+                return self._have_it()
+
+        if data.has_key ('image'):
+            data['image_url'] = data.pop('image')
+        if data.has_key ('url'):
+            data['url_is_canonical'] = True
+        else:
+            data['url'] = url
+
+        missing = _get_missing (data)
+        if not missing: return self._save_and_redirect (data)
+
+        form = AutoNewForm (initial=data)
+        # @todo mark missing fields with css class
+        #self._fix_form (form, data) # xxx
+        return render (request, self.template_name, dict(form=form, missing=True))
+        #return self.render (dict(form=form, missing=True))
+
+
+    def post (self, request):
+        form = AutoNewForm (request.POST)
+        if not form.is_valid():
+            return render (request, self.template_name, dict(form=form))
+        return self._save_and_redirect (form.cleaned_data)
+
+
+    def _have_it (self):
+        messages.warning (self.request, u'Denne lenken har vi allerede i arkivet.')
+        return redirect ('news-new')
+
+    def _save_and_redirect (self, data):
+        self._save (data)
+        title = data['title'] if data['title'] else data['url']
+        messages.success (self.request, u'Takk for nyhetstipset: "%s"' % title)
+        return redirect ('news-new')
+
+    def _save (self, data):
+        obj = Article (**data)
+        if not self.request.user.has_perm ('news.add_article'):
+            obj.published = False
+#        missing = _get_missing (_remove_empty (data))
+#        if missing.intersection ({'date', 'title', 'summary'}):
+#            obj.published = False   # required fields to publish
+        try:
+            obj.full_clean()
+        except ValidationError as ex:   # @todo forms.ValidationError
+            obj.published = False # with this can drop intersection test
+        obj.save()
+
+    def _fix_form (self, form, data):
+        for key in _have_keys (data):
+            if form.fields.has_key(key):
+                form.fields[key].widget.attrs['readonly'] = True
+
+
+
 # q: login_url='/loginpage/'
-# @todo check if url is alive? (if no newsgrap support)
-@permission_required ('news.add_article')
+#@permission_required ('news.add_article')
 def add_new (request):
-    if request.method != 'POST':
-        return render (request, 'news/add-new.html')
-        #form = AddNewForm1()
-        #return render (request, 'news/add-new.html', dict(form=form))
-
-    step = int(request.POST.get('step', 1))
-    url = request.POST['url'].strip()
-    if step == 1:
-        # Check if already exists. @todo check canonical url also
-        if Article.objects.filter(url=url).exists():
-            messages.warning(request, u'Den lenken har vi allerede. Ellers takk :)')
-            return redirect (request.path)
-        # Try to init form with metadata
-        #form = AddNewForm (initial=get_metadata(url))
-        data = get_metadata(url)
-        if not data: data = dict(url=url)
-        form = AddNewForm (initial=data)
-        form.fields['url'].widget.attrs['readonly'] = True
-    else:
-        # Step 2: Save form
-        form = AddNewForm (request.POST)
-        if form.is_valid():
-            # Note: Does not call full_clean(), so will get IntegrityError
-            # from db about url column not uniqie.
-            #obj = Article.objects.create (**form.cleaned_data)
-
-            # Note: If full_clean() raises error, it's not converted
-            # to an validation error.
-            try:
-                obj = Article (**form.cleaned_data)
-                obj.full_clean()
-                obj.save()
-                messages.success (request, u'Lagt til nyhet: "%s"' % obj.title)
-                return redirect (request.path)
-            except ValidationError as e:
-                form._errors.update (e.message_dict)
-                # @todo can raise forms.ValidationError() to propagate error?
-                #       note: this is a non-field-error
-                # self._errors["subject"] = self.error_class([msg])
-                #form._errors = e.update_error_dict (form._errors)
-                # form._errors.setdefault (NON_FIELD_ERRORS, self.error_class()).extend(messages)
-                # Form.add_error(field, error)  # Django 1.7
-                #non_field_errors = e.message_dict[NON_FIELD_ERRORS]
-
-    return render (request, 'news/add-new.html', dict(form=form, step=step, url=url))
+    assert request.method != 'POST'
+    return render (request, 'news/add-new.html')
+    #return HttpResponse ('hello!')
 
 
 
 def detail (request, news_id):
+    """http://normal.no/nyheter/<pk>/"""
     return render (request, 'news/detail.html', {
         'item': get_object_or_404 (Article, pk=news_id, published=True)
         # @todo use same name as DetailView uses. (object?)
@@ -76,26 +149,15 @@ def detail (request, news_id):
 
 
 class ArchiveView (dates.ArchiveIndexView):
-    #model = Article     # not needed anymore
     date_field = 'date'
     paginate_by = 25
-    def get_queryset (self):    # note: this will override model
+    def get_queryset (self):
         return Article.pub_objects
-
-    #context_object_name = 'list'    # object_list
-    #date_list_period = 'year'
-    # @todo date_list: filter on published=True
-    #       update: looks like thats done for us (uses get_queryset)
-    # get_dated_queryset(**lookup)
-    # get_date_list(queryset, date_type=None, ordering='ASC')
-    # @todo get from cache (same query as sub-menu does. cache queryset?)
-#    def get_date_list(queryset, date_type=None, ordering='ASC'):
-#        return [datetime(2002,1,1), datetime(2004,1,1), datetime(2006,1,1)]
 
 
 # @todo show months in revered order?
+# @todo pagination
 class YearView (dates.YearArchiveView):
-    #model = Article
     date_field = 'date'
     make_object_list = True     # False => only generate month list
     def get_queryset (self):
@@ -103,7 +165,6 @@ class YearView (dates.YearArchiveView):
 
 
 class MonthView (dates.MonthArchiveView):
-    #model = Article
     date_field = 'date'
     month_format = '%m'
     make_object_list = True

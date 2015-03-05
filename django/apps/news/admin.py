@@ -27,7 +27,8 @@ class ArticleAdmin (admin.ModelAdmin):
     list_per_page = 50  # default is 100
 
     def _date (self, obj):
-        return obj.date.strftime ('%F')
+        if obj.date: return obj.date.strftime ('%F')
+        #return obj.date.strftime ('%F')
     _date.admin_order_field = 'date'
     _date.short_description = 'date'
 
