@@ -1,10 +1,10 @@
 # encoding: utf-8
+from django.http import HttpResponse
 from django.conf.urls import patterns, include, url
 from django.views.generic.base import RedirectView
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
-#from django.http import HttpResponse # tmp; used for admin-is-closed
 
 admin.autodiscover()
 
@@ -42,6 +42,10 @@ urlpatterns = patterns ('',
 
     #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
     # TemplateView.as_view(template_name="admin-is-closed.html")),
+
+    # Google webmasters verification
+    (r'^google5b6561fca1bd3c25.html/', lambda nil:
+        HttpResponse ('google-site-verification: google5b6561fca1bd3c25.html')),
 
     # Note: Must be *after* passrod reset links!
     (r'^admin/',    include (admin.site.urls)),
