@@ -1,7 +1,8 @@
 # encoding: utf-8
-
+from django.http import HttpResponse
 from django.conf.urls import patterns, include, url
 from django.views.generic.base import RedirectView
+from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 
@@ -13,19 +14,21 @@ urlpatterns = patterns ('',
     url(r'^$',              'core.views.index',             name='index'),
     url(r'^nyhetsbrev/$',   'core.views.newsletter',        name='newsletter'),
     url(r'^bli-medlem/$',   'apps.support.views.index',     name='enroll'),
-    url(r'^medlem/$',       'apps.support.views.index'),    # alias
+    # redirect is better (than alias)
+    #url(r'^medlem/$',       'apps.support.views.index'),    # alias
     url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
     url(r'^nettguide/$',    'apps.links.views.index',       name='links'),
 
+    (r'^nyhetsbrev/1/$', TemplateView.as_view (template_name='newsletter-1.html')),
+
+    # Redirect deprecated urls
+    (u'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
     (r'^rss/$', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
-    # Hack to redirect deprecated url's
-    # Note: Does not work to urlencode; must use unicode strings.
-    #(r'^m%C3%B8/$', RedirectView.as_view (url='/medlem/', permanent=True)),
     (u'^gruppesøksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
+    (u'^frivillig/$', RedirectView.as_view (url='/sider/frivillig/', permanent=True)),
 
     (r'^nyheter/',  include ('apps.news.urls')),
     (r'^tinymce/',  include ('tinymce4.urls')),
-    (r'^admin/',    include (admin.site.urls)),
 
     # https://docs.djangoproject.com/en/1.7/topics/auth/default/
     #(r'^accounts/login/$', 'django.contrib.auth.views.login'),
@@ -36,6 +39,16 @@ urlpatterns = patterns ('',
     url(r'^admin/password_reset/done/$',                        auth_views.password_reset_done,     name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',  auth_views.password_reset_confirm,  name='password_reset_confirm'),
     url(r'^reset/done/$',                                       auth_views.password_reset_complete, name='password_reset_complete'),
+
+    #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
+    # TemplateView.as_view(template_name="admin-is-closed.html")),
+
+    # Google webmasters verification
+    (r'^google5b6561fca1bd3c25.html/', lambda nil:
+        HttpResponse ('google-site-verification: google5b6561fca1bd3c25.html')),
+
+    # Note: Must be *after* passrod reset links!
+    (r'^admin/',    include (admin.site.urls)),
 )
 
 

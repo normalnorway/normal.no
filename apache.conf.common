@@ -13,6 +13,13 @@
     #Alias /favicon.ico /srv/www/normal.no/htdocs/static/favicon.ico
     #Alias /robots.txt  /srv/www/normal.no/htdocs/static/robots.txt
 
+    <Directory /srv/www/normal.no/htdocs/media/files>
+	# @todo move to (site) global scope?
+	AddDefaultCharset utf-8
+	# I like symlinks
+	Options +SymLinksIfOwnerMatch
+    </Directory>
+
     ## Logging
     #RewriteRule \.(png|jpg|jpeg|css|js)$ - [E=dontlog]
     #SetEnvIfNoCase Request_URI "\.png$" dontlog
