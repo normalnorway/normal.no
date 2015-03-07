@@ -10,6 +10,7 @@
 #
 
 BASE_DIR = None # Not in use, but keeps Django happy (avoids 1_6.W001).
+# SILENCED_SYSTEM_CHECKS = ['1_6.W001']
 
 import os
 from django.conf import global_settings as defaults

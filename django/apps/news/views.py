@@ -60,8 +60,11 @@ class AutoNewView (View):
     # TODO
     # try to clean up adress. but keep fragment?
     #   urlparse.urlunparse(urlobj[:3] + ('',)*3)  # shall return same as url
+    #   url = 'http://netloc/path;parameters?query=argument#fragment'
+    #   url, fragment = urldefrag(original)
     # urlparse - urlsplit
     # check that url returns 200
+    # HEAD -S http://normal.no/bli-medlem
 
     def get (self, request):
         url = request.GET.get ('url', '').strip()
@@ -130,7 +133,7 @@ class AutoNewView (View):
 
 
 
-# q: login_url='/loginpage/'
+# q: login_url='/loginpage/'. update: set in settings.py
 #@permission_required ('news.add_article')
 def add_new (request):
     assert request.method != 'POST'
