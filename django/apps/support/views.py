@@ -50,7 +50,7 @@ def get_petition_stats (data):
     numdays = (Petition.objects.latest().date - Petition.objects.earliest().date).days
     stats['week'] = count if numdays<7 else round(count * 7.0 / numdays)
     stats['last_week'] = data.filter (date__gt = datetime.datetime.now() - datetime.timedelta(days=7)).count()
-    stats['started'] = data.earliest().date.strftime('%c')
+    stats['started'] = data.earliest().date
 
     cache.set (ckey, stats)
     return stats
