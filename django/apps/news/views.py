@@ -20,8 +20,12 @@ def _get_metadata (url):
     urlobj = urlparse.urlparse (url)
     if not urlobj.netloc.endswith ('.no'):
         return {}   # only allow for norwegian sites
-    data = get_metadata (url)   # @todo pass urlobj? urlobj=urlobj?
-    return data if data else {}
+    meta = get_metadata (url)   # @todo pass urlobj? urlobj=urlobj?
+    meta.pop ('type', None)
+    meta.pop ('site_name', None)
+    if meta.has_key (u'description'):
+        meta[u'summary'] = meta.pop (u'description', u'')
+    return meta if meta else {}
     # @todo warn user if not norwegian
     # Note: og:url contains the canonical URL
 
@@ -74,7 +78,6 @@ class AutoNewView (View):
             return self._have_it()
 
         data = _get_metadata (url)
-        print data
         if data.has_key ('url') and url != data['url']:
             if Article.objects.filter (url=data['url']).exists():
                 return self._have_it()
@@ -108,9 +111,10 @@ class AutoNewView (View):
         return redirect ('news-new')
 
     def _save_and_redirect (self, data):
+        #return HttpResponse ('save aborted')
         self._save (data)
         title = data['title'] if data['title'] else data['url']
-        messages.success (self.request, u'Takk for nyhetstipset: "%s"' % title)
+        messages.success (self.request, u'Takk for nyhetstipset: %s' % title)
         return redirect ('news-new')
 
     def _save (self, data):
