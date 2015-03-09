@@ -4,6 +4,8 @@ http://git.normal.no/git/normal.no/tree/docs/how-to-contribute.md
 See the Makefile for how to build and upload.
 
 TODO:
+Python 2.6 and Django 1.6 only! :(
+  Coding guidelines
 rename getting-started.md?
 url-namespace
 html5. define browser support (lowest IE version)

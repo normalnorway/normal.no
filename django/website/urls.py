@@ -41,7 +41,6 @@ urlpatterns = patterns ('',
     url(r'^reset/done/$',                                       auth_views.password_reset_complete, name='password_reset_complete'),
 
     #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
-    # TemplateView.as_view(template_name="admin-is-closed.html")),
 
     # Google webmasters verification
     (r'^google5b6561fca1bd3c25.html/', lambda nil:

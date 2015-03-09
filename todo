@@ -70,3 +70,6 @@ Do this for old news archive?
   /cgi-bin/viewnews?view=1242825757
 
 /gmm/2005	redirect to old site?
+
+http://stackoverflow.com/questions/7965893/django-internationalization
+LOCALE_PATHS
