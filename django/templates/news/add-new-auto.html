@@ -43,10 +43,16 @@
 <h1>Legge til ny lenke</h1>
 
 {% if missing %}
+<!--
 <p class="strong">
 Har du mulighet, fyll gjerne ut de manglende feltene under før du lagrer.
 Det sparer oss for tid og den vil bli publisert raskere.
 </p>
+-->
+<p><span class="strong">Husk å lagre! Har du mulighet så fyll
+gjerne ut de manglende feltene før du lagrer.</span> Det sparer oss for tid
+og nyheten blir publisert raskere. Du kan høyreklikke på lenken under og
+velge «åpne i ny fane/vindu».</p>
 {% endif %}
 
 {% if form.errors %}

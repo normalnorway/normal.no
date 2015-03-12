@@ -52,6 +52,7 @@ ALLOWED_HOSTS = (
 
 # Note: Default is '/accounts/login/'.
 # Also accepts view function names and named URL patterns
+# Update: Not found! https://normal.no/admin/login/
 LOGIN_URL = '/admin/login/'
 #LOGOUT_URL = '/admin/logout/'
 #PASSWORD_RESET_TIMEOUT_DAYS = 3

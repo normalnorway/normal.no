@@ -146,6 +146,7 @@ def add_new (request):
 
 
 
+# @todo use DateDetailView?
 def detail (request, news_id):
     """http://normal.no/nyheter/<pk>/"""
     return render (request, 'news/detail.html', {
@@ -158,22 +159,19 @@ def detail (request, news_id):
 class ArchiveView (dates.ArchiveIndexView):
     date_field = 'date'
     paginate_by = 25
-    def get_queryset (self):
-        return Article.pub_objects
+    def get_queryset (self): return Article.pub_objects
 
 
 # @todo show months in revered order?
 # @todo pagination
 class YearView (dates.YearArchiveView):
     date_field = 'date'
-    make_object_list = True     # False => only generate month list
-    def get_queryset (self):
-        return Article.pub_objects
+    make_object_list = True # False => only generate month list
+    def get_queryset (self): return Article.pub_objects
 
 
 class MonthView (dates.MonthArchiveView):
     date_field = 'date'
     month_format = '%m'
     make_object_list = True
-    def get_queryset (self):
-        return Article.pub_objects
+    def get_queryset (self): return Article.pub_objects

@@ -31,6 +31,9 @@ class Article (models.Model):
     # trough the admin. News tips are incomplete objects and the only
     # required field is url; these have published forced to False.
 
+    # Note: 'date' can have empty time (00:00).
+    #       @todo module method to format as string
+
     # Managers
     # Note: The first manager is the default; don't change that!
     objects = models.Manager()
