@@ -19,5 +19,6 @@ the 'normalweb' group for that.
 
 
 ## Protect the newmembers file!
-$ chown root:www-data newmembers
-$ chmod u=rw,g=w,o= newmembers		# write-only for the apache user
+
+    $ chown root:www-data newmembers
+    $ chmod u=rw,g=w,o= newmembers	    # write-only for the apache user
