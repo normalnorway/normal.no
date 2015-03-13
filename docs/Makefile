@@ -1,5 +1,5 @@
 MARKDOWN=markdown_py -x toc
-#MARKDOWN=markdown_py -o html5
+#MARKDOWN=markdown_py -x toc -o html5
 
 
 all: how-to-contribute.html
@@ -8,8 +8,8 @@ all: how-to-contribute.html
 # This file is found under:
 # http://git.normal.no/git/normal.no/about/
 # But note: cgit uses caching, so will not show up immediately!
-upload: how-to-contribute.html
-	scp $^ git.normal.no:/srv/www/git.normal.no/readme.html
+#upload: how-to-contribute.html
+#	scp $^ git.normal.no:/srv/www/git.normal.no/readme.html
 
 
 # Suffix rule from markdown to html

@@ -4,11 +4,18 @@ http://git.normal.no/git/normal.no/tree/docs/how-to-contribute.md
 See the Makefile for how to build and upload.
 
 TODO:
-Python 2.6 and Django 1.6 only! :(
-  Coding guidelines
-rename getting-started.md?
-url-namespace
+can make changes directly on github
+url-namespace. can link to wiki
 html5. define browser support (lowest IE version)
+coding standards
+  Python 2.6 and Django 1.6 only! :(
+rename CONTRIBUTING.md?
+Github: Howto clone the repo and send pull requests
+Github: Howto use the issue tracker
+gitk / gitg
+unit test: ./manage.py test
+
+TODO Styling:
 css for <code>
 more line-spacing?
 -->
@@ -76,26 +83,26 @@ Linux-distribusjoner.
 
 ## Innledning ##
 
-Hvis du bare skal endre på designet (html-maler) virker nok denne guiden
-noe overveldene, og du kan hoppe over punktene `Installasjon` og
-`Django`, og du trenger strengt tatt ikke installere noe ekstra på
+Hvis du kun skal endre designet (html- og css-maler) virker nok denne
+guiden noe overveldene, og du kan hoppe over punktene `Installasjon` og
+`Django`, og du trenger ikke å installere noe ekstra på
 maskinen din – selv om Git annbefales på det varmeste! Git brukes for
 å laste ned alle filene og sende endringer tilbake. Hvis du synes det
 blir for knotete, kan også filene lastes ned her: [Html maler][];
-[css, javascript og bilder][css-js-images].
+[css,javascript og bilder][css-js-images].
 
-[Html maler]: http://git.normal.no/git/normal.no/tree/django/templates
-[css-js-images]: http://git.normal.no/git/normal.no/tree/django/static
+[Html maler]: https://github.com/normalnorway/normal.no/tree/master/django/templates
+[css-js-images]: https://github.com/normalnorway/normal.no/tree/master/django/static
 
 Hvis du ikke kan programmere eller ikke har noe erfaring med Python eller
 webutvikling, burde du kanskje heller finne noe annet å bidra med. Hvis
-du derimot er teknisk annlagt, lærer fort og brenner for oppgaven; sjekk
+du derimot er teknisk annlagt, lærer fort, og brenner for oppgaven; sjekk
 ut denne videoen:
 [Python Web Development: Understanding Django for Beginners](http://www.youtube.com/watch?v=zTNA0MtZwso).
 
 Skal du bare gjøre endringer i innhold (tekst og bilder), er ikke dette
-guiden for deg. Det gjøres via admin-grensesnittet her:
-<http://normal.no/admin/>
+guiden for deg. Slike endringer gjøres via admin-grensesnittet:
+<https://normal.no/admin/>
 
 
 ## Installasjon ##
@@ -115,55 +122,84 @@ Og hvis du får det til, skriv gjerne ned en oppskrift for andre.
 
 ### Linux/Unix ###
 
-Start terminalprogrammet og lim inn kommandoene under.
+*Start et terminalprogram og lim inn kommandoene under.*
 
 Først må du installere noen programmer (pakker) som prosjektet trenger
 for å fungere. Dette må gjøres som administrator (root).
 
-    apt-get install python-pip
-    apt-get install sqlite3
-    apt-get install git
+    sudo apt-get install git
+    sudo apt-get install python-pip
+    sudo apt-get install sqlite3
 
+Så må du installere Python pakkene som prosjektet bruker. Disse finnes
+som system-pakker som kan installeres med `apt-get`, men det er bedre
+å installere disse via [Python Package Index](https://pypi.python.org/pypi)
+fordi da får du aller siste versjon. Man bruker programmet `pip` for
+å installere Python pakker.
+
+Pyton pakker kan installeres både som administrator (root) og som en
+vanlig bruker. Installerer du som vanlig bruker (anbefales), installeres
+alle filene i `$HOME/.local/`, og vil kun være tilgengelig for din
+bruker. (`pip` installerer som administrator som standard, så du må bruke
+`pip --user` for å installere som egen bruker.)
+
+<!--
+    $ mkdir -p $HOME/.pip
+    $ echo -e "[install]\nuser = yes" >> $HOME/.pip/pip.conf
+-->
+
+<!--
 Django kan installeres både som administrator (root) og som en vanlig
-bruker.  Installerer du som vanlig bruker, installeres alle filene under
+bruker. Installerer du som vanlig bruker, installeres alle filene under
 katalogen `$HOME/.local/`. Derfor må `$HOME/.local/bin/` legges til
 i `PATH` for at komandoen `django-admin.py` skal virke (ikke nødvendig).
 Det enkleste er å installere som administrator, og det gjør du slik:
+-->
 
-    pip install django
-
-Nettsiden bruker følgende Python-moduler. De installeres slik:
-
-    pip install pillow
-    pip install markdown
-
+<!--
 Resten burde gjøres som din vanlige bruker – eller hvis du er paranoid,
 lag en egen bruker kun for dette.
+-->
+
+Nettsiden bruker følgende Python-pakker. De installeres slik:
+
+    pip install --user django
+    pip install --user pillow
+    pip install --user markdown
+
+<!-- @todo mark with css class. how? -->
+Merk: Får du beskjeden «Requirement already satisfied (use --upgrade to
+upgrade): ...», betyr det at pakken alt er installert som en
+system-pakke. Du kan oppgradere den hvis du vil, men det er valgfritt.
 
 
 ### Last ned kildekoden ###
 
 Neste steg er å laste ned kildekoden til nettsidene. Til det bruker vi
-et versjonskontroll-system ved navn [Git][]. Git gjør det bl.a. mulig
-for flere personer å redigere de samme filene samtidig.
+versjonskontroll-systemet [Git][]. Git gjør det bl.a. mulig for flere
+personer å redigere de samme filene samtidig.
 
 [Git]: http://en.wikipedia.org/wiki/Git_(software)
 
-Still deg i den mappen du vil laste ned i. I dette eksemplet har jeg
-valgt hjemmemappen min, dvs. `/home/torkel/`. Dit kommer jeg ved
-å skrive `cd $HOME`.
+Still deg i mappen du vil laste ned i. I dette eksemplet har jeg valgt
+hjemmemappen min, dvs. `/home/torkel/`. Dit kommer jeg ved å skrive `cd
+$HOME`.
 
-    git clone http://git.normal.no/git/normal.no
+    git clone
     cd normal.no
-    git submodule init
-    git submodule update
+    sh bootstrap.sh
 
-Du har nå lastet ned alle filene og står i mappen til prosjektet.
-Hos meg blir det `/home/torkel/normal.no/`.
+Alle filer som trengs er nå lastet ned og du står nå i mappen til
+prosjektet. Hos meg blir det `/home/torkel/normal.no/`.
 
 
 ### Konfigurer / oppsett ###
 
+For å sjekke at alt er i orden kan du kjøre denne kommandoen:
+
+    python django/manage.py check
+
+<!--
 Sjekk at standard konfigurasjonen er ok:
 
     edit django/website/settings.py
@@ -172,8 +208,9 @@ Så trenger du en databasefil med testdata:
 
     cd db
     wget http://torkel.normal.no/normal.db
+-->
 
-Siste steg er å lage deg en bruker så du får logget inn:
+Hvis du vil logge inn i admin-systemet må du først lage deg en bruker:
 
     python django/manage.py createsuperuser
 
@@ -182,32 +219,29 @@ Siste steg er å lage deg en bruker så du får logget inn:
 ## Django ##
 
 Django kommer med en innebygget webserver man kan bruke under utvikling.
-Den oppdager hvilke filer som blir redigert og laster de automatisk inn
-på nytt.
+Den oppdager når filer blir redigert og laster de automatisk inn på nytt.
 
 Django's webserver starter du slik:
 
     python django/manage.py runserver
 
-(Du må stå i katalogen som inneholder filen `manage.py`; som er
-`/home/torkel/normal.no/` i mitt tilfelle.)
+Webserveren lytter på <http://localhost:8000>. Administrasjons-panelet
+finner du her: <http://localhost:8000/admin>.
 
-Webserveren lytter på localhost:8000 så nå er det bare å åpne [den
-adressen i nettleseren](http://localhost:8000/).  
-Administrasjons-panelet finner du her: <http://localhost:8000/admin>.
-
+<!--
 Eventuelt prøv denne kommandoen:
 
     xdg-open http://localhost:8000/
+-->
 
 
 
-## Gjøre endringer ##
+## Hvordan gjøre endringer ##
 
 Sett at du skal gjøre en liten endringen i html-malen til
 nettguiden. Da redigerer du denne filen `django/templates/nettguide.html`.
 
-Når du er ferdig bruk `git diff` for å vise hvilke endringer som er gjort:
+Når du er ferdig bruk `git diff` for å se endringene som er gjort:
 
     git diff
 
@@ -227,15 +261,17 @@ tilbakestilles slik:
 
     git checkout django/templates/nettguide.html
 
-TODO: Forklare mer om hvordan GIT fungerer.
-
 <!--
+TODO: Forklare mer om hvordan GIT fungerer.
 git add docs/how-to-contribute.md docs/Makefile
 git diff &ndash;&ndash;staged
 -->
 
 
 ## Hvordan sende endringer? ##
+
+**Oppdatering: Bruk heller Github for å sende endringer. Det er enklere.
+Se avsnittet under.**
 
 Du har gjort noen endringer i koden, og du ønsker å sende de til oss.
 Den enkleste måten å gjøre det på, er å kjøre kommandoen `git diff` og
@@ -260,3 +296,29 @@ Eller ennå bedre; lær deg Git og be oss om skrivetilgang.
 * <http://git-scm.com/book>
 
 **Send en nyttig patch eller to, og vi gir deg skrivetilgang.**
+
+
+
+## Github ##
+
+[Github](https://github.com/) har et web-basert grensesnitt til Git,
+wiki-sider og bugtracker. Tjenesten er gratis så lenge innholdet er
+tilgjengelig for alle.
+
+*Merk: Dette er ikke testet ut ennå.*
+
+* Registrer deg en Github-konto: <https://github.com/join>
+* Gå til <https://github.com/normalnorway/normal.no>
+* Klikk på «Fork» øverst til høyre. (Lag din egen private kopi).
+* Gjør én eller flere endringer
+* Når du er fornøyd med en endring sender du en «Pull Request».
+
+
+<!--
+Hvis du blir en aktiv bidragsyter, gir vi deg gjerne skrivetilgang.
+
+How to Get Started with Github - Beginner Tutorial
+https://www.youtube.com/watch?v=73I5dRucCds
+Part 1 :: GitHub for Windows
+https://www.youtube.com/watch?v=1UiICgvrsFI
+-->
