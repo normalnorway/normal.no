@@ -43,7 +43,7 @@ urlpatterns = patterns ('',
     #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
 
     # Google webmasters verification
-    (r'^google5b6561fca1bd3c25.html/', lambda nil:
+    (r'^google5b6561fca1bd3c25.html/$', lambda nil:
         HttpResponse ('google-site-verification: google5b6561fca1bd3c25.html')),
 
     # Note: Must be *after* passrod reset links!
