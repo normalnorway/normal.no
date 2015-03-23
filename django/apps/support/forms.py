@@ -5,6 +5,9 @@ from .models import Petition
 
 # TODO:
 #
+# MemberForm.name validate: two words, so people don't just
+# write their first name. Or use two fields?
+#
 # https://normal.no/bli-medlem/
 # hva innebærer det å være aktiv. bunntekst
 #
