@@ -19,11 +19,14 @@ def rootdir (*args):    # rename mk_filename
     """Constructs a path relative to the project root directory"""
     return os.path.join (rootdir.base, *args)
 rootdir.base = reduce(lambda n,f: f(n), [__file__] + 3*[os.path.dirname]) # calls os.path.dirname 3 times on __file__ recursively
+
+# XXX tmp fix for production server
+if os.path.exists ('/srv/www/normal.no/NODEBUG'):
+    rootdir.base = '/srv/www/normal.no/'
+
 # Q: Are these two always equal? __file__ == os.path.normpath(__file__)
 # If not, use normpath instead of __file__ ?
-# A: lets check
-assert __file__ == os.path.normpath(__file__)
-
+# A: No, they differ on the production server
 
 
 DEBUG = not os.path.exists (rootdir ('NODEBUG'))
