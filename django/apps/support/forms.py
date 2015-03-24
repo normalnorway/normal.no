@@ -47,9 +47,6 @@ class PetitionForm (forms.ModelForm):
 
 # MemberEnrollmentForm
 class MemberForm (forms.Form):
-    # @todo set for forms.Form class?
-    error_css_class = 'validation-error'
-    required_css_class = 'required'
 
     MEMBER_TYPE = (
         ('1', u'JA! Jeg ønsker å bli medlem og betale kr 100,- pr år.'),
