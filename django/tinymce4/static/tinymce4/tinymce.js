@@ -60,17 +60,23 @@ tinymce.init ({
     height: 550,
     resize: 'both',
 
-    custom_undo_redo_levels: 8,
-    entity_encoding: "raw",
+    content_css: '/static/css/tinymce.css',
 
-    // Do not convert to relative urls.
+    custom_undo_redo_levels: 8,
+    entity_encoding: 'raw',
+
+    // Don't touch/change url. (Do not convert to relative urls)
     convert_urls : false,
     // Can also do this. Might be more robust/safer.
     //document_base_url: document.location.origin + '/',
     //relative_urls : false,
 
-//    extended_valid_elements: "@[itemscope|itemtype|itemid|itemprop|content],div,span,time[datetime],h1[title],h2[title],h3[title]",
+    // Don't validate the html. It will remove opengraph properties.
+    // ... and maybe reformat the html?
     verify_html : false,
+
+    // Allow OpenGraph elements
+//    extended_valid_elements: "@[itemscope|itemtype|itemid|itemprop|content],div,span,time[datetime],h1[title],h2[title],h3[title]",
 
 
     menubar: 'edit insert format table',
