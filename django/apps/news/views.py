@@ -34,11 +34,13 @@ def _remove_empty (data):
     return dict((k, v) for k, v in data.iteritems() if v)
 
 def _get_missing (data): # rename _missing_keys
-    keys = {'url', 'date', 'title', 'summary', 'image_url'}
+    #keys = {'url', 'date', 'title', 'summary', 'image_url'} # python 2.7
+    keys = set(('url', 'date', 'title', 'summary', 'image_url'))
     return keys - set(data.keys()) # note: returns a set
 
 def _have_keys (data):
-    keys = {'url', 'title', 'summary', 'image', 'date'}
+    #keys = {'url', 'title', 'summary', 'image', 'date'}    # python 2.7
+    keys = set(('url', 'title', 'summary', 'image', 'date'))
     return keys.intersection (set(data.keys()))
 
 
