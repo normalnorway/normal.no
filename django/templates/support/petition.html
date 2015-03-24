@@ -2,38 +2,25 @@
 
 {% block extratitle %} » Opprop{% endblock %}
 
-{% block extrahead %}
-{{ form.media }}
-{% endblock %}
+{% block extrahead %} {{ form.media }} {% endblock %}
 
-{% block extrastyle %}
-<style>
-  h2 {
-    margin: 1.5em 0 .5em 0;
-  }
-
-  form {
-    margin-top: 1.5em;
-  }
-  form ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  table {
-    border-collapse: collapse;
-  }
-  table thead {
-    border-bottom: 1px solid black;
-    text-align: left;
-  }
-  table td {
-    padding-right: 3em;
-  }
-  table td.number {
-    text-align: right;
-  }
+{% block extrastyle %}<style>
+h2 {
+  margin: 1.5em 0 .5em 0;
+}
+form {
+  margin-top: 1.5em;
+}
+table thead {
+  border-bottom: 1px solid black;
+  text-align: left;
+}
+table td {
+  padding-right: 3em;
+}
+table td.number {
+  text-align: right;
+}
 </style>
 {% endblock %}
 
@@ -57,13 +44,13 @@
   <ul class="errorlist"><li>Du må oppgi fullt navn, samt by/bosted.</li></ul>
   {% endif %}
 
-  <p class="required">
+  <p class="{{form.required_css_class}}">
     {{ form.name.label_tag }} {{ form.name }} &nbsp; &nbsp;
     {{ form.city.label_tag }} {{ form.city }}
   </p>
 
   <!--
-  <p class="required {% if form.choice.errors %}validation-error{% endif %}">
+  <p class="required {% if form.choice.errors %}{{ form.error_css_class }}{% endif %}">
   Note: Can not do this bellow, since two fields inside same p-element
   {{ form.choice.errors }}
   -->
@@ -71,7 +58,8 @@
   <ul class="errorlist"><li>Velg hvilken modell du ønsker under.</li></ul>
   {% endif %}
 
-  <p class="required">Modell. Jeg ønsker å:</p> {{ form.choice }}
+  <p class="{{form.required_css_class}}">Modell. Jeg ønsker å:</p>
+  {{ form.choice }}
 
   <p>{{ form.public }} {{ form.public.label_tag }}</p>
 

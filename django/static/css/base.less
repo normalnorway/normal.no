@@ -94,6 +94,40 @@ pre.debug {
 
 
 
+/**
+ * Forms
+ */
+
+form ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+form ul.errorlist {
+    color: #cc0000;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+/* These classes are set for all forms in website/__init__.py */
+// Note: Only works for form.as_p and form.as_ul.
+form .validation-error label {
+  color: #cc0000;
+}
+//form .required label {
+//    font-weight: bold;
+//}
+
+
+// top-form-error. Used in template to mark p if has form.errors
+.error {
+  color: #cc0000;
+  font-weight: bold;
+}
+
+
 
 /**
  * Other stuff.
@@ -105,18 +139,4 @@ a.admin-edit-link {
   font-size: x-small;
   padding-left: 14px;
   background: url('/static/admin/img/icon_changelink.gif') no-repeat left center;
-}
-
-// top-form-error. Used in template to mark p if has form.errors
-.error {
-  color: #cc0000;
-  font-weight: bold;
-}
-
-form ul.errorlist {
-  color: #cc0000;
-}
-
-form p.validation-error label {
-  color: #cc0000;
 }
