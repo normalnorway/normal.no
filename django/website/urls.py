@@ -4,7 +4,10 @@ from django.conf.urls import patterns, include, url
 from django.views.generic.base import RedirectView
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.contrib import admin
+
+from apps.content.views import PageEditView
 
 admin.autodiscover()
 
@@ -14,14 +17,13 @@ urlpatterns = patterns ('',
     url(r'^$',              'core.views.index',             name='index'),
     url(r'^nyhetsbrev/$',   'core.views.newsletter',        name='newsletter'),
     url(r'^bli-medlem/$',   'apps.support.views.index',     name='enroll'),
-    # redirect is better (than alias)
-    #url(r'^medlem/$',       'apps.support.views.index'),    # alias
     url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
     url(r'^nettguide/$',    'apps.links.views.index',       name='links'),
 
     (r'^nyhetsbrev/1/$', TemplateView.as_view (template_name='newsletter-1.html')),
 
     # Redirect deprecated urls
+    # @todo can redirect to named view instead
     (u'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
     (r'^rss/$', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
     (u'^gruppesøksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
@@ -29,6 +31,9 @@ urlpatterns = patterns ('',
 
     (r'^nyheter/',  include ('apps.news.urls')),
     (r'^tinymce/',  include ('tinymce4.urls')),
+
+    # Non-admin forms
+    url(r'^edit/page/(?P<pk>\d+)/$', login_required(PageEditView.as_view()), name='edit_page'),
 
     # https://docs.djangoproject.com/en/1.7/topics/auth/default/
     #(r'^accounts/login/$', 'django.contrib.auth.views.login'),
@@ -40,13 +45,12 @@ urlpatterns = patterns ('',
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',  auth_views.password_reset_confirm,  name='password_reset_confirm'),
     url(r'^reset/done/$',                                       auth_views.password_reset_complete, name='password_reset_complete'),
 
-    #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
-
     # Google webmasters verification
     (r'^google5b6561fca1bd3c25.html/$', lambda nil:
         HttpResponse ('google-site-verification: google5b6561fca1bd3c25.html')),
 
     # Note: Must be *after* passrod reset links!
+    #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
     (r'^admin/',    include (admin.site.urls)),
 )
 

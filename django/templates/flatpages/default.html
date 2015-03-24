@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
-{% block extratitle %} » {{ flatpage.title }}{% endblock %}
-
+{% block extratitle %} » {{ flatpage.title }} {% endblock %}
 
 {% block content %}
 
+{# Note: Can't check has_perm('flatpages.change_flatpage') #}
 {% if user.is_staff %}
-<a href="{% url "admin:flatpages_flatpage_change" flatpage.pk %}"
-   class="admin-edit-link">Rediger</a>
+<a href="{% url "edit_page" pk=flatpage.pk %}" class="admin-edit-link">Rediger</a>
 {% endif %}
 
 {{ flatpage.content }}

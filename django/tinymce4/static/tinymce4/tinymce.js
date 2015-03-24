@@ -56,8 +56,8 @@ function tinymce_upload (form, output)
 tinymce.init ({
     selector: 'textarea.tinymce',
 
-    width: 800,
-    height: 450,
+    width: 730,
+    height: 550,
     resize: 'both',
 
     custom_undo_redo_levels: 8,
