@@ -1,4 +1,5 @@
 from django import forms
+#from django.utils.safestring import mark_safe
 
 
 class TinyMCE (forms.Textarea):
@@ -11,8 +12,4 @@ class TinyMCE (forms.Textarea):
     def render (self, name, value, attrs=None):
         attrs['class'] = 'tinymce'
         return super(TinyMCE,self).render (name, value, attrs)
-
-
-#from django.utils.safestring import mark_safe
-#        return super(TinyMCE,self).render (name, value, attrs) + \
-#                mark_safe (u'some extra html')
+        # + mark_safe (u'some extra html')

@@ -4,6 +4,7 @@ http://git.normal.no/git/normal.no/tree/docs/how-to-contribute.md
 See the Makefile for how to build and upload.
 
 TODO:
+@deb node-less to regenerate css files (add to docs/install also)
 can make changes directly on github
 url-namespace. can link to wiki
 html5. define browser support (lowest IE version)
