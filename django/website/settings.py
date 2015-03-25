@@ -1,135 +1,58 @@
+# coding: utf8
 #
-# Django settings for normal.no
-#
+# Displays differences between current settings and Django's default:
 # $ python manage.py diffsettings
 #
+
 # TODO
-# * DEFAULT_FROM_EMAIL = ikke-svar@normal.no or post@normal.no
 # * Session timeout
 # * Crontab to periodically clean session database
-#
-
-BASE_DIR = None # Not in use, but keeps Django happy (avoids 1_6.W001).
-# SILENCED_SYSTEM_CHECKS = ['1_6.W001']
 
 import os
 from django.conf import global_settings as defaults
 
+BASE_DIR = os.path.realpath (os.path.join (__file__, '../../../'))
+
 def rootdir (*args):    # rename mk_filename
     """Constructs a path relative to the project root directory"""
-    return os.path.join (rootdir.base, *args)
-rootdir.base = reduce(lambda n,f: f(n), [__file__] + 3*[os.path.dirname]) # calls os.path.dirname 3 times on __file__ recursively
+    return os.path.join (BASE_DIR, *args)
 
-# XXX tmp fix for production server
-if os.path.exists ('/srv/www/normal.no/NODEBUG'):
-    rootdir.base = '/srv/www/normal.no/'
 
-# Q: Are these two always equal? __file__ == os.path.normpath(__file__)
-# If not, use normpath instead of __file__ ?
-# A: No, they differ on the production server
+DEFAULT_FROM_EMAIL = 'post@normal.no'
+
+LOGIN_URL = '/admin/login/'
+#LOGOUT_URL = 'admin:logout'   # supports named urls
+
+
+# Admins will get email whenever an error happens
+# Managers will get broken-link notification
+ADMINS = (
+     ('Torkel', 'torkel@normal.no'),
+)
+MANAGERS = ADMINS
+
+
+# Localization
+LANGUAGE_CODE = 'nb-no'
+TIME_ZONE = 'Europe/Oslo'
+USE_I18N = True     # translate messages
+USE_L10N = True     # format according to the current locale (LANGUAGE_CODE)
+USE_TZ = False
 
 
 DEBUG = not os.path.exists (rootdir ('NODEBUG'))
 TEMPLATE_DEBUG = DEBUG
 
-# Admins will get email whenever an error happens (and DEBUG=False).
-ADMINS = (
-     ('Torkel', 'torkel@normal.no'),
-)
 
-# Managers will get broken-link notification.
-# But only when BrokenLinkEmailsMiddleware is active.
-MANAGERS = ADMINS
-
-
-# Only serve website on these hostnames. Only active when DEBUG=False.
+# Only serve website on these hostnames
+# Note: Apache redirects www.normal.no => normal.no
 ALLOWED_HOSTS = (
     'normal.no',
-    #'www.normal.no',   # Note: Apache redirects www.normal.no => normal.no
-    'dev.normal.no',    # <-- development site
-    'normal.i2p',       # I2P address
+    'dev.normal.no',
+    'normal.i2p',               # I2P address
     'qrw3w45sx7niqcpg.onion',   # Tor address
 )
-#ALLOWED_HOSTS = ('*',)
 
-
-# Note: Default is '/accounts/login/'.
-# Also accepts view function names and named URL patterns
-# Update: Not found! https://normal.no/admin/login/
-LOGIN_URL = '/admin/login/'
-#LOGOUT_URL = '/admin/logout/'
-#PASSWORD_RESET_TIMEOUT_DAYS = 3
-
-
-# Note: django.core.context_processors.debug is only active when
-# request.META['REMOTE_ADDR']) is in INTERNAL_IPS.
-# So put your client ip-address here for debugging.
-INTERNAL_IPS = ['127.0.0.1']
-# @todo only if DEBUG ?
-
-# @todo join all if DEBUG sections?
-#if DEBUG:
-#    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-#    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-
-
-# contrib.site (required by contrib.flatpages)
-SITE_ID = 1
-
-
-## Localization
-#LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'nb-no'
-USE_I18N = True     # translate messages
-USE_L10N = True     # format according to the current locale (LANGUAGE_CODE)
-
-TIME_ZONE = 'Europe/Oslo'
-USE_TZ = False
-
-
-## Static and media files
-
-STATICFILES_DIRS = (
-    rootdir ('django', 'static'),
-)
-
-STATIC_ROOT = rootdir ('htdocs', 'static')
-STATIC_URL = '/static/'
-
-MEDIA_ROOT = rootdir ('htdocs', 'media')
-MEDIA_URL = '/media/'
-
-
-# Default
-#STATICFILES_FINDERS = (
-#    'django.contrib.staticfiles.finders.FileSystemFinder',
-#    'django.contrib.staticfiles.finders.AppDirectoriesFinder', # not used
-#)
-
-
-## Templates
-TEMPLATE_DIRS = (
-    rootdir ('django', 'templates'),
-)
-
-# Only used by dev-site to check if request.META.SERVER_NAME == dev.normal.no
-# So might be better to use own context processor for this.
-TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-    'django.core.context_processors.request',
-)
-
-# This is the default
-#TEMPLATE_LOADERS = (
-#    'django.template.loaders.filesystem.Loader',
-#    'django.template.loaders.app_directories.Loader',   # not used
-#)
-#if not DEBUG:
-#    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),)
-if not DEBUG:   # Enable template caching on the production site.
-    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', defaults.TEMPLATE_LOADERS),)
-
-
-## Applications, etc.
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -138,33 +61,16 @@ INSTALLED_APPS = (
     'django.contrib.sessions',      # only needed for database-backed session
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',         # @todo remove
-    'django.contrib.flatpages',     # @todo remove
+    'django.contrib.sites',         # flatpages dependence
+    'django.contrib.flatpages',
 
-    # Local apps
     'core',
-    'tinymce4',     # only to get staticfiles
+    'tinymce4',     # only used to get staticfiles
     'apps.news',
     'apps.links',
     'apps.content',
     'apps.support',
 )
-
-
-# Note: these are invoked in reverse order for the response.
-MIDDLEWARE_CLASSES = [
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware', # 1.7
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware', # Note: must be last!
-]
-import django
-if django.VERSION[0:2] < (1,7):
-    MIDDLEWARE_CLASSES.remove ('django.contrib.auth.middleware.SessionAuthenticationMiddleware')
 
 
 # manage.py dumpdata [app...] --indent 2 --database dev
@@ -183,22 +89,12 @@ DATABASES = {
         #'OPTIONS':  { 'read_default_file': '/path/to/my.cnf' },
         # https://docs.djangoproject.com/en/1.7/ref/databases/#connecting-to-the-database
         # Remember: CREATE DATABASE <dbname> CHARACTER SET utf8;
-        # Remember: INODB
+        # Note: Django don't create INODB tables by default!
         # @todo make mysql default and rename sqlite -> dev? then don't need conn_max_age hack
     },
 }
-# Update: Will get error if host is missing mysql backend, even if it's
-# not used. Therefore must add conditionally.
+# Production server don't have mysql backend installed. Avoid error.
 if DEBUG: del DATABASES['mysql']
-
-#if not DEBUG:
-#    DATABASES['default']['CONN_MAX_AGE'] = 3600
-# Enable persistent db connections.
-# Note: Sometimes a database won't be accessed by the majority of your
-# views, for example because it's the database of an external system, or
-# thanks to caching. In such cases, you should set CONN_MAX_AGE to a low
-# value or even 0, because it doesn't make sense to maintain a connection
-# that's unlikely to be reused.
 
 
 CACHES = {
@@ -206,17 +102,63 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'TIMEOUT': 3600
     }
-    #'dev': { DummyCache. And select if DEBUG }
 }
-if DEBUG:
-    CACHES['default'] = { # Dummy caching for development
+if DEBUG: CACHES['default'] = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
-    }
+}
+
+
+## Templates
+TEMPLATE_DIRS = (
+    rootdir ('django', 'templates'),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
+    'django.core.context_processors.request',
+)   # Note: Only used by dev-site to check request.META.SERVER_NAME
+
+if not DEBUG:   # Enable template caching on the production site.
+    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', defaults.TEMPLATE_LOADERS),)
+
+
+## Static & media files
+STATICFILES_DIRS = (
+    rootdir ('django', 'static'),
+)
+
+STATIC_URL = '/static/'
+STATIC_ROOT = rootdir ('htdocs', 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = rootdir ('htdocs', 'media')
+
+
+# Note: these are invoked in reverse order for the response.
+MIDDLEWARE_CLASSES = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware', # 1.7
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware', # Note: must be last!
+]
+import django
+if django.VERSION[0:2] < (1,7):
+    MIDDLEWARE_CLASSES.remove ('django.contrib.auth.middleware.SessionAuthenticationMiddleware')
+
 
 
 ROOT_URLCONF = 'website.urls'
 
 WSGI_APPLICATION = 'website.wsgi.application'
+
+# contrib.site (required by contrib.flatpages)
+SITE_ID = 1
+
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 
 # Note: The secret key must be the same for all processes and not change
