@@ -6,8 +6,8 @@ TODO:
 filter body for extra <p>'s at the end (old, imported articles)
 
 DB-changes:
+- db_index=True on published!!
 - rename Article -> NewsLink
-- db_index=True on Article.title?
 - bool field: user_submitted?
 """
 
