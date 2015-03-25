@@ -10,12 +10,11 @@ from forms import PageEditForm
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseForbidden
 
-# When migrating away from flatpages, can do this instead:
-#class MyView (UpdateView):
+# When migrating away from flatpages, then don't need custom form and
+# can just do this:
+#class PageEditView (UpdateView):
 #    model = ContentPages
 #    fields = 'title', 'content'
-#    def get_form (self, cls):
-#        return super(MyView,self).get_form (cls)
 
 
 #from django.utils.decorators import method_decorator
