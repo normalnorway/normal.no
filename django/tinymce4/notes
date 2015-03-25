@@ -1,3 +1,12 @@
+Can put css in tinymce4/static?
+# Current scheme:
+tinymce4/static/tinymce4/tinymce.js
+tinymce4/static/tinymce4/tinymce.css
+# Better scheme?
+tinymce4/static/tinymce.css
+tinymce4/static/tinymce.js
+
+
 In your own templates containing a TinyMCE widget you must add the
 following to the HTML HEAD section (assuming you named your form
 ‘form’):
