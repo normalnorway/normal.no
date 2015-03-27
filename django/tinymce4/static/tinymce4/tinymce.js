@@ -133,26 +133,13 @@ tinymce.init ({
 
 
     // Config: link plugin
-    // @todo Better to fetch the whole list from Django than to merge here.
-    //link_list: '/tinymce/page-list/',
-
-    link_list: function (callback) {
-        // Note: Only called when insert link button is first pressed.
-        // But called each time, so use cache
+    link_list: function (set_data) {
         var data = window._link_list_cache || null;
-        if (data) { callback (data); return; }
+        if (data) { set_data (data); return; }
 
-        // Merge staticlist and data from Django view
-        var staticlist = [
-            {title: 'Blogg',	value: 'http://blogg.normal.no'},
-            {title: 'Facebook',	value: 'https://www.facebook.com/NormalNorway'},
-            {title: 'Twitter',	value: 'https://twitter.com/NormalNorway'},
-            {title: 'Youtube',	value: 'http://www.youtube.com/user/normalnorway'},
-        ];
-        get_json ('/tinymce/page-list/', function (jsondata) {
-            var data = staticlist.concat ([{title: 'normal.no', menu: jsondata}]);
-            callback (data);
-            window._link_list_cache = data
+        get_json ('/tinymce/page-list/', function (data) {
+            window._link_list_cache = data;
+            set_data (data);
         });
     },
 
