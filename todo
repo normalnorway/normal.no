@@ -73,3 +73,11 @@ Do this for old news archive?
 
 http://stackoverflow.com/questions/7965893/django-internationalization
 LOCALE_PATHS
+
+Add logout to menu {% if user.is_authenticated %}
+
+compress and merge javascript:
+  @deb uglifyjs
+  https://developers.google.com/closure/compiler/
+  https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/submitting-patches/#compressing-javascript
+

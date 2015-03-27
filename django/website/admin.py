@@ -19,12 +19,11 @@ from django.db import models
 class MyFlatPageAdmin (FlatPageAdmin):
     formfield_overrides = {
         models.TextField: { 'widget': TinyMCE },
-        #models.TextField: { 'widget': TinyMCE (attrs={'cols': 20, 'rows': 20}) },
     }
-
+# Note: More flexible to inherit the flatpage model and change that.
+#       Then can add extra permission, and use HtmlFiled for content.
 # Note: To only override widget for some fields (not every TextField), use
-# formfield_for_dbfield (self, db_field, **kwargs)
-# @see http://django-tinymce.googlecode.com/svn/tags/release-1.5/docs/.build/html/usage.html#the-flatpages-link-list-view
+#       formfield_for_dbfield (self, db_field, **kwargs)
 
 
 admin.site.unregister (FlatPage)
