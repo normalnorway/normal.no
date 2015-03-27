@@ -33,7 +33,7 @@ urlpatterns = patterns ('',
     (r'^tinymce/',  include ('tinymce4.urls')),
 
     # Non-admin forms
-    url(r'^edit/page/(?P<pk>\d+)/$', login_required(PageEditView.as_view()), name='edit_page'),
+    url(r'^edit/page/(?P<pk>\d+)/$', login_required(PageEditView.as_view()), name='edit-page'),
 
     # https://docs.djangoproject.com/en/1.7/topics/auth/default/
     #(r'^accounts/login/$', 'django.contrib.auth.views.login'),
