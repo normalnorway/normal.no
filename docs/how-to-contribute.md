@@ -318,6 +318,8 @@ tilgjengelig for alle.
 <!--
 Hvis du blir en aktiv bidragsyter, gir vi deg gjerne skrivetilgang.
 
+https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/working-with-git/
+
 How to Get Started with Github - Beginner Tutorial
 https://www.youtube.com/watch?v=73I5dRucCds
 Part 1 :: GitHub for Windows

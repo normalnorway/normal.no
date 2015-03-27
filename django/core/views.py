@@ -1,4 +1,3 @@
-# @todo move to root ?
 from core.shortcuts import render_to
 
 
@@ -13,9 +12,7 @@ def newsletter (request):
 
 
 # Note: Only used for testing. Do not remove.
-@render_to ('test.html')
+#from pprint import pprint
 def test (request):
-    from pprint import pprint
-    #pprint (request.META)
-    return { 'foo': request.GET.get('url') }
-    #return { 'foo': request.META.get('HTTP_REFERER') }
+    from django.http import HttpResponse
+    return HttpResponse ('Testing')

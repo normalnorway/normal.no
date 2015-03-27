@@ -1,3 +1,5 @@
+rate limit loggin attempts
+
 css: use sans-serif font!!! (Check in Google Chrome)
 
 links-admin: bool published. text comment (internal comment)
@@ -5,20 +7,13 @@ links-category: add internal comment
                 Publikasjoner -> kultur?
 		  nei, flytt High-Times o.l. til Kultur
 
-add published to (almost) every model. need index since always will
-use published=True (or can use custom manager).
-or can use model meta: index_together ?
-
-normal.no/nyhetsbrev/4		# issue #4
+add published to (almost) every model. (remember to add db_index)
 
 http://normal.no/opprop/
   unique(name,city)	# unique_together = ("driver", "restaurant")
   titlecase all fields
   Date -> DateTime
   cache controll: no-cache, etags, other?
-  public view:
-    show date
-    reverse sort order
 
 http://normal.no/bli-medlem/
   zipcode => integer field? validate 0-9999?
@@ -30,11 +25,9 @@ collectstatic --ignore=\*.less	# only need all.css (for now)
 
 no-cache and/or Expires: -1 on generated pages
 
-tests: lessc --lint *.less
+tests: lessc --lint *.less (cd css && make check)
 
 redirect after form posting, so not posting twice / browser shows warning
-
-redirect www.normal.no -> normal.no ?
 
 strip all fields (e.g., news_article.body)
 
@@ -47,7 +40,7 @@ mv django/tools tools ?
 
 http://www.websiteoptimization.com/speed/tweak/redirect/  ??
 
-turn of .htaccess support in apache
+turn off .htaccess support in apache
 
 enable broken link notification middleware.
 RewriteRule pattern -  [R=404] [other_flags]	# favicon.ico robots.txt ++
@@ -73,3 +66,11 @@ Do this for old news archive?
 
 http://stackoverflow.com/questions/7965893/django-internationalization
 LOCALE_PATHS
+
+Add logout to menu {% if user.is_authenticated %}
+
+compress and merge javascript:
+  @deb uglifyjs
+  https://developers.google.com/closure/compiler/
+  https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/submitting-patches/#compressing-javascript
+

@@ -9,3 +9,8 @@ class PageEditForm (ModelForm):
         model = FlatPage
         fields = 'title', 'content'
         widgets = dict (content = TinyMCE)
+
+# Can also do this:
+#from django.forms.models import modelform_factory
+#PageEditForm = modelform_factory (FlatPage, fields = ('title', 'content'),
+#                                  widgets = {'content': TinyMCE})
