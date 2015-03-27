@@ -4,10 +4,10 @@ from django.conf.urls import patterns, include, url
 from django.views.generic.base import RedirectView
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import admin
 
-from apps.content.views import PageEditView
+from apps.content.views import PageEditView, BlockEditView
 
 admin.autodiscover()
 
@@ -34,6 +34,7 @@ urlpatterns = patterns ('',
 
     # Non-admin forms
     url(r'^edit/page/(?P<pk>\d+)/$', login_required(PageEditView.as_view()), name='edit-page'),
+    url(r'^edit/block/(?P<pk>\d+)/$', permission_required('flatpage.change_flatpage_gsf', raise_exception=True)(BlockEditView.as_view()), name='edit-block'),
 
     # https://docs.djangoproject.com/en/1.7/topics/auth/default/
     #(r'^accounts/login/$', 'django.contrib.auth.views.login'),
@@ -62,3 +63,16 @@ if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += patterns ('', url(r'^test/$', 'core.views.test'))
+
+
+# Hack to add custom permission to the FlatPage model
+# A better fix is to inherit and add extra permissions to that model.
+from django.contrib.auth.models import Permission
+if not Permission.objects.filter (codename='change_flatpage_gsf').exists():
+    print 'Creating perm!'
+    from django.contrib.flatpages.models import FlatPage
+    from django.contrib.contenttypes.models import ContentType
+    ctype = ContentType.objects.get_for_model (FlatPage)
+    Permission.objects.create (codename = 'change_flatpage_gsf',
+                               name = 'Can change GSF-pages',
+                               content_type = ctype)

@@ -1,5 +1,6 @@
 from django import template
 from django.core.urlresolvers import reverse
+from django.utils.http import urlquote_plus
 from apps.content.models import Content
 
 register = template.Library()
@@ -11,11 +12,12 @@ def get_content (context, key):
     except Content.DoesNotExist:
         return '[ERROR: Unknown content block: %s]' % key
 
-    if not context['request'].user.is_staff:
+    request = context['request']
+    if not request.user.has_perm ('content.change_content'):
         return obj.content
 
-    #return EDIT_BUTTON_HTML % reverse ('admin:content_content_change', args=[obj.pk]) + obj.content
-    return obj.content + '<a href="%s" class="admin-edit-link">Rediger</a>' % \
-                reverse ('admin:content_content_change', args=[obj.pk])
+    url = reverse ('edit-block', args=[obj.pk])
+    url += '?back=%s' % urlquote_plus (request.get_full_path())
 
-    # Note: returned string is auto marked as safe
+    return obj.content + '<a href="%s" class="admin-edit-link">Rediger</a>' % url
+    # Note: returned string is automatically marked as safe
