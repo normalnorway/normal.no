@@ -37,8 +37,8 @@ class PageEditView (UpdateView):
         return False
 
     def form_valid (self, form):
-        messages.success (request, 'Siden er lagret')
-        return super (BlockEditView, self).form_valid (form)
+        messages.success (self.request, 'Siden er lagret')
+        return super (PageEditView, self).form_valid (form)
 
     def dispatch (self, *args, **kwargs):
         request = args[0]
