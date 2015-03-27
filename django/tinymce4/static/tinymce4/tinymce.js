@@ -67,10 +67,17 @@ function get_json (url, callback)
 
 tinymce.init ({
     selector: 'textarea.tinymce',
-
     width: 730,
     height: 550,
     resize: 'both',
+
+    content_css: '/static/css/tinymce.css',
+
+    custom_undo_redo_levels: 8,
+
+    entity_encoding: 'raw',
+    //schema: "html5-strict",   // default is html5
+    //element_format: "html",     // default is xhtml
 
     // @todo test
     // statusbar : false,
@@ -79,6 +86,7 @@ tinymce.init ({
     // body_id	    // use this id for TinyMCE specific overrides in content_css
     //toolbar: "insertfile
     //preview_styles
+    //fontsizeselect
 
     // Extra drop-down in add link popup to add class to link.
     /*
@@ -89,37 +97,44 @@ tinymce.init ({
     ],
     */
 
-    content_css: '/static/css/tinymce.css',
-    //content_css: ['/static/css/tinymce.css', '/static/tinymce4/tinymce.css']
-
-    custom_undo_redo_levels: 8,
-    entity_encoding: 'raw',
-//    element_format: "html",     // default is xhtml
-    //schema: "html5-strict",   // default is html5
 
     // Don't validate the html. It will remove opengraph properties.
     // ... and maybe reformat the html?
     verify_html : false,
 
     // Allow OpenGraph elements
+    // Q: Will override the default list of allowed attributes?
     //extended_valid_elements: "@[itemscope|itemtype|itemid|itemprop|content],div,span,time[datetime],h1[title],h2[title],h3[title]",
 
-    // Don't touch/change url. (Do not convert to relative urls)
+    // Need this to get absolute urls in image plugin (upload)
     convert_urls : false,
+    // this might also fix it:
+    // keep convert_urls at its default (true) + relative_urls = false
+
     // Can also do this. Might be more robust/safer.
     //document_base_url: document.location.origin + '/',
+
+    // Use absolute urls. (URLs returned from the MCFileManager)
     //relative_urls : false,
 
-    menubar: 'edit insert format table',
-    // Default is: 'tools table format view insert edit'
 
-    toolbar: 'undo redo | styleselect | bold italic forecolor | alignleft aligncenter alignright | bullist numlist outdent indent blockquote | link image | code',
-    // Default is: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+    // Toolbar controls & Menu controls:
+    // http://www.tinymce.com/wiki.php/Controls
+
+    menubar: 'edit insert format table',
+
+    toolbar: 'undo redo | styleselect | bold italic forecolor | ' +
+             'alignleft aligncenter alignright | ' +
+             'bullist numlist outdent indent blockquote | ' +
+             'link image | code',
 
 
     /** Plugins */
 
-    plugins: ['image', 'link', 'paste', 'anchor', 'code', 'table', 'textcolor', 'visualblocks'],
+    plugins: [
+        'image', 'link', 'paste', 'anchor', 'code', 'table', 'textcolor',
+        'visualblocks'
+    ],
 
     // @todo check out these:
     // save - adds a save button to toolbar
