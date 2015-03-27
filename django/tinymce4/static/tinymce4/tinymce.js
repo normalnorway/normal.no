@@ -1,48 +1,37 @@
-/*
-The TinyMCE object can be accessed like this:
-window.tinymce
-window.tinyMCE
-Guess these two are the same object ...
+/**
+ * DjangoMCE - Django TinyMCE4 plugin.
+ *
+ * TinyMCE namespace: window.tinymce
+ *
+ * Our namespace: window.djangomce
+ *
+ * TODO:
+ * - csrf protection for tinymce_upload
+ *   var csrf = $cookie ('csrftoken');
+ * - don't depend on core.js
+ */
 
-TODO:
-- csrf protection for tinymce_upload
-  var csrf = $cookie ('csrftoken');
-*/
 
-//console.log (django.jQuery);
-//console.log (window.tinymce);
+// Django TinyMCE4 namespace
+window.djangomce =
+{
+    config: {},
+    cache: {},
 
+//    upload: function (form, output) { ... },
+};
 
-function $get (id) {
-    return document.getElementById (id);
-}
 
 
 // @todo only install if needed
-document.addEventListener ("DOMContentLoaded", function (event)
+document.addEventListener ("DOMContentLoaded", function (ev)
 {
-    event.target.body.innerHTML +=
+    ev.target.body.innerHTML +=
         '<form id="tinymce-upload-form" action="/tinymce/upload/" method="post" enctype="multipart/form-data" style="display:none">' +
         '  <input type="file" id="tinymce-file-input" name="must-have-a-name" />' +
         '</form>';
 });
 
-
-
-function ajax_upload (form, on_load, on_error)
-{
-    var xhr = new XMLHttpRequest();
-    if (on_load)
-	xhr.onload = on_load;
-    if (on_error)
-	xhr.onerror = on_error;
-    else
-	xhr.onerror = function (ev) { error('ajax_upload', arguments, ev); }
-
-    xhr.open ('POST', form.getAttribute('action'));
-    xhr.setRequestHeader ('X-REQUESTED-WITH', 'XMLHttpRequest');
-    xhr.send (new FormData(form));
-}
 
 
 function tinymce_upload (form, output)
@@ -57,21 +46,15 @@ function tinymce_upload (form, output)
 
 
 
+/*
 function get_json (url, callback)
 {
-    // XXX does error() exists?
-    var xhr = new XMLHttpRequest();
-    xhr.onerror = function (ev) { error('get_json', arguments, ev); };
-    xhr.onload = function (ev) {
-        // status always 2xxx when onerror handler defined?
-        //console.assert (xhr.status != 200);
-        callback (xhr.response);
-    };
-    xhr.open ('GET', url, true);
-    xhr.responseType = 'json';
-    xhr.setRequestHeader ('X-REQUESTED-WITH', 'XMLHttpRequest');
-    xhr.send ();
+    tinymce.util.XHR.send ({url: url, success: function (text) {
+        callback (tinymce.util.JSON.parse(text));
+    }});
 }
+*/
+
 
 
 /** TinyMCE4 config.
@@ -89,12 +72,30 @@ tinymce.init ({
     height: 550,
     resize: 'both',
 
+    // @todo test
+    // statusbar : false,
+    // indentation
+    // valid_classes
+    // body_id	    // use this id for TinyMCE specific overrides in content_css
+    //toolbar: "insertfile
+    //preview_styles
+
+    // Extra drop-down in add link popup to add class to link.
+    /*
+    link_class_list: [
+        {title: 'None', value: ''},
+        {title: 'Internal', value: ''}
+        {title: 'External', value: 'external-link'},
+    ],
+    */
+
     content_css: '/static/css/tinymce.css',
     //content_css: ['/static/css/tinymce.css', '/static/tinymce4/tinymce.css']
 
     custom_undo_redo_levels: 8,
     entity_encoding: 'raw',
-    element_format: "html",     // xhtml is default
+//    element_format: "html",     // default is xhtml
+    //schema: "html5-strict",   // default is html5
 
     // Don't validate the html. It will remove opengraph properties.
     // ... and maybe reformat the html?

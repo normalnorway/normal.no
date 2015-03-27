@@ -1,3 +1,8 @@
+https://github.com/joshbeitler/django-mce4
+
+windowManager.open({ ... });
+  https://github.com/2b3ez/FileManager4TinyMCE/blob/master/tinymce/plugins/image/plugin.min.js
+
 Can put css in tinymce4/static?
 # Current scheme:
 tinymce4/static/tinymce4/tinymce.js
