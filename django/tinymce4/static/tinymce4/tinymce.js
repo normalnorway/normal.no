@@ -17,7 +17,6 @@ window.djangomce =
 {
     config: {},
     cache: {},
-
 //    upload: function (form, output) { ... },
 };
 
@@ -71,13 +70,34 @@ tinymce.init ({
     height: 550,
     resize: 'both',
 
+    code_dialog_width: 800,
+
     content_css: '/static/css/tinymce.css',
 
-    custom_undo_redo_levels: 8,
+    custom_undo_redo_levels: 12,
 
     entity_encoding: 'raw',
-    //schema: "html5-strict",   // default is html5
     //element_format: "html",     // default is xhtml
+
+    // Does schema have any effect with verify_html=false?
+    //schema: "html5-strict",   // default is html5
+
+    // Don't validate the html. It will remove opengraph properties.
+    // ... and probably reformat the html?
+    verify_html: false,
+
+    // Allow OpenGraph elements
+    // Q: Will override the default list of allowed attributes?
+    //extended_valid_elements: "@[itemscope|itemtype|itemid|itemprop|content],div,span,time[datetime],h1[title],h2[title],h3[title]",
+
+    // Need this to get absolute urls in image plugin (upload)
+    convert_urls : false,
+    // this might also fix it:
+    // keep convert_urls at its default (true) + relative_urls = false
+    // Use absolute urls. (URLs returned from the MCFileManager)
+    //relative_urls : false,
+
+    // invalid_elements: '@[onclick|ondblclick|onmousedown|onmouseup|onmouseover|onmousemove|onmouseout|onkeypress|onkeydown|onkeyup],script,input,select,option,button,textarea,form',
 
     // @todo test
     // statusbar : false,
@@ -88,45 +108,63 @@ tinymce.init ({
     //preview_styles
     //fontsizeselect
 
-    // Extra drop-down in add link popup to add class to link.
-    /*
-    link_class_list: [
-        {title: 'None', value: ''},
-        {title: 'Internal', value: ''}
-        {title: 'External', value: 'external-link'},
+    // Custom class to be added to anchors or tables, since these are
+    // invisible by default. Note: visual=true (default) adds dashed border.
+    //visual_table_class // can use to style all tinymce tables differently
+    visual_anchor_class: 'anchor',
+
+
+    // http://www.tinymce.com/wiki.php/Configuration:formats
+    // @todo use names like div.caption, div.clear, hr.fancy?
+//    style_formats_merge: true,
+    style_formats: [
+        //{title: 'normal.no', items: [ ... ]},
+
+        // Inline styles (acts on word or selection)
+        {title: "Strong", inline: 'span', classes: 'strong'},
+        {title: "Smaller", inline: 'span', classes: 'smaller'},
+        {title: "Larger", inline: 'span', classes: 'larger'},
+        {title: "Highlight", inline: 'span', classes: 'highlight'},
+        {title: "Shade", inline: 'span', classes: 'grey'},
+
+        // Block styles
+
+        // Paragraph styles
+        {title: "Ingress", block: 'p', classes: 'ingress'},
+        {title: "Faktaboks", block: 'div', wrapper: true, classes: 'faktaboks'},
+//        {title: 'Section', block: 'section', wrapper: true, merge_siblings: false},
+
+        {title: 'Table: align top', selector: 'td', classes: 'valign-top'},
+//        {title: 'Image left', selector: 'img', styles: {'float': 'left'}},
+//        {title: 'Image right', selector: 'img', styles: {'float': 'right'}},
+//        {title: "Clear floats", wrapper: true, classes: 'clear'},
+
+        {title: 'No style', selector: '*', attributes: {'class' : 'no-format'}},
     ],
-    */
-
-
-    // Don't validate the html. It will remove opengraph properties.
-    // ... and maybe reformat the html?
-    verify_html : false,
-
-    // Allow OpenGraph elements
-    // Q: Will override the default list of allowed attributes?
-    //extended_valid_elements: "@[itemscope|itemtype|itemid|itemprop|content],div,span,time[datetime],h1[title],h2[title],h3[title]",
-
-    // Need this to get absolute urls in image plugin (upload)
-    convert_urls : false,
-    // this might also fix it:
-    // keep convert_urls at its default (true) + relative_urls = false
-
-    // Can also do this. Might be more robust/safer.
-    //document_base_url: document.location.origin + '/',
-
-    // Use absolute urls. (URLs returned from the MCFileManager)
-    //relative_urls : false,
 
 
     // Toolbar controls & Menu controls:
     // http://www.tinymce.com/wiki.php/Controls
 
-    menubar: 'edit insert format table',
+    // @todo visualblocks plugin enabled, but not added to menu
+
+    menubar: 'edit insert format table view tools',
+    // http://www.tinymce.com/wiki.php/Configuration:menu
 
     toolbar: 'undo redo | styleselect | bold italic forecolor | ' +
              'alignleft aligncenter alignright | ' +
              'bullist numlist outdent indent blockquote | ' +
              'link image | code',
+
+    setup: function (editor) {
+        editor.addMenuItem ('code', {context: 'tools'});
+        //editor.addMenuItem ('visualblocks', {context: 'tools'});
+        editor.addMenuItem ('myitem', {
+            text: 'Testing', context: 'tools', onclick: function() {
+                txt = prompt('Bildetekst: ');
+                editor.insertContent (txt);
+        }});
+    },
 
 
     /** Plugins */
@@ -141,14 +179,14 @@ tinymce.init ({
     // autosave - warn if unsaved data
     // wordcount
     // advlist  adds more advanced options to the ordered and unordered list
-    // anchor - This plugin adds an anchor/bookmark button and menu
     // hr - menu item and button control that allows you to insert a hr
     // textpattern - markdown syntax
-
-    code_dialog_width: 800,
+    // media - HTML5 video and audio elements
+    // nonbreaking - insert &nbsp;
 
 
     // Config: link plugin
+    // Fetch list of flat pages from django
     link_list: function (set_data) {
         var data = window._link_list_cache || null;
         if (data) { set_data (data); return; }
@@ -167,6 +205,7 @@ tinymce.init ({
     ],
     image_advtab: true,
 
+    // Handle file upload
     file_browser_callback: function (field_name, url, type, win)
     {
 	if (type != 'image') return;
