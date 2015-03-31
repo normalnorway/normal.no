@@ -1,10 +1,6 @@
 /**
  * DjangoMCE - Django TinyMCE4 plugin.
  *
- * TinyMCE namespace: window.tinymce
- *
- * Our namespace: window.djangomce
- *
  * TODO:
  * - csrf protection for tinymce_upload
  *   var csrf = $cookie ('csrftoken');
@@ -12,12 +8,12 @@
  */
 
 
-function _foo (ev)
+function _test1 (ev)
 {
     var editor = tinymce.activeEditor;
-//    console.log (editor);
 
     var node = editor.selection.getNode();
+    console.log (node);
 
     if (node.nodeName != 'IMG') {
         alert ('You must select an image first!');
@@ -33,46 +29,50 @@ function _foo (ev)
 //    caption = editor.dom.create ('figcaption', {}, 'Bla, bla, bla. For et flott bilde');
 
     wrapper = editor.dom.create ('div', {}, 'Hello World!');
-
     wrapper.appendChild (node.cloneNode (false));
-
     editor.dom.replace (wrapper, node);
-
     return;
 
     el.appendChild (node);
     el.appendChild (caption);
     console.log (el);
-
     editor.dom.replace (el, node);
 }
 
 
-// Django TinyMCE4 namespace
-window.djangomce =
+// var _djangomce =
+window._djangomce =
 {
 //    config: {},
-//    cache: {},
-//    upload: function (form, output) { ... },
+    cache: {},
 
-    _setup: function (editor) {
+    setup: function (editor)
+    {
         editor.addMenuItem ('code', {context: 'tools'});
-        //editor.addMenuItem ('visualblocks', {context: 'tools'});
+        editor.addMenuItem ('test1', { text: 'Test 1', context: 'tools', onclick: _test1, });
+        /*
+        editor.addMenuItem ('myitem', {
+            text: 'Testing', context: 'tools', onclick: function() {
+                txt = prompt('Bildetekst: ');
+                editor.insertContent (txt);
+        }});
+        */
+    },
 
-        editor.addMenuItem ('foo', { text: 'Foo', context: 'tools', onclick: _foo, });
-
-//        editor.addMenuItem ('myitem', {
-//            text: 'Testing', context: 'tools', onclick: function() {
-//                txt = prompt('Bildetekst: ');
-//                editor.insertContent (txt);
-//        }});
+    upload: function (form, output)
+    {
+        ajax_upload (form, function (ev) {
+            var response = ev.target.responseText;
+            var A = response.split (' ', 2);
+            console.assert (A[0]=='OK', 'upload error:', response.substring(0,4096));
+            output.value = A[1];
+        });
     },
 };
 
 
 
-
-// @todo only install if needed?
+/* @todo only install if needed?
 document.addEventListener ("DOMContentLoaded", function (ev)
 {
     ev.target.body.innerHTML +=
@@ -80,28 +80,6 @@ document.addEventListener ("DOMContentLoaded", function (ev)
         '  <input type="file" id="tinymce-file-input" name="must-have-a-name" />' +
         '</form>';
 });
-
-
-
-function tinymce_upload (form, output)
-{
-    ajax_upload (form, function (ev) {
-	var response = ev.target.responseText;
-	var A = response.split (' ', 2);
-	console.assert (A[0]=='OK', 'upload error:', response.substring(0,4096));
-	output.value = A[1];
-    });
-}
-
-
-
-/*
-function get_json (url, callback)
-{
-    tinymce.util.XHR.send ({url: url, success: function (text) {
-        callback (tinymce.util.JSON.parse(text));
-    }});
-}
 */
 
 
@@ -118,7 +96,7 @@ tinymce.init ({
     height: 550,
     resize: 'both',
 
-    setup: djangomce._setup,
+    setup: _djangomce.setup,
 
     code_dialog_width: 800,
 
@@ -234,7 +212,7 @@ tinymce.init ({
         table: { title: 'Table', items:
             'inserttable tableprops deletetable | cell row column'},
         tools: { title: 'Tools', items:
-            'code visualblocks charmap fullscreen foo'},
+            'code visualblocks charmap fullscreen test1'},
     },
 
     toolbar1: 'undo redo | styleselect | bold italic forecolor | ' +
@@ -273,11 +251,11 @@ tinymce.init ({
     // Config: link plugin
     // Fetch list of flat pages from django
     link_list: function (set_data) {
-        var data = window._link_list_cache || null;
+        var data = _djangomce.cache.link_list || null;
         if (data) { set_data (data); return; }
 
         get_json ('/tinymce/page-list/', function (data) {
-            window._link_list_cache = data;
+            _djangomce.cache.link_list = data;
             set_data (data);
         });
     },
@@ -294,10 +272,48 @@ tinymce.init ({
     file_browser_callback: function (field_name, url, type, win)
     {
 	if (type != 'image') return;
+
 	var el = $get ('tinymce-file-input');
+        if (! el) {
+//            var editor = tinymce.activeEditor;
+            // @todo try with fragment aproach again
+            // Q: if using editor.dom, is this the wrong dom tree?
+//            console.log (document);
+//            console.log (win);
+            /*
+            var node = editor.dom.createFragment (
+                '<form id="tinymce-upload-form" action="/tinymce/upload/" method="post" enctype="multipart/form-data" style="display:none">' +
+                '  <input type="file" id="tinymce-file-input" name="must-have-a-name" />' +
+                '</form>'
+            );
+            */
+//            var node = document.createDocumentFragment();
+//            node.innerHTML +=
+            var node = document.createElement ('div');
+            node.innerHTML =
+                '<form id="tinymce-upload-form" action="/tinymce/upload/" method="post" enctype="multipart/form-data" style="display:none">' +
+                '  <input type="file" id="tinymce-file-input" name="must-have-a-name" />' +
+                '</form>';
+
+            //el = node.getElementById ('tinymce-file-input');
+            el = node.querySelector ('#tinymce-file-input'); // IE8 only
+//            console.log (el);
+            document.body.appendChild (node);
+//            document.body.appendChild (node.cloneNode (true));
+//            document.appendChild (node.cloneNode (true));
+            //document.appendChild (node);
+
+            // Note: If cloning the node, then must refetch it.
+//            el = $get ('tinymce-file-input');
+//            console.log (el);
+        }
+
+//	var el = $get ('tinymce-file-input');
+//        console.log (el);
+
 	el.onchange = function (ev) {
 	    //file = ev.target.files[0];
-	    tinymce_upload (ev.target.form, $get (field_name));
+            _djangomce.upload (ev.target.form, $get (field_name));
 	};
 	el.click();
     }
