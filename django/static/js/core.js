@@ -1,4 +1,4 @@
-console.log (window.django);
+//console.log (window.django);
 //console.log (window.django.jQuery);
 
 
