@@ -257,6 +257,7 @@ tinymce.init ({
         get_json ('/tinymce/page-list/', function (data) {
             _djangomce.cache.link_list = data;
             set_data (data);
+            //set_data (_djangomce.cache.link_list = data);
         });
     },
 
