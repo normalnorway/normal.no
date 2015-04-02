@@ -1,6 +1,6 @@
 add last modified date to flatpages
+Enable ETags and check: NOT MODIFIED
 
-mv todo TODO
 mv static media ?
   @see https://github.com/django/djangoproject.com
 
@@ -9,10 +9,8 @@ http://packages.python.org/django-markdown/
 https://github.com/h5bp/html5-boilerplate/blob/master/.htaccess
 https://github.com/h5bp/html5-boilerplate/
 
-mv normal site  (or website)
-put apps inside website-folder instead?
 
-<!--[if lte IE 6]>
+<!--[if lte IE 8]>
 <div class="IENotice">This browser is outdated. Please <a
 href="http://www.microsoft.com/windows/internet-explorer/default.aspx">upgrade</a>
 your browser to enjoy this website to its fullest extent.</div>
@@ -20,38 +18,27 @@ your browser to enjoy this website to its fullest extent.</div>
 
 We recommend using a separate Web server -- i.e., one that's not also
 running Django -- for serving media.
-static.normal.no
-media.normal.no
-OR:
 static.normal.no/static/
 static.normal.no/media/
 
-500 server error view that let user report error.
-  Guess it already logs the error. (Via web-server?)
-Update: @see settings.py
-  send email to the site admins on every HTTP 500 error when DEBUG=False.
-
-Enable ETags and check: NOT MODIFIED
-Or not so usefull for script output.
-Use Apache's mod_expires instead for static. (But not media/, since
-it can be changed by user upload? Can use long expire if filenames
-are never recycled)
-
-Use this for links: ///
+Use this for links (to preserve http vs https): ///
 
 Use Google CDN. But will it get from cache (expires in the future), or
 will it contact server and check if modified?
 A: from cache! :)
-Update: Google=Yes (but not when refreshing)
-        FF=No
-
-http://ogp.me/
+Update: Google=Yes (but not when refreshing). FF=No
 
 # Switch from db to file based sessions?
 SESSION_ENGINE = "django.contrib.sessions.backends.file"
 SESSION_FILE_PATH = tempfile.gettempdir()	# default
 
 settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True	# default is False
+SESSION_COOKIE_AGE	# default is 2 weeks!
+
+manage.py clearsessions. It’s recommended to call this command on
+a regular basis, for example as a daily cron job.
 
 assert no articles with !url and !body
 fetch image (and canonical url) for old articles
+
+retab all template files

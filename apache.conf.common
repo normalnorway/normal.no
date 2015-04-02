@@ -57,6 +57,7 @@
     ## Access control (ACL)
     <Directory /srv/www/normal.no/htdocs>
         Allow from all
+        # @todo move these to virtual-host scope?
         Options none
         AllowOverride none
     </Directory>

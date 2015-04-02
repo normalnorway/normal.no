@@ -8,3 +8,15 @@ GZipMiddleware: Warning
 Security researchers recently revealed that when compression techniques
 (including GZipMiddleware) are used on a website, the site becomes
 exposed to a number of possible attacks.
+
+@deb famfamfam-flag-png         # flags in PNG format
+
+http://zeptojs.com/     # alternative to jQuery
+
+# simple cookie read/write helper
+http://mislav.uniqpath.com/js/c-is-for-cookie/
+
+Google search: "site:normal.no term" will also match old.normal.no
+and probably *.normal.no. site:www.normal.no will not!
+So better to rewrite normal.no -> www.normal.no
+settings.PREPEND_WWW

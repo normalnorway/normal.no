@@ -7,7 +7,7 @@ git pull
 git submodule update
 
 make -C django/static/css
-django/manage.py collectstatic --noinput -i \*.less -i Makefile
+django/manage.py collectstatic --noinput -i \*.less -i Makefile -i todo
 (cd htdocs/static/css/ ; ls *.css | egrep -v 'all.css|tinymce.css' | xargs rm)
 
 #django/manage.py collectstatic --noinput

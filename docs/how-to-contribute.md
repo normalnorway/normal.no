@@ -1,8 +1,6 @@
 <!--
 http://git.normal.no/git/normal.no/tree/docs/how-to-contribute.md
 
-See the Makefile for how to build and upload.
-
 TODO:
 @deb node-less to regenerate css files (add to docs/install also)
 can make changes directly on github
@@ -15,6 +13,7 @@ Github: Howto clone the repo and send pull requests
 Github: Howto use the issue tracker
 gitk / gitg
 unit test: ./manage.py test
+http://effectivedjango.com/
 
 TODO Styling:
 css for <code>
@@ -44,7 +43,6 @@ even tough it's not legal html -->
   div.toc {
     border: 1px dashed black;
     float: right;
-    margin-right: 1em;
     padding-right: 1em;
   }
 </style>
@@ -183,10 +181,9 @@ personer å redigere de samme filene samtidig.
 [Git]: http://en.wikipedia.org/wiki/Git_(software)
 
 Still deg i mappen du vil laste ned i. I dette eksemplet har jeg valgt
-hjemmemappen min, dvs. `/home/torkel/`. Dit kommer jeg ved å skrive `cd
-$HOME`.
+hjemmemappen min, dvs. `/home/torkel/`. Dit kommer jeg ved å skrive `cd`.
 
-    git clone
+    git clone https://github.com/normalnorway/normal.no.git
     cd normal.no
     sh bootstrap.sh
 
@@ -237,12 +234,13 @@ Eventuelt prøv denne kommandoen:
 
 
 
-## Hvordan gjøre endringer ##
+## Hvordan gjøre endringer (Hvordan bruke Git) ##
 
 Sett at du skal gjøre en liten endringen i html-malen til
 nettguiden. Da redigerer du denne filen `django/templates/nettguide.html`.
 
-Når du er ferdig bruk `git diff` for å se endringene som er gjort:
+Når du er ferdig bruk `git diff` for å se endringene som er gjort
+(ikke nødvendig, men en god rutine):
 
     git diff
 
@@ -255,18 +253,32 @@ Når du er ferdig bruk `git diff` for å se endringene som er gjort:
 Linjer som starter med '-' er fjernet, og linjer som starter med '+' er
 lagt til.
 
-Du kan også bruke `git status` for å se _hvilke_ filer som er endret.
+Du kan også bruke `git status` for å se _hvilke_ filer som er endret:
 
-Hvis du angrer på endringene du har gjort i en fil, kan den
+    git status
+    
+    # On branch master
+    # Changes not staged for commit:
+    #   (use "git add <file>..." to update what will be committed)
+    #   (use "git checkout -- <file>..." to discard changes in working directory)
+    #
+    #       modified:   django/templates/menu.html
+    #       modified:   django/templates/support/petition.html
+    #       modified:   docs/how-to-contribute.md
+
+
+Hvis du angrer på endringene du har gjort i en fil, kan filen
 tilbakestilles slik:
 
     git checkout django/templates/nettguide.html
 
-<!--
-TODO: Forklare mer om hvordan GIT fungerer.
-git add docs/how-to-contribute.md docs/Makefile
-git diff &ndash;&ndash;staged
--->
+
+Lær mer om Git:
+
+* [git - the simple guide](http://rogerdudler.github.io/git-guide/)
+* [Git for Beginners](http://www.sitepoint.com/git-for-beginners/)
+* [The Git Book](http://git-scm.com/book/en/v2)
+
 
 
 ## Hvordan sende endringer? ##
@@ -292,9 +304,11 @@ Dette kan gjøres fra kommandolinja:
 
 Eller ennå bedre; lær deg Git og be oss om skrivetilgang.
 
+<!--
 * <http://rogerdudler.github.io/git-guide/>
 * <http://stackoverflow.com/questions/315911/git-for-beginners-the-definitive-practical-guide>
 * <http://git-scm.com/book>
+-->
 
 **Send en nyttig patch eller to, og vi gir deg skrivetilgang.**
 

@@ -3,9 +3,11 @@
 from django.db import models
 
 
-# @todo warn if len(name.split()==1)?
-# @todo unique on name+city
-# @todo optional: born_year?
+# TODO:
+# cache controll: no-cache, etags, other?
+# Date -> DateTime?
+# optional: born_year?
+# unique on name+city ?
 class Petition (models.Model):
     CHOICES = (
         ('a', u'a) Nedkriminalisere cannabis (f.eks. etter Portugal-modellen).'),

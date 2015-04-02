@@ -1,0 +1,218 @@
+
+
+
+## SEARCH
+
+from .forms import SearchForm
+
+class SearchForm (forms.Form):
+    query = forms.CharField (max_length=100, label=u'Søk') # @todo html5 type=search?
+
+from django.core.paginator import Paginator
+from django.db.models import Q
+
+# @note can use ArchiveIndexView as base for this view
+def list (request):
+    # Search
+    query = request.GET.get ('query')
+    if query:
+        form = SearchForm (request.GET)
+        qs = Article.objects.filter(
+                Q(title__icontains=query)   |
+                Q(summary__icontains=query) |
+                Q(body__icontains=query)
+        )
+    else:
+        form = SearchForm()
+        qs = Article.objects.all()
+
+    qs = qs.order_by('-date')
+
+    # Pagination
+    pagesize = 25
+    paginator = Paginator (qs, pagesize)
+    try:
+        articles = paginator.page (request.GET.get('page'))
+    except:
+        articles = paginator.page (1)
+    # @todo helper?
+    # @todo hi+low, and put on paginator instance
+    low = (articles.number-1) * pagesize + 1
+    high = low + pagesize
+    count = paginator.count
+    if high > count: high = count
+
+    return render (request, 'news/list.html', {
+        'list': articles, 'low': low, 'high': high,
+        'form': form, 'query': query,
+        # if query: search = '&search=%s' % urlencode(query)
+        # better to pass in session?
+    })
+
+
+
+
+## views.py
+
+class ArchiveView (dates.ArchiveIndexView):
+    #model = Article     # not needed anymore
+    date_field = 'date'
+    paginate_by = 25
+    def get_queryset (self):    # note: this will override model
+        return Article.pub_objects
+
+    #context_object_name = 'list'    # object_list
+    #date_list_period = 'year'
+    # @todo date_list: filter on published=True
+    #       update: looks like thats done for us (uses get_queryset)
+    # get_dated_queryset(**lookup)
+    # get_date_list(queryset, date_type=None, ordering='ASC')
+    # @todo get from cache (same query as sub-menu does. cache queryset?)
+#    def get_date_list(queryset, date_type=None, ordering='ASC'):
+#        return [datetime(2002,1,1), datetime(2004,1,1), datetime(2006,1,1)]
+
+
+
+
+
+
+
+
+## NEWS TIP
+
+    def _have_url (self):
+        # self.url is passed by user. self.data[url] is fetched via OG
+        if self.url == self.data['url']:
+            return Article.objects.filter(url=url).exists()
+        return Article.objects.filter(url=url).exists() or Article.objects.filter(url=self.data['url']).exists()
+
+
+# q: login_url='/loginpage/'
+@permission_required ('news.add_article')
+def add_new (request):
+    if request.method != 'POST':
+        return render (request, 'news/add-new.html')
+        #form = AddNewForm1()
+        #return render (request, 'news/add-new.html', dict(form=form))
+
+    step = int(request.POST.get('step', 1))
+    url = request.POST['url'].strip()
+    if step == 1:
+        # Check if already exists. @todo check canonical url also
+        if Article.objects.filter(url=url).exists():
+            messages.warning(request, u'Den lenken har vi allerede. Ellers takk :)')
+            return redirect (request.path)
+        # Try to init form with metadata
+        #form = AddNewForm (initial=get_metadata(url))
+        data = get_metadata(url)
+        if not data: data = dict(url=url)
+        form = AddNewForm (initial=data)
+        form.fields['url'].widget.attrs['readonly'] = True
+    else:
+        # Step 2: Save form
+        form = AddNewForm (request.POST)
+        if form.is_valid():
+            # Note: Does not call full_clean(), so will get IntegrityError
+            # from db about url column not uniqie.
+            #obj = Article.objects.create (**form.cleaned_data)
+
+            # Note: If full_clean() raises error, it's not converted
+            # to an validation error.
+            try:
+                obj = Article (**form.cleaned_data)
+                obj.full_clean()
+                obj.save()
+                messages.success (request, u'Lagt til nyhet: "%s"' % obj.title)
+                return redirect (request.path)
+            except ValidationError as e:
+                form._errors.update (e.message_dict)
+                # @todo can raise forms.ValidationError() to propagate error?
+                #       A: no, that must be done inside the forms clean method
+                #       note: this is a non-field-error
+                # self._errors["subject"] = self.error_class([msg])
+                #form._errors = e.update_error_dict (form._errors)
+                # form._errors.setdefault (NON_FIELD_ERRORS, self.error_class()).extend(messages)
+                # Form.add_error(field, error)  # Django 1.7
+                #non_field_errors = e.message_dict[NON_FIELD_ERRORS]
+
+    return render (request, 'news/add-new.html', dict(form=form, step=step, url=url))
+
+
+
+
+
+
+
+
+## VERY OLD
+
+from core.shortcuts import render_to, get_http_status
+from apps.news.forms import NewsTips1, NewsTips2
+from apps.news.models import Article
+
+
+url(r'^news-tips/(?P<url>.*)$', 'core.views.news_tips', name='news-tips'),
+
+
+## FORMS
+
+class NewsTipsStep1 (forms.Form):
+    url = forms.URLField (label='Adresse (url)')
+    #url = forms.CharField (label='Lenke (URL)', max_length=64)
+
+class NewsTipsStep2 (forms.Form):
+    date = forms.DateField (label='Dato',
+                            #help_text=u'dd/mm/åå eller åååå-mm-dd',
+                            #widget = forms.TextInput (attrs={'placeholder': u'dd.mm.åå'}),
+                            input_formats = ('%Y-%m-%d', '%d/%m/%y', '%d. %B %Y'),
+                            error_messages = {'invalid': u'Ugyldig dato. Bruk dd/mm/åå eller åååå-mm-dd'})
+    #date = forms.DateField (label='Dato', help_text='Datoen artikkelen er publisert')
+    title = forms.CharField (label='Overskrift', max_length=128)
+    summary = forms.CharField (label='Ingress', widget=forms.Textarea)
+
+
+
+## VIEWS
+
+def news_tips (request, url):
+    if request.method == 'POST':
+        form = NewsTips2 (request.POST)
+        if form.is_valid():
+            # @todo model.full_clean?
+            Article.objects.create (url=url, **form.cleaned_data)
+            exit()
+            # @todo message user
+            return redirect ('index')
+    else:
+        form = NewsTips2()
+    return render (request, 'news/tips.html', dict(form=form, url=url))
+
+
+
+# @todo limit per ip
+# Note: Will redirect if url is accepted.
+#@render_to ('news:index.html')
+@render_to ('index.html')
+def _index (request):
+    if not request.method == 'POST':
+        return dict(form=NewsTips1())
+
+    #form = NewsTips1 (request.POST)
+    form = NewsTips1 (request.POST.copy())
+    if not form.is_valid():
+        return dict (form=form)
+
+    url = form.cleaned_data['url'].strip()
+    if Article.objects.filter(url=url).exists():
+        message = u'Den lenken har vi allerede. Ellers takk :)' # @todo show link
+        form.errors['__all__'] = form.error_class ([message])
+        # @todo helper form_error (form, u'error message')
+        form.data['url'] = ''
+    else:
+        code = get_http_status (url)
+        if code != 200:     # @todo not 4xx and not 5xx
+            msg = u'Død lenke (%d)' % (code,)
+            form.errors['__all__'] = form.error_class ([msg])
+        else: return redirect ('news-tips', url=url)
+
+    return dict (form=form)

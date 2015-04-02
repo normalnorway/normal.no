@@ -1,0 +1,11 @@
+
+
+
+// Get url as json using tinymce.utils
+// See core.js for an alternative version
+function get_json (url, set_data_callback)
+{
+    tinymce.util.XHR.send ({url: url, success: function (text) {
+        set_data_callback (tinymce.util.JSON.parse(text));
+    }});
+}

@@ -24,8 +24,15 @@ activate: master-to-production
 	# @todo run django tests before (and abort on failure)
 
 
+# Offline tests
 test:
 	(cd django && ./manage.py test)
-	#python django/tests.py  # run by django
+	$(MAKE) -C static/css/ test
+	#python django/tests.py  # already run by django manage.py test
+	#@todo fab test
+
+
+# Test the live site: http://normal.no
+# @todo test this after activate new version, and rollback if test fails
+test-live:
 	python test/livesite.py
-	#fab test

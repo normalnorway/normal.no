@@ -44,3 +44,32 @@ class MyFlatpageForm (FlatpageForm):
 
 class MyFlatPageAdmin (FlatPageAdmin):
     form = MyFlatpageForm
+
+
+
+https://docs.djangoproject.com/en/1.7/ref/contrib/csrf/#ajax
+// function sameOrigin(url)
+
+
+pass config from django
+https://github.com/aljosa/django-tinymce/blob/master/tinymce/static/django_tinymce/init_tinymce.js
+
+
+Howto configure tinymce4? Global config, and pass to Widget og Model.
+The later will override the former.
+
+- mce_attrs (default: {})
+- content_language
+- preview button/view
+  https://github.com/aljosa/django-tinymce/blob/master/tinymce/templatetags/tinymce_tags.py
+- howto add site css to editor
+
+- Creating external link and image views
+The TinyMCE link and image dialogs can be enhanced with a predefined
+list of links and images.
+
+from tinymce.views import render_to_link_list
+def someview(request):
+    objects = ...
+    link_list = [(unicode(obj), obj.get_absolute_url()) for obj in objects]
+    return render_to_link_list(link_list)
