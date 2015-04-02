@@ -4,10 +4,6 @@
 # $ python manage.py diffsettings
 #
 
-# TODO
-# * Session timeout
-# * Crontab to periodically clean session database
-
 import os
 from django.conf import global_settings as defaults
 
@@ -184,154 +180,146 @@ else:
 
 
 ## Logging
-# Sends email to site admins on HTTP 500 error when DEBUG=False.
-# http://docs.djangoproject.com/en/dev/topics/logging
-#
-# Testing things out, so more complex than it should be.
-#
-# @todo if DEBUG log to console (or debug.log)
-#       or only level=>errors to console/stderr, and rest to debug.log?
-#       or if DEBUG: log to console else: log to file
-# @todo catch all level=ERROR into own file? (apache uses error.log)
 
-# _LEVEL = 'DEBUG' if DEBUG else 'WARNING'
-# LOG_LEVEL = 'DEBUG' if DEBUG else 'INFO'
-#logfile = lambda f: os.path.join (ROOT_DIR, 'logs', f)
+# By default, Django configures the django.request logger so that all
+# messages with ERROR or CRITICAL level are sent to AdminEmailHandler, as
+# long as the DEBUG setting is set to False.
+
+_LEVEL = 'DEBUG' if DEBUG else 'INFO'
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True, # @todo keep djangos default logging
-                                      # q: how to see 'em?
-                                      # a: https://docs.djangoproject.com/en/1.7/topics/logging/#default-logging-configuration
+    'disable_existing_loggers': False,
 
-    'loggers': {
-        # @todo can drop handler and get default?
-        # Q: what is default level. move level to handlers?
-        # @todo drop?
+    'loggers':
+    {
         '': {
-            'handlers': ['file:website'],
-            'level': 'DEBUG',
+            'handlers': ['file:catch-all', 'console'],
+            'level': _LEVEL,
         },
+
+        # @todo catch all level>=ERROR into errors.log?
+        # Q: Howto log all errors into errors.log?
+        #    can not remove propagate:False bellow
+        #    handlers += 'file:error' and filter on that handler
 
         'apps': {
-            'handlers': ['console'],
-            'propagate': True,
-            # @todo also log to apps.log, then disable propagate
-            # or better to just propagate to website.log?
+            'handlers': ['file:apps', 'console'],
+            'level': _LEVEL,
+            'propagate': False,
         },
 
-
-        ## django.* loggers
-
-        # Catch-all logger. No messages are posted directly to this logger.
         'django': {
-            'handlers': ['file:django'],
-            'level': 'DEBUG',
+            'handlers': ['file:django', 'console'],
+            'level': _LEVEL,
+            'propagate': False,
         },
 
-        # django.db.backends
-        # Every application-level SQL statement executed by a request is
-        # logged at the DEBUG level.
-        # Extra context: duration, sql, params
-        #
-        # django.db.backends.schema     create, insert, drop, alter, etc
-        # django.db.backends            query log
+        'django.db.backends': {
+            'handlers': ['file:db'],
+            'level': 'INFO',    # don't log all sql queries
+            'propagate': False,
+        },
+        'django.db.backends.schema': {
+            'handlers': ['file:db'],
+            'level': 'DEBUG',   # log sql that modifies the schema
+            'propagate': False,
+        },
 
-#        'django.db.backends.schema': {
-#            'handlers': ['file:database'],  # querylog (changes)
-#            'level': 'DEBUG',
-#        },
-#        'django.db.backends': {
-#            'handlers': ['file:sql'],       # querylog (select)
-#            'level': 'DEBUG',
-#        },
-        # @todo still wan't INFO+ messages logged to django.log
-        #       or website.log. fix: pass to multiple handlers
-        #       with diferent level
-
-        # django.security.*
-        # Messages on any occurrence of SuspiciousOperation. There is
-        # a sub-logger for each sub-type of SuspiciousOperation.
-        # Most occurrences are logged as a warning, while any
-        # SuspiciousOperation that reaches the WSGI handler will be
-        # logged as an error.
-        # The django.security logger is configured the same as the request
-        # logger, and any error events will be mailed to admins.
         'django.security': {
-            'handlers': ['file:security', 'mail_admins'],
-            'level': 'DEBUG',
-            #'propagate': True, # or also log to website.log
+            'handlers': ['file:security'],
+            'level': _LEVEL,
+            'propagate': False,
         },
 
-        # 5XX responses are raised as ERROR messages
-        # 4XX responses are raised as WARNING messages
-        # Extra context: status_code, request
-        #   q: howto use em? custom formatter?
         'django.request': {
-            'handlers': ['file:request', 'mail_admins'],
-            'level': 'INFO',
-            'propagate': True,
+            'handlers': ['file:requests'],
+            'level': 'INFO',    # all request are logged at DEBUG
+            'propagate': False,
         }, # @todo possible to filter out Not found? they are ~98%
     },
 
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'filters': ['debug_false'],
-            # Attach the full content of the debug Web page that would
-            # have been produced if DEBUG were True.
-            # Note: contains a full traceback; potentially very sensitive
-            'include_html': True,
-        },
+
+    'handlers':
+    {
         'console': {
-            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'default', # note: this is not the default
-            # 'stream': sys.stdout, # default is stderr
-            #'formatter': 'verbose',
+            'level': 'DEBUG', # is this the default?
+            'formatter': 'simple',
+            'filters': ['debug'],
         },
-        'file:website': {
-            #'level': _LEVEL?
+
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+
+        'file:catch-all': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('logs', 'website.log'),
+            'filename': rootdir ('logs', 'catch-all.log'),
             'formatter': 'verbose',
         },
+
+        'file:apps': {
+            'class': 'logging.FileHandler',
+            'filename': rootdir ('logs', 'apps.log'),
+            'formatter': 'verbose',
+        },
+
         'file:django': {
             'class': 'logging.FileHandler',
             'filename': rootdir ('logs', 'django.log'),
             'formatter': 'verbose',
         },
+
+        'file:db': {
+            'class': 'logging.FileHandler',
+            'filename': rootdir ('logs', 'db.log'),
+            'formatter': 'verbose',
+        },
+
         'file:request': {
             'class': 'logging.FileHandler',
             'filename': rootdir ('logs', 'request.log'),
             'formatter': 'verbose',
         },
+
         'file:security': {
             'class': 'logging.FileHandler',
             'filename': rootdir ('logs', 'security.log'),
             'formatter': 'verbose',
         },
-        # @todo catch all level>=ERROR into error.log
-        # @todo does RotatingFileHandler exists?
-        # @todo can drop formatter on handlers (and get default)?
+
+#        'file:error': {
+#            'level': 'ERROR',
+#            'class': 'logging.FileHandler',
+#            'formatter': 'verbose',
+#            'filename': rootdir ('logs', 'error.log'),
+#        },
     },
 
+
+    # https://docs.python.org/2/library/logging.html#logrecord-attributes
     'formatters': {
-        # q: howto define default? '' a: not possible
-        # @todo drop %(lineno) for everything except own code (apps, core?)
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format' : "%(asctime)s %(levelname)s [%(name)s] : %(message)s",
+            'datefmt' : "%Y-%m-%d %H:%M:%S",
         },
-        'default': {
-            'format': '%(levelname)s: %(message)s'
+#        'custom': {
+#            # Like verbose, but add function name. Only use for own code (apps.)
+#            'format' : "%(asctime)s %(levelname)s [%(name)s:%(funcName)s] : %(message)s",
+#            'datefmt' : "%Y-%m-%d %H:%M:%S",
+#        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
         },
     },
 
     'filters': {
-        'debug_false': {    # nodebug?
-            '()': 'django.utils.log.RequireDebugFalse'
+        'debug': {
+            '()': 'django.utils.log.RequireDebugTrue',
         },
+#        'nodebug': {
+#            '()': 'django.utils.log.RequireDebugFalse'
+#        },
     },
 }
