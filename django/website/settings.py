@@ -233,7 +233,7 @@ LOGGING = {
         },
 
         'django.request': {
-            'handlers': ['file:requests'],
+            'handlers': ['file:request'],
             'level': 'INFO',    # all request are logged at DEBUG
             'propagate': False,
         }, # @todo possible to filter out Not found? they are ~98%
