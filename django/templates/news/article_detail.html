@@ -22,20 +22,20 @@ p.abstract {
 
   <h1>Nyhetskommentar</h1>
 
-  <h2>{{ item.title }}</h2>
-  <p class="date">Publisert: {{ item.date }}</p>
-  <p class="abstract">{{ item.summary }}</p>
+  <h2>{{ article.title }}</h2>
+  <p class="date">Publisert: {{ article.get_date }}</p>
+  <p class="abstract">{{ article.summary }}</p>
 
-  {% if item.url %}
+  {% if article.url %}
   {% comment %}
-  <p><em>Kilde: <a href="{{item.url}}">{{item.url}}</a></em></p>
+  <p><em>Kilde: <a href="{{article.url}}">{{article.url}}</a></em></p>
   {% endcomment %}
-  <p><a href="{{item.url}}">{{item.url}}</a></em></p>
+  <p><a href="{{article.url}}">{{article.url}}</a></em></p>
   {% endif %}
 
-  {% if item.body %}
+  {% if article.body %}
   {# @todo if body&url => prefix with Normals kommentar? #}
-  <p class="body">{{ item.body|safe }}</p>
+  <p class="body">{{ article.body|safe }}</p>
   {% endif %}
 
 {% endblock %}

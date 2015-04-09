@@ -9,7 +9,8 @@ drop arkiv-prefix? but then need prefix on detailed view, else name conflict bet
 """
 
 urlpatterns = patterns ('apps.news',    # apps.news.views?
-    url (r'^(?P<news_id>\d+)/$', 'views.detail', name='news-detail'),
+#    url (r'^(?P<news_id>\d+)/$', 'views.detail', name='news-detail'),
+    url (r'^(?P<pk>\d+)/$', views.ArticleDetailView.as_view(), name='news-detail'),
 
 #    url (r'^arkiv/$',                                   'views.archive', name='news-archive'),
 #    url (r'^arkiv/page/(?P<page>[0-9]+|last)/$',        'views.archive'),   # pagination. @todo name='news-archive-page'),
@@ -21,7 +22,7 @@ urlpatterns = patterns ('apps.news',    # apps.news.views?
     url (r'^arkiv/$',
         views.ArchiveView.as_view(), name='news-archive'),
     url (r'^arkiv/page/(?P<page>[0-9]+)/$', # used for pagination
-        views.ArchiveView.as_view(), name='news-archive-page'),
+        views.ArchiveView.as_view(), name='news-archive-page'),  # news-archive-pagination?
     url (r'^arkiv/(?P<year>\d{4})/$',
          views.YearView.as_view(), name='news-archive-year'),
     url (r'^arkiv/(?P<year>\d{4})/(?P<month>\d{1,2})/$',

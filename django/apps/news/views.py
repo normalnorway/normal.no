@@ -4,15 +4,14 @@ BUGS:
   If no next month, then clicking "Neste maaned" fails
 """
 
-from django.views.generic import dates
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
 #from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
-from django.contrib.auth.decorators import permission_required
+#from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
-from .models import Article
-from .forms import AutoNewForm
-from .newsgrab import get_metadata
+from models import Article
+from forms import AutoNewForm
+from newsgrab import get_metadata
 
 
 def _get_metadata (url):
@@ -139,7 +138,7 @@ class AutoNewView (View):
 
 
 
-# q: login_url='/loginpage/'. update: set in settings.py
+# not in use
 #@permission_required ('news.add_article')
 def add_new (request):
     assert request.method != 'POST'
@@ -148,17 +147,18 @@ def add_new (request):
 
 
 
-# @todo use DateDetailView?
-def detail (request, news_id):
+
+
+from django.views.generic.detail import DetailView
+from django.views.generic import ArchiveIndexView
+from django.views.generic import YearArchiveView, MonthArchiveView
+
+class ArticleDetailView (DetailView):
     """http://normal.no/nyheter/<pk>/"""
-    return render (request, 'news/detail.html', {
-        'item': get_object_or_404 (Article, pk=news_id, published=True)
-        # @todo use same name as DetailView uses. (object?)
-    })
+    def get_queryset (self): return Article.pub_objects
 
 
-
-class ArchiveView (dates.ArchiveIndexView):
+class ArchiveView (ArchiveIndexView):
     date_field = 'date'
     paginate_by = 25
     def get_queryset (self): return Article.pub_objects
@@ -166,13 +166,13 @@ class ArchiveView (dates.ArchiveIndexView):
 
 # @todo show months in revered order?
 # @todo pagination
-class YearView (dates.YearArchiveView):
+class YearView (YearArchiveView):
     date_field = 'date'
     make_object_list = True # False => only generate month list
     def get_queryset (self): return Article.pub_objects
 
 
-class MonthView (dates.MonthArchiveView):
+class MonthView (MonthArchiveView):
     date_field = 'date'
     month_format = '%m'
     make_object_list = True

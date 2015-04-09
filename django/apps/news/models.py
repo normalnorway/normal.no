@@ -54,6 +54,14 @@ class Article (models.Model):
       #       better to use NullBooleanField or choices=('Y', 'N', 'U')
       # note: label is for admin (Is url canonical? is more general)
 
+    def get_date (self):
+        """Time might be empty, handle that by returning datetime.time"""
+        import datetime
+        t0 = datetime.time()
+        if self.date.time() == t0: return self.date.date()
+        return self.date
+        # @todo "5. mars 2015 22:51" => "5. mars 2015, kl. 22:51"
+
     def __unicode__ (self):
         return self.title
 
