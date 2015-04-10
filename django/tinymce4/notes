@@ -5,7 +5,7 @@ windowManager.open({ ... });
 
 Can put css in tinymce4/static?
 # Current scheme:
-tinymce4/static/tinymce4/tinymce.js
+tinymce4/static/tinymce4/tinymce.js	<-- update: renamed to init.js
 tinymce4/static/tinymce4/tinymce.css
 # Better scheme?
 tinymce4/static/tinymce.css
