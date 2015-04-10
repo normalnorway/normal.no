@@ -7,7 +7,7 @@ framework.
 
 If you want to contribute, send an e-mail to <mailto:torkel@normal.no>
 and/or check out this file:
-<https://github.com/normalnorway/normal.no/blob/master/docs/how-to-contribute.html>
+<https://raw.githack.com/normalnorway/normal.no/master/docs/how-to-contribute.html>
 (Warning: In Norwegian).
 
 /Torkel
