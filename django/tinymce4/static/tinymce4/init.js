@@ -43,7 +43,6 @@ function _test1 (ev)
 // var _djangomce =
 window._djangomce =
 {
-//    config: {},
     cache: {},
 
     setup: function (editor)
@@ -220,8 +219,8 @@ tinymce.init ({
              'bullist numlist outdent indent blockquote | ' +
              'link image | code',
 
-    toolbar2: 'formatselect fontsizeselect removeformat ' +
-              'preview fullscreen | template',
+//    toolbar2: 'formatselect fontsizeselect removeformat ' +
+//              'preview fullscreen | template',
 
     /** Plugins */
 
@@ -257,7 +256,6 @@ tinymce.init ({
         get_json ('/tinymce/page-list/', function (data) {
             _djangomce.cache.link_list = data;
             set_data (data);
-            //set_data (_djangomce.cache.link_list = data);
         });
     },
 
@@ -276,46 +274,46 @@ tinymce.init ({
 
 	var el = $get ('tinymce-file-input');
         if (! el) {
-//            var editor = tinymce.activeEditor;
-            // @todo try with fragment aproach again
+            // Must add form to DOM that can be used for upload
+
+            //var editor = tinymce.activeEditor;
             // Q: if using editor.dom, is this the wrong dom tree?
-//            console.log (document);
-//            console.log (win);
-            /*
+            /* @todo try with fragment aproach again
             var node = editor.dom.createFragment (
                 '<form id="tinymce-upload-form" action="/tinymce/upload/" method="post" enctype="multipart/form-data" style="display:none">' +
                 '  <input type="file" id="tinymce-file-input" name="must-have-a-name" />' +
                 '</form>'
             );
             */
-//            var node = document.createDocumentFragment();
-//            node.innerHTML +=
+
+            //var node = document.createDocumentFragment();
+            //node.innerHTML +=
+
             var node = document.createElement ('div');
+            node.style.display = 'none';
             node.innerHTML =
-                '<form id="tinymce-upload-form" action="/tinymce/upload/" method="post" enctype="multipart/form-data" style="display:none">' +
+                '<form id="tinymce-upload-form" action="/tinymce/upload/" method="post" enctype="multipart/form-data">' +
                 '  <input type="file" id="tinymce-file-input" name="must-have-a-name" />' +
                 '</form>';
 
+            el = node.children[0].children[0];
+            // don't work before added to document
             //el = node.getElementById ('tinymce-file-input');
-            el = node.querySelector ('#tinymce-file-input'); // IE8 only
-//            console.log (el);
+            //el = node.querySelector ('#tinymce-file-input'); // IE8 only
+
             document.body.appendChild (node);
-//            document.body.appendChild (node.cloneNode (true));
-//            document.appendChild (node.cloneNode (true));
-            //document.appendChild (node);
+            //document.body.appendChild (node.cloneNode (true));
 
             // Note: If cloning the node, then must refetch it.
 //            el = $get ('tinymce-file-input');
 //            console.log (el);
         }
 
-//	var el = $get ('tinymce-file-input');
-//        console.log (el);
-
+        // Fired when user have choosen a file
 	el.onchange = function (ev) {
 	    //file = ev.target.files[0];
             _djangomce.upload (ev.target.form, $get (field_name));
 	};
-	el.click();
+	el.click();     // open file selector dialog
     }
 });
