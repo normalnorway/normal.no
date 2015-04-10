@@ -1,45 +1,43 @@
-from django.shortcuts import render, redirect
-from django.core.exceptions import ValidationError
-#from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
-#from django.contrib.auth.decorators import permission_required
-from django.contrib import messages
-from models import Article
-from forms import AutoNewForm
+"""
+TODO NewsTip:
+save user in article object
+try to clean up adress. but keep fragment?
+  urlparse.urlunparse(urlobj[:3] + ('',)*3)  # shall return same as url
+  url = 'http://netloc/path;parameters?query=argument#fragment'
+  url, fragment = urldefrag(original)
+clean up image_url? (strip query&fragment)
+check that url returns 200
+HEAD -S http://normal.no/bli-medlem
+warn user if not norwegian article?
+"""
 
 import logging
-logger = logging.getLogger (__name__)
-
-
-def _remove_empty (data):
-    """Remove empty values from a dict. A copy is returned"""
-    return dict((k, v) for k, v in data.iteritems() if v)
-
-def _have_keys (data):
-    #keys = {'url', 'title', 'summary', 'image', 'date'}    # python 2.7
-    keys = set(('url', 'title', 'summary', 'image', 'date'))
-    return keys.intersection (set(data.keys()))
-
-
-
 import urlparse
 from django.http import HttpResponse    # tmp
 from django.views.generic import View
+from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
+from django.contrib import messages
+from models import Article
+from forms import NewArticleForm
 from newsgrab import get_metadata as get_opengraph_data
 
-# TODO
-# save user in article object
-# add some logging
-# try to clean up adress. but keep fragment?
-#   urlparse.urlunparse(urlobj[:3] + ('',)*3)  # shall return same as url
-#   url = 'http://netloc/path;parameters?query=argument#fragment'
-#   url, fragment = urldefrag(original)
-# clean up image_url? (strip query&fragment)
-# check that url returns 200
-# HEAD -S http://normal.no/bli-medlem
-# warn user if not norwegian article?
+logger = logging.getLogger (__name__)
+
+
+_MSG_SUCCESS = u'Takk for nyhetstipset: %s'  # rename _MSG_THANK_YOU?
+_MSG_HAVE_IT = u'Denne lenken har vi allerede i arkivet.'
+_MSG_FOREIGN = u'''
+Nyhetsarkivet er for norske nyhetssaker. Lenken du sendte er til en
+utenlandsk adresse. Hvis du fortsatt mener saken er relevant, send den
+til post@normal.no. Takk!
+'''
+#til <a href="mailto:post@normal.no">post@normal.no</a>. Takk!
+
 
 class NewArticleView (View):
     """
+    @todo outdated; update
     Sanity cheks:
     Check if url is (syntactically) valid
     Check if url exists (200, 30x)    Q: what if redirected?
@@ -53,8 +51,10 @@ class NewArticleView (View):
 
     template_name = 'news/article_new.html'
 
-    # Article can not be posted if some of these fields are missing.
-    _required_fields = set(('url', 'date', 'title', 'summary', 'image_url'))
+    # Article can not be published if some of these fields are missing.
+    # @todo this list can be auto-build from required fields on Article
+    _required_fields = set(('url', 'date', 'title', 'summary'))
+    #_required_fields = {'url', 'date', 'title', 'summary', 'image_url'}
 
     @staticmethod
     def _get_metadata (url):
@@ -73,37 +73,46 @@ class NewArticleView (View):
         else:
             meta['url'] = url
         return meta
-        #return meta if meta else {} # why not just return meta?
 
     @staticmethod
     def _get_missing_fields (data):
         """Return set of missing metadata fields"""
         return NewArticleView._required_fields - set(data.keys())
 
+#    @staticmethod
+#    def _have_fields (data):
+#        return NewArticleView._required_fields.intersection (set(data.keys()))
+
 
     def get (self, request):
         url = request.GET.get ('url', '').strip()
         if not url:
-            return render (request, self.template_name, dict(url_missing=True))
+            return render (request, self.template_name, dict(url_missing=True)) # rename step1?
         return HttpResponse ('fixme')
 
 
     def post (self, request):
+        if request.POST.get ('step2', False):
+            form = NewArticleForm (request.POST)
+            if not form.is_valid():
+                return render (request, self.template_name, dict(form=form))
+            return self._save_and_redirect (form.cleaned_data)
+
+        # Step 1: Collect URL
         url = request.POST.get ('url', '').strip()
         if not url: return HttpResponse ('Invalid usage!') # @todo raise
         return self._handle (url)
 
-#        form = AutoNewForm (request.POST)
-#        if not form.is_valid():
-#            return render (request, self.template_name, dict(form=form))
-#        return self._save_and_redirect (form.cleaned_data)
 
-
+    # post() and get() delegates to this method
     def _handle (self, url):
         if Article.objects.filter (url=url).exists():
             return self._have_it()
 
         data = self._get_metadata (url)
+        if not data:
+            messages.warning (self.request, _MSG_FOREIGN)
+            return redirect ('news-new')
 
         # If url and data[url] differ, must check both
         if data.has_key ('url') and url != data['url']:
@@ -113,24 +122,25 @@ class NewArticleView (View):
         if not self._get_missing_fields (data):
             return self._save_and_redirect (data) # pass have_all_fields?
 
-        return HttpResponse ('break')
-
-        form = AutoNewForm (initial=data)
-        # @todo mark missing fields with css class?
-        #self._fix_form (form, data) # xxx
-        return render (request, self.template_name, dict(form=form, missing=True))
-        #return self.render (dict(form=form, missing=True))
+        # Ask user to fill in missing data
+        form = NewArticleForm (initial=data)
+        # @todo don't allow anonymous users to change prefilled fields?
+#        for field in form.visible_fields():
+#            if not field.value(): continue
+#            form.fields[field.name].widget.attrs['readonly'] = True
+#            #field.widget.attrs['readonly'] = True
+        return render (self.request, self.template_name, dict(form=form))
 
 
     def _have_it (self):
-        messages.warning (self.request, u'Denne lenken har vi allerede i arkivet.')
+        messages.warning (self.request, _MSG_HAVE_IT)
         return redirect ('news-new')
 
     def _save_and_redirect (self, data):
         #return HttpResponse ('save aborted')
         self._save (data)
         title = data['title'] if data.has_key('title') else data['url']
-        messages.success (self.request, u'Takk for nyhetstipset: ' + title)
+        messages.success (self.request, _MSG_SUCCESS, title)
         return redirect ('news-new')
 
     # Note: Article.published only true if validation passes and user
@@ -147,12 +157,6 @@ class NewArticleView (View):
             logger.warn ('Add permission missing: setting published=False for: ' + obj.url)
             obj.published = False
         obj.save()
-
-#    def _fix_form (self, form, data):
-#        for key in _have_keys (data):
-#            if form.fields.has_key (key):
-#                form.fields[key].widget.attrs['readonly'] = True
-
 
 
 

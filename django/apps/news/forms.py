@@ -16,16 +16,32 @@ DATETIME_INPUT_FORMATS = [
 DATETIME_INPUT_FORMATS += [s+' %H:%M' for s in DATETIME_INPUT_FORMATS]
 
 
-# /nyheter/auto-ny/
-class AutoNewForm (forms.Form):
+class NewArticleForm (forms.Form):
     date = forms.DateTimeField (label='Dato (og helst tid)', required=False,
-                                help_text='Når artikkelen er publisert. (De vanligste datoformat godtas.)',
+                                help_text='Når artikkelen er publisert. De vanligste datoformat godtas.',
                                 input_formats = DATETIME_INPUT_FORMATS,
                                 error_messages = {'invalid': u'Ugyldig dato eller datoformat. Bruk f.eks. "24.12.2015 16:20" eller "24.12.2015".'})
                                 #error_messages = {'invalid': u'Ugyldig dato. Bruk f.eks. "dd.mm.åååå tt:mm" eller "åååå-mm-dd tt:mm"'})
     title = forms.CharField (label='Overskrift', required=False, max_length=128)
     summary = forms.CharField (label='Ingress', required=False, widget=forms.Textarea)
-    # Hidden fields
+    # hidden fields:
     url = forms.URLField (label='Adresse (URL)', widget=forms.HiddenInput())
     image_url = forms.URLField (required=False, widget=forms.HiddenInput())
     url_is_canonical = forms.BooleanField (required=False, widget=forms.HiddenInput())
+
+
+    # can't use this to strip fields either.
+    # date is NoneType if not parsable as valid date, else datetime obj
+#    def clean (self):
+#        data = self.cleaned_data
+#        d = data.get ('date', None)
+#        print type(d)
+#        print d
+#        #if d: data['date'] = data['date'].strip()
+#        return data
+
+    # looks like not called untill form validates
+    # so can't use this to strip the form field
+#    def clean_date (self):
+#        date = self.cleaned_data['date']
+#        return date

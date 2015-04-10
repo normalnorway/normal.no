@@ -14,6 +14,11 @@
   #id_title {
     width: 41em;
   }
+  pre.code {
+    padding: 8px;
+    border: 1px dashed black;
+    background: #eee;
+  }
   ul.form > li > label {
     display: block;
     font-weight: bold;
@@ -21,6 +26,11 @@
   ul.form > li {
     margin-bottom: 6px;
   }
+  /*
+  ul.form > li.validation-error > input {
+    border: 1px dashed #c00;
+  }
+  */
 </style>
 {% endblock %}
 
@@ -44,30 +54,67 @@ How it behaves depends on these context vars:
   <input type="submit" value="Neste »" style="margin-left: 1ex" />
 </form>
 
-<h3>Mer informasjon</h3>
+<p>Foreslå kun norske nyhetssaker. Andre saker sendes til
+<a href="mailto:post@normal.no">post@normal.no</a>.</p>
 
-<p>Foreslå i utgangspunktet kun norske nyhetssaker.</p>
+<!--
+<p>Foreslå kun norske nyhetssaker som omhandler cannabis eller norsk
+ruspolitikk. Utenlandske saker sendes til
+<a href="mailto:post@normal.no">post@normal.no</a>.</p>
+-->
 
 <p>Merk: Nyhetslenken må godkjennes av Normal før den blir publisert.
 Dette gjelder ikke hvis du er logget inn på siden. Send oss en
 <a href="mailto:post@normal.no">e-post</a> for å få tilgang.</p>
 
+<h3>Hvordan automatisere prosessen?</h3>
+
+<p>Vi har laget et system for å gjøre det enklest mulig for deg å
+hjelpe oss med å holde nyhetsarkivet oppdatert.</p>
+
+<ol>
+  <li>Dra denne lenken til bookmerkene dine:
+  <a href="
+  javascript:(function(){
+  window.location.href = '///{{request.META.HTTP_HOST}}/nyheter/ny/?url=' +
+          encodeURIComponent (window.location.href);
+  })();
+  ">Normals Nyhetstips</a>
+  <li>Når du har funnet en aktuell nyhetssak er det bare å klikke/velge
+  dette bookmerket, også blir lenken lagt til (nesten) automatisk.
+</ol>
+
+<p>Eventuellt kan du manuelt lage et nytt bokmerke og lime inn teksten
+under:</p>
+
+<pre class="code smaller">
+javascript:(function(){
+    window.location.href = '///{{request.META.HTTP_HOST}}/nyheter/ny/?url=' +
+        encodeURIComponent (window.location.href);
+})();
+</pre>
+
+{# @todo link to newsgrab code #}
+{# @todo dowload news archive as sql #}
+
 {% else %}
 
 
+{# User have provided url, but can't auto-fetch all required fields #}
 
-{% if missing %}
+<p>Steg 2 av 2: Har du mulighet, fyll gjerne ut de manglende feltene
+under før du sender tipset. Det sparer oss for tid og nyheten vil bli
+publisert raskere.</p>
+
+<p>Merk: <strong>Nyhetstipset registreres ikke før du trykker
+«send»!</strong></p>
+
 <!--
-<p class="strong">
-Har du mulighet, fyll gjerne ut de manglende feltene under før du lagrer.
-Det sparer oss for tid og den vil bli publisert raskere.
-</p>
--->
 <p><span class="strong">Husk å lagre! Har du mulighet så fyll
 gjerne ut de manglende feltene før du lagrer.</span> Det sparer oss for tid
 og nyheten blir publisert raskere. Du kan høyreklikke på lenken under og
 velge «åpne i ny fane/vindu».</p>
-{% endif %}
+-->
 
 {% if form.errors %}
 <p class="error">Vennligst rett feilen(e) under!</p>
@@ -77,13 +124,11 @@ velge «åpne i ny fane/vindu».</p>
 <p><strong>Adresse:</strong>
 <br><a href="{{ form.url.value }}" class="smaller">{{ form.url.value }}</a></p>
 
-{# q: why not drop action? #}
-<form method="post" action='{% url "news-new" %}'>
+<form method="post">
   {% csrf_token %}
-  <ul class="form">
-    {{ form.as_ul }}
-  </ul>
-  <input type="submit" value="Lagre" />
+  <input type="hidden" name="step2" value="1" />
+  <ul class="form">{{ form.as_ul }}</ul>
+  <input type="submit" value="Send" />
 </form>
 
 {% endif %}   {# if url_missing #}
