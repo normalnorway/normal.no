@@ -1,6 +1,4 @@
 <!--
-http://git.normal.no/git/normal.no/tree/docs/how-to-contribute.md
-
 TODO:
 @deb node-less to regenerate css files (add to docs/install also)
 can make changes directly on github
@@ -56,10 +54,10 @@ Hvordan komme i gang
 ====================
 -->
 
-_Sist oppdatert: @@LAST-UPDATE@@_
+_Sist oppdatert: @@DATE@@_
 
-Denne guiden hjelper deg å komme i gang med å gjøre endringer i koden
-eller designet til Normals nettsider – [normal.no](http://normal.no).
+**Denne guiden hjelper deg å komme i gang med å gjøre endringer i koden
+eller designet til Normals nettsider – [normal.no](http://normal.no).**
 
 Er noe uklart ta kontakt med <mailto:torkel@normal.no> eller
 <mailto:post@normal.no>.
@@ -109,14 +107,22 @@ guiden for deg. Slike endringer gjøres via admin-grensesnittet:
 
 ### Windows ###
 
-Windows er jo så lett å bruke så dette klarer du helt sikkert selv :)
+Forfatter har ikke tilgang til Windows, så her må du klare deg selv. Men
+det burde være grei skuring. Hvis du setter opp på Windows så bidra
+gjerne til denne guiden ved å skrive ned hvordan du gjorde det. Her er
+noen lenker som hjelper deg på vei:
 
 * [GIT for Windows](http://msysgit.github.io/)
 * [Python for Windows](https://www.python.org/downloads/windows/)
 * [Django for Windows](https://docs.djangoproject.com/en/1.7/howto/windows/)
 * [Video: How to install Django in Windows 7](http://www.youtube.com/watch?v=rIVwVOpwpsA)
 
-Og hvis du får det til, skriv gjerne ned en oppskrift for andre.
+
+### Mac / OSX ###
+
+Apple sitt operativsystem er Unix-basert, så se seksjonen under. Men
+istedenfor å bruke `apt-get` for å installere pakker (programmer) kan du
+bruke [Homebrew](http://brew.sh/).
 
 
 ### Linux/Unix ###
@@ -256,7 +262,7 @@ lagt til.
 Du kan også bruke `git status` for å se _hvilke_ filer som er endret:
 
     git status
-    
+
     # On branch master
     # Changes not staged for commit:
     #   (use "git add <file>..." to update what will be committed)
@@ -280,6 +286,7 @@ Lær mer om Git:
 * [Got 15 minutes and want to learn Git?](https://try.github.io/)
 * [The Git Book](http://git-scm.com/book/en/v2)
 
+[Grafiske Git-klienter](http://git-scm.com/downloads/guis)
 
 
 ## Hvordan sende endringer? ##

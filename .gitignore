@@ -3,10 +3,8 @@
 *.bak
 .*.swp
 
-/docs/how-to-contribute.html
+#/docs/how-to-contribute.html
 
-
-## For production server
 /db/
 /htdocs/
 /logs/

@@ -1,10 +1,11 @@
-MARKDOWN=markdown_py -x toc
-#MARKDOWN=markdown_py -x toc -o html5
-
+MARKDOWN=markdown_py -x toc -o html5
 
 all: how-to-contribute.html
-	firefox $^
 
+view: how-to-contribute.html
+	x-www-browser $^
+
+# Note: Outdated!
 # This file is found under:
 # http://git.normal.no/git/normal.no/about/
 # But note: cgit uses caching, so will not show up immediately!
@@ -12,7 +13,5 @@ all: how-to-contribute.html
 #	scp $^ git.normal.no:/srv/www/git.normal.no/readme.html
 
 
-# Suffix rule from markdown to html
 %.html : %.md
-	$(MARKDOWN) $< | sed -e "s/@@LAST-UPDATE@@/`date --iso`/" > $@
-#	$(MARKDOWN) $< > $@
+	$(MARKDOWN) $< | sed -e "s/@@DATE@@/`date --iso`/" > $@

@@ -1,0 +1,290 @@
+<!--
+TODO:
+@deb node-less to regenerate css files (add to docs/install also)
+can make changes directly on github
+url-namespace. can link to wiki
+html5. define browser support (lowest IE version)
+coding standards
+  Python 2.6 and Django 1.6 only! :(
+rename CONTRIBUTING.md?
+Github: Howto clone the repo and send pull requests
+Github: Howto use the issue tracker
+gitk / gitg
+unit test: ./manage.py test
+http://effectivedjango.com/
+
+TODO Styling:
+css for <code>
+more line-spacing?
+-->
+
+<!-- markdown don't touches stuff inside block tags, but head is not
+a block tag, so it messes it up. Therefor we wrapp head inside a div
+even tough it's not legal html -->
+
+<div>
+<meta charset="utf-8" />
+<style type="text/css">
+  pre {  /* box with code */
+    background-color: rgb(238, 238, 238);
+    border: 1px solid black;
+    padding: 1ex;
+    width: 52em;
+  }
+  p > code {    /* inline code */
+    font-size: 90%;
+    background-color: rgba(0,0,0,0.04);
+    padding: 0.33em 0.1em;
+    border-radius: 3px;
+  }
+  p { width: 50em; line-height: 1.44; }
+  h2 { margin-top: 3ex; }
+  div.toc {
+    border: 1px dashed black;
+    float: right;
+    padding-right: 1em;
+  }
+</style>
+</div>
+
+<div class="toc">
+<ul>
+<li><a href="#innledning">Innledning</a></li>
+<li><a href="#installasjon">Installasjon</a><ul>
+<li><a href="#windows">Windows</a></li>
+<li><a href="#mac-osx">Mac / OSX</a></li>
+<li><a href="#linuxunix">Linux/Unix</a></li>
+<li><a href="#last-ned-kildekoden">Last ned kildekoden</a></li>
+<li><a href="#konfigurer-oppsett">Konfigurer / oppsett</a></li>
+</ul>
+</li>
+<li><a href="#django">Django</a></li>
+<li><a href="#hvordan-gjre-endringer-hvordan-bruke-git">Hvordan gjøre endringer (Hvordan bruke Git)</a></li>
+<li><a href="#hvordan-sende-endringer">Hvordan sende endringer?</a></li>
+<li><a href="#github">Github</a></li>
+</ul>
+</div>
+<!--
+Hvordan komme i gang
+====================
+-->
+
+<p><em>Sist oppdatert: 2015-04-10</em></p>
+<p><strong>Denne guiden hjelper deg å komme i gang med å gjøre endringer i koden
+eller designet til Normals nettsider – <a href="http://normal.no">normal.no</a>.</strong></p>
+<p>Er noe uklart ta kontakt med <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#116;&#111;&#114;&#107;&#101;&#108;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;">&#116;&#111;&#114;&#107;&#101;&#108;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;</a> eller
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#112;&#111;&#115;&#116;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;">&#112;&#111;&#115;&#116;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;</a>.</p>
+<p>Nettsiden bruker rammeverket <a href="https://www.djangoproject.com/">Django</a>, er skrevet
+i programmeringsspråket <a href="http://www.python.org/">Python</a> og bruker <a href="http://sqlite.org/">SQLite</a> som database.</p>
+<p>For å holde orden på alle filer – samt tilate at flere redigerer disse
+samtidig – bruker vi et <a href="http://no.wikipedia.org/wiki/Versjonskontrollsystem">versjonskontrollsystem</a> som kalles <a href="http://en.wikipedia.org/wiki/Git_(software)">Git</a>.</p>
+<p>Denne guiden tar utgangspunkt i at du bruker Debian eller Ubuntu
+GNU/Linux, men de samme prinsipper gjelder for Windows, Mac, eller andre
+Linux-distribusjoner.</p>
+<h2 id="innledning">Innledning</h2>
+<p>Hvis du kun skal endre designet (html- og css-maler) virker nok denne
+guiden noe overveldene, og du kan hoppe over punktene <code>Installasjon</code> og
+<code>Django</code>, og du trenger ikke å installere noe ekstra på
+maskinen din – selv om Git annbefales på det varmeste! Git brukes for
+å laste ned alle filene og sende endringer tilbake. Hvis du synes det
+blir for knotete, kan også filene lastes ned her: <a href="https://github.com/normalnorway/normal.no/tree/master/django/templates">Html maler</a>;
+<a href="https://github.com/normalnorway/normal.no/tree/master/django/static">css,javascript og bilder</a>.</p>
+<p>Hvis du ikke kan programmere eller ikke har noe erfaring med Python eller
+webutvikling, burde du kanskje heller finne noe annet å bidra med. Hvis
+du derimot er teknisk annlagt, lærer fort, og brenner for oppgaven; sjekk
+ut denne videoen:
+<a href="http://www.youtube.com/watch?v=zTNA0MtZwso">Python Web Development: Understanding Django for Beginners</a>.</p>
+<p>Skal du bare gjøre endringer i innhold (tekst og bilder), er ikke dette
+guiden for deg. Slike endringer gjøres via admin-grensesnittet:
+<a href="https://normal.no/admin/">https://normal.no/admin/</a></p>
+<h2 id="installasjon">Installasjon</h2>
+<h3 id="windows">Windows</h3>
+<p>Forfatter har ikke tilgang til Windows, så her må du klare deg selv. Men
+det burde være grei skuring. Hvis du setter opp på Windows så bidra
+gjerne til denne guiden ved å skrive ned hvordan du gjorde det. Her er
+noen lenker som hjelper deg på vei:</p>
+<ul>
+<li><a href="http://msysgit.github.io/">GIT for Windows</a></li>
+<li><a href="https://www.python.org/downloads/windows/">Python for Windows</a></li>
+<li><a href="https://docs.djangoproject.com/en/1.7/howto/windows/">Django for Windows</a></li>
+<li><a href="http://www.youtube.com/watch?v=rIVwVOpwpsA">Video: How to install Django in Windows 7</a></li>
+</ul>
+<h3 id="mac-osx">Mac / OSX</h3>
+<p>Apple sitt operativsystem er Unix-basert, så se seksjonen under. Men
+istedenfor å bruke <code>apt-get</code> for å installere pakker (programmer) kan du
+bruke <a href="http://brew.sh/">Homebrew</a>. </p>
+<h3 id="linuxunix">Linux/Unix</h3>
+<p><em>Start et terminalprogram og lim inn kommandoene under.</em></p>
+<p>Først må du installere noen programmer (pakker) som prosjektet trenger
+for å fungere. Dette må gjøres som administrator (root).</p>
+<pre><code>sudo apt-get install git
+sudo apt-get install python-pip
+sudo apt-get install sqlite3
+</code></pre>
+<p>Så må du installere Python pakkene som prosjektet bruker. Disse finnes
+som system-pakker som kan installeres med <code>apt-get</code>, men det er bedre
+å installere disse via <a href="https://pypi.python.org/pypi">Python Package Index</a>
+fordi da får du aller siste versjon. Man bruker programmet <code>pip</code> for
+å installere Python pakker.</p>
+<p>Pyton pakker kan installeres både som administrator (root) og som en
+vanlig bruker. Installerer du som vanlig bruker (anbefales), installeres
+alle filene i <code>$HOME/.local/</code>, og vil kun være tilgengelig for din
+bruker. (<code>pip</code> installerer som administrator som standard, så du må bruke
+<code>pip --user</code> for å installere som egen bruker.)</p>
+<!--
+    $ mkdir -p $HOME/.pip
+    $ echo -e "[install]\nuser = yes" >> $HOME/.pip/pip.conf
+-->
+
+<!--
+Django kan installeres både som administrator (root) og som en vanlig
+bruker. Installerer du som vanlig bruker, installeres alle filene under
+katalogen `$HOME/.local/`. Derfor må `$HOME/.local/bin/` legges til
+i `PATH` for at komandoen `django-admin.py` skal virke (ikke nødvendig).
+Det enkleste er å installere som administrator, og det gjør du slik:
+-->
+
+<!--
+Resten burde gjøres som din vanlige bruker – eller hvis du er paranoid,
+lag en egen bruker kun for dette.
+-->
+
+<p>Nettsiden bruker følgende Python-pakker. De installeres slik:</p>
+<pre><code>pip install --user django
+pip install --user pillow
+pip install --user markdown
+</code></pre>
+<!-- @todo mark with css class. how? -->
+
+<p>Merk: Får du beskjeden «Requirement already satisfied (use --upgrade to
+upgrade): ...», betyr det at pakken alt er installert som en
+system-pakke. Du kan oppgradere den hvis du vil, men det er valgfritt.</p>
+<h3 id="last-ned-kildekoden">Last ned kildekoden</h3>
+<p>Neste steg er å laste ned kildekoden til nettsidene. Til det bruker vi
+versjonskontroll-systemet <a href="http://en.wikipedia.org/wiki/Git_(software)">Git</a>. Git gjør det bl.a. mulig for flere
+personer å redigere de samme filene samtidig.</p>
+<p>Still deg i mappen du vil laste ned i. I dette eksemplet har jeg valgt
+hjemmemappen min, dvs. <code>/home/torkel/</code>. Dit kommer jeg ved å skrive <code>cd</code>.</p>
+<pre><code>git clone https://github.com/normalnorway/normal.no.git
+cd normal.no
+sh bootstrap.sh
+</code></pre>
+<p>Alle filer som trengs er nå lastet ned og du står nå i mappen til
+prosjektet. Hos meg blir det <code>/home/torkel/normal.no/</code>.</p>
+<h3 id="konfigurer-oppsett">Konfigurer / oppsett</h3>
+<p>For å sjekke at alt er i orden kan du kjøre denne kommandoen:</p>
+<pre><code>python django/manage.py check
+</code></pre>
+<!--
+Sjekk at standard konfigurasjonen er ok:
+
+    edit django/website/settings.py
+
+Så trenger du en databasefil med testdata:
+
+    cd db
+    wget http://torkel.normal.no/normal.db
+-->
+
+<p>Hvis du vil logge inn i admin-systemet må du først lage deg en bruker:</p>
+<pre><code>python django/manage.py createsuperuser
+</code></pre>
+<h2 id="django">Django</h2>
+<p>Django kommer med en innebygget webserver man kan bruke under utvikling.
+Den oppdager når filer blir redigert og laster de automatisk inn på nytt.</p>
+<p>Django's webserver starter du slik:</p>
+<pre><code>python django/manage.py runserver
+</code></pre>
+<p>Webserveren lytter på <a href="http://localhost:8000">http://localhost:8000</a>. Administrasjons-panelet
+finner du her: <a href="http://localhost:8000/admin">http://localhost:8000/admin</a>.</p>
+<!--
+Eventuelt prøv denne kommandoen:
+
+    xdg-open http://localhost:8000/
+-->
+
+<h2 id="hvordan-gjre-endringer-hvordan-bruke-git">Hvordan gjøre endringer (Hvordan bruke Git)</h2>
+<p>Sett at du skal gjøre en liten endringen i html-malen til
+nettguiden. Da redigerer du denne filen <code>django/templates/nettguide.html</code>.</p>
+<p>Når du er ferdig bruk <code>git diff</code> for å se endringene som er gjort
+(ikke nødvendig, men en god rutine):</p>
+<pre><code>git diff
+
+--- i/django/templates/nettguide.html
++++ w/django/templates/nettguide.html
+-&lt;p&gt;Send ditt forslag her: TODO&lt;/p&gt;
++&lt;p&gt;Vennligst send ditt forslag til &lt;a href="mailto:webmaster@normal.no"&gt;
++webmaster@normal.no&lt;/a&gt;.&lt;/p&gt;
+</code></pre>
+<p>Linjer som starter med '-' er fjernet, og linjer som starter med '+' er
+lagt til.</p>
+<p>Du kan også bruke <code>git status</code> for å se <em>hvilke</em> filer som er endret:</p>
+<pre><code>git status
+
+# On branch master
+# Changes not staged for commit:
+#   (use "git add &lt;file&gt;..." to update what will be committed)
+#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+#
+#       modified:   django/templates/menu.html
+#       modified:   django/templates/support/petition.html
+#       modified:   docs/how-to-contribute.md
+</code></pre>
+<p>Hvis du angrer på endringene du har gjort i en fil, kan filen
+tilbakestilles slik:</p>
+<pre><code>git checkout django/templates/nettguide.html
+</code></pre>
+<p>Lær mer om Git:</p>
+<ul>
+<li><a href="http://rogerdudler.github.io/git-guide/">git - the simple guide</a></li>
+<li><a href="http://www.sitepoint.com/git-for-beginners/">Git for Beginners</a></li>
+<li><a href="https://try.github.io/">Got 15 minutes and want to learn Git?</a></li>
+<li><a href="http://git-scm.com/book/en/v2">The Git Book</a></li>
+</ul>
+<p><a href="http://git-scm.com/downloads/guis">Grafiske Git-klienter</a></p>
+<h2 id="hvordan-sende-endringer">Hvordan sende endringer?</h2>
+<p><strong>Oppdatering: Bruk heller Github for å sende endringer. Det er enklere.
+Se avsnittet under.</strong></p>
+<p>Du har gjort noen endringer i koden, og du ønsker å sende de til oss.
+Den enkleste måten å gjøre det på, er å kjøre kommandoen <code>git diff</code> og
+sende oss teksten den genererer. Dette er nemmelig en "oppskrift"
+(patch) for endringene dine.</p>
+<pre><code>cd /home/torkel/normal.no
+git diff &gt; min-endring.patch
+</code></pre>
+<p>Så sender du filen <code>min-endring.patch</code> til <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#116;&#111;&#114;&#107;&#101;&#108;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;">&#116;&#111;&#114;&#107;&#101;&#108;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;</a>
+eller <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#112;&#111;&#115;&#116;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;">&#112;&#111;&#115;&#116;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;</a> med en kort beskrivelse (med mindre de er
+selvforklarende).</p>
+<p>Dette kan gjøres fra kommandolinja:</p>
+<pre><code>git diff | mail torkel@normal.no -s 'beskriv endringen din her'
+</code></pre>
+<p>Eller ennå bedre; lær deg Git og be oss om skrivetilgang.</p>
+<!--
+* <http://rogerdudler.github.io/git-guide/>
+* <http://stackoverflow.com/questions/315911/git-for-beginners-the-definitive-practical-guide>
+* <http://git-scm.com/book>
+-->
+
+<p><strong>Send en nyttig patch eller to, og vi gir deg skrivetilgang.</strong></p>
+<h2 id="github">Github</h2>
+<p><a href="https://github.com/">Github</a> har et web-basert grensesnitt til Git,
+wiki-sider og bugtracker. Tjenesten er gratis så lenge innholdet er
+tilgjengelig for alle.</p>
+<p><em>Merk: Dette er ikke testet ut ennå.</em></p>
+<ul>
+<li>Registrer deg en Github-konto: <a href="https://github.com/join">https://github.com/join</a></li>
+<li>Gå til <a href="https://github.com/normalnorway/normal.no">https://github.com/normalnorway/normal.no</a></li>
+<li>Klikk på «Fork» øverst til høyre. (Lag din egen private kopi).</li>
+<li>Gjør én eller flere endringer</li>
+<li>Når du er fornøyd med en endring sender du en «Pull Request».</li>
+</ul>
+<!--
+Hvis du blir en aktiv bidragsyter, gir vi deg gjerne skrivetilgang.
+
+https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/working-with-git/
+
+How to Get Started with Github - Beginner Tutorial
+https://www.youtube.com/watch?v=73I5dRucCds
+Part 1 :: GitHub for Windows
+https://www.youtube.com/watch?v=1UiICgvrsFI
+-->
