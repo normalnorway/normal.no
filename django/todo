@@ -42,3 +42,6 @@ assert no articles with !url and !body
 fetch image (and canonical url) for old articles
 
 retab all template files
+
+http://normal.no/login
+http://normal.no/logout

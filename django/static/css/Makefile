@@ -11,6 +11,8 @@ LESSCFLAGS=--no-js --clean-css --compress
 # Update: With Debians node-less (1.4.2), --clean-css does not compress!
 
 cssfiles := $(patsubst %.less,%.css,$(wildcard *.less))
+# SOURCES = site.less style.less classes.less sections.less
+# OBJS    = ${SOURCES:.less=.less}
 
 
 all: all.css tinymce.css

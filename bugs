@@ -2,3 +2,9 @@ footer renders wrongly in IE < 9  http://netrenderer.com/index.php
 
 http://normal.no/opprop/
 Vis mitt navn i listen under:  <-- drop ':'
+
+Forgot password e-mail: From: webmaster@localhost
+
+Forgot password: After setting new password (reset password link), user
+is redirected to /admin/login, which does not exists!
+https://github.com/normalnorway/normal.no/issues/1

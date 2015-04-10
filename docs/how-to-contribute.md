@@ -277,6 +277,7 @@ Lær mer om Git:
 
 * [git - the simple guide](http://rogerdudler.github.io/git-guide/)
 * [Git for Beginners](http://www.sitepoint.com/git-for-beginners/)
+* [Got 15 minutes and want to learn Git?](https://try.github.io/)
 * [The Git Book](http://git-scm.com/book/en/v2)
 
 
