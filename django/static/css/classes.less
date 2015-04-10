@@ -1,21 +1,66 @@
-/** Semantic classes */
+/**
+ * Semantic classes.
+ *
+ * If these style classes should be available in the TinyMCE editor,
+ * they must be added to this file: tinymce4/static/tinymce4/init.js
+ * @todo can do it automatically with tinymce.html.Styles?
+         or tinymce.dom.DOMUtils.parseStyle?
+ */
+
+// @todo highlight, date?
+
+.ingress {
+    font-weight: bold;
+    font-size: larger;
+//    font-style: italic;
+}
+
+.no-style {
+    // body-text. undo all style changes?
+}
+
+.larger {
+    font-size: larger;
+}
+
+.smaller {
+    font-size: smaller;
+}
 
 .strong {
   font-weight: bolder;
 }
 
-.smaller {
-  font-size: smaller;
+.gray {  // better name: less-important?
+  color: gray;
 }
+
 
 .clear {
   clear: both;
 }
 
-.gray {
-  color: gray;
-}
 
 td.valign-top {
   vertical-align: top;
+}
+
+
+// Image with caption
+// Note: work-in-progress
+// Note: Not strictly a semantic class, but needed in TinyMCE, so it
+// goes here for now.
+table.figure {
+    // Q: don't want extra margin/padding on the side the image is
+    //    floated to. fix: use floatleft & floatright classes?
+    // padding has no effect. why?
+    margin: 0 0 10px 20px;
+//    border: 1px dashed gray;
+}
+table.figure caption {
+    caption-side: bottom;   // no IE6 & IE7 support
+    margin: 0 10px 0 10px;
+    font-size: smaller;
+    //text-align: left;     // default is center
+//    border: 1px solid red;
 }

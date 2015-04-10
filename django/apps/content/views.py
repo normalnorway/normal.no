@@ -46,3 +46,25 @@ class PageEditView (UpdateView):
         if not self._check_perm (request.user, pk):
             raise PermissionDenied()
         return super (PageEditView, self).dispatch (*args, **kwargs)
+
+
+
+# Generate JSON list of pages for TinyMCE's 'link_list'
+from django.http import JsonResponse
+
+STATIC_PAGE_LIST = [
+    {'title': 'Blogg',      'value': 'http://blogg.normal.no'},
+    {'title': 'Facebook',   'value': 'https://www.facebook.com/NormalNorway'},
+    {'title': 'Twitter',    'value': 'https://twitter.com/NormalNorway'},
+    {'title': 'Youtube',    'value': 'http://www.youtube.com/user/normalnorway'},
+    {'title': 'normal.no',  'menu': None},
+]
+
+def page_list_json (request):
+    data = []
+    for page in FlatPage.objects.only ('title', 'url'):
+        if page.url.startswith ('/europa/'): continue
+        data.append ({'title': page.title, 'value': page.url})
+    L = STATIC_PAGE_LIST
+    L[-1]['menu'] = data
+    return JsonResponse (L, safe=False)

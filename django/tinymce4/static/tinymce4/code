@@ -1,6 +1,5 @@
 
 
-
 // Get url as json using tinymce.utils
 // See core.js for an alternative version
 function get_json (url, set_data_callback)
@@ -9,3 +8,12 @@ function get_json (url, set_data_callback)
         set_data_callback (tinymce.util.JSON.parse(text));
     }});
 }
+
+
+document.addEventListener ("DOMContentLoaded", function (ev)
+{
+    ev.target.body.innerHTML +=
+        '<form id="tinymce-upload-form" action="/tinymce/upload/" method="post" enctype="multipart/form-data" style="display:none">' +
+        '  <input type="file" id="tinymce-file-input" name="must-have-a-name" />' +
+        '</form>';
+});

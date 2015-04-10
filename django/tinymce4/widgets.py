@@ -6,7 +6,7 @@ class TinyMCE (forms.Textarea):
     class Media:
         js = (
             '//tinymce.cachefly.net/4.1/tinymce.min.js',
-            'tinymce4/tinymce.js'
+            'js/core.js', 'tinymce4/init.js',
         )
 
     def render (self, name, value, attrs=None):
