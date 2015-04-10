@@ -1,46 +1,21 @@
 /**
  * DjangoMCE - Django TinyMCE4 plugin.
  *
+ * Note: editor.dom is tinymce.dom.DOMUtils
+ * http://www.tinymce.com/wiki.php/api4:class.tinymce.dom.DOMUtils
+ *
+ * Warning: TinyMCE caches the content_css file. So after changing, might
+ * need to reload this: http://localhost:8000/static/css/tinymce.css
+ *
  * TODO:
  * - csrf protection for tinymce_upload
  *   var csrf = $cookie ('csrftoken');
  * - don't depend on core.js
  */
 
+//function log() { console.log.apply (console, arguments); }
 
-function _test1 (ev)
-{
-    var editor = tinymce.activeEditor;
-
-    var node = editor.selection.getNode();
-    console.log (node);
-
-    if (node.nodeName != 'IMG') {
-        alert ('You must select an image first!');
-        return;
-    }
-
-    // @todo check if already contains caption
-    // editor.dom.getParent (node, '.wp-caption');
-    // @todo mceAddUndoLevel
-
-    //el = tinymce.dom.createFragment ('<figure></figure>');
-//    el = editor.dom.create ('figure');
-//    caption = editor.dom.create ('figcaption', {}, 'Bla, bla, bla. For et flott bilde');
-
-    wrapper = editor.dom.create ('div', {}, 'Hello World!');
-    wrapper.appendChild (node.cloneNode (false));
-    editor.dom.replace (wrapper, node);
-    return;
-
-    el.appendChild (node);
-    el.appendChild (caption);
-    console.log (el);
-    editor.dom.replace (el, node);
-}
-
-
-// var _djangomce =
+/* Our private namespace */
 window._djangomce =
 {
     cache: {},
@@ -48,7 +23,8 @@ window._djangomce =
     setup: function (editor)
     {
         editor.addMenuItem ('code', {context: 'tools'});
-        editor.addMenuItem ('test1', { text: 'Test 1', context: 'tools', onclick: _test1, });
+        editor.addMenuItem ('addcaption', { text: 'Add caption to image (beta)', context: 'tools', onclick: _djangomce.add_caption, });
+        //editor.addMenuItem ('test1', { text: 'Test 1', context: 'tools', onclick: _test1, });
         /*
         editor.addMenuItem ('myitem', {
             text: 'Testing', context: 'tools', onclick: function() {
@@ -67,19 +43,47 @@ window._djangomce =
             output.value = A[1];
         });
     },
+
+    // Convert image into image with caption
+    // XXX Work-in-progress
+    // @todo mceAddUndoLevel
+    // @todo strip style from img? (what if already floated?)
+    add_caption: function (ev)
+    {
+        var editor = tinymce.activeEditor;
+        var img = editor.selection.getNode();
+        if (img.nodeName != 'IMG') {
+            alert ('You must select an image first!');
+            return;
+        }
+
+        // @todo check if already contains caption
+        // editor.dom.getParent (img, '.wp-caption');
+
+        // This is kind of wierd, but (should) work in IE :)
+        table = editor.dom.create ('table', {'class': 'figure'});
+        table.style.cssFloat = 'right';
+        caption = editor.dom.create ('caption', {}, '[Insert caption here]');
+        tr = document.createElement ('tr');
+        td = document.createElement ('td');
+        td.appendChild (img.cloneNode (false));
+        tr.appendChild (td);
+        table.appendChild (caption);
+        table.appendChild (tr);
+        editor.dom.replace (table, img);    // replace img with table
+
+        /*
+        //el = tinymce.dom.createFragment ('<figure></figure>');
+        el = editor.dom.create ('figure');
+        caption = editor.dom.create ('figcaption', {}, 'Bla, bla, bla. For et flott bilde');
+
+        el.appendChild (img);
+        el.appendChild (caption);
+        console.log (el);
+        editor.dom.replace (el, img);
+        */
+    },
 };
-
-
-
-/* @todo only install if needed?
-document.addEventListener ("DOMContentLoaded", function (ev)
-{
-    ev.target.body.innerHTML +=
-        '<form id="tinymce-upload-form" action="/tinymce/upload/" method="post" enctype="multipart/form-data" style="display:none">' +
-        '  <input type="file" id="tinymce-file-input" name="must-have-a-name" />' +
-        '</form>';
-});
-*/
 
 
 
@@ -211,7 +215,7 @@ tinymce.init ({
         table: { title: 'Table', items:
             'inserttable tableprops deletetable | cell row column'},
         tools: { title: 'Tools', items:
-            'code visualblocks charmap fullscreen test1'},
+            'code visualblocks charmap fullscreen addcaption'},
     },
 
     toolbar1: 'undo redo | styleselect | bold italic forecolor | ' +

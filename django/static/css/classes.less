@@ -44,3 +44,23 @@
 td.valign-top {
   vertical-align: top;
 }
+
+
+// Image with caption
+// Note: work-in-progress
+// Note: Not strictly a semantic class, but needed in TinyMCE, so it
+// goes here for now.
+table.figure {
+    // Q: don't want extra margin/padding on the side the image is
+    //    floated to. fix: use floatleft & floatright classes?
+    // padding has no effect. why?
+    margin: 0 0 10px 20px;
+//    border: 1px dashed gray;
+}
+table.figure caption {
+    caption-side: bottom;   // no IE6 & IE7 support
+    margin: 0 10px 0 10px;
+    font-size: smaller;
+    //text-align: left;     // default is center
+//    border: 1px solid red;
+}
