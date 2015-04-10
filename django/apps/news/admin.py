@@ -19,15 +19,16 @@ class LinkOnlyFilter (admin.SimpleListFilter):
 class ArticleAdmin (admin.ModelAdmin):
     ordering = ('-date',)
     date_hierarchy = 'date'
-    fields = ('date', ('url', 'url_is_canonical'), 'title', 'body', 'image_url', 'published')
+    fields = ('date', ('url', 'url_is_canonical'), 'title', 'summary', 'body', 'image_url', 'published')
     search_fields = ('title', 'summary', 'body')
-    list_display = ('_date', 'title', 'domain', 'has_body')
-    list_display_links = ('title',)
-    list_filter = ('date', LinkOnlyFilter)
+    list_display = ('_date', 'title', 'domain', 'published', 'has_body')
+    list_display_links = ('_date', 'title',)
+    list_filter = ('date', 'published', LinkOnlyFilter)
     list_per_page = 50  # default is 100
 
     def _date (self, obj):
         if obj.date: return obj.date.strftime ('%F')
+        # Q: for which objects are date missing?
         #return obj.date.strftime ('%F')
     _date.admin_order_field = 'date'
     _date.short_description = 'date'

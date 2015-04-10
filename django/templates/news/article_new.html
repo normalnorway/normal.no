@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{# @todo rename new-auto.html, to match view name #}
+{% block extratitle %} » Nyhetstips {% endblock %}
 
 {% block extrastyle %}
 <style>
@@ -24,10 +24,37 @@
 </style>
 {% endblock %}
 
+<!--
+This template is used for multiple views.
+How it behaves depends on these context vars:
+* url_missing
+* got_all_data
+-->
 
 {% block content %}
 
-<h1>Legge til ny lenke</h1>
+<h1>Nyhetstips</h1>
+
+{% if url_missing %}
+
+<form method="post" style="padding: 1ex 0 1ex 0">
+  {% csrf_token %}
+  <strong>Adresse:</strong>
+  <input type="url" name="url" size="40" required />
+  <input type="submit" value="Neste »" style="margin-left: 1ex" />
+</form>
+
+<h3>Mer informasjon</h3>
+
+<p>Foreslå i utgangspunktet kun norske nyhetssaker.</p>
+
+<p>Merk: Nyhetslenken må godkjennes av Normal før den blir publisert.
+Dette gjelder ikke hvis du er logget inn på siden. Send oss en
+<a href="mailto:post@normal.no">e-post</a> for å få tilgang.</p>
+
+{% else %}
+
+
 
 {% if missing %}
 <!--
@@ -50,7 +77,8 @@ velge «åpne i ny fane/vindu».</p>
 <p><strong>Adresse:</strong>
 <br><a href="{{ form.url.value }}" class="smaller">{{ form.url.value }}</a></p>
 
-<form method="post" action='{% url "news-auto-new" %}'>
+{# q: why not drop action? #}
+<form method="post" action='{% url "news-new" %}'>
   {% csrf_token %}
   <ul class="form">
     {{ form.as_ul }}
@@ -58,4 +86,5 @@ velge «åpne i ny fane/vindu».</p>
   <input type="submit" value="Lagre" />
 </form>
 
+{% endif %}   {# if url_missing #}
 {% endblock %}
