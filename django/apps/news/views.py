@@ -1,12 +1,15 @@
+# encoding: utf-8
 """
 TODO NewsTip:
 save user in article object
+limit usage by ip for anonymous users
 try to clean up adress. but keep fragment?
   urlparse.urlunparse(urlobj[:3] + ('',)*3)  # shall return same as url
   url = 'http://netloc/path;parameters?query=argument#fragment'
   url, fragment = urldefrag(original)
 clean up image_url? (strip query&fragment)
 check that url returns 200
+what about servers not responding? set timeout
 HEAD -S http://normal.no/bli-medlem
 warn user if not norwegian article?
 """
@@ -109,7 +112,15 @@ class NewArticleView (View):
         if Article.objects.filter (url=url).exists():
             return self._have_it()
 
-        data = self._get_metadata (url)
+        # Q: howto get http status code from newsgrab
+        # Q: howto get redirect info. needed?
+        from urllib2 import HTTPError, URLError   # tmp hack
+        try:
+            data = self._get_metadata (url)
+        except (HTTPError, URLError) as ex:
+            # @todo better to report as form error
+            messages.error (self.request, 'Kan ikke åpne lenken: %s' % ex.reason)
+            return redirect ('news-new')
         if not data:
             messages.warning (self.request, _MSG_FOREIGN)
             return redirect ('news-new')

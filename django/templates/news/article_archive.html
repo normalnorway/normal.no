@@ -1,7 +1,6 @@
 {% extends "base.html" %}
-{% load url from future %}
 
-{% block extratitle %} » Nyheter{% endblock %}
+{% block extratitle %} » Nyhetsarkiv{% endblock %}
 
 {% block content %}
 <!-- Q: better with two levels? div#app-news div.view-archive -->
@@ -9,17 +8,18 @@
 
   <h1>Nyhetsarkiv</h1>
 
-
   {% if perms.news.add_article %}
-  <form method="post" action="/nyheter/ny/">
+  <form method="post" action="{% url 'news-new' %}">
     {% csrf_token %}
-    <input type="hidden" name="bootstrap" value="1" />
     <strong>Ny lenke:</strong>
-    <input type="url" name="url" size="40" />
-    &nbsp;
-    <input type="submit" value="Legg til" />
+    <input type="url" name="url" size="40" required />
+    &nbsp; <input type="submit" value="Legg til" />
   </form>
   <br>
+  {% else %}
+  {# @todo better to just show the form here (with custom labels) #}
+  <p class="strong"><a href="{% url 'news-new' %}">Klikk her hvis du har
+  et nyhetstips.</a></p>
   {% endif %}
 
 
