@@ -10,6 +10,7 @@
  * TODO:
  * - csrf protection for tinymce_upload
  *   var csrf = $cookie ('csrftoken');
+ * - progress indicator on file uploadd
  * - don't depend on core.js
  */
 

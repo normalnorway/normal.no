@@ -1,4 +1,32 @@
 
+// TinyMCE ajax-upload without using a form
+// https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications#Example.3A_Uploading_a_user-selected_file
+// Ok with only input field? (not inside a form)
+// <input type="file" id="foo" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+var xhr = new XMLHttpRequest();
+xhr.open ("POST", url);
+xhr.overrideMimeType ('text/plain; charset=x-user-defined-binary');
+var reader = new FileReader();
+reader.onload = function (evt) {
+    xhr.sendAsBinary (evt.target.result);
+};
+reader.readAsBinaryString(file);
+// Note: The non-standard sendAsBinary method in the example above is
+// considered deprecated. The standard send(Blob data) method can be
+// used instead.
+
+// Better to send as FormData?
+var fd = new FormData();
+xhr.open ("POST", uri, true);
+xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200)
+        alert(xhr.responseText);
+}
+fd.append ('file1', file);  // file is an File, not FileReader (i think)
+                            // gotten from: fileInput.files[0]
+xhr.send (fd);
+
+
 
 // Get url as json using tinymce.utils
 // See core.js for an alternative version
