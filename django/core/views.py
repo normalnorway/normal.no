@@ -1,5 +1,5 @@
 """
-Global views – i.e., don't tied to any app or model.
+Global views -- i.e., don't tied to any app or model.
 """
 
 from core.shortcuts import render_to
