@@ -1,3 +1,7 @@
+"""
+Global views – i.e., don't tied to any app or model.
+"""
+
 from core.shortcuts import render_to
 
 
@@ -9,10 +13,3 @@ def index (request):
 @render_to ('newsletter.html')
 def newsletter (request):
     return {}
-
-
-# Note: Only used for testing. Do not remove.
-#from pprint import pprint
-def test (request):
-    from django.http import HttpResponse
-    return HttpResponse ('Testing')

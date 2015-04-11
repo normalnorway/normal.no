@@ -57,19 +57,18 @@ urlpatterns = patterns ('',
 
 
 # Hack to serve MEDIA_ROOT in dev mode
-# And to map a test view to /test
+# And to map a test view to /test/
 from django.conf import settings
 if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += patterns ('', url(r'^test/$', 'core.views.test'))
+    urlpatterns += patterns ('', url(r'^test/$', 'core.testviews.test'))
 
 
 # Hack to add custom permission to the FlatPage model
 # A better fix is to inherit and add extra permissions to that model.
 from django.contrib.auth.models import Permission
 if not Permission.objects.filter (codename='change_flatpage_gsf').exists():
-    print 'Creating perm!'
     from django.contrib.flatpages.models import FlatPage
     from django.contrib.contenttypes.models import ContentType
     ctype = ContentType.objects.get_for_model (FlatPage)
