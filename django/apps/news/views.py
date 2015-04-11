@@ -3,15 +3,15 @@
 TODO NewsTip:
 save user in article object
 limit usage by ip for anonymous users
+check that url returns 200
+only allow http&https. not: javascript:alert(123)
 try to clean up adress. but keep fragment?
   urlparse.urlunparse(urlobj[:3] + ('',)*3)  # shall return same as url
   url = 'http://netloc/path;parameters?query=argument#fragment'
   url, fragment = urldefrag(original)
 clean up image_url? (strip query&fragment)
-check that url returns 200
 what about servers not responding? set timeout
 HEAD -S http://normal.no/bli-medlem
-warn user if not norwegian article?
 """
 
 import logging
@@ -20,22 +20,13 @@ from django.http import HttpResponse    # tmp
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
+from django.utils.html import mark_safe
 from django.contrib import messages
 from models import Article
 from forms import NewArticleForm
 from newsgrab import get_metadata as get_opengraph_data
 
 logger = logging.getLogger (__name__)
-
-
-_MSG_SUCCESS = u'Takk for nyhetstipset: %s'  # rename _MSG_THANK_YOU?
-_MSG_HAVE_IT = u'Denne lenken har vi allerede i arkivet.'
-_MSG_FOREIGN = u'''
-Nyhetsarkivet er for norske nyhetssaker. Lenken du sendte er til en
-utenlandsk adresse. Hvis du fortsatt mener saken er relevant, send den
-til post@normal.no. Takk!
-'''
-#til <a href="mailto:post@normal.no">post@normal.no</a>. Takk!
 
 
 class NewArticleView (View):
@@ -54,10 +45,17 @@ class NewArticleView (View):
 
     template_name = 'news/article_new.html'
 
+    _MSG_SUCCESS = u'Takk for nyhetstipset: %s'
+    _MSG_HAVE_IT = u'Denne lenken har vi allerede i arkivet.'
+    _MSG_FOREIGN = mark_safe (u'''
+Nyhetsarkivet er for norske nyhetssaker. Lenken du sendte er til en
+utenlandsk adresse. Hvis du fortsatt mener saken er relevant, send den
+til <a href="mailto:post@normal.no">post@normal.no</a>. Takk!
+''')
+
     # Article can not be published if some of these fields are missing.
     # @todo this list can be auto-build from required fields on Article
     _required_fields = set(('url', 'date', 'title', 'summary'))
-    #_required_fields = {'url', 'date', 'title', 'summary', 'image_url'}
 
     @staticmethod
     def _get_metadata (url):
@@ -77,21 +75,15 @@ class NewArticleView (View):
             meta['url'] = url
         return meta
 
-    @staticmethod
-    def _get_missing_fields (data):
+    def _get_missing_fields (self, data):
         """Return set of missing metadata fields"""
-        return NewArticleView._required_fields - set(data.keys())
-
-#    @staticmethod
-#    def _have_fields (data):
-#        return NewArticleView._required_fields.intersection (set(data.keys()))
+        return self._required_fields - set(data.keys())
 
 
     def get (self, request):
         url = request.GET.get ('url', '').strip()
-        if not url:
-            return render (request, self.template_name, dict(url_missing=True)) # rename step1?
-        return HttpResponse ('fixme')
+        if not url: return render (request, self.template_name, {})
+        return self._handle (url)
 
 
     def post (self, request):
@@ -122,7 +114,8 @@ class NewArticleView (View):
             messages.error (self.request, 'Kan ikke åpne lenken: %s' % ex.reason)
             return redirect ('news-new')
         if not data:
-            messages.warning (self.request, _MSG_FOREIGN)
+            messages.info (self.request, self._MSG_FOREIGN)
+            #messages.warning (self.request, self._MSG_FOREIGN) # warnings are shown in red; so are the links
             return redirect ('news-new')
 
         # If url and data[url] differ, must check both
@@ -144,14 +137,14 @@ class NewArticleView (View):
 
 
     def _have_it (self):
-        messages.warning (self.request, _MSG_HAVE_IT)
+        messages.warning (self.request, self._MSG_HAVE_IT)
         return redirect ('news-new')
 
     def _save_and_redirect (self, data):
         #return HttpResponse ('save aborted')
         self._save (data)
         title = data['title'] if data.has_key('title') else data['url']
-        messages.success (self.request, _MSG_SUCCESS, title)
+        messages.success (self.request, self._MSG_SUCCESS % (title,))
         return redirect ('news-new')
 
     # Note: Article.published only true if validation passes and user

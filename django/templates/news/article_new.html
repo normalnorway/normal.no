@@ -45,7 +45,9 @@ How it behaves depends on these context vars:
 
 <h1>Nyhetstips</h1>
 
-{% if url_missing %}
+{% if not form %}
+
+{# STEP 1: No URL provided, so ask user for it #}
 
 <form method="post" style="padding: 1ex 0 1ex 0">
   {% csrf_token %}
@@ -79,7 +81,7 @@ hjelpe oss med å holde nyhetsarkivet oppdatert.</p>
   window.location.href = '///{{request.META.HTTP_HOST}}/nyheter/ny/?url=' +
           encodeURIComponent (window.location.href);
   })();
-  ">Normals Nyhetstips</a>
+  ">CannaNews</a>
   <li>Når du har funnet en aktuell nyhetssak er det bare å klikke/velge
   dette bookmerket, også blir lenken lagt til (nesten) automatisk.
 </ol>
@@ -100,7 +102,7 @@ javascript:(function(){
 {% else %}
 
 
-{# User have provided url, but can't auto-fetch all required fields #}
+{# STEP 2: User have provided url, but can't auto-fetch all required fields #}
 
 <p>Steg 2 av 2: Har du mulighet, fyll gjerne ut de manglende feltene
 under før du sender tipset. Det sparer oss for tid og nyheten vil bli
@@ -131,5 +133,5 @@ velge «åpne i ny fane/vindu».</p>
   <input type="submit" value="Send" />
 </form>
 
-{% endif %}   {# if url_missing #}
+{% endif %}   {# if not form #}
 {% endblock %}
