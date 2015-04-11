@@ -20,6 +20,7 @@ class GlobalTestCase (TestCase):
                 #       replace first '^' with '/'
                 #       chop last if '$'
                 url = '/' + obj.regex.pattern[1:-1] # drop first and last char (regex anchors)
+                if url.startswith ('/edit/'): continue  # non-public views
                 res = self.client.head (url)
                 if obj.callback.__name__ == 'RedirectView':
                     self.assertEqual (res.status_code, 301)
