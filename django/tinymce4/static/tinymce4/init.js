@@ -297,7 +297,7 @@ tinymce.init ({
             node.style.display = 'none';
             node.innerHTML =
                 '<form id="tinymce-upload-form" action="/tinymce/upload/" method="post" enctype="multipart/form-data">' +
-                '  <input type="file" id="tinymce-file-input" name="must-have-a-name" />' +
+                '  <input type="file" id="tinymce-file-input" accept="image/*" name="must-have-a-name" />' +
                 '</form>';
 
             el = node.children[0].children[0];
