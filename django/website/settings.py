@@ -249,9 +249,10 @@ LOGGING = {
             'filters': ['debug'],
         },
 
-        'null': {
-            'class': 'logging.NullHandler',
-        },
+        # not in django 1.6
+#        'null': {
+#            'class': 'logging.NullHandler',
+#        },
 
         'file:catch-all': {
             'class': 'logging.FileHandler',
