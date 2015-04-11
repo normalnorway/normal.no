@@ -1,10 +1,12 @@
 # Note: Not in use (yet)
 
+print "forms.py"
+
 from django import forms
 
-# The clean method runs after any validation. So if you’re doing some
-# regex validation that doesn’t allow leading / trailing spaces for
-# instance, the validation will fail. It’s better to trim the whitespace
+# The clean method runs after any validation. So if you're doing some
+# regex validation that doesn't allow leading / trailing spaces for
+# instance, the validation will fail. It's better to trim the whitespace
 # first, then do the validation.
 
 class TrimmedCharField (forms.CharField):

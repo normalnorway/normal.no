@@ -1,5 +1,10 @@
 # Note: Not in use (yet)
 
+# XXX If this file is named models.py, then Django loads it
+# even tough it's unused! Why!?
+
+print "models.py"
+
 from django.db import models
 #from forms import TrimmedCharField # name conflict. rename TrimmedCharFormField?
 import forms
