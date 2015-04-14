@@ -23,10 +23,10 @@
   {% endwith %}
 
   {# @todo handle boundaries #}
-  <p style="margin-bottom: -1ex">
-    <a href="{%url "news-archive"%}{{previous_month|date:"Y/m"}}/">« Forrige måned</a> &nbsp;|&nbsp;
-    <a href="{%url "news-archive"%}{{next_month|date:"Y/m"}}/">Neste måned »</a>
-  </p>
+  <nav style="margin-bottom: -1ex">
+    <a rel="prev" href="{%url "news-archive"%}{{previous_month|date:"Y/m"}}/">« Forrige måned</a> &nbsp;|&nbsp;
+    <a rel="next" href="{%url "news-archive"%}{{next_month|date:"Y/m"}}/">Neste måned »</a>
+  </nav>
 
   <div class="main">
     {% include "news/article_archive_common.html" %}
