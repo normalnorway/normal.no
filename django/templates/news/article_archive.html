@@ -3,7 +3,7 @@
 {% block extratitle %} » Nyhetsarkiv{% endblock %}
 
 {% block content %}
-<!-- Q: better with two levels? div#app-news div.view-archive -->
+{# Q: better with two levels? div#app-news div.view-archive #}
 <div id="news-archive">
 
   <h1>Nyhetsarkiv</h1>
@@ -22,12 +22,11 @@
   et nyhetstips.</a></p>
   {% endif %}
 
-
-  <!--
+  {% comment %}
   <p class="strong">I nyhetsarktivet finner du lenker til de fleste
   cannabis-relaterte saker omtalt i norsk media. I tillegg til en del
   utenlandske saker.</p>
-  -->
+  {% endcomment %}
 
   <div class="aside">
     <h3>Årstall</h3>
@@ -36,7 +35,7 @@
     {% endfor %}
   </div>
 
-  <small>Det er {{page_obj.paginator.count}} nyheter i arkivet.</small>
+  <p class="small">Det er {{page_obj.paginator.count}} nyheter i arkivet.</p>
 
   <div class="main">
     <p>{% include "news/paginator.html" %}</p>
@@ -45,6 +44,5 @@
   </div>
 
   <div class="clear"></div>
-
 </div>
 {% endblock %}

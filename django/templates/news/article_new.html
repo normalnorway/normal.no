@@ -26,20 +26,9 @@
   ul.form > li {
     margin-bottom: 6px;
   }
-  /*
-  ul.form > li.validation-error > input {
-    border: 1px dashed #c00;
-  }
-  */
 </style>
 {% endblock %}
 
-<!--
-This template is used for multiple views.
-How it behaves depends on these context vars:
-* url_missing
-* got_all_data
--->
 
 {% block content %}
 
@@ -58,12 +47,6 @@ How it behaves depends on these context vars:
 
 <p>Foreslå kun norske nyhetssaker. Andre saker sendes til
 <a href="mailto:post@normal.no">post@normal.no</a>.</p>
-
-<!--
-<p>Foreslå kun norske nyhetssaker som omhandler cannabis eller norsk
-ruspolitikk. Utenlandske saker sendes til
-<a href="mailto:post@normal.no">post@normal.no</a>.</p>
--->
 
 <p>Merk: Nyhetslenken må godkjennes av Normal før den blir publisert.
 Dette gjelder ikke hvis du er logget inn på siden. Send oss en
@@ -107,24 +90,18 @@ javascript:(function(){
 <p>Steg 2 av 2: Har du mulighet, fyll gjerne ut de manglende feltene
 under før du sender tipset. Det sparer oss for tid og nyheten vil bli
 publisert raskere.</p>
+{# Du kan høyreklikke på lenken under og velge «åpne i ny fane/vindu». #}
 
-<p>Merk: <strong>Nyhetstipset registreres ikke før du trykker
-«send»!</strong></p>
-
-<!--
-<p><span class="strong">Husk å lagre! Har du mulighet så fyll
-gjerne ut de manglende feltene før du lagrer.</span> Det sparer oss for tid
-og nyheten blir publisert raskere. Du kan høyreklikke på lenken under og
-velge «åpne i ny fane/vindu».</p>
--->
+<p>Merk: <strong>Nyhetstipset registreres ikke før du trykker «send»!</strong></p>
 
 {% if form.errors %}
 <p class="error">Vennligst rett feilen(e) under!</p>
 {% endif %}
 
-
-<p><strong>Adresse:</strong>
-<br><a href="{{ form.url.value }}" class="smaller">{{ form.url.value }}</a></p>
+<p>
+  <strong>Adresse:</strong><br />
+  <a href="{{ form.url.value }}" class="smaller">{{ form.url.value }}</a>
+</p>
 
 <form method="post">
   {% csrf_token %}

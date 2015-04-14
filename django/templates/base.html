@@ -62,7 +62,7 @@
         {% endblock %}
       </header>
 
-      <!-- MAIN CONTENT -->
+      {# MAIN CONTENT #}
       <div id="content">
 
         {% block top %}
@@ -88,6 +88,6 @@
       <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
       {% endif %}
 
-    </div>  <!-- wrapper -->
+    </div>  {# wrapper #}
   </body>
 </html>

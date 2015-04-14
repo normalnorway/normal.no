@@ -1,4 +1,4 @@
-{# List all articles in object_list #}
+{# List all articles #}
 
 {% for news in object_list %}
   {% if news.body %}
@@ -6,12 +6,8 @@
   {% else %}
     <h3><a href="{{ news.url }}">{{ news.title }}</a></h3>
   {% endif %}
-  <div style="font-weight: bolder">{{ news.summary }}</div>
-  <div style="color:#444"><small>» {{ news.date }}</small></div>
-  <!--
-  <div class="date"><small>{{ news.date }}</small></div>
-  <div class="abstract">{{ news.summary }}</div>
-  -->
+  <div class="strong">{{ news.summary }}</div>
+  <div style="color:#444"><small>» {{ news.get_date }}</small></div>
 {% endfor %}
 
 {# @todo Gå til toppen-lenke #}

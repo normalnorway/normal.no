@@ -18,13 +18,13 @@
     {% endfor %}
   </div>
 
-  <p class="strong">Viser {{object_list|length}} nyheter.</p>
+  {# @todo pluralize #}
+  <div class="strong">Viser {{object_list|length}} nyheter.</div>
 
   <div class="main">
     {% include "news/article_archive_common.html" %}
   </div>
 
   <div class="clear"></div>
-
 </div>
 {% endblock %}
