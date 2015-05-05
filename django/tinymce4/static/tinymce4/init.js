@@ -96,7 +96,7 @@ window._djangomce =
 
 tinymce.init ({
     selector: 'textarea.tinymce',
-    width: 730,
+//    width: 730,   // will default to 100%? fill parent container
     height: 550,
     resize: 'both',
 

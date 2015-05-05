@@ -39,7 +39,7 @@ USE_TZ = False
 DEBUG = not os.path.exists (rootdir ('NODEBUG'))
 TEMPLATE_DEBUG = DEBUG
 
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ['127.0.0.1']    # needed for what?
 #INTERNAL_IPS = ['127.0.0.1', '::1']
 
 

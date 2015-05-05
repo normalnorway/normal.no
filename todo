@@ -57,3 +57,10 @@ compress and merge javascript:
 postfix js and css filenames with git hash, and set to never expire
 
 set images to never expire, then change url on update?
+
+Don't mix apache and django logs?
+  logs/apache
+  logs/django
+
+/srv/www/normal.no/normal.no.crt ==> ../certs/normal.no.crt
+/srv/www/normal.no/normal.no.key ==> ../certs/normal.no.key

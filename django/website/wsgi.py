@@ -12,7 +12,7 @@ import sys
 
 # Add site root to the Python search path
 # sys.path.append ('/srv/www/new.normal.no/django')
-sys.path.insert (0, os.path.join (os.path.dirname(__file__), ".."))
+sys.path.insert (0, os.path.join (os.path.dirname(__file__), os.path.pardir))
 
 os.environ.setdefault ("DJANGO_SETTINGS_MODULE", "website.settings")
 

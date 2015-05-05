@@ -58,6 +58,7 @@
     <Directory /srv/www/normal.no/htdocs>
         Allow from all
         # @todo move these to virtual-host scope?
+        # update: only allowed for 'Options'. better to drop. should be default
         Options none
         AllowOverride none
     </Directory>

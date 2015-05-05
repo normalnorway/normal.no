@@ -27,3 +27,13 @@ Need tinymce specific css. Use tinymce.less?
 // Postfix
 
 all.less that includes *.less?
+
+
+// Use this as default?
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+img { box-sizing: content-box; }
