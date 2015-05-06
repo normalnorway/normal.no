@@ -35,6 +35,12 @@ USE_I18N = True     # translate messages
 USE_L10N = True     # format according to the current locale (LANGUAGE_CODE)
 USE_TZ = False
 
+# Note: These are not active when USE_L10N is True
+# Q: howto change these without own: locale/nb/formats.py ?
+#DATE_FORMAT = 'j. F Y'
+#TIME_FORMAT = 'H:i'
+#DATETIME_FORMAT = DATE_FORMAT + ', k\l. ' + TIME_FORMAT
+
 
 DEBUG = not os.path.exists (rootdir ('NODEBUG'))
 TEMPLATE_DEBUG = DEBUG

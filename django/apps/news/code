@@ -1,4 +1,11 @@
 
+    url (r'^arkiv/$',                                   'views.archive', name='news-archive'),
+    url (r'^arkiv/page/(?P<page>[0-9]+|last)/$',        'views.archive'),   # pagination. @todo name='news-archive-page'),
+      # @note when using '|', urlresolvers.reverse() does not work
+      #       so better to drop /arkiv/page/last ?
+    url (r'^arkiv/(?P<year>\d{4})/$',                   'views.archive_year',   name='news-archive-year'),
+    url (r'^arkiv/(?P<year>\d{4})/(?P<month>\d{1,2})/$','views.archive_month',  name='news-archive-month'),
+
 
 
 ## SEARCH

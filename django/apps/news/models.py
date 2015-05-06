@@ -1,6 +1,3 @@
-from django.db import models
-from django.core.urlresolvers import reverse
-
 """
 TODO:
 filter body for extra <p>'s at the end (old, imported articles)
@@ -10,6 +7,12 @@ DB-changes:
 - rename Article -> NewsLink
 - bool field: user_submitted?
 """
+
+import datetime
+from django.db import models
+from django.core.urlresolvers import reverse
+
+_empty_time = datetime.time()
 
 
 class PubArticleManager (models.Manager):
@@ -31,8 +34,7 @@ class Article (models.Model):
     # trough the admin. News tips are incomplete objects and the only
     # required field is url; these have published forced to False.
 
-    # Note: 'date' can have empty time (00:00).
-    #       @todo module method to format as string
+    # Note: 'date' can have empty time (00:00), so use get_date helper
 
     # Managers
     # Note: The first manager is the default; don't change that!
@@ -55,12 +57,11 @@ class Article (models.Model):
       # note: label is for admin (Is url canonical? is more general)
 
     def get_date (self):
-        """Time might be empty, handle that by returning datetime.time"""
-        import datetime
-        t0 = datetime.time()
-        if self.date.time() == t0: return self.date.date()
+        """Time might be empty. Returns datetime.date or datetime.datetime"""
+        # Q: but howto format date like this: 5. mars 2015, kl 22:51
+        if self.date.time() == _empty_time: return self.date.date()
         return self.date
-        # @todo "5. mars 2015 22:51" => "5. mars 2015, kl. 22:51"
+        #return self.date if self.date.time()!=_empty_time else self.date.date()
 
     def __unicode__ (self):
         return self.title
