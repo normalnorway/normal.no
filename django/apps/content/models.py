@@ -20,6 +20,7 @@ class Content (models.Model):
     content = HtmlField (blank=True)
 
     class Meta:
+        app_label = 'content' # why needed? RemovedInDjango19Warning
         verbose_name = 'innholds-blokk'
         verbose_name_plural = 'innholds-blokker'
 

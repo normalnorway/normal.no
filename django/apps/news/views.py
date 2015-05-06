@@ -171,25 +171,30 @@ from django.views.generic import YearArchiveView, MonthArchiveView
 
 class ArticleDetailView (DetailView):   # rename DetailArticleView?
     """http://normal.no/nyheter/<pk>/"""
-    def get_queryset (self): return Article.pub_objects
+    def get_queryset (self):
+        return Article.pub_objects
 
 
 class ArchiveView (ArchiveIndexView):
+    #model = Article
     date_field = 'date'
     paginate_by = 25
-    def get_queryset (self): return Article.pub_objects
+    def get_queryset (self):
+        return Article.pub_objects.order_by ('-date')
 
 
 # @todo show months in reversed order?
-# @todo pagination
+# @todo pagination?
 class YearView (YearArchiveView):
     date_field = 'date'
     make_object_list = True # False => only generate month list
-    def get_queryset (self): return Article.pub_objects
+    def get_queryset (self):
+        return Article.pub_objects.order_by ('date')
 
 
 class MonthView (MonthArchiveView):
     date_field = 'date'
     month_format = '%m'
     make_object_list = True
-    def get_queryset (self): return Article.pub_objects
+    def get_queryset (self):
+        return Article.pub_objects.order_by ('date')

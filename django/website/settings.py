@@ -35,11 +35,17 @@ USE_I18N = True     # translate messages
 USE_L10N = True     # format according to the current locale (LANGUAGE_CODE)
 USE_TZ = False
 
+# Note: These are not active when USE_L10N is True
+# Q: howto change these without own: locale/nb/formats.py ?
+#DATE_FORMAT = 'j. F Y'
+#TIME_FORMAT = 'H:i'
+#DATETIME_FORMAT = DATE_FORMAT + ', k\l. ' + TIME_FORMAT
+
 
 DEBUG = not os.path.exists (rootdir ('NODEBUG'))
 TEMPLATE_DEBUG = DEBUG
 
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ['127.0.0.1']    # needed for what?
 #INTERNAL_IPS = ['127.0.0.1', '::1']
 
 
@@ -92,7 +98,7 @@ DATABASES = {
         # @todo make mysql default and rename sqlite -> dev? then don't need conn_max_age hack
     },
 }
-# Production server don't have mysql backend installed. Avoid error.
+# Don't require mysql backend on development system.
 if DEBUG: del DATABASES['mysql']
 
 
@@ -133,20 +139,17 @@ MEDIA_ROOT = rootdir ('htdocs', 'media')
 
 
 # Note: these are invoked in reverse order for the response.
+# @todo update with default list from Django 1.8
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware', # 1.7
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware', # Note: must be last!
 ]
-import django
-if django.VERSION[0:2] < (1,7):
-    MIDDLEWARE_CLASSES.remove ('django.contrib.auth.middleware.SessionAuthenticationMiddleware')
-
 
 
 ROOT_URLCONF = 'website.urls'
@@ -249,7 +252,6 @@ LOGGING = {
             'filters': ['debug'],
         },
 
-        # not in django 1.6
 #        'null': {
 #            'class': 'logging.NullHandler',
 #        },

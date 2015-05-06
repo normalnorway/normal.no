@@ -4,8 +4,7 @@ TODO:
 can make changes directly on github
 url-namespace. can link to wiki
 html5. define browser support (lowest IE version)
-coding standards
-  Python 2.6 and Django 1.6 only! :(
+coding standards: Python 2.7 and Django 1.8
 rename CONTRIBUTING.md?
 Github: Howto clone the repo and send pull requests
 Github: Howto use the issue tracker
@@ -114,7 +113,7 @@ noen lenker som hjelper deg på vei:
 
 * [GIT for Windows](http://msysgit.github.io/)
 * [Python for Windows](https://www.python.org/downloads/windows/)
-* [Django for Windows](https://docs.djangoproject.com/en/1.7/howto/windows/)
+* [Django for Windows](https://docs.djangoproject.com/en/dev/howto/windows/)
 * [Video: How to install Django in Windows 7](http://www.youtube.com/watch?v=rIVwVOpwpsA)
 
 
@@ -340,7 +339,7 @@ tilgjengelig for alle.
 <!--
 Hvis du blir en aktiv bidragsyter, gir vi deg gjerne skrivetilgang.
 
-https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/working-with-git/
+https://docs.djangoproject.com/en/dev/internals/contributing/writing-code/working-with-git/
 
 How to Get Started with Github - Beginner Tutorial
 https://www.youtube.com/watch?v=73I5dRucCds

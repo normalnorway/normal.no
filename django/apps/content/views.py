@@ -50,21 +50,7 @@ class PageEditView (UpdateView):
 
 
 # Generate JSON list of pages for TinyMCE's 'link_list'
-try:
-    from django.http import JsonResponse
-except ImportError:
-    # JsonResponse requires Django >= 1.7
-    # @todo nuke this, but pending server upgrade
-    import json
-    from django.http import HttpResponse
-    class JsonResponse (HttpResponse):
-        def __init__ (self, data, safe=True, **kwargs):
-            if safe and not isinstance (data, dict):
-                raise TypeError ('In order to allow non-dict objects to be serialized set the safe parameter to False')
-            kwargs.setdefault ('content_type', 'application/json')
-            data = json.dumps (data)
-            super (JsonResponse, self).__init__ (content=data, **kwargs)
-
+from django.http import JsonResponse
 
 STATIC_PAGE_LIST = [
     {'title': 'Blogg',      'value': 'http://blogg.normal.no'},

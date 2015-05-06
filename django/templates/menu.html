@@ -1,3 +1,4 @@
+<nav>
 <ul id="nav">
   <li><a href="/om-normal/">Om Normal</a></li>
   <li><a href="{% url 'enroll' %}">Bli medlem</a></li>
@@ -8,14 +9,18 @@
   <li><a href="{% url 'links' %}">Lenker</a></li>
   <li><a href="#">Sider <small>▼</small></a>
     <ul>
-      <li><a href="/">Forsiden</a></li>
+      <li><a href="/" rel="home">Forsiden</a></li>
       <li><a href="/om-cannabis/">Hva er hasj og marihuana?</a></li>
       <li><a href="/europa/">Europeisk oversikt</a></li>
       <li><a href="/faq/">Ofte stilte spørsmål</a></li>
       <li><a href="/sider/gruppesoksmaal/">Gruppesøksmål</a></li>
       <li><a href="/sider/frivillig/">Jobb for Normal</a></li>
+      {% if user.is_authenticated %}
+      <li><a href="/admin/logout/"><em>Logg ut</em></a></li>
+      {% endif %}
     </ul>
   </li>
 </ul>
+</nav>
 
-<div style="clear:both;"></div>
+<div class="clear"></div>

@@ -1,19 +1,17 @@
 <p class="paginator strong">
 Viser side {{page_obj.number}} av {{page_obj.paginator.num_pages}}
 &nbsp;&nbsp;&nbsp;
+<nav>
 {% if page_obj.has_previous %}
-<a href="{% url 'news-archive' %}page/{{page_obj.previous_page_number}}">« Forrige</a>
+<a rel="prev" href="{% url 'news-archive' %}page/{{page_obj.previous_page_number}}">« Forrige</a>
 {% else %}
 <span style="color: gray">« Forrige</span>
 {% endif %}
 &nbsp;|&nbsp;
 {% if page_obj.has_next %}
-<a href="{% url 'news-archive' %}page/{{page_obj.next_page_number}}">Neste »</a>
+<a rel="next" href="{% url 'news-archive' %}page/{{page_obj.next_page_number}}">Neste »</a>
 {% else %}
 <span style="color: gray">Neste »</span>
 {% endif %}
-<!--
-&nbsp;&nbsp;&nbsp;
-Totalt {{page_obj.paginator.count}} nyheter
--->
-</p>
+</nav>
+{# Totalt {{page_obj.paginator.count}} nyheter #}
