@@ -1,6 +1,6 @@
 # encoding: utf-8
 from django.http import HttpResponse
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.views.generic.base import RedirectView
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
@@ -9,28 +9,26 @@ from django.contrib import admin
 
 from apps.content.views import PageEditView, BlockEditView
 
-admin.autodiscover()
-
 import website.admin
 
-urlpatterns = patterns ('',
+urlpatterns = [
     url(r'^$',              'core.views.index',             name='index'),
     url(r'^nyhetsbrev/$',   'core.views.newsletter',        name='newsletter'),
     url(r'^bli-medlem/$',   'apps.support.views.index',     name='enroll'),
     url(r'^opprop/$',       'apps.support.views.petition',  name='petition'),
     url(r'^nettguide/$',    'apps.links.views.index',       name='links'),
 
-    (r'^nyhetsbrev/1/$', TemplateView.as_view (template_name='newsletter-1.html')),
+    url(r'^nyhetsbrev/1/$', TemplateView.as_view (template_name='newsletter-1.html')),
 
     # Redirect deprecated urls
     # @todo can redirect to named view instead
-    (u'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
-    (r'^rss/$', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
-    (u'^gruppesøksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
-    (u'^frivillig/$', RedirectView.as_view (url='/sider/frivillig/', permanent=True)),
+    url(u'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
+    url(r'^rss/$', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
+    url(u'^gruppesøksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
+    url(u'^frivillig/$', RedirectView.as_view (url='/sider/frivillig/', permanent=True)),
 
-    (r'^nyheter/',  include ('apps.news.urls')),
-    (r'^tinymce/',  include ('tinymce4.urls')),
+    url(r'^nyheter/',  include ('apps.news.urls')),
+    url(r'^tinymce/',  include ('tinymce4.urls')),
 
     # Non-admin forms
     url(r'^edit/page/(?P<pk>\d+)/$', login_required(PageEditView.as_view()), name='edit-page'),
@@ -47,13 +45,13 @@ urlpatterns = patterns ('',
     url(r'^reset/done/$',                                       auth_views.password_reset_complete, name='password_reset_complete'),
 
     # Google webmasters verification
-    (r'^google5b6561fca1bd3c25.html/$', lambda nil:
+    url(r'^google5b6561fca1bd3c25.html/$', lambda nil:
         HttpResponse ('google-site-verification: google5b6561fca1bd3c25.html')),
 
     # Note: Must be *after* passrod reset links!
     #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
-    (r'^admin/',    include (admin.site.urls)),
-)
+    url(r'^admin/',    include (admin.site.urls)),
+]
 
 
 # Hack to serve MEDIA_ROOT in dev mode
@@ -62,7 +60,7 @@ from django.conf import settings
 if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += patterns ('', url(r'^test/$', 'core.testviews.test'))
+    urlpatterns += [url(r'^test/$', 'core.testviews.test')]
 
 
 # Hack to add custom permission to the FlatPage model

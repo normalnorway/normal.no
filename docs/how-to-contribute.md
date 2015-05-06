@@ -4,8 +4,7 @@ TODO:
 can make changes directly on github
 url-namespace. can link to wiki
 html5. define browser support (lowest IE version)
-coding standards
-  Python 2.6 and Django 1.6 only! :(
+coding standards: Python 2.7 and Django 1.8
 rename CONTRIBUTING.md?
 Github: Howto clone the repo and send pull requests
 Github: Howto use the issue tracker
