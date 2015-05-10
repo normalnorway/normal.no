@@ -48,6 +48,7 @@ clean-all: clean
 	@if [ x = x`/bin/which $(LESSC)` ]; then		\
 	    echo "Error: The lessc compiler is missing!";	\
 	    echo "Install it with: apt-get install node-less";	\
+	    echo "        or with: npm install less -g";	\
 	    exit 1;						\
 	fi
 	$(LESSC) $(LESSCFLAGS) $^ > $@

@@ -85,7 +85,7 @@ guiden noe overveldene, og du kan hoppe over punktene `Installasjon` og
 maskinen din – selv om Git annbefales på det varmeste! Git brukes for
 å laste ned alle filene og sende endringer tilbake. Hvis du synes det
 blir for knotete, kan også filene lastes ned her: [Html maler][];
-[css,javascript og bilder][css-js-images].
+[css, javascript og bilder][css-js-images].
 
 [Html maler]: https://github.com/normalnorway/normal.no/tree/master/django/templates
 [css-js-images]: https://github.com/normalnorway/normal.no/tree/master/django/static
