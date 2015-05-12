@@ -42,6 +42,7 @@ class Article (models.Model):
     pub_objects = PubArticleManager()   # publicly available objects
 
     # Fields
+    # @todo models.ForeignKey (User, blank=True, null=True)
     pubdate =   models.DateTimeField (auto_now_add=True)
     url =       models.URLField (unique=True, null=True) # Note: some old news links don't have url set, therefore must allow null (since unique=True)
     date =      models.DateTimeField (null=True, help_text='Date of news article (url), not the day we posted it.')

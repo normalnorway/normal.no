@@ -8,6 +8,7 @@
           title="Siste nyheter" href="/nyheter/rss/" />
 
     {% if not debug %}
+    {# @todo {% load static from staticfiles %} #}
     <link rel="stylesheet" href="{{STATIC_URL}}css/all.css" />
     {% endif %}
 

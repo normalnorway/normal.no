@@ -45,7 +45,7 @@ USE_TZ = False
 DEBUG = not os.path.exists (rootdir ('NODEBUG'))
 TEMPLATE_DEBUG = DEBUG
 
-INTERNAL_IPS = ['127.0.0.1']    # needed for what?
+INTERNAL_IPS = ['127.0.0.1']    # needed for what? A: debug in templates
 #INTERNAL_IPS = ['127.0.0.1', '::1']
 
 
@@ -139,7 +139,6 @@ MEDIA_ROOT = rootdir ('htdocs', 'media')
 
 
 # Note: these are invoked in reverse order for the response.
-# @todo update with default list from Django 1.8
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -180,6 +179,9 @@ else:
         print >>sys.stderr, 'echo %s > %s' % (key, ex.filename)
         os.abort()
 
+# @todo better
+#DEFAULT_SECRET_KEY = '3iy-!-d$!pc_ll$#$elg&cpr@*tfn-d5&n9ag=)%#()t$$5%5^'
+#SECRET_KEY = os.environ.get ('SECRET_KEY', DEFAULT_SECRET_KEY)
 
 
 ## Logging
