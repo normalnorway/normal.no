@@ -1,0 +1,66 @@
+Install on Apache2
+==================
+
+Howto install on a Debian/Ubuntu production server.
+
+Install into this directory:
+PREFIX=/srv/www/normal.no
+
+TODO:
+* pip install -r requirements.txt
+* move to /srv/www/normal.no/docs/install 
+* db/newmembers
+* need nodejs + lessc to generate css files
+  make update.sh complain if not found
+* include wsgi settings
+* a2enmod <required-modules>  (and remove from apache.conf)
+* certificates ok? need key file (make both symlinks to ../cert/)
+
+
+## Requirements
+
+apt-get install apache2-mpm-worker	# or apache2-mpm-prefork
+apt-get install mysql-server
+apt-get install python-mysqldb
+apt-get install libapache2-mod-wsgi
+apt-get install python-pip
+
+pip install Django
+
+
+-----------------------------------------
+
+Note: Everything bellow is untested!
+
+
+## MySQL
+
+# @todo fix so can copy&paste this
+mysql> create database normalno";
+mysql> grant all on normalno.* to normalno@localhost identified by "secret";
+
+
+## Get the code
+
+mkdir -p $PREFIX
+cd $PREFIX
+git clone -b production git@github.com:normalnorway/normal.no.git .
+#git submodule init
+#git submodule update
+# done by update.sh
+
+
+## Bootstrap
+
+cd $PREFIX
+
+install -g www-data -m 770 -d logs
+install -g www-data -m 750 -d htdocs
+install -g www-data -m 770 -d htdocs/media
+
+ln -s $PREFIX/apache.conf /etc/apache2/sites-available/normal.no
+a2ensite 
+/etc/init.d/apache2 reload
+
+
+# TODO: Rest can be delegated to 'update.sh'

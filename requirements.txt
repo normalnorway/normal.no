@@ -1,0 +1,21 @@
+# Note: You don't have to install everything just for doing development!
+# pip install -r requirements.txt
+
+Django>=1.7
+Pillow
+Fabric
+Markdown
+
+# Note: sqlite is bundled with python, so no need to install.
+# Note: 'mysql' is a virtual package that depends on 'MySQL-python'
+mysql
+
+# @todo newsgrab
+# git+https://github.com/normalnorway/newsgrab.git#egg=newsgrab
+# -e git+git://github.com/normalnorway/newsgrab.git
+#lxml
+
+# socialmedia
+#oauth2client
+#oauthlib
+#requests-oauthlib
