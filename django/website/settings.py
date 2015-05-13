@@ -13,6 +13,9 @@ def rootdir (*args):    # rename mk_filename
     """Constructs a path relative to the project root directory"""
     return os.path.join (BASE_DIR, *args)
 
+from siteconfig import SiteConfig
+Config = SiteConfig (rootdir ('site.ini'))
+
 
 DEFAULT_FROM_EMAIL = 'post@normal.no'
 
@@ -42,7 +45,8 @@ USE_TZ = False
 #DATETIME_FORMAT = DATE_FORMAT + ', k\l. ' + TIME_FORMAT
 
 
-DEBUG = not os.path.exists (rootdir ('NODEBUG'))
+#DEBUG = not os.path.exists (rootdir ('NODEBUG'))
+DEBUG = Config.getbool ('main.debug')
 TEMPLATE_DEBUG = DEBUG
 
 INTERNAL_IPS = ['127.0.0.1']    # needed for what? A: debug in templates
@@ -80,6 +84,8 @@ INSTALLED_APPS = (
 
 # manage.py dumpdata [app...] --indent 2 --database dev
 DATABASES = {
+    # @todo make mysql default and rename sqlite -> dev?
+    #       then don't need conn_max_age hack
     'default': {
         'ENGINE':   'django.db.backends.sqlite3',
         'NAME':     rootdir ('db', 'normal.db'),
@@ -88,14 +94,14 @@ DATABASES = {
     'mysql': {
         'ENGINE':   'django.db.backends.mysql',
         "HOST":     '/var/run/mysql',
-        'NAME':     'normalno',
-        'USER':     'normalno',
-        #'PASSWORD': inifile.get ('database', 'password', ''),
+        'NAME':     Config.get ('database.name'),
+        'USER':     Config.get ('database.user'),
+        'PASSWORD': Config.get ('database.password'),
+        #'CONN_MAX_AGE': 3600,
         #'OPTIONS':  { 'read_default_file': '/path/to/my.cnf' },
         # https://docs.djangoproject.com/en/1.7/ref/databases/#connecting-to-the-database
         # Remember: CREATE DATABASE <dbname> CHARACTER SET utf8;
         # Note: Django don't create INODB tables by default!
-        # @todo make mysql default and rename sqlite -> dev? then don't need conn_max_age hack
     },
 }
 # Don't require mysql backend on development system.
@@ -165,23 +171,15 @@ SITE_ID = 1
 # Note: The secret key must be the same for all processes and not change
 # between sessions. It can therefore only be auto-generated once, and must
 # then be written to persistent storage and loaded on each subsequent run.
-if DEBUG:
-    SECRET_KEY = 'x' * 50
-    #SECRET_KEY = ''.join (chr(random.randint(33,126)) for x in xrange(50))
-else:
-    try:
-        SECRET_KEY = open (rootdir('secret-key')).readline()
-    except IOError, ex:
-        import sys, base64
-        key = base64.b64encode (os.urandom(48))
-        print >>sys.stderr, 'ERROR: %s: %s' % (ex.filename, ex.strerror)
-        print >>sys.stderr, 'You can create it like this:'
-        print >>sys.stderr, 'echo %s > %s' % (key, ex.filename)
-        os.abort()
+SECRET_KEY = Config.get ('main.secret', 'x' * 50)
+# @todo fail if missing!
 
-# @todo better
-#DEFAULT_SECRET_KEY = '3iy-!-d$!pc_ll$#$elg&cpr@*tfn-d5&n9ag=)%#()t$$5%5^'
-#SECRET_KEY = os.environ.get ('SECRET_KEY', DEFAULT_SECRET_KEY)
+if not DEBUG and SECRET_KEY == 'x'*50:
+    import sys, base64
+    key = base64.b64encode (os.urandom(48))
+    print >>sys.stderr, 'This looks like a production system and the default SECRET_KEY is weak!'
+    print >>sys.stderr, 'Please insert this as main.secret in site.ini:\n' + key
+    os.abort()
 
 
 ## Logging
