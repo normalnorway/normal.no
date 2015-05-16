@@ -1,3 +1,0 @@
-[submodule "django/apps/news/newsgrab"]
-	path = django/apps/news/newsgrab
-	url = https://github.com/normalnorway/newsgrab.git

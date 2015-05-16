@@ -6,14 +6,11 @@ Pillow
 Fabric
 Markdown
 
-# Note: sqlite is bundled with python, so no need to install.
-# Note: 'mysql' is a virtual package that depends on 'MySQL-python'
-mysql
+# This is a virtual package that depends on 'MySQL-python'
+#mysql
 
-# @todo newsgrab
-# git+https://github.com/normalnorway/newsgrab.git#egg=newsgrab
-# -e git+git://github.com/normalnorway/newsgrab.git
-#lxml
+# apps.news
+git+https://github.com/normalnorway/newsgrab.git#egg=newsgrab
 
 # socialmedia
 #oauth2client
