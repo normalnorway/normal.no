@@ -71,3 +71,5 @@ delete from auth_permission where content_type_id not in (select id from django_
 https://github.com/django-extensions/django-extensions/blob/master/README.rst
 
 run ./manage.py check before commit/push
+
+add own system checks: https://docs.djangoproject.com/en/1.8/topics/checks/

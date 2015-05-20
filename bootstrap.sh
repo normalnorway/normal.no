@@ -1,10 +1,13 @@
 #!/bin/sh -e
 
 ## Git Submodules
-git submodule init
-git submodule update
+#git submodule init
+#git submodule update
 # Note: Submodules are check out in a detached state:
 #(cd django/apps/news/newsgrab && git co master)
+
+# Update: submodules are no longer used
+pip install -r requirements.txt
 
 ## Fetch (test) database
 if [ ! -e db/normal.db ]; then

@@ -6,7 +6,6 @@
 # version of the 'production' branch in Git.
 
 git pull
-git submodule update
 
 django/manage.py check
 

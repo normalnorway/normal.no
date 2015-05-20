@@ -50,8 +50,9 @@ mysql> grant all on normal.* to 'normal'@'localhost';
 git clone http://git.normal.no/git/normal.no /srv/www/normal.no
 cd /srv/www/normal.no
 
-git submodule init
-git submodule update
+# not in use anymore
+#git submodule init
+#git submodule update
 
 ## Create required files and directories
 

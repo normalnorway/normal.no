@@ -107,6 +107,8 @@ DATABASES = {
     },
 }
 DATABASES['default'] = DATABASES['dev' if DEBUG else 'mysql']
+#del DATABASES['dev' if not DEBUG else 'mysql']
+if DEBUG: del DATABASES['mysql']
 #DATABASES['default'] = DATABASES['mysql']
 #DATABASES['default'] = DATABASES[Config.get('dbengine', 'dev')]
 

@@ -2,8 +2,10 @@
 # pip install -r requirements.txt
 
 Django>=1.7
-Pillow
 Fabric
+
+# Not in use anymore
+#Pillow
 
 # Only needed for: docs/how-to-contribute.md
 #Markdown

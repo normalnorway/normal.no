@@ -8,7 +8,6 @@ PREFIX=/srv/www/normal.no
 
 TODO:
 * prefix each command with $? then can filter them out and pass to sh
-* pip install -r requirements.txt
 * move to /srv/www/normal.no/docs/install
 * db/newmembers
 * need nodejs + lessc to generate css files
@@ -27,7 +26,7 @@ apt-get install python-mysqldb
 apt-get install libapache2-mod-wsgi
 apt-get install python-pip
 
-pip install Django
+pip install -r requirements.txt
 
 
 ## MySQL
@@ -50,9 +49,6 @@ Note: Everything bellow is untested!
 mkdir -p $PREFIX
 cd $PREFIX
 git clone -b production git@github.com:normalnorway/normal.no.git .
-#git submodule init
-#git submodule update
-# done by update.sh
 
 
 ## Bootstrap

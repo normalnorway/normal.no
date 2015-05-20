@@ -23,12 +23,13 @@ apt-get install python-imaging  # @todo switch to Pillow: pip install Pillow
 
 
 ## Python packages
-pip install Django
+#pip install Django
+pip install -r requirements.txt
 
 
 
 ## Misc setup
-git submodule init
+#git submodule init
 
 
 
@@ -54,12 +55,6 @@ a2enmod mod_expires
 ln -s /srv/www/normal.no/apache.conf /etc/apache2/sites-available/normal.no
 a2ensite normal.no
 /etc/init.d/apache2 reload
-
-# XXX The default locale for Apache is 'C'. Must change to UTF8!
-# edit /etc/apache2/envvars	# change 'export LANG=C' to an UTF8 locale
-# Q: what if running in daemon mode? Possible to just change for the
-#    wsgi daemon, and not for Apache?
-
 
 
 exec update.sh
