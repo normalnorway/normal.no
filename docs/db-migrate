@@ -1,0 +1,43 @@
+# Howto migrate from SQLite to MySQL
+
+NOTE: SQLite don't enforce database constraints. So your SQLite data
+might be invalid, and therefore refused by MySQL.
+
+
+# delete stale auth_permission entries
+$ ./manage.py dbshell << EOS
+delete from auth_permission
+  where content_type_id not in
+    (select id from django_content_type);
+EOS
+
+$ ./manage.py dumpdata > data.json
+
+
+# IMPORTANT: Change the default database to mysql before continuing!
+
+
+$ mysql -u root << EOS
+create database normalno character set utf8;
+grant all on normalno.* to normalno@localhost identified by "secret";
+EOS
+
+./manage.py migrate
+
+# Now must clear almost all the data that 'migrate' put in the database:
+./manage.py dbshell << EOS
+BEGIN;
+SET FOREIGN_KEY_CHECKS = 0;
+truncate table auth_permission;
+truncate table django_content_type;
+truncate table django_site;
+truncate table django_session;
+SET FOREIGN_KEY_CHECKS = 1;
+COMMIT;
+EOS
+
+# Ensure new database is empty. If not, truncate the tables.
+# $ ./manage.py dumpdata        # should return the empty list "[]"
+# $ mysqldump -t --skip-opt --compact -u root normalno | grep -v django_migrations
+
+./manage.py loaddata data.json
