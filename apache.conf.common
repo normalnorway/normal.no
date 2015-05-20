@@ -58,7 +58,15 @@
 
     ## Access control (ACL)
     <Directory /srv/www/normal.no/htdocs>
-	Allow from all
+        <IfModule mod_authz_core.c>
+            # Apache 2.4
+            Require all granted
+        </IfModule>
+        <IfModule !mod_authz_core.c>
+            # Apache 2.2
+            Allow from all
+        </IfModule>
+
         # @todo move these to virtual-host scope?
         # update: only allowed for 'Options'. better to drop. should be default
         Options none
@@ -67,7 +75,12 @@
 
     <Directory /srv/www/normal.no/django/website>
         <Files wsgi.py>
-	    Allow from all
+            <IfModule mod_authz_core.c>
+                Require all granted
+            </IfModule>
+            <IfModule !mod_authz_core.c>
+                Allow from all
+            </IfModule>
         </Files>
     </Directory>
 

@@ -4,16 +4,16 @@
 Django>=1.7
 Pillow
 Fabric
-Markdown
 
-# Note: sqlite is bundled with python, so no need to install.
-# Note: 'mysql' is a virtual package that depends on 'MySQL-python'
-mysql
+# Only needed for: docs/how-to-contribute.md
+#Markdown
 
-# @todo newsgrab
-# git+https://github.com/normalnorway/newsgrab.git#egg=newsgrab
-# -e git+git://github.com/normalnorway/newsgrab.git
-#lxml
+# This is a virtual package that depends on 'MySQL-python'
+#mysql
+
+# apps.news
+git+https://github.com/normalnorway/newsgrab.git#egg=newsgrab
+#git+https://github.com/normalnorway/newsgrab.git#egg=newsgrab-dev
 
 # socialmedia
 #oauth2client
