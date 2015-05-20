@@ -1,12 +1,9 @@
-"""
-TODO:
-filter body for extra <p>'s at the end (old, imported articles)
-"""
-
 import datetime
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
+#from django.conf.settings import AUTH_USER_MODEL
+from django.conf import settings
+
 
 _empty_time = datetime.time()
 
@@ -39,7 +36,7 @@ class Article (models.Model):   # NewsLink
     pub_objects = PubArticleManager() # objects where published is True
 
     # Fields
-    user =      models.ForeignKey (User, blank=True, null=True) # default=None
+    user =      models.ForeignKey (settings.AUTH_USER_MODEL, blank=True, null=True) # default=None
     pubdate =   models.DateTimeField (auto_now_add=True)
     url =       models.URLField (unique=True, null=True, max_length=512)
     date =      models.DateTimeField (null=True, help_text='Date of news article (url), not the day we posted it.')
