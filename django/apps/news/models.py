@@ -36,9 +36,10 @@ class Article (models.Model):   # NewsLink
     pub_objects = PubArticleManager() # objects where published is True
 
     # Fields
-    user =      models.ForeignKey (settings.AUTH_USER_MODEL, blank=True, null=True) # default=None
+    # @todo remove index on user?
+    user =      models.ForeignKey (settings.AUTH_USER_MODEL, blank=True, null=True) # default=None? looks like don't need this, since null is allowed, it's the default value
     pubdate =   models.DateTimeField (auto_now_add=True)
-    url =       models.URLField (unique=True, null=True, max_length=512)
+    url =       models.URLField (unique=True, null=True, max_length=255) # Note: MySQL does not allow unique CharFields to have a max_length > 255 :(
     date =      models.DateTimeField (null=True, help_text='Date of news article (url), not the day we posted it.')
     title =     models.CharField (max_length=128)
     summary =   models.TextField (help_text=u'Just copy the "ingress" into this field.')
