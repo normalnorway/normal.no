@@ -8,7 +8,7 @@ PREFIX=/srv/www/normal.no
 
 TODO:
 * pip install -r requirements.txt
-* move to /srv/www/normal.no/docs/install 
+* move to /srv/www/normal.no/docs/install
 * db/newmembers
 * need nodejs + lessc to generate css files
   make update.sh complain if not found
@@ -59,7 +59,7 @@ install -g www-data -m 750 -d htdocs
 install -g www-data -m 770 -d htdocs/media
 
 ln -s $PREFIX/apache.conf /etc/apache2/sites-available/normal.no
-a2ensite 
+a2ensite
 /etc/init.d/apache2 reload
 
 

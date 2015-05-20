@@ -64,3 +64,10 @@ Don't mix apache and django logs?
 
 /srv/www/normal.no/normal.no.crt ==> ../certs/normal.no.crt
 /srv/www/normal.no/normal.no.key ==> ../certs/normal.no.key
+
+-- remove stale permissions (run as part of regular maintenance?)
+delete from auth_permission where content_type_id not in (select id from django_content_type);
+
+https://github.com/django-extensions/django-extensions/blob/master/README.rst
+
+run ./manage.py check before commit/push
