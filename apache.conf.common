@@ -3,6 +3,8 @@
     ServerName      normal.no
     ServerAlias     normal.i2p
     ServerAlias     qrw3w45sx7niqcpg.onion
+    ServerAlias     test.normal.no
+
     ServerAdmin     torkel@normal.no
 
     WSGIScriptAlias /   /srv/www/normal.no/django/website/wsgi.py
@@ -56,7 +58,7 @@
 
     ## Access control (ACL)
     <Directory /srv/www/normal.no/htdocs>
-        Allow from all
+	Allow from all
         # @todo move these to virtual-host scope?
         # update: only allowed for 'Options'. better to drop. should be default
         Options none
@@ -65,7 +67,7 @@
 
     <Directory /srv/www/normal.no/django/website>
         <Files wsgi.py>
-            Allow from all
+	    Allow from all
         </Files>
     </Directory>
 

@@ -57,9 +57,10 @@ INTERNAL_IPS = ['127.0.0.1']    # needed for what? A: debug in templates
 # Note: Apache redirects www.normal.no => normal.no
 ALLOWED_HOSTS = (
     'normal.no',
-    'dev.normal.no',
     'normal.i2p',               # I2P address
     'qrw3w45sx7niqcpg.onion',   # Tor address
+    'dev.normal.no',
+    'test.normal.no',           # staging server
 )
 
 
@@ -84,28 +85,31 @@ INSTALLED_APPS = (
 
 # manage.py dumpdata [app...] --indent 2 --database dev
 DATABASES = {
-    # @todo make mysql default and rename sqlite -> dev?
-    #       then don't need conn_max_age hack
-    'default': {
+    'dev': {
         'ENGINE':   'django.db.backends.sqlite3',
         'NAME':     rootdir ('db', 'normal.db'),
-        'CONN_MAX_AGE': 0 if DEBUG else 3600
     },
     'mysql': {
         'ENGINE':   'django.db.backends.mysql',
-        "HOST":     '/var/run/mysql',
+        #'HOST':     '/var/run/mysqld/mysqld.sock',	# default
+	#'HOST':	    Config.get ('database.hostname'),
         'NAME':     Config.get ('database.name'),
         'USER':     Config.get ('database.user'),
         'PASSWORD': Config.get ('database.password'),
         #'CONN_MAX_AGE': 3600,
+        #'CONN_MAX_AGE': 0 if DEBUG else 3600
         #'OPTIONS':  { 'read_default_file': '/path/to/my.cnf' },
         # https://docs.djangoproject.com/en/1.7/ref/databases/#connecting-to-the-database
         # Remember: CREATE DATABASE <dbname> CHARACTER SET utf8;
         # Note: Django don't create INODB tables by default!
+	# UPDATE: Did create INODB by default now (Django 1.8)
+	# But does not use utf8 by default!
     },
 }
-# Don't require mysql backend on development system.
-if DEBUG: del DATABASES['mysql']
+DATABASES['default'] = DATABASES['dev' if DEBUG else 'mysql']
+#DATABASES['default'] = DATABASES['mysql']
+#DATABASES['default'] = DATABASES[Config.get('dbengine', 'dev')]
+
 
 
 CACHES = {

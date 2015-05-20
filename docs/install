@@ -18,7 +18,8 @@
 
 ## Required packages (Debian/Ubuntu)
 apt-get install libapache2-mod-wsgi
-apt-get install python-imaging	# @todo use pip for this?
+#apt-get install python-imaging	# @todo use pip for this?
+  # update: PIL/pillow no longer used
 
 # Optional: Only when using MySQL as backend. The default is SQLite,
 # but that will be changed in the future.
