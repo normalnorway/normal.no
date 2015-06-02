@@ -10,4 +10,10 @@ and/or check out this file:
 <http://htmlpreview.github.io/?https://github.com/normalnorway/normal.no/blob/master/docs/how-to-contribute.html>
 (Warning: In Norwegian).
 
-/Torkel
+## Things to do
+
+<https://github.com/normalnorway/normal.no/issues>
+
+<https://landscape.io/github/normalnorway/normal.no>
+
+<https://travis-ci.org/normalnorway/normal.no>
