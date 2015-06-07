@@ -3,13 +3,11 @@ from feed import NewsFeed as RssView
 from .views import ArchiveView, YearView, MonthView, ArticleDetailView
 from .views import NewArticleView
 
-"""
-TODO:
-* /arkiv/page -> /arkiv/side
-* drop arkiv-prefix? but then need prefix on detailed view, else name
-  conflict between year and pk
-* use GET parameter instead of extra url for pagination?
-"""
+# TODO:
+# * /arkiv/page -> /arkiv/side
+# * drop arkiv-prefix? but then need prefix on detailed view, else name
+#   conflict between year and pk
+# * use GET parameter instead of extra url for pagination?
 
 urlpatterns = (
     url (r'^(?P<pk>\d+)/$', ArticleDetailView.as_view(), name='news-detail'),

@@ -3,9 +3,9 @@
 Views used for testing while developing.
 """
 
-from pprint import pprint
+#from pprint import pprint
+#from django.http import HttpResponse
 from core.shortcuts import render_to
-from django.http import HttpResponse
 
 
 @render_to ('test.html')

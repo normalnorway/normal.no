@@ -1,5 +1,4 @@
-import sys
-import os
+import os, sys
 
 os.environ.setdefault ("DJANGO_SETTINGS_MODULE", "website.settings")
 

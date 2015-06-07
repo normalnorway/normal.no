@@ -12,9 +12,9 @@ if not sys.stdout.isatty():
     sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
 
-''' ----------------------- '''
-''' EXPORT FROM OLD WEBSITE '''
-''' ----------------------- '''
+# -------------------------
+#  EXPORT FROM OLD WEBSITE
+# -------------------------
 
 # HTMLParser (remove_blank_text=True, encoding='latin1', remove_comments=True, remove_pis=True)
 tree = etree.parse (sys.argv[1], etree.HTMLParser(remove_comments=True))
@@ -77,9 +77,9 @@ while dlindex+1 < len(dllist):          ## For each section
 
 
 
-''' ----------------------- '''
-'''         IMPORT          '''
-''' ----------------------- '''
+# -----------------------
+#         IMPORT
+# -----------------------
 
 import initdjango
 from apps.links.models import Category as LinkCategory
@@ -88,7 +88,7 @@ from apps.links.models import Link
 LinkCategory.objects.all().delete()
 Link.objects.all().delete()
 
-# Q: why slow?  A: wrap in transaction
+# Note: very slow. fix: wrap in transaction
 # @todo obj.full_clean()?
 for (section, data) in nettguide:
     print 'Importing ' + section

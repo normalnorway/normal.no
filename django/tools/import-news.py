@@ -91,7 +91,7 @@ class Exporter:
         # extract and set self.data['url']
         m = self.reurl.search (body)
         if m:
-            self.data['url'] = url = m.group(1)
+            self.data['url'] = m.group(1)
             # drop body if only one url and rest is less than 25 chars
             if not self.reurl.search (body, m.end()) and len(body)-m.end() < 25:
                 body = None
@@ -101,8 +101,8 @@ class Exporter:
         return body
 
 
-    ''' Parse headers. I.e., everything but the body '''
     def parse_header (self):
+        '''Parse headers. I.e., everything but the body'''
         f = self.file
 
         ts = int(os.path.basename(f.name))
@@ -134,15 +134,12 @@ class Exporter:
 
 
 
-    ### MAIN ###
 if __name__ == '__main__':
-
     if (len(sys.argv) != 2):
         exit ('Usage: %s <filename>' % sys.argv[0])
 
-    locale.setlocale(locale.LC_TIME, 'nb_NO')   # parsing norwegian dates
-
     pathname = sys.argv[1]
+    locale.setlocale(locale.LC_TIME, 'nb_NO')   # parsing norwegian dates
 
     # Debug mode: Dump one article to stdout
     if os.path.isfile(pathname):
@@ -183,6 +180,7 @@ if __name__ == '__main__':
 
 #    print 'Importing %d articles ...' % len(instances)
 #    NewsArticle.objects.bulk_create (instances)
+
     for (f,o) in instances:
         #print 'Importing: %s' % o.title
         print 'Importing: %s' % f

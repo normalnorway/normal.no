@@ -22,12 +22,10 @@ class Page (models.Model):
     def get_absolute_url (self):
         return reverse ('cms:page', args=[self.url])
 
-'''
-    class Meta:
-        permissions = (
-            ('change_page_gsf', u'Can change «gruppesøksmål»-pages'),
-        )
-'''
+#    class Meta:
+#        permissions = (
+#            ('change_page_gsf', u'Can change «gruppesøksmål»-pages'),
+#        )
 
 
 # class Block

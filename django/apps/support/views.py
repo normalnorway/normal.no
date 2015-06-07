@@ -11,10 +11,8 @@ myndigheter og styrende organer. Oppfordr gjerne andre til å gjøre det
 samme ved å dele lenke til denne siden.
 '''
 
-import os
 import datetime
 from django.db.models import Count
-from django.shortcuts import redirect
 from django.contrib import messages
 from django.core.cache import cache
 from core.shortcuts import render_to
@@ -79,7 +77,7 @@ def petition (request):
 
     form = PetitionForm (request.POST)
     if form.is_valid():
-        obj = form.save()
+        form.save()
         form = PetitionForm()   # clear the form
         messages.success (request, PETITION_MSG)
 
