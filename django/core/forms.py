@@ -32,7 +32,7 @@ class StripWhitespaceMixin (object):
             # some widgets split data over several HTML fields.
             value = field.widget.value_from_datadict (self.data, self.files, self.add_prefix (name))
             try:
-                if isinstance (field, FileField):
+                if isinstance (field, forms.FileField):
                     initial = self.initial.get (name, field.initial)
                     value = field.clean (value, initial)
                 else:
@@ -44,7 +44,7 @@ class StripWhitespaceMixin (object):
                 if hasattr (self, 'clean_%s' % name):
                     value = getattr (self, 'clean_%s' % name)()
                     self.cleaned_data[name] = value
-            except ValidationError as ex:
+            except forms.ValidationError as ex:
                 self._errors[name] = self.error_class (ex.messages)
                 if name in self.cleaned_data:
                     del self.cleaned_data[name]

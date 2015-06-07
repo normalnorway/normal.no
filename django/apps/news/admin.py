@@ -47,8 +47,8 @@ class ArticleAdmin (admin.ModelAdmin):
     def domain (self, obj):
         #domain = self._re_domain.match (obj.url).group(2)
         if not obj.url: return ''  # url can be NULL
-	match = self._re_domain.match (obj.url)
-	if not match: return ''
+        match = self._re_domain.match (obj.url)
+        if not match: return ''
         domain = match.group(3)
         return '<a href="%s" title="%s" target="_blank">%s</a>' % (obj.url, obj.url, domain)
     domain.allow_tags = True

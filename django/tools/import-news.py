@@ -2,16 +2,13 @@
 Export articles from the old website, and import them into
 new Django based website.
 
-@todo rename importnews.py?
 @bug pubdate not set (since editable=False)
 @bug when using sqlite, must be run in same directory as db file
 @bug 1285650416 # feed://www
 
-@note some articles contains link to other news
-      Inga Marte angrer ikke utblåsningen
-      http://www.normal.no/cgi-bin/viewnews?view=1004974341 
+@todo some articles contains links to self. s/www/old/
+http://old.normal.no/cgi-bin/viewnews?view=1005104919
 '''
-
 
 import sys
 import os
@@ -141,7 +138,7 @@ class Exporter:
 if __name__ == '__main__':
 
     if (len(sys.argv) != 2):
-        die ('Usage: %s <filename>' % sys.argv[0])
+        exit ('Usage: %s <filename>' % sys.argv[0])
 
     locale.setlocale(locale.LC_TIME, 'nb_NO')   # parsing norwegian dates
 

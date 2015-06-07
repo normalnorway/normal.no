@@ -6,7 +6,7 @@ from django.conf.urls import url
 # /cms/block/<id>
 # /cms/block/edit/<id>
 
-#from apps.cms import views
+from apps.cms import views
 #import .views as views ?
 
 urlpatterns = [

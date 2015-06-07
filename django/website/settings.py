@@ -91,8 +91,8 @@ DATABASES = {
     },
     'mysql': {
         'ENGINE':   'django.db.backends.mysql',
-        #'HOST':     '/var/run/mysqld/mysqld.sock',	# default
-	#'HOST':	    Config.get ('database.hostname'),
+        #'HOST':     '/var/run/mysqld/mysqld.sock',     # default
+        #'HOST':            Config.get ('database.hostname'),
         'NAME':     Config.get ('database.name'),
         'USER':     Config.get ('database.user'),
         'PASSWORD': Config.get ('database.password'),
@@ -102,8 +102,8 @@ DATABASES = {
         # https://docs.djangoproject.com/en/1.7/ref/databases/#connecting-to-the-database
         # Remember: CREATE DATABASE <dbname> CHARACTER SET utf8;
         # Note: Django don't create INODB tables by default!
-	# UPDATE: Did create INODB by default now (Django 1.8)
-	# But does not use utf8 by default!
+        # UPDATE: Did create INODB by default now (Django 1.8)
+        # But does not use utf8 by default!
     },
 }
 DATABASES['default'] = DATABASES['dev' if DEBUG else 'mysql']
