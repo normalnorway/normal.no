@@ -77,8 +77,9 @@ class MemberForm (forms.Form):
     city =      forms.CharField (label=u'Sted', max_length=64)
     phone =     forms.CharField (label=u'Telefon', max_length=15, required=False)
     email =     forms.EmailField (label=u'E-post', required=False)
-    comment =   forms.CharField (label=u'Kommentar', required=False, help_text=u'Send heller spørsmål til <a href="mailto:post@normal.no">post@normal.no</a> enn å skrive de over.',
-                    widget=forms.Textarea (attrs=dict(rows=8, cols=70)))
+    comment =   forms.CharField (label=u'Kommentar', required=False, help_text=
+        u'Send heller spørsmål til <a href="mailto:post@normal.no">post@normal.no</a> enn å skrive de over.',
+        widget=forms.Textarea (attrs=dict(rows=8, cols=70)))
     extra =     forms.MultipleChoiceField (label=u'Jeg kan bidra med',
                                            required=False,
                                            widget=forms.CheckboxSelectMultiple,

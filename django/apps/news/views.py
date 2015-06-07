@@ -143,7 +143,7 @@ til <a href="mailto:post@normal.no">post@normal.no</a>. Takk!
     def _save_and_redirect (self, data):
         #return HttpResponse ('save aborted')
         self._save (data)
-        title = data['title'] if data.has_key('title') else data['url']
+        title = data['title'] if 'title' in data else data['url']
         messages.success (self.request, self._MSG_SUCCESS % (title,))
         return redirect ('news-new')
 

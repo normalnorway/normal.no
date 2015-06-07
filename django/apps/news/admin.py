@@ -7,7 +7,7 @@ class LinkOnlyFilter (admin.SimpleListFilter):
         return (('1', 'Yes'), ('0', 'No'))
     def queryset (self, request, queryset):
         v = self.value()
-        if v == None: return queryset
+        if v is None: return queryset
         if v == '0': return queryset.filter (body='')
         if v == '1': return queryset.exclude (body='')
         assert False

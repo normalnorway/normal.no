@@ -6,7 +6,7 @@ def index (request):
     data = {}
     for link in Link.objects.all():
         cid = link.category_id
-        if not data.has_key(cid):
+        if not cid in data:
             data[cid] = dict(name=str(link.category), data=[])
             #data[cid] = dict(name=link.category, data=[]) # sort fails
         data[cid]['data'].append (link)

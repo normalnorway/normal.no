@@ -37,7 +37,7 @@ class Article (models.Model):   # NewsLink
 
     # Fields
     # @todo remove index on user?
-    user =      models.ForeignKey (settings.AUTH_USER_MODEL, blank=True, null=True) # default=None? looks like don't need this, since null is allowed, it's the default value
+    user =      models.ForeignKey (settings.AUTH_USER_MODEL, blank=True, null=True)
     pubdate =   models.DateTimeField (auto_now_add=True)
     url =       models.URLField (unique=True, null=True, max_length=255) # Note: MySQL does not allow unique CharFields to have a max_length > 255 :(
     date =      models.DateTimeField (null=True, help_text='Date of news article (url), not the day we posted it.')
@@ -57,7 +57,8 @@ class Article (models.Model):   # NewsLink
         return self.date
         #return self.date if self.date.time()!=_empty_time else self.date.date()
 
-    def __unicode__ (self): return self.title
+    def __unicode__ (self):
+        return self.title
 
     def get_absolute_url (self):
         return reverse ('news-detail', args=[self.pk])

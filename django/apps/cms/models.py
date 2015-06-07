@@ -16,7 +16,8 @@ class Page (models.Model):
     # @todo make title default to url?
     # @todo use url as primary key? A: no
 
-    def __unicode__ (self): return self.title
+    def __unicode__ (self):
+        return self.title
 
     def get_absolute_url (self):
         return reverse ('cms:page', args=[self.url])
