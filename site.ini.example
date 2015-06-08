@@ -1,15 +1,20 @@
-# Note: Only needed on the production server.
+#
+# Only needed on production server.
 # Remember to 'touch wsgi.py' to activate changes.
-
-# To generate a secret key, run this Python code:
-# import os, base64
-# print base64.b64encode (os.urandom(48))
+#
+# To generate a secret key, try this:
+# $ python -c 'import os,base64;print base64.b64encode(os.urandom(48))'
+#
+# This file might contain sensitive information, so protect it!
+# $ chgrp www-data site.ini
+# $ chmod 640 site.ini
+#
 
 [main]
 debug = true
-secret = <secret-key>
+secret = some-secret-key
 
 [database]
 name = dbname
 user = dbuser
-password = secret
+password = dbsecret

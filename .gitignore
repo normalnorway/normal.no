@@ -4,6 +4,7 @@
 .*.swp
 
 /django/logs/
+site.ini
 
 #/docs/how-to-contribute.html
 
