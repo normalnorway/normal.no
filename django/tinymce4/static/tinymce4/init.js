@@ -153,8 +153,8 @@ tinymce.init ({
 
         {title: "Headers", items: [
             {title: "Header 1", format: "h1"},
-            //{title: "Header 1 (plain)", format: "h1", classes: "plain"},
             {title: "Header 1 (plain)", block: 'h1', classes: 'plain'},
+            //{title: "Header 1 (plain)", format: "h1", classes: "plain"},
             {title: "Header 2", format: "h2"},
             {title: "Header 3", format: "h3"},
             {title: "Header 4", format: "h4"},

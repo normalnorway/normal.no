@@ -73,3 +73,5 @@ https://github.com/django-extensions/django-extensions/blob/master/README.rst
 run ./manage.py check before commit/push
 
 add own system checks: https://docs.djangoproject.com/en/1.8/topics/checks/
+
+bug: footer renders wrongly in IE < 9  http://netrenderer.com/index.php
