@@ -1,5 +1,7 @@
 # Normals webpage [normal.no](http://normal.no)
 
+[![Code Health](https://landscape.io/github/normalnorway/normal.no/master/landscape.svg?style=plastic)](https://landscape.io/github/normalnorway/normal.no/master)
+
 This is the source code running Normal's webpage – <http://normal.no>
 
 It's using the excellent [Django](https://www.djangoproject.com/) web
