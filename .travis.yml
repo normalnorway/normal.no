@@ -9,7 +9,7 @@ python:
 
 install:
   - pip install -r requirements.txt
-  - npm install less
+  - npm install -g --production less
 
 before_script:
   - django/manage.py migrate
