@@ -1,5 +1,7 @@
 .PHONY: bugfix minor test
 
+all:
+	@echo I do nothing by default!
 
 bugfix:
 	git commit -m bugfix
@@ -26,10 +28,11 @@ activate: master-to-production
 
 # Offline tests
 test:
+	(cd django && ./manage.py check)
 	(cd django && ./manage.py test)
-	$(MAKE) -C static/css/ test
+	$(MAKE) -C django/static/css/ test
 	#python django/tests.py  # already run by django manage.py test
-	#@todo fab test
+	#@todo jslint
 
 
 # Test the live site: http://normal.no

@@ -3,10 +3,14 @@
 *.bak
 .*.swp
 
+/django/logs/
+
 #/docs/how-to-contribute.html
 
-/db/
+# Only on the production server
 /htdocs/
 /logs/
+#/db/
+
 # auto-generated files
 /django/static/css/*.css

@@ -46,7 +46,7 @@ USE_TZ = False
 
 
 #DEBUG = not os.path.exists (rootdir ('NODEBUG'))
-DEBUG = Config.getbool ('main.debug')
+DEBUG = Config.getbool ('main.debug', True)
 TEMPLATE_DEBUG = DEBUG
 
 INTERNAL_IPS = ['127.0.0.1']    # needed for what? A: debug in templates
@@ -93,9 +93,9 @@ DATABASES = {
         'ENGINE':   'django.db.backends.mysql',
         #'HOST':     '/var/run/mysqld/mysqld.sock',     # default
         #'HOST':            Config.get ('database.hostname'),
-        'NAME':     Config.get ('database.name'),
-        'USER':     Config.get ('database.user'),
-        'PASSWORD': Config.get ('database.password'),
+        'NAME':     Config.get ('database.name', ''),
+        'USER':     Config.get ('database.user', ''),
+        'PASSWORD': Config.get ('database.password', ''),
         #'CONN_MAX_AGE': 3600,
         #'CONN_MAX_AGE': 0 if DEBUG else 3600
         #'OPTIONS':  { 'read_default_file': '/path/to/my.cnf' },
@@ -107,8 +107,11 @@ DATABASES = {
     },
 }
 DATABASES['default'] = DATABASES['dev' if DEBUG else 'mysql']
+del DATABASES['dev']
+del DATABASES['mysql']
+
 #del DATABASES['dev' if not DEBUG else 'mysql']
-if DEBUG: del DATABASES['mysql']
+#if DEBUG: del DATABASES['mysql']
 #DATABASES['default'] = DATABASES['mysql']
 #DATABASES['default'] = DATABASES[Config.get('dbengine', 'dev')]
 
@@ -264,37 +267,37 @@ LOGGING = {
 
         'file:catch-all': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('logs', 'catch-all.log'),
+            'filename': rootdir ('django', 'logs', 'catch-all.log'),
             'formatter': 'verbose',
         },
 
         'file:apps': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('logs', 'apps.log'),
+            'filename': rootdir ('django', 'logs', 'apps.log'),
             'formatter': 'verbose',
         },
 
         'file:django': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('logs', 'django.log'),
+            'filename': rootdir ('django', 'logs', 'django.log'),
             'formatter': 'verbose',
         },
 
         'file:db': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('logs', 'db.log'),
+            'filename': rootdir ('django', 'logs', 'db.log'),
             'formatter': 'verbose',
         },
 
         'file:request': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('logs', 'request.log'),
+            'filename': rootdir ('django', 'logs', 'request.log'),
             'formatter': 'verbose',
         },
 
         'file:security': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('logs', 'security.log'),
+            'filename': rootdir ('django', 'logs', 'security.log'),
             'formatter': 'verbose',
         },
 
@@ -302,7 +305,7 @@ LOGGING = {
 #            'level': 'ERROR',
 #            'class': 'logging.FileHandler',
 #            'formatter': 'verbose',
-#            'filename': rootdir ('logs', 'error.log'),
+#            'filename': rootdir ('django', 'logs', 'error.log'),
 #        },
     },
 
