@@ -31,8 +31,8 @@ test:
 	(cd django && ./manage.py check)
 	(cd django && ./manage.py test)
 	$(MAKE) -C django/static/css/ test
-	#python django/tests.py  # already run by django manage.py test
-	#@todo jslint
+	@#python django/tests.py  # already run by django manage.py test
+	@#@todo jslint
 
 
 # Test the live site: http://normal.no
