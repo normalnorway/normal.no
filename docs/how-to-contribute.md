@@ -1,10 +1,7 @@
 <!--
 TODO:
-@deb node-less to regenerate css files (add to docs/install also)
-can make changes directly on github
 url-namespace. can link to wiki
 html5. define browser support (lowest IE version)
-coding standards: Python 2.7 and Django 1.8
 rename CONTRIBUTING.md?
 Github: Howto clone the repo and send pull requests
 Github: Howto use the issue tracker
@@ -17,41 +14,10 @@ css for <code>
 more line-spacing?
 -->
 
-<!-- markdown don't touches stuff inside block tags, but head is not
-a block tag, so it messes it up. Therefor we wrapp head inside a div
-even tough it's not legal html -->
-<div>
-<meta charset="utf-8" />
-<style type="text/css">
-  pre {  /* box with code */
-    background-color: rgb(238, 238, 238);
-    border: 1px solid black;
-    padding: 1ex;
-    width: 52em;
-  }
-  p > code {    /* inline code */
-    font-size: 90%;
-    background-color: rgba(0,0,0,0.04);
-    padding: 0.33em 0.1em;
-    border-radius: 3px;
-  }
-  p { width: 50em; line-height: 1.44; }
-  h2 { margin-top: 3ex; }
-  div.toc {
-    border: 1px dashed black;
-    float: right;
-    padding-right: 1em;
-  }
-</style>
-</div>
-
-
 [TOC]
 
-<!--
-Hvordan komme i gang
-====================
--->
+Komme i gang med utvikling
+==========================
 
 _Sist oppdatert: @@DATE@@_
 
@@ -79,6 +45,10 @@ Linux-distribusjoner.
 
 ## Innledning ##
 
+Skal du bare gjøre endringer i innhold (tekst og bilder), er ikke dette
+guiden for deg. Slike endringer gjøres via admin-grensesnittet:
+<https://normal.no/admin/>
+
 Hvis du kun skal endre designet (html- og css-maler) virker nok denne
 guiden noe overveldene, og du kan hoppe over punktene `Installasjon` og
 `Django`, og du trenger ikke å installere noe ekstra på
@@ -93,12 +63,8 @@ blir for knotete, kan også filene lastes ned her: [Html maler][];
 Hvis du ikke kan programmere eller ikke har noe erfaring med Python eller
 webutvikling, burde du kanskje heller finne noe annet å bidra med. Hvis
 du derimot er teknisk annlagt, lærer fort, og brenner for oppgaven; sjekk
-ut denne videoen:
-[Python Web Development: Understanding Django for Beginners](http://www.youtube.com/watch?v=zTNA0MtZwso).
+ut denne videoen: [Python Web Development: Understanding Django for Beginners](http://www.youtube.com/watch?v=zTNA0MtZwso).
 
-Skal du bare gjøre endringer i innhold (tekst og bilder), er ikke dette
-guiden for deg. Slike endringer gjøres via admin-grensesnittet:
-<https://normal.no/admin/>
 
 
 ## Installasjon ##
@@ -106,10 +72,10 @@ guiden for deg. Slike endringer gjøres via admin-grensesnittet:
 
 ### Windows ###
 
-Forfatter har ikke tilgang til Windows, så her må du klare deg selv. Men
-det burde være grei skuring. Hvis du setter opp på Windows så bidra
+Forfatteren har ikke tilgang til Windows, så her må du klare deg selv.
+Men det burde være grei skuring. Hvis du setter opp på Windows så bidra
 gjerne til denne guiden ved å skrive ned hvordan du gjorde det. Her er
-noen lenker som hjelper deg på vei:
+noen lenker som kan hjelpe deg på vei:
 
 * [GIT for Windows](http://msysgit.github.io/)
 * [Python for Windows](https://www.python.org/downloads/windows/)
