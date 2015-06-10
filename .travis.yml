@@ -9,6 +9,9 @@ python:
 
 install: "pip install -r requirements.txt"
 
+before_script:
+  - django/manage.py migrate
+
 # Command to run tests
 script: make test
 #script: nosetests
