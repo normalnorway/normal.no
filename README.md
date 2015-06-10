@@ -1,6 +1,7 @@
 # Normals webpage [normal.no](http://normal.no)
 
 [![Code Health](https://landscape.io/github/normalnorway/normal.no/master/landscape.svg?style=plastic)](https://landscape.io/github/normalnorway/normal.no/master)
+[![Build Status](https://travis-ci.org/normalnorway/normal.no.svg?branch=master)](https://travis-ci.org/normalnorway/normal.no)
 
 This is the source code running Normal's webpage – <http://normal.no>
 
