@@ -24,7 +24,7 @@ urlpatterns = [
     # @todo can redirect to named view instead
     url(u'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
     url(r'^rss/$', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
-    url(u'^gruppesøksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
+    url(u'^gruppes??ksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
     url(u'^frivillig/$', RedirectView.as_view (url='/sider/frivillig/', permanent=True)),
 
     url(r'^nyheter/',  include ('apps.news.urls')),
@@ -51,6 +51,7 @@ urlpatterns = [
     # Note: Must be *after* passrod reset links!
     #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
     url(r'^admin/',    include (admin.site.urls)),
+    url(r'^polls/', include('apps.polls.urls',  namespace="polls")),
 ]
 
 
