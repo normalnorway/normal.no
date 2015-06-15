@@ -1,0 +1,39 @@
+<style>
+#id_name        { width: 33rem; }
+#id_description { width: 33rem; }
+
+label:not(.required) {
+  color: grey;
+}
+tr.validation-error label {
+  color: red;
+}
+ul.errorlist {
+  color: darkred;
+}
+/*
+.validation-error { color: red; }
+th {
+  vertical-align: top;
+}
+*/
+</style>
+
+<h2>CMS » File » Add</h2>
+
+{% if form.errors %}
+<p><strong>Venligst rett feilene under!</strong></p>
+<!-- {{form.errors}} -->
+{% endif %}
+
+<!--
+Checkbox to generate unique url/filename? uuid4().hex
+  http://stackoverflow.com/questions/15140942/django-imagefield-change-file-name-on-upload
+Way to override url (filename part of it)
+-->
+
+<form method="post" enctype="multipart/form-data"> {% csrf_token %}
+  <table>{{form.as_table}}</table>
+  <br />
+  <input type="submit" value="Upload" />
+</form>

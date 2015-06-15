@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import admin
 
 from apps.content.views import PageEditView, BlockEditView
+#from apps.cms import views as cms_views
 
 import website.admin
 
@@ -20,15 +21,40 @@ urlpatterns = [
 
     url(r'^nyhetsbrev/1/$', TemplateView.as_view (template_name='newsletter-1.html')),
 
+    # Map fixed urls to apps.cms.Page
+    # @todo alias with ascii-only url (stott -> støtt)
+    # @todo /om/ -> /om/normal/ alias
+    # @todo /europa/
+#    url(r'^om-normal/$',    cms_views.PageByUrl.as_view (url='/om-normal/')),
+#    url(r'^om-normal/ledelsen/$', cms_views.PageByUrl.as_view (url='/om-normal/ledelsen/')),
+#    url(u'^støtt/$',        cms_views.PageByUrl.as_view (url='/støtt/')),
+#    url(r'^om-cannabis/$',  cms_views.PageByUrl.as_view (url='/om-cannabis/')),
+#    url(r'^faq/$',          cms_views.PageByUrl.as_view (url='/faq/')),
+#    url(r'^medisin/$',      cms_views.PageByUrl.as_view (url='/medisin/')),
+    # @todo move facebook + cannatlf to sider/
+#    url(r'^facebook/$',     cms_views.PageByUrl.as_view (url='/facebook/')),
+#    url(r'^press/$',        cms_views.PageByUrl.as_view (url='/press/')),
+#    url(r'^visjon/$',       cms_views.PageByUrl.as_view (url='/visjon/')),
+#    url(r'^cannabistelefonen/$', cms_views.PageByUrl.as_view (url='/cannabistelefonen/')),
+
+    # Map /sider/* to apps.Cms.Page
+#    url(r'^sider/(?P<url>.*)$', cms_views.page),
+    #url(r'^sider/(?P<url>.*)$', cms_views.PageFoo.as_view()),
+
+    # Generic detail view PageDetail must be called with either an object pk or a slug.
+    #url(r'^faq/$', cms_views.PageDetail.as_view (queryset=Page.objects.filter(pk=3))),
+
     # Redirect deprecated urls
     # @todo can redirect to named view instead
-    url(u'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
+    url(r'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
     url(r'^rss/$', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
     url(u'^gruppesøksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
-    url(u'^frivillig/$', RedirectView.as_view (url='/sider/frivillig/', permanent=True)),
+    url(r'^frivillig/$', RedirectView.as_view (url='/sider/frivillig/', permanent=True)),
 
-    url(r'^nyheter/',  include ('apps.news.urls')),
-    url(r'^tinymce/',  include ('tinymce4.urls')),
+    url(r'^nyheter/',   include ('apps.news.urls')),
+    url(r'^tinymce/',   include ('tinymce4.urls')),
+    url(r'^cms/',       include ('apps.cms.urls')),
+    # @todo import apps - then can drop quotes
 
     # Non-admin forms
     url(r'^edit/page/(?P<pk>\d+)/$', login_required(PageEditView.as_view()), name='edit-page'),
@@ -48,9 +74,9 @@ urlpatterns = [
     url(r'^google5b6561fca1bd3c25.html/$', lambda nil:
         HttpResponse ('google-site-verification: google5b6561fca1bd3c25.html')),
 
-    # Note: Must be *after* passrod reset links!
-    #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, admin is temporarily closed due to maintenance!</strong>')),
-    url(r'^admin/',    include (admin.site.urls)),
+    # Note: Should be last! (At least after password reset links)
+    url(r'^admin/', include (admin.site.urls)), # @todo add namespace
+    #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, temporarily closed due to maintenance!</strong>')),
 ]
 
 

@@ -8,6 +8,7 @@ import os
 from django.conf import global_settings as defaults
 
 BASE_DIR = os.path.realpath (os.path.join (__file__, '../../../'))
+# @todo use django default
 
 def rootdir (*args):    # rename mk_filename
     """Constructs a path relative to the project root directory"""
@@ -80,6 +81,7 @@ INSTALLED_APPS = (
     'apps.links',
     'apps.content',
     'apps.support',
+    'apps.cms',
 )
 
 
@@ -116,15 +118,19 @@ del DATABASES['mysql']
 #DATABASES['default'] = DATABASES[Config.get('dbengine', 'dev')]
 
 
-
+## Cache
 CACHES = {
     'default': { # This is a thread-safe, per-process cache.
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'TIMEOUT': 3600
+        'TIMEOUT': 3600,    # default ttl?
     }
+#    'dev': {
+#        'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+#    }
 }
+#CACHES['default'] = CACHES.get ('dev' if DEBUG else 'live')
 if DEBUG: CACHES['default'] = {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+    'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
 }
 
 
@@ -139,6 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
 
 if not DEBUG:   # Enable template caching on the production site.
     TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', defaults.TEMPLATE_LOADERS),)
+
 
 
 ## Static & media files

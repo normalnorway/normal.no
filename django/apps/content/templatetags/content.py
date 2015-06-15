@@ -19,5 +19,5 @@ def get_content (context, key):
     url = reverse ('edit-block', args=[obj.pk])
     url += '?back=%s' % urlquote_plus (request.get_full_path())
 
-    return obj.content + '<a href="%s" class="admin-edit-link">Rediger</a>' % url
+    return obj.content + '<a href="%s" accesskey="e" class="admin-edit-link">Rediger</a>' % url
     # Note: returned string is automatically marked as safe

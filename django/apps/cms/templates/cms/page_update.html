@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block extratitle %} » Rediger side {{ page.pk }}{% endblock %}
+
+{% block extrahead %} {{ form.media }} {% endblock %}
+
+{% block extrastyle %}<style>
+#id_title {
+  width: 30rem;
+}
+form#page_edit label {
+  font-weight: bolder;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Rediger side: <span class="smaller">{{ page.title }}</span></h1>
+
+<div>{{ form.non_field_errors }}</div>
+
+<form method="post" id="page_edit">{% csrf_token %}
+  <input type="submit" value="Lagre" style="float:right" />
+
+  {{ form.title.errors }}
+  <p><label for="id_title">Title:</label> {{ form.title }}</p>
+
+  <p>{{ form.content }}</p>
+
+  <p><input type="submit" value="Lagre" /></p>
+</form>
+
+{% endblock %}

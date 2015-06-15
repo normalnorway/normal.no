@@ -24,15 +24,51 @@ window._djangomce =
     setup: function (editor)
     {
         editor.addMenuItem ('code', {context: 'tools'});
-        editor.addMenuItem ('addcaption', { text: 'Add caption to image (beta)', context: 'tools', onclick: _djangomce.add_caption, });
-        //editor.addMenuItem ('test1', { text: 'Test 1', context: 'tools', onclick: _test1, });
-        /*
-        editor.addMenuItem ('myitem', {
-            text: 'Testing', context: 'tools', onclick: function() {
-                txt = prompt('Bildetekst: ');
-                editor.insertContent (txt);
-        }});
-        */
+        editor.addMenuItem ('addcaption', {
+            text: 'Add caption to image (beta)',
+            context: 'tools',
+            onclick: _djangomce.add_caption,
+            //txt = prompt('Bildetekst: ');
+            //editor.insertContent (txt);
+        });
+        editor.addMenuItem ('linkfile', {
+            text: 'Insert file',
+            context: 'insert',
+            onclick: function() {
+                editor.windowManager.open ({
+                    title: 'Title',
+                    body: [
+                        {type: 'textbox', name: 'title', label: 'Title'},
+                    ],
+                    onsubmit: function (ev) {
+                        editor.insertContent (ev.data.title);
+                    }
+                });
+            }
+        });
+
+        editor.addButton ('linkfile', { // link-cms-file
+            //text: 'Link to CMS file',
+            text: 'CMS',
+            icon: false,
+            onclick: _djangomce._linkfile,
+        });
+    },
+
+    _linkfile: function (ev)
+    {
+        editor = tinymce.activeEditor;
+//        args = { foo: 123, bar: 666 };
+        editor.windowManager.open ({
+            title: "Select a file to link to",
+            url: '/cms/file/select/',
+            width: 800,
+            height: 300,
+//            buttons: [
+//                { text: 'Close', onclick: 'close' },
+//                { text: 'Fuck off!', onclick: 'close' },
+//            ],
+        });
     },
 
     upload: function (form, output)
@@ -211,7 +247,7 @@ tinymce.init ({
         edit: { title: 'Edit', items:
             'undo redo | cut copy paste pastetext | selectall searchreplace'},
         insert: { title: 'Insert', items:
-            'image link media | anchor | hr nonbreaking insertdatetime'},
+            'image link linkfile media | anchor | hr nonbreaking insertdatetime'},
         format: { title: 'Format', items:
             'bold italic underline strikethrough superscript subscript | formats | removeformat'},
         table: { title: 'Table', items:
@@ -223,7 +259,7 @@ tinymce.init ({
     toolbar1: 'undo redo | styleselect | bold italic forecolor | ' +
              'alignleft aligncenter alignright | ' +
              'bullist numlist outdent indent blockquote | ' +
-             'link image | code',
+             'link image linkfile | code',
 
 //    toolbar2: 'formatselect fontsizeselect removeformat ' +
 //              'preview fullscreen | template',
@@ -231,7 +267,7 @@ tinymce.init ({
     /** Plugins */
 
     plugins: [
-        'image', 'link', 'paste', 'anchor', 'code', 'table', 'textcolor',
+        'link', 'image', 'paste', 'anchor', 'code', 'table', 'textcolor',
         'visualblocks', 'nonbreaking', 'insertdatetime', 'hr', 'media',
         'searchreplace', 'charmap', 'paste',
         'preview', 'fullscreen', 'template',
@@ -276,6 +312,23 @@ tinymce.init ({
     // Handle file upload
     file_browser_callback: function (field_name, url, type, win)
     {
+        //console.log (type, field_name, url);
+	if (type == 'file') {
+            editor = tinymce.activeEditor;
+            args = { foo: 123, bar: 666 };
+            editor.windowManager.open ({
+                title: "Select a file to link to",
+                url: '/cms/file/selector/',
+                width: 700,
+                height: 550,
+            }, args);
+            // top.tinymce.activeEditor.windowManager.getParams();
+            // top.tinymce.activeEditor.windowManager.close();
+
+            win.document.getElementById (field_name).value = 'xxx';
+            return;
+        }
+
 	if (type != 'image') return;
 
 	var el = $get ('tinymce-file-input');

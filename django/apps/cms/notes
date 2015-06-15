@@ -1,3 +1,91 @@
 Q: include default templates in app, and let user override?
 
 @todo add README.md to document the app
+
+
+# File
+Filename is used as url.
+Howto get unique filename?
+a) Use hash of content
+b) prepend pk to filename (might not know pk at this time)
+c) from uuid import uuid4 ; uuid4().hex
+Update: django will fix it :)
+
+
+from . import forms
+class FileCreate (CreateView):	# q: Create -> Add?
+    form_class = forms.FileCreate
+    template_name = 'file/create.html'
+
+
+
+class File (models.Model):
+        #print type(self.file.file)
+        # <class 'django.core.files.uploadedfile.InMemoryUploadedFile'>
+        # <class 'django.core.files.base.File'>
+
+        #self.mimetype = @todo autodetect. but how to get filename before save?
+        # A: can use self.file.field.upload_to
+        # better: just use self.file.file to read the file contents
+        # or do it after save. will hit db twice
+        # self.mimetype = detect_mimetype (self.file.path)
+        #super(File, self).save (update_fields=['mimetype'])
+
+    # file.url, file.path
+    # file.name     u'cms/file/cannabis-flos-bedican.jpg'
+    # file.url      '/media/cms/file/cannabis-flos-bedican.jpg'
+    # file.path     u'/home/torkel/work/normal.no/htdocs/media/cms/file/cannabis-flos-bedican.jpg'
+
+
+
+# Url Namespace
+# Note: Prefix is 'cms'; set when importing app into main urls.py
+/cms/page/<id>
+/cms/page/edit/<id>
+/cms/block/<id>
+/cms/block/edit/<id>
+
+/cms/file	list view
+/cms/file/<id>	item view
+/cms/file/download/<id>
+/cms/file/new
+
+
+
+
+    class Meta:
+        permissions = (
+            ('change_page_gsf', u'Can change «gruppesøksmål»-pages'),
+        )
+
+
+# class Block
+user.has_perm ('cms.change_page')
+user.has_perm ('cms.change_page_<extraacl>')  ??
+user.has_perm ('cms.change_block')
+
+
+
+# Deprecated. Much easier to override form_valid()
+class FileCreate (FormView):
+    form_class = FileCreateForm
+    template_name = 'file/add.html'
+
+    def post (self, request):
+        form = FileCreateForm (request.POST, request.FILES)
+        if not form.is_valid():
+            ctx = self.get_context_data (form=form)
+            return render (request, self.template_name, ctx)
+        upfile = request.FILES['file']
+        obj = form.save (commit=False)
+        obj.size = upfile.size  # obj.file._get_size_from_underlying_file()
+        obj.mimetype = upfile.content_type
+        if not obj.name:
+            obj.name = upfile.name.split('.', 1)[0]
+            #obj.name = os.path.splitext (upfile.name)[0]
+        obj.full_clean()    # needed?
+        obj.save()
+        #print obj.file.field.upload_to
+        #print obj.file.size
+        #charset = upfile.charset if upfile.content_type == 'text/*' else None
+        assert False

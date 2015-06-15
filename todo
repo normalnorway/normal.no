@@ -75,3 +75,6 @@ run ./manage.py check before commit/push
 add own system checks: https://docs.djangoproject.com/en/1.8/topics/checks/
 
 bug: footer renders wrongly in IE < 9  http://netrenderer.com/index.php
+
+rename branch production -> live
+  http://stackoverflow.com/questions/13858276/how-can-i-find-all-commits-that-are-in-one-branch-but-not-in-another-using-git

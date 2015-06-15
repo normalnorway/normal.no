@@ -1,0 +1,30 @@
+<!-- Used by TinyMCE file selector -->
+
+<script>
+var editor = top.tinymce.activeEditor;
+
+function log (arg) { top.console.log (arg); }
+//log (editor.windowManager.getParams());
+
+// TODO
+// don't pass url in href
+// a.title: use file.name if have selected text
+// support undo?
+function _select (that)
+{
+    //var url = that.href;    // note: domain is added
+    var url = that.pathname;
+    var name = that.text;
+
+    var text = editor.selection.getContent() || name;
+    var el = editor.dom.create ('a', {'href': url}, text);
+    editor.selection.setNode (el);
+    editor.windowManager.close();
+}
+</script>
+
+<ul style="margin-top: 1.33em">
+  {% for file in object_list %}
+  <li><a href="{{file.file.url}}" onclick="_select(this); return false;">{{file.name}}</a></li>
+  {% endfor %}
+</ul>

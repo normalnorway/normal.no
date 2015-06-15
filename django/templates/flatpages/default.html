@@ -6,7 +6,8 @@
 
 {# Note: Can't check has_perm('flatpages.change_flatpage') #}
 {% if user.is_staff %}
-<a href="{% url "edit-page" pk=flatpage.pk %}" class="admin-edit-link">Rediger</a>
+<a href="{% url "edit-page" pk=flatpage.pk %}"
+   accesskey="e" class="admin-edit-link">Rediger</a>
 {% endif %}
 
 {{ flatpage.content }}
