@@ -129,16 +129,41 @@ if DEBUG: CACHES['default'] = {
 
 
 ## Templates
-TEMPLATE_DIRS = (
-    rootdir ('django', 'templates'),
-)
+loaders = [ # tpl_loaders
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+]
+#if not DEBUG:   # Enable template caching
+#    loaders = ('django.template.loaders.cached.Loader', loaders)
+if not DEBUG: loaders = ('django.template.loaders.cached.Loader', loaders)
 
-TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-    'django.core.context_processors.request',
-)   # Note: Only used by dev-site to check request.META.SERVER_NAME
+# https://docs.djangoproject.com/en/1.8/ref/templates/upgrading/
+# Furthermore you should replace django.core.context_processors with
+# django.template.context_processors in the names of context processors.
+# If it sets TEMPLATE_DEBUG to a value that differs from DEBUG, include
+# that value under the 'debug' key in 'OPTIONS'.
+TEMPLATES = [
+    {
+        'BACKEND':  'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            rootdir ('django', 'templates')
+        ],
+        # app_dirs must not be set when loaders is defined.
+        #'APP_DIRS': True,
+        'OPTIONS': {
+            'loaders': [loaders],
+            'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS +
+                ('django.core.context_processors.request',)
+                # only used by dev-site to check request.META.SERVER_NAME
+            #'string_if_invalid': 'MISSING',
+        },
+    },
+]
+del loaders
 
-if not DEBUG:   # Enable template caching on the production site.
-    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', defaults.TEMPLATE_LOADERS),)
+#loaders.append (('django.template.loaders.locmem.Loader', {
+#    'index.html': 'content here',
+#}))
 
 
 ## Static & media files
@@ -154,6 +179,7 @@ MEDIA_ROOT = rootdir ('htdocs', 'media')
 
 
 # Note: these are invoked in reverse order for the response.
+# @todo can use default?
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
