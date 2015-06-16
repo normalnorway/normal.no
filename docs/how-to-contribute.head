@@ -1,0 +1,27 @@
+<!-- markdown don't touches stuff inside block tags, but head is not
+a block tag, so it messes it up. Therefor we wrapp head inside a div
+even tough it's not legal html -->
+<div>
+<meta charset="utf-8" />
+<style type="text/css">
+  pre {  /* box with code */
+    background-color: rgb(238, 238, 238);
+    border: 1px solid black;
+    padding: 1ex;
+    width: 52em;
+  }
+  p > code {    /* inline code */
+    font-size: 90%;
+    background-color: rgba(0,0,0,0.04);
+    padding: 0.33em 0.1em;
+    border-radius: 3px;
+  }
+  p { width: 50em; line-height: 1.44; }
+  h2 { margin-top: 3ex; }
+  div.toc {
+    border: 1px dashed black;
+    float: right;
+    padding-right: 1em;
+  }
+</style>
+</div>
