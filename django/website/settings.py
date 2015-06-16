@@ -85,6 +85,7 @@ INSTALLED_APPS = (
     'apps.content',
     'apps.support',
     'apps.cms',
+    'apps.polls',
 )
 
 
