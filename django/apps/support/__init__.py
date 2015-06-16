@@ -5,7 +5,13 @@ from website.settings import rootdir
 
 # File object to write new members to. Use add_new_member() instead
 # of directly writing to this file.
-_new_member_fp = open (rootdir ('db', 'newmembers'), 'a')
+try:
+    _new_member_fp = open (rootdir ('db', 'newmembers'), 'a')
+except IOError, ex:
+    import logging
+    logging.critical ('Can not open newmembers file: ' + ex.strerror)
+    #logging.critical ('Can not open newmembers file: ' + str(ex))
+    # @todo pass exception
 
 
 # @todo move to core.members?

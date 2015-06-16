@@ -166,6 +166,7 @@ SITE_ID = 1
 # Note: The secret key must be the same for all processes and not change
 # between sessions. It can therefore only be auto-generated once, and must
 # then be written to persistent storage and loaded on each subsequent run.
+# BETTER to set SECRET_KEY here, then overwrite?
 if DEBUG:
     SECRET_KEY = 'x' * 50
     #SECRET_KEY = ''.join (chr(random.randint(33,126)) for x in xrange(50))
@@ -173,12 +174,20 @@ else:
     try:
         SECRET_KEY = open (rootdir('secret-key')).readline()
     except IOError, ex:
-        import sys, base64
-        key = base64.b64encode (os.urandom(48))
-        print >>sys.stderr, 'ERROR: %s: %s' % (ex.filename, ex.strerror)
-        print >>sys.stderr, 'You can create it like this:'
-        print >>sys.stderr, 'echo %s > %s' % (key, ex.filename)
-        os.abort()
+        # XXX BUG when running: django/manage.py check  (as torkel)
+        # ERROR: /srv/www/normal.no/secret-key: Permission denied
+        # Fix 1: Add torkel to www-data group
+        # Fix 2: Bail on errno.EACCES
+        import errno
+        if ex.errno != errno.EACCES:
+            import sys, base64
+            key = base64.b64encode (os.urandom(48))
+            print >>sys.stderr, 'ERROR: %s: %s' % (ex.filename, ex.strerror)
+            print >>sys.stderr, 'You can create it like this:'
+            print >>sys.stderr, 'echo %s > %s' % (key, ex.filename)
+            os.abort()
+        else:
+            SECRET_KEY = 'x' * 50
 
 
 
@@ -326,3 +335,16 @@ LOGGING = {
 #        },
     },
 }
+
+# XXX
+# $ django/manage.py check
+#   ValueError: Unable to configure handler 'file:apps': [Errno 13]
+#   Permission denied: '/srv/www/normal.no/logs/apps.log'
+# Fix1: Add torkel to www-data, and chmod -R g+w logs/*.log
+# Fix2: Disable logging
+# Q: Howto detect if running through manage.py?
+#if not os.access (rootdir('logs'), os.W_OK):
+# Note: logs/ is owned by 'torkel'. better to be owned by root!
+#       and more secure if not writable by www-data/apache
+if not os.access (rootdir ('logs', 'apps.log'), os.W_OK):
+    del LOGGING
