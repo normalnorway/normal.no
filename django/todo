@@ -45,3 +45,6 @@ retab all template files
 
 http://normal.no/login
 http://normal.no/logout
+
+Use ManifestStaticFilesStorage. So MD5 hash is appended to filename.
+https://docs.djangoproject.com/en/1.8/ref/contrib/staticfiles/#manifeststaticfilesstorage
