@@ -12,6 +12,10 @@ class File (models.Model):
     # fields: upload_date? (can check the file), charset?
     # image fields: caption, copyright, copyright_url (attribution), comment?
 
+    # Can use property to detect when image changes, and only
+    # auto-detect mimetype when changed.
+    # file = property(get_file, set_file)
+
     # Note: can't use self.file.{path,url} before save() is called
     def save (self, *args, **kwargs):
         #is_new = self.pk is None

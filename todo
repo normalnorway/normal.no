@@ -1,33 +1,18 @@
 rate limit loggin attempts
 
-add published to (almost) every model. (remember to add db_index)
-add (internal) comment to (almost) every model
-
-http://normal.no/bli-medlem/
-  zipcode => integer field? validate 0-9999?
-
-remove static/ dir before collectstatic?
-  else looks like old files are kept
-
 no-cache and/or Expires: -1 on generated pages
 
 always redirect after POST, so not posting twice / browser shows warning
 
-strip all fields (e.g., news_article.body)
+http://www.websiteoptimization.com/speed/tweak/redirect/
 
-git: only allow fast-forward updates?
+http://packages.python.org/django-markdown/
 
-add requirements.txt
-  pip freeze > requirements.txt
+https://github.com/h5bp/html5-boilerplate/blob/master/.htaccess
+https://github.com/h5bp/html5-boilerplate/
 
-http://www.websiteoptimization.com/speed/tweak/redirect/  ??
-
-enable broken link notification middleware.
+enable broken link notification middleware? but with whitelist
 RewriteRule pattern -  [R=404] [other_flags]	# favicon.ico robots.txt ++
-
-Python has class calendar.HTMLCalendar([firstweekday])
-
-parskip = 50% of line height
 
 not needed on production server:
   static/js/less-1.4.1.min.js
@@ -41,26 +26,16 @@ Do this for old news archive?
   /cgi-bin/searchnews/
   /cgi-bin/rss
   /cgi-bin/viewnews?view=1242825757
+Or just redirect to old.normal.no?
+  If url not found and url found on old website => redirect
 
-/gmm/2005	redirect to old site?
-
-http://stackoverflow.com/questions/7965893/django-internationalization
-LOCALE_PATHS
-
-Add logout to menu {% if user.is_authenticated %}
-
-compress and merge javascript:
+compress and merge javascript
   @deb uglifyjs
   https://developers.google.com/closure/compiler/
   https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/submitting-patches/#compressing-javascript
 
 postfix js and css filenames with git hash, and set to never expire
-
-set images to never expire, then change url on update?
-
-Don't mix apache and django logs?
-  logs/apache
-  logs/django
+set images to never expire; and don't allow to change content after creation
 
 /srv/www/normal.no/normal.no.crt ==> ../certs/normal.no.crt
 /srv/www/normal.no/normal.no.key ==> ../certs/normal.no.key
@@ -70,11 +45,16 @@ delete from auth_permission where content_type_id not in (select id from django_
 
 https://github.com/django-extensions/django-extensions/blob/master/README.rst
 
-run ./manage.py check before commit/push
-
-add own system checks: https://docs.djangoproject.com/en/1.8/topics/checks/
-
-bug: footer renders wrongly in IE < 9  http://netrenderer.com/index.php
+can add own system checks: https://docs.djangoproject.com/en/1.8/topics/checks/
 
 rename branch production -> live
   http://stackoverflow.com/questions/13858276/how-can-i-find-all-commits-that-are-in-one-branch-but-not-in-another-using-git
+
+https://coveralls.io/  check code test coverage after each push
+
+Switch from db to file based sessions?
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
+SESSION_FILE_PATH = tempfile.gettempdir()	# default
+
+manage.py clearsessions. It’s recommended to call this command on
+a regular basis, for example as a daily cron job.

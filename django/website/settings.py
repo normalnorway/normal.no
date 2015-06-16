@@ -4,6 +4,9 @@
 # $ python manage.py diffsettings
 #
 
+# SESSION_COOKIE_AGE                        # default is 2 weeks
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True    # default is False
+
 import os
 from django.conf import global_settings as defaults
 

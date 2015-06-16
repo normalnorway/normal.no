@@ -29,6 +29,7 @@
     #SetEnvIfNoCase Request_URI "\.css$" dontlog
     #SetEnvIfNoCase Request_URI "\.js$" dontlog
     SetEnvIfNoCase Request_URI "\.(png|jpe?g|css|js)$" dontlog
+    # @todo /irc/ => dontlog
 
     LogFormat "%a %{%Y-%m-%dT%H:%M:%S}t %>s \"%r\" %B %D %k" myformat
 
