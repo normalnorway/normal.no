@@ -26,6 +26,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='article',
             name='url',
-            field=models.URLField(max_length=512, unique=True, null=True),
+            field=models.URLField(max_length=255, unique=True, null=True),
         ),
     ]

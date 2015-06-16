@@ -1,14 +1,8 @@
-add last modified date to flatpages
-Enable ETags and check: NOT MODIFIED
+http://normal.no/bli-medlem/	zipcode => integer field? validate 0-9999?
 
-mv static media ?
-  @see https://github.com/django/djangoproject.com
-
-http://packages.python.org/django-markdown/
-
-https://github.com/h5bp/html5-boilerplate/blob/master/.htaccess
-https://github.com/h5bp/html5-boilerplate/
-
+cms.Page
+  add last modified date
+  enable ETags and check: NOT MODIFIED
 
 <!--[if lte IE 8]>
 <div class="IENotice">This browser is outdated. Please <a
@@ -16,32 +10,8 @@ href="http://www.microsoft.com/windows/internet-explorer/default.aspx">upgrade</
 your browser to enjoy this website to its fullest extent.</div>
 <![endif]-->
 
-We recommend using a separate Web server -- i.e., one that's not also
-running Django -- for serving media.
-static.normal.no/static/
-static.normal.no/media/
+news.Link
+  assert no articles with !url and !body
+  fetch image (and canonical url) for old articles
 
-Use this for links (to preserve http vs https): ///
-
-Use Google CDN. But will it get from cache (expires in the future), or
-will it contact server and check if modified?
-A: from cache! :)
-Update: Google=Yes (but not when refreshing). FF=No
-
-# Switch from db to file based sessions?
-SESSION_ENGINE = "django.contrib.sessions.backends.file"
-SESSION_FILE_PATH = tempfile.gettempdir()	# default
-
-settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True	# default is False
-SESSION_COOKIE_AGE	# default is 2 weeks!
-
-manage.py clearsessions. It’s recommended to call this command on
-a regular basis, for example as a daily cron job.
-
-assert no articles with !url and !body
-fetch image (and canonical url) for old articles
-
-retab all template files
-
-http://normal.no/login
-http://normal.no/logout
+http://normal.no/login & logout

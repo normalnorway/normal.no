@@ -6,6 +6,9 @@ Fabric
 
 # Not in use anymore
 #Pillow
+# Update: True?
+#   Install PIL or Pillow. (If you're using an ImageField in Django, you
+#   should have already done this.)
 
 # Only needed for: docs/how-to-contribute.md
 #Markdown
