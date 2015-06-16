@@ -3,6 +3,7 @@ import ConfigParser
 # Possible improvements:
 # * Get default values from the environment
 # * Get default values from this file
+# @todo log/error if site.ini exists, but not readable
 
 
 # These are the defaults if not defined in the inifile ('site.ini')
