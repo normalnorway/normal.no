@@ -1,21 +1,17 @@
 # Common settings for both http and https
 
-    ServerName      normal.no
-    ServerAlias     normal.i2p
-    ServerAlias     qrw3w45sx7niqcpg.onion
-    ServerAlias     test.normal.no
-
+    ServerName      dev.normal.no
     ServerAdmin     torkel@normal.no
 
-    WSGIScriptAlias /   /srv/www/normal.no/django/website/wsgi.py
+    WSGIScriptAlias /   /srv/www/dev.normal.no/django/website/wsgi.py
     WSGIProcessGroup    django
 
-    Alias /static/      /srv/www/normal.no/htdocs/static/
-    Alias /media/       /srv/www/normal.no/htdocs/media/
-    #Alias /favicon.ico /srv/www/normal.no/htdocs/static/favicon.ico
-    #Alias /robots.txt  /srv/www/normal.no/htdocs/static/robots.txt
+    Alias /static/      /srv/www/dev.normal.no/htdocs/static/
+    Alias /media/       /srv/www/dev.normal.no/htdocs/media/
+    #Alias /favicon.ico /srv/www/dev.normal.no/htdocs/static/favicon.ico
+    #Alias /robots.txt  /srv/www/dev.normal.no/htdocs/static/robots.txt
 
-    <Directory /srv/www/normal.no/htdocs/media/files>
+    <Directory /srv/www/dev.normal.no/htdocs/media/files>
 	# @todo move to (site) global scope?
 	AddDefaultCharset utf-8
 	# I like symlinks
@@ -32,10 +28,10 @@
 
     LogFormat "%a %{%Y-%m-%dT%H:%M:%S}t %>s \"%r\" %B %D %k" myformat
 
-    ErrorLog    /srv/www/normal.no/logs/error
-    CustomLog   /srv/www/normal.no/logs/access  myformat                env=!dontlog
-    CustomLog   /srv/www/normal.no/logs/refer   "%a %{Referer}i => %U"  env=!dontlog
-    CustomLog   /srv/www/normal.no/logs/agent   "%a %{User-agent}i"     env=!dontlog
+    ErrorLog    /srv/www/dev.normal.no/logs/error
+    CustomLog   /srv/www/dev.normal.no/logs/access  myformat                env=!dontlog
+    CustomLog   /srv/www/dev.normal.no/logs/refer   "%a %{Referer}i => %U"  env=!dontlog
+    CustomLog   /srv/www/dev.normal.no/logs/agent   "%a %{User-agent}i"     env=!dontlog
     # Transfer: ip, time, status, request, size, time-taken, keepalive count
     # Refer:    ip, refer, request url
     # Agent:    ip, user-agent
@@ -57,30 +53,16 @@
 
 
     ## Access control (ACL)
-    <Directory /srv/www/normal.no/htdocs>
-        <IfModule mod_authz_core.c>
-            # Apache 2.4
-            Require all granted
-        </IfModule>
-        <IfModule !mod_authz_core.c>
-            # Apache 2.2
-            Allow from all
-        </IfModule>
-
+    <Directory /srv/www/dev.normal.no/htdocs>
+        Allow from all
         # @todo move these to virtual-host scope?
-        # update: only allowed for 'Options'. better to drop. should be default
         Options none
         AllowOverride none
     </Directory>
 
-    <Directory /srv/www/normal.no/django/website>
+    <Directory /srv/www/dev.normal.no/django/website>
         <Files wsgi.py>
-            <IfModule mod_authz_core.c>
-                Require all granted
-            </IfModule>
-            <IfModule !mod_authz_core.c>
-                Allow from all
-            </IfModule>
+            Allow from all
         </Files>
     </Directory>
 
