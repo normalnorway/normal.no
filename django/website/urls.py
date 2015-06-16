@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^nyheter/',   include ('apps.news.urls')),
     url(r'^tinymce/',   include ('tinymce4.urls')),
     url(r'^cms/',       include ('apps.cms.urls')),
+    url(r'^polls/',     include ('apps.polls.urls', namespace="polls")),
     # @todo import apps - then can drop quotes
 
     # Non-admin forms

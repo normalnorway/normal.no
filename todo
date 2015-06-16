@@ -58,3 +58,7 @@ SESSION_FILE_PATH = tempfile.gettempdir()	# default
 
 manage.py clearsessions. It’s recommended to call this command on
 a regular basis, for example as a daily cron job.
+
+bug: footer renders wrongly in IE < 9  http://netrenderer.com/index.php
+
+git-hook that rejects commits with whitespace errors

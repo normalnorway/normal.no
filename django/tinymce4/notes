@@ -1,5 +1,9 @@
 https://github.com/joshbeitler/django-mce4
 
+tinymce.util.XHR.send ({url: url, success: function (text) {
+    callback (tinymce.util.JSON.parse(text));
+}});
+
 windowManager.open({ ... });
   https://github.com/2b3ez/FileManager4TinyMCE/blob/master/tinymce/plugins/image/plugin.min.js
 

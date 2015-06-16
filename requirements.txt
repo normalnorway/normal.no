@@ -1,7 +1,7 @@
 # Note: You don't have to install everything just for doing development!
 # pip install -r requirements.txt
 
-Django>=1.7
+Django>=1.8
 Fabric
 
 # Not in use anymore
