@@ -345,3 +345,16 @@ LOGGING = {
 #        },
     },
 }
+
+# XXX
+# $ django/manage.py check
+#   ValueError: Unable to configure handler 'file:apps': [Errno 13]
+#   Permission denied: '/srv/www/normal.no/logs/apps.log'
+# Fix1: Add torkel to www-data, and chmod -R g+w logs/*.log
+# Fix2: Disable logging
+# Q: Howto detect if running through manage.py?
+#if not os.access (rootdir('logs'), os.W_OK):
+# Note: logs/ is owned by 'torkel'. better to be owned by root!
+#       and more secure if not writable by www-data/apache
+if not os.access (rootdir ('logs', 'apps.log'), os.W_OK):
+    del LOGGING

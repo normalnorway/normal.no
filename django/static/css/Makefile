@@ -10,6 +10,15 @@ LESSCFLAGS=--no-js --clean-css --compress
 # Note: --clean-css compress a little bit better than --compress
 # Update: With Debians node-less (1.4.2), --clean-css does not compress!
 
+# XXX Hack for lessc 2.5.0 on srv1
+# Unable to interpret argument clean-css - if it is a plugin
+#   (less-plugin-clean-css), make sure that it is installed under or at
+#   the same level as less
+# The compress option has been deprecated. We recommend you use
+#   a dedicated css minifier, for instance see less-plugin-clean-css.
+LESSCFLAGS=--no-js --compress
+
+
 cssfiles := $(patsubst %.less,%.css,$(wildcard *.less))
 # SOURCES = site.less style.less classes.less sections.less
 # OBJS    = ${SOURCES:.less=.less}
