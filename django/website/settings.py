@@ -10,12 +10,12 @@
 import os
 from django.conf import global_settings as defaults
 
-BASE_DIR = os.path.realpath (os.path.join (__file__, '../../../'))
-# @todo use django default
+BASE_DIR = os.path.dirname (os.path.dirname (__file__))
+_ROOT_DIR = os.path.realpath (os.path.join (__file__, '../../../'))
 
 def rootdir (*args):    # rename mk_filename
     """Constructs a path relative to the project root directory"""
-    return os.path.join (BASE_DIR, *args)
+    return os.path.join (_ROOT_DIR, *args)
 
 from siteconfig import SiteConfig
 Config = SiteConfig (rootdir ('site.ini'))
@@ -95,7 +95,7 @@ INSTALLED_APPS = (
 _DATABASES = {
     'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join (BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join (_ROOT_DIR, 'db.sqlite3'),
     },
     'mysql': {
         'ENGINE':   'django.db.backends.mysql',
@@ -142,24 +142,17 @@ if not DEBUG:   # Enable template caching
 # that value under the 'debug' key in 'OPTIONS'.
 TEMPLATES = [
     {
-        'BACKEND':  'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            rootdir ('django', 'templates')
-        ],
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [ os.path.join (BASE_DIR, 'templates') ],
         'OPTIONS': {
-            'loaders': [loaders],
+            'loaders': loaders,
+            #'string_if_invalid': '{{MISSING}}',
             'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS +
                 ('django.core.context_processors.request',) # used by dev to check request.META.SERVER_NAME
-            #'string_if_invalid': 'MISSING',
         },
     },
 ]
 del loaders
-
-#loaders.append (('django.template.loaders.locmem.Loader', {
-#    'index.html': 'content here',
-#}))
-
 
 
 ## Static & media files
