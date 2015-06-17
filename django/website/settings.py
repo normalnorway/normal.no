@@ -75,14 +75,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',      # only needed for database-backed session
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',         # flatpages dependence
-    'django.contrib.flatpages',
 
     'core',
     'tinymce4',     # only used to get staticfiles
     'apps.news',
     'apps.links',
-    'apps.content',
+#    'apps.content',
     'apps.support',
     'apps.cms',
     'apps.polls',
@@ -177,16 +175,12 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware', # Note: must be last!
 ]
 
 
 ROOT_URLCONF = 'website.urls'
 
 WSGI_APPLICATION = 'website.wsgi.application'
-
-# contrib.site (required by contrib.flatpages)
-SITE_ID = 1
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'

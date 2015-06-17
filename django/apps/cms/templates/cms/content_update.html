@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block extratitle %} » Rediger: {{ content.name }}{% endblock %}
+
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+<form method="post">{% csrf_token %}
+  <input type="submit" value="Lagre" style="float:right" />
+
+  <h1>Rediger side: <span class="smaller">{{ content.name }}</span></h1>
+
+  {{ form.content }}
+  <p>
+    <input type="submit" value="Lagre" />
+    <input type="button" value="Avbryt" onclick="window.history.back();" />
+  </p>
+</form>
+{% endblock %}

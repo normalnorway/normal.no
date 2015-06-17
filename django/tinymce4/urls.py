@@ -6,13 +6,14 @@ from django.conf.urls import patterns, url
 # - named urls: tinymce:upload, tinymce:link-list ?
 #   Q: can drop tinymce- prefix and use app_label instead?
 
-from apps.content.views import page_list_json as page_list_json_view
+from apps.cms.views import page_list_json
 
 urlpatterns = patterns ('tinymce4.views',
-    url (r'^upload/$', 'upload', name='tinymce-upload'),
+    url (r'^upload/$', 'upload', name='tinymce-upload'), # q: is name in use?
 
     # Note: You must provide this view your self!
-    # XXX view name is already prefixed with tinymce4.views
+    url (r'^page-list/$', page_list_json),
+
+    # don't work to import view by string
     #url (r'^page-list/$', 'apps.content.view.page_list_json', name='tinymce-link-list'),
-    url (r'^page-list/$', page_list_json_view, name='tinymce-link-list'),
 )

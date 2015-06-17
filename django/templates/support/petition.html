@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load cms %}
 
 {% block extratitle %} » Opprop{% endblock %}
 
@@ -32,7 +33,7 @@ table td.number {
 
 {% block content %}
 
-{% get_content "opprop-top" %}
+{% cms_content "opprop-top" %}
 
 <form method='post'>{% csrf_token %}
 

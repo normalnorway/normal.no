@@ -8,7 +8,7 @@
 #id_title {
   width: 30rem;
 }
-form#page_edit label {
+form#page_update label {
   font-weight: bolder;
 }
 </style>
@@ -21,15 +21,17 @@ form#page_edit label {
 
 <div>{{ form.non_field_errors }}</div>
 
-<form method="post" id="page_edit">{% csrf_token %}
+<form method="post" id="page_update">{% csrf_token %}
   <input type="submit" value="Lagre" style="float:right" />
 
   {{ form.title.errors }}
   <p><label for="id_title">Title:</label> {{ form.title }}</p>
 
-  <p>{{ form.content }}</p>
-
-  <p><input type="submit" value="Lagre" /></p>
+  {{ form.content }}
+  <p>
+    <input type="submit" value="Lagre" />
+    <input type="button" value="Avbryt" onclick="history.back();" />
+  </p>
 </form>
 
 {% endblock %}

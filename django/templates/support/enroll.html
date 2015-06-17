@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load cms %}
 
 {% block extratitle %} » Bli medlem{% endblock %}
 
@@ -31,7 +32,7 @@ form p.required:after {
 
 {% block content %}
 
-{% get_content "innmelding-top" %}
+{% cms_content "innmelding-top" %}
 
 {% if form.errors %}
 <p class="error">Vennligst rett feilen(e) under!</p>
@@ -43,6 +44,6 @@ form p.required:after {
 </form>
 
 <br>
-{% get_content "innmelding-bunn" %}
+{% cms_content "innmelding-bunn" %}
 
 {% endblock %}

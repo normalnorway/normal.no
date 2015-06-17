@@ -1,8 +1,11 @@
 from django.http import HttpResponse
 from django.contrib import admin
-from .models import Page, File
+from .models import Page, Content, File
 
 # can put save buttons on top?
+
+admin.site.register (Content)
+
 
 @admin.register (Page)
 class PageAdmin (admin.ModelAdmin):

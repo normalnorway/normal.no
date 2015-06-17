@@ -1,5 +1,7 @@
 Q: include default templates in app, and let user override?
 
+Page: add Last-Modified and ETag. Does conditional get work?
+
 @todo add README.md to document the app
 
 
@@ -63,7 +65,10 @@ class File (models.Model):
 user.has_perm ('cms.change_page')
 user.has_perm ('cms.change_page_<extraacl>')  ??
 user.has_perm ('cms.change_block')
-
+# class Page
+# class Block
+# user.has_perm ('content.change_page')
+# user.has_perm ('content.change_block')
 
 
 # Deprecated. Much easier to override form_valid()

@@ -1,29 +1,36 @@
 """
 Import old data into apps.cms
 flatpages -> Page
+apps.content.Content -> Content
 """
+
 import initdjango
 from datetime import datetime
-from django.db import transaction
 from django.contrib.flatpages.models import FlatPage
-from apps.cms.models import Page
+from apps.content.models import Content as OldContent
+from apps.cms.models import Page, Content
 
-# TransactionManagementError: Your database backend doesn't behave
-# properly when autocommit is off. Turn it on before using 'atomic'.
-#transaction.set_autocommit (False) # note: the deprecated way?
-# ...
-#transaction.commit()
 
 #Page.objects.all().delete()
+#Content.objects.all().delete()
 
-# strip /sider/ prefix
-def transform (obj):
+
+def init_content ():
+    data = OldContent.objects.values ('pk', 'name', 'content')
+    Content.objects.bulk_create (Content(**item) for item in data)
+
+
+def init_page ():
+    lst = FlatPage.objects.values('pk', 'title', 'url', 'content')
+    for obj in lst: _transform_page_obj (obj);
+    Page.objects.bulk_create (Page(**item) for item in lst)
+
+
+def _transform_page_obj (obj):    # strip /sider/ prefix
     if obj['url'].startswith ('/sider/'):
         obj['url'] = obj['url'][7:]
-    #return obj # must/shoud return None when called with filter()
 
-with transaction.atomic(): # note needed, since bulk_create
-    datalist = FlatPage.objects.values('pk', 'title', 'url', 'content')
-    #for obj in datalist: transform (obj);
-    filter (transform, datalist)
-    Page.objects.bulk_create (Page(**item) for item in datalist)
+
+if __name__ == '__main__':
+    init_content()
+    init_page()

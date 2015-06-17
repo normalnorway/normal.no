@@ -3,6 +3,8 @@
 {% block content %}
 <h1>Sider: Innholdsfortegnelse</h1>
 
+NOT IN USE!
+
 <ul style="font-size: 110%">
 {% for page in object_list %}
 <li><a href="{% url 'page-detail' page.pk %}">{{page.title}}</a></li>
