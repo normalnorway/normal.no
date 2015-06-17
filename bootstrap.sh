@@ -1,19 +1,14 @@
 #!/bin/sh -e
 
-## Git Submodules
-#git submodule init
-#git submodule update
-# Note: Submodules are check out in a detached state:
-#(cd django/apps/news/newsgrab && git co master)
-
-# Update: submodules are no longer used
 pip install -r requirements.txt
 
-## Fetch (test) database
-if [ ! -e db/normal.db ]; then
-    echo "Fetching db/normal.db"
-    (cd db && wget --quiet http://torkel.normal.no/normal.db)
-fi
+# @todo bootstrap db
+#if [ ! -e db/normal.db ]; then
 
-## Create directories
 mkdir -p logs
+
+chgrp www-data django/logs
+chmod g+w django/logs
+
+chown root:www-data db/newmembers
+chmod u=rw,g=w,o=   db/newmembers   # write-only for the apache user

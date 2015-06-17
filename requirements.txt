@@ -2,7 +2,7 @@
 # pip install -r requirements.txt
 
 Django>=1.8
-Fabric
+#Fabric
 
 # Not in use anymore
 #Pillow

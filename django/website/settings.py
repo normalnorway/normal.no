@@ -91,37 +91,28 @@ INSTALLED_APPS = (
 )
 
 
-# manage.py dumpdata [app...] --indent 2 --database dev
-DATABASES = {
-    'dev': {
-        'ENGINE':   'django.db.backends.sqlite3',
-        'NAME':     rootdir ('db', 'normal.db'),
+# manage.py dumpdata [app...] --indent 2 --database sqlite
+_DATABASES = {
+    'sqlite': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join (BASE_DIR, 'db.sqlite3'),
     },
     'mysql': {
         'ENGINE':   'django.db.backends.mysql',
-        #'HOST':     '/var/run/mysqld/mysqld.sock',     # default
-        #'HOST':            Config.get ('database.hostname'),
         'NAME':     Config.get ('database.name', ''),
         'USER':     Config.get ('database.user', ''),
         'PASSWORD': Config.get ('database.password', ''),
-        #'CONN_MAX_AGE': 3600,
-        #'CONN_MAX_AGE': 0 if DEBUG else 3600
-        #'OPTIONS':  { 'read_default_file': '/path/to/my.cnf' },
-        # https://docs.djangoproject.com/en/1.7/ref/databases/#connecting-to-the-database
-        # Remember: CREATE DATABASE <dbname> CHARACTER SET utf8;
-        # Note: Django don't create INODB tables by default!
-        # UPDATE: Did create INODB by default now (Django 1.8)
-        # But does not use utf8 by default!
+        'CONN_MAX_AGE': 0 if DEBUG else 3600,
+        #'OPTIONS':  {
+        #   'read_default_file': '/srv/www/normal.no/my.cnf'
+        #   'init_command': 'SET storage_engine=INNODB', # and set charset
+        #   # Note: Django uses mysql default storage engine by default
+        # },
     },
 }
-DATABASES['default'] = DATABASES['dev' if DEBUG else 'mysql']
-del DATABASES['dev']
-del DATABASES['mysql']
-
-#del DATABASES['dev' if not DEBUG else 'mysql']
-#if DEBUG: del DATABASES['mysql']
-#DATABASES['default'] = DATABASES['mysql']
-#DATABASES['default'] = DATABASES[Config.get('dbengine', 'dev')]
+DATABASES = {
+    'default': _DATABASES[Config.get ('database.backend', 'dev')]
+}
 
 
 ## Cache
@@ -130,24 +121,19 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'TIMEOUT': 3600,    # default ttl?
     }
-#    'dev': {
-#        'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
-#    }
 }
-#CACHES['default'] = CACHES.get ('dev' if DEBUG else 'live')
 if DEBUG: CACHES['default'] = {
     'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
 }
 
 
 ## Templates
-loaders = [ # tpl_loaders
+loaders = [ # template_loaders
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 ]
-#if not DEBUG:   # Enable template caching
-#    loaders = ('django.template.loaders.cached.Loader', loaders)
-if not DEBUG: loaders = ('django.template.loaders.cached.Loader', loaders)
+if not DEBUG:   # Enable template caching
+    loaders = ('django.template.loaders.cached.Loader', loaders)
 
 # https://docs.djangoproject.com/en/1.8/ref/templates/upgrading/
 # Furthermore you should replace django.core.context_processors with
@@ -160,13 +146,10 @@ TEMPLATES = [
         'DIRS': [
             rootdir ('django', 'templates')
         ],
-        # app_dirs must not be set when loaders is defined.
-        #'APP_DIRS': True,
         'OPTIONS': {
             'loaders': [loaders],
             'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS +
-                ('django.core.context_processors.request',)
-                # only used by dev-site to check request.META.SERVER_NAME
+                ('django.core.context_processors.request',) # used by dev to check request.META.SERVER_NAME
             #'string_if_invalid': 'MISSING',
         },
     },
@@ -385,5 +368,5 @@ LOGGING = {
 #if not os.access (rootdir('logs'), os.W_OK):
 # Note: logs/ is owned by 'torkel'. better to be owned by root!
 #       and more secure if not writable by www-data/apache
-if not os.access (rootdir ('logs', 'apps.log'), os.W_OK):
+if not os.access (rootdir ('django', 'logs'), os.W_OK):
     del LOGGING
