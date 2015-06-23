@@ -1,0 +1,70 @@
+{% extends "admin/base_site.html" %}
+{% load erp %}
+
+<!--
+@todo help icon, with hoover/pop help
+-->
+
+{% block content %}
+
+{% erp_cal %}
+<br class="clear" />
+
+<h2 style="margin-top:0;margin-bottom:-.33em">Tasks</h2>
+{% erp_get_tasks_by_username "ester" as tasks %}
+{% include "admin/erp/user_tasks.html" with name="Ester" %}
+{% erp_get_tasks_by_username "simon" as tasks %}
+{% include "admin/erp/user_tasks.html" with name="Simon" %}
+{% erp_get_tasks_by_username "torkel" as tasks %}
+{% include "admin/erp/user_tasks.html" with name="Torkel" %}
+
+<br class="clear" />
+
+<br />
+<br />
+<p>&nbsp;Tasks without an owner. Please adopt one of these
+poor orhphanded tasks!</p>
+{% erp_get_tasks as tasks %}
+{% include "admin/erp/tasklist.html" %}
+
+<br>
+
+<h2>Reminders</h2>
+{% erp_get_reminders as reminders %}
+{% include "admin/erp/reminderlist.html" %}
+
+<br />
+
+<h2 style="margin-top:1.66em">Notes</h2>
+{% erp_get_notes as notes %}
+{% include "admin/erp/notelist.html" %}
+
+{% endblock %}
+
+
+
+{# Boilerplate stuff bellow #}
+
+{# @todo title #}
+{# @todo rename css file #}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{{STATIC_URL}}erp/style.css" />
+<link rel="stylesheet" href="{{STATIC_URL}}erp/app_index.css" />
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">Resource planning</h1>
+{% endblock %}
+
+{% block nav-global %}
+{% include "erp/nav-global.html" %}
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Hjem</a> &rsaquo;
+  <a href="{% url 'admin:app_list' 'erp' %}">Resource planning</a> &rsaquo;
+  Index
+</div>
+{% endblock %}

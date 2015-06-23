@@ -1,0 +1,16 @@
+<!-- @todo use this on all erp admin pages -->
+
+<div id="nav-global">
+  New:
+  <a href="{% url 'admin:erp_contact_add' %}">Contact</a> |
+  <a href="{% url 'admin:erp_task_add' %}">Task</a> |
+  <a href="{% url 'admin:erp_reminder_add' %}">Reminder</a> |
+  <a href="{% url 'admin:erp_note_add' %}">Note</a>
+
+  &nbsp; &nbsp; &nbsp;
+  Views:
+  <a href="{% url 'admin:erp_contact_changelist' %}">Contacts</a> |
+  <a href="{% url 'admin:erp_task_changelist' %}">Tasks</a> |
+  <a href="{% url 'admin:erp_reminder_changelist' %}">Reminders</a> |
+  <a href="{% url 'admin:erp_note_changelist' %}">Notes</a>
+</div>

@@ -1,0 +1,43 @@
+<!--
+@todo no adopt-me on mypage
+-->
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Due</th>
+      <th># Sub-tasks</th>
+      <th title="Pending completion of other task">Pending</th>
+      <th></th>
+    </tr>
+  </thead>
+  {% for task in tasks %}
+  <tr>
+    <td><a href="{% url 'admin:erp_task_change' task.pk %}">
+        {{ task.name }}</a></td>
+    <td>{{ task.get_status_display }}</td>
+    <td>{{ task.get_priority_display }}</td>
+    <td>{{ task.due|default:"" }}</td>
+    <td>{{ task.subtask_set.count|default:"" }}</td>
+    <!--
+    <td>{{ task.pending }}</td>
+    -->
+    <td>
+      {% if task.pending %}
+      <a href="{% url 'admin:erp_task_change' task.pending.pk %}">
+        {{ task.pending }}</a>
+      {% endif %}
+    </td>
+    <td><a href="fixme">adopt me</a></td>
+  </tr>
+  {% endfor %}
+</table>
+
+<!--
+<p class="small" style="margin-top:6px; margin-left:4px">
+  <a class="addlink" href="{% url 'admin:erp_task_add' %}">Create
+    task</a>
+</p>
+-->

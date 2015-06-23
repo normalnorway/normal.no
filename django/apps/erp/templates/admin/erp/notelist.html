@@ -1,0 +1,20 @@
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Text</th>
+    </tr>
+  </thead>
+  {% for note in notes %}
+  <tr>
+    <td><a href="{% url 'admin:erp_note_change' note.pk %}">
+        {{ note.title }}</a></td>
+    <td>{{ note.text|truncatechars:80 }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<p class="small" style="margin-top:6px; margin-left:4px">
+  <a class="addlink" href="{% url 'admin:erp_note_add' %}">Create
+    new note</a>
+</p>
