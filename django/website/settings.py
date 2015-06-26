@@ -17,7 +17,7 @@ def rootdir (*args):    # rename mk_filename
     """Constructs a path relative to the project root directory"""
     return os.path.join (_ROOT_DIR, *args)
 
-from siteconfig import SiteConfig
+from .siteconfig import SiteConfig
 Config = SiteConfig (rootdir ('site.ini'))
 
 
