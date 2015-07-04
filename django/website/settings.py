@@ -91,11 +91,11 @@ INSTALLED_APPS = (
 
 # manage.py dumpdata [app...] --indent 2 --database sqlite
 _DATABASES = {
-    'sqlite': {
+    'sqlite': {     # development backend
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join (_ROOT_DIR, 'db.sqlite3'),
     },
-    'mysql': {
+    'mysql': {      # production backend
         'ENGINE':   'django.db.backends.mysql',
         'NAME':     Config.get ('database.name', ''),
         'USER':     Config.get ('database.user', ''),
@@ -109,7 +109,7 @@ _DATABASES = {
     },
 }
 DATABASES = {
-    'default': _DATABASES[Config.get ('database.backend', 'dev')]
+    'default': _DATABASES[Config.get ('database.backend', 'sqlite')]
 }
 
 
