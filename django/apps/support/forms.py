@@ -67,7 +67,7 @@ class MemberForm (forms.Form):
                                    widget=forms.RadioSelect)
     name =      forms.CharField (label=u'Navn', max_length=64)
     born =      forms.DateField (label=u'Fødselsdato',
-                    widget = forms.TextInput (attrs={'placeholder': u'dd.mm.åå'}),
+                    widget = forms.TextInput (attrs={'placeholder': u'dd.mm.åååå'}),
                     input_formats = ('%d.%m.%y', '%d/%m/%y', '%d%m%y',
                                      '%d.%m.%Y', '%d/%m/%Y', '%d%m%Y'),
                     error_messages = {'invalid': u'Ugyldig dato. Bruk dd/mm/åå eller dd.mm.åå'})
