@@ -1,10 +1,19 @@
 {% extends "admin/app_index.html" %}
-{% load erp %}
+
+<!-- Needed by nav-global.html. @todo can move to that file? -->
+{% block extrahead %}
+<link rel="stylesheet" href="{{STATIC_URL}}erp/style.css" />
+{% endblock %}
+
+{% block nav-global %}
+{% include "erp/nav-global.html" %}
+{% endblock %}
 
 
 {% block footer %}
 <div id="footer">
-
+– By failing to prepeare, you are preparing to fail!
+</div>
 {% endblock %}
 
 
@@ -29,8 +38,15 @@
       <li><a href="{% url 'admin:erp_note_changelist' %}">Notes</a>
     </ul>
 
-    <h3><a href="{% url 'erp-index' %}">Index</a></h3>
+    <h3>Pages</h3>
+    <ul class="actionlist">
+      <li><a href="{% url 'erp-index' %}">Index («tavla»)</a>
+      <li><a href="{% url 'erp-mypage' %}">My Page</a>
+    </ul>
+    <!--
+    <h3><a href="{% url 'erp-index' %}">Index («tavla»)</a></h3>
     <h3><a href="{% url 'erp-mypage' %}">My Page</a></h3>
+    -->
   </div>
 </div>
 {% endblock %}

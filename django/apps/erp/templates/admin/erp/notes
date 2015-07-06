@@ -1,9 +1,0 @@
-
-  {% with app_list.0 as apps %}
-  {{ apps }}
-  <br/>
-  {% for app in apps.models %}
-  {{ app.name }} - {{ app.object_name }}
-  <br/>
-  {% endfor %}
-  {% endwith %}
