@@ -19,3 +19,5 @@ install -o root -g root -m 750 -d logs
 
 # Django logs
 install -g www-data -m 770 -d django/logs
+
+true
