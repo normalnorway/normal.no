@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <title>{%block title%}Normal{%endblock title%}{%block extratitle%}{%endblock%}</title>
 
+    <meta property="fb:app_id" content="452143391620790" />
+
     <link rel="alternate" type="application/rss+xml"
           title="Siste nyheter" href="/nyheter/rss/" />
 
@@ -27,6 +29,9 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Normal – Norsk organisasjon for reform av marihuanalovgivningen" />
     <meta property="og:description" content="Normal arbeider for en hensiktsmessig regulering av cannabis i Norge" />
+    {# @todo override title per subpage #}
+    <meta property="og:title" content="Normal Norway" />
+    <meta property="og:image" content="http://normal.no/static/images/logo-300.png" />
     {# Needed? Have lang attr on html element #}
     <meta property="og:locale" content="nb_NO" />
 
