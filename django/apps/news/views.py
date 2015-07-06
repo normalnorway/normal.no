@@ -179,6 +179,8 @@ class ArchiveView (ArchiveIndexView):
     #model = Article
     date_field = 'date'
     paginate_by = 25
+    # enable this, but make the template handle an empty list
+    #allow_empty = True
     def get_queryset (self):
         return Article.pub_objects.order_by ('-date')
 
