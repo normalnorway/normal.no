@@ -1,17 +1,13 @@
 # Note: You don't have to install everything just for doing development!
 # pip install -r requirements.txt
 
-Django>=1.7
-Fabric
-
-# Not in use anymore
-#Pillow
-# Update: True?
-#   Install PIL or Pillow. (If you're using an ImageField in Django, you
-#   should have already done this.)
+Django>=1.8
+Pillow
 
 # Only needed for: docs/how-to-contribute.md
 #Markdown
+
+#Fabric
 
 # This is a virtual package that depends on 'MySQL-python'
 #mysql

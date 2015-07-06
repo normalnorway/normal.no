@@ -6,12 +6,11 @@
 /django/logs/
 site.ini
 
-#/docs/how-to-contribute.html
-
 # Only on the production server
 /htdocs/
 /logs/
-#/db/
 
 # auto-generated files
+db.sqlite3
+/db/newmembers
 /django/static/css/*.css

@@ -2,6 +2,23 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from tinymce4.models import HtmlField
 
+
+class Content (models.Model):
+    '''Content block used by various views/templates'''
+    name = models.CharField (max_length=64, unique=True)
+    content = HtmlField (blank=True)
+    # changed = models.DateTimeField (auto_add_now=True)
+
+    def __unicode__ (self): return self.name
+
+    class Meta:
+        verbose_name_plural = 'content'
+
+#    def get_absolute_url (self):
+#        return reverse ('admin:cms_content_change', args=[self.pk])
+
+
+
 class File (models.Model):
     '''File uploaded to the server (file archive)'''
     file = models.FileField (upload_to='cms/file')  # max_length = 100
@@ -42,7 +59,6 @@ class File (models.Model):
 
 
 
-
 class Page (models.Model):
     url = models.CharField (max_length=150, unique=True) # rename address?
     title = models.CharField (max_length=75)    # unique=True?
@@ -52,7 +68,10 @@ class Page (models.Model):
     # in_menu = models.BooleanField()   # menu_name: default to title
     # template = models.CharField (max_length=75)
     # extra_acl: to allow users to edit a subset of the pages
-    # changed = models.DateTimeField()
+    # changed = models.DateTimeField (auto_add_now=True)
+    # og:description - A brief description of the content, usually between 2 and 4 sentences. This will displayed below the title of the post on Facebook.
+    # og:image, fb:app_id
+    # og:url <-- use reverse(page-detail)?
 
     def __unicode__ (self):
         return self.title
@@ -62,7 +81,18 @@ class Page (models.Model):
         if not self.url: # populate url from title
             from django.utils.text import slugify
             self.url = slugify (self.title)
-        super(File, self).save (*args, **kwargs)
+        super(Page, self).save (*args, **kwargs)
+
+    # returns canonical url
+    # @todo don't hardcode prefix (sider).
+    #       but then need named view in global urls.py
+    def get_absolute_url (self):
+        return self.url if self.url[0]=='/' else '/sider/' + self.url
 
 #    def get_absolute_url (self):
 #        return reverse ('page-detail', args=[self.pk])
+
+#    class Meta:
+#        permissions = (
+#            ('can_change_gs', 'Can change GS-pages')
+#        )

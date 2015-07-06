@@ -1,9 +1,10 @@
 # encoding: utf-8
 
 WELCOME_MSG = u'''
-Velkommen som medlem og takk for støtten! Du vil i løpet av én uke motta
+Velkommen som medlem og takk for støtten! Du vil i løpet av to uker motta
 en velkomst e-post. Betalende medlemmer vil også få en giro per e-post.
 '''
+# @todo hvis du ikke finner. sjekk spam-mappen eller legg til post@normal.no
 
 PETITION_MSG = u'''
 Takk for at du skrev deg på oppropet! Sammen kan vi legge press på

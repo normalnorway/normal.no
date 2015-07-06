@@ -1,0 +1,17 @@
+class Expenses (kassadagbok)
+class Project?  can contain price
+
+Log, PhoneLog?
+
+Task.owner = normal|alle
+Task.time_stimate + time_taken?
+
+class Ideas     # idea that might evolve into a Task
+class Todo	# light weight task
+class Goal	# define a goal (like reach 2000 fb-likes)
+
+Group of contacts. View to add contacts to group/tag
+Per tag view to show user with that tag
+http://localhost:8000/admin/erp/contacttag/13/
+  can add/remove users with checkbox select?
+

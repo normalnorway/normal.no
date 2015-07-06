@@ -1,0 +1,42 @@
+{% extends "admin/base_site.html" %}
+{% load erp %}
+
+
+{% block content %}
+
+<h2>My Reminders</h2>
+{% erp_get_reminders user as reminders %}
+{% include "admin/erp/reminderlist.html" %}
+
+<h2>My Tasks</h2>
+{% erp_get_tasks user as tasks %}
+{% include "admin/erp/tasklist.html" %}
+
+<h2>My Notes</h2>
+{% erp_get_notes user as notes %}
+{% include "admin/erp/notelist.html" %}
+
+{% endblock %}
+
+
+{# Rest is boring boilerplate #}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{{STATIC_URL}}erp/style.css" />
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">Resource planning</h1>
+{% endblock %}
+
+{% block nav-global %}
+{% include "erp/nav-global.html" %}
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Hjem</a> &rsaquo;
+  <a href="{% url 'admin:app_list' 'erp' %}">Resource planning</a> &rsaquo;
+  My Page
+</div>
+{% endblock %}

@@ -1,0 +1,2 @@
+export PYTHONPATH=$PYTHONPATH/srv/www/normal.no/django
+export DJANGO_SETTINGS_MODULE=website.settings

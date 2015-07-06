@@ -1,8 +1,26 @@
-<nav style="position:relative">
-{% if not user.is_authenticated %}
-<a href="/admin/" style="position:absolute;right:0px;">&nbsp;</a>
-{% endif %}
-<ul id="nav">
+<nav>
+<ul id="nav"> {# class=nav menu ? #}
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'admin:index' %}">A</a>
+    <ul>
+      <li><a href="/erp/">«Tavla»</a></li>
+      <li><a href="/erp/mypage/">My Page</a></li>
+      <li style="border-bottom:1px solid #888"></li>
+      <li><a href="{% url 'admin:erp_task_add' %}">New Task</a></li>
+      <li><a href="{% url 'admin:erp_reminder_add' %}">New Reminder</a></li>
+      <li><a href="{% url 'admin:erp_contact_add' %}">New Contact</a></li>
+      <li><a href="{% url 'admin:erp_note_add' %}">New Note</a></li>
+      <li style="border-bottom:1px solid #888"></li>
+      <li><a href="{% url 'admin:erp_contact_changelist' %}">Contacts</a></li>
+      <li><a href="{% url 'admin:erp_task_changelist' %}">Tasks</a></li>
+      <li><a href="{% url 'admin:erp_reminder_changelist' %}">Reminders</a></li>
+      <li><a href="{% url 'admin:erp_note_changelist' %}">Notes</a></li>
+      <li style="border-bottom:1px solid #888"></li>
+      <li><a href="{% url 'admin:logout' %}">Logg ut</a></li>
+    </ul>
+  </li>
+  {% endif %}
+
   <li><a href="/om-normal/">Om Normal</a></li>
   <li><a href="{% url 'enroll' %}">Bli medlem</a></li>
   <li><a href="/støtt/">Støtt</a></li>
@@ -19,9 +37,6 @@
       <li><a href="/sider/gruppesoksmaal/">Gruppesøksmål</a></li>
       <li><a href="/medisin/">Medisinsk cannabis</a></li>
       <li><a href="/sider/frivillig/">Jobb for Normal</a></li>
-      {% if user.is_authenticated %}
-      <li><a href="/admin/logout/"><em>Logg ut</em></a></li>
-      {% endif %}
     </ul>
   </li>
 </ul>

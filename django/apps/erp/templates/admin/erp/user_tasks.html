@@ -1,0 +1,13 @@
+<table class="user_tasks">
+  <thead> <!-- thead gives shaded background -->
+    <tr><th colspan="3"><h3>{{ name }}</h3></th></tr>
+  </thead>
+  {% for task in tasks %}
+  <tr>
+    <td><a href="{% url 'admin:erp_task_change' task.pk %}">
+        {{ task.name|truncatechars:28 }}</a></td>
+    <td>{{ task.get_status_display }}</td>
+    <td>{{ task.due|default:"" }}</td>
+  </tr>
+  {% endfor %}
+</table>

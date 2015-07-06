@@ -3,6 +3,7 @@ import ConfigParser
 # Possible improvements:
 # * Get default values from the environment
 # * Get default values from this file
+# @todo log/error if site.ini exists, but not readable
 
 
 # These are the defaults if not defined in the inifile ('site.ini')
@@ -87,9 +88,9 @@ if __name__ == '__main__':
     assert cfg.get ('foobar', 222) == 222   # ok; since have default (222)
     #print cfg.get ('foobar')       # fails; since default is missing
     #print cfg.get ('foobar', None) # fails; since default can't be None
-    assert cfg.get ('main.foo', 333) is 333
+    assert cfg.get ('main.foo', 333) == 333
     try:
         print cfg.get ('main.foo')
     except KeyError as ex:
-        assert ex.message is 'main.foo'
+        assert ex.message == 'main.foo'
     print 'Test OK'

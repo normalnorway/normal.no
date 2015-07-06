@@ -7,18 +7,13 @@
 # SESSION_COOKIE_AGE                        # default is 2 weeks
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True    # default is False
 
-import os
 from django.conf import global_settings as defaults
 
-BASE_DIR = os.path.realpath (os.path.join (__file__, '../../../'))
-# @todo use django default
+import os
+BASE_DIR = os.path.dirname (os.path.dirname (__file__))
 
-def rootdir (*args):    # rename mk_filename
-    """Constructs a path relative to the project root directory"""
-    return os.path.join (BASE_DIR, *args)
-
-from siteconfig import SiteConfig
-Config = SiteConfig (rootdir ('site.ini'))
+from .siteconfig import SiteConfig
+Config = SiteConfig (os.path.join (BASE_DIR, os.path.pardir, 'site.ini'))
 
 
 DEFAULT_FROM_EMAIL = 'post@normal.no'
@@ -49,11 +44,10 @@ USE_TZ = False
 #DATETIME_FORMAT = DATE_FORMAT + ', k\l. ' + TIME_FORMAT
 
 
-#DEBUG = not os.path.exists (rootdir ('NODEBUG'))
 DEBUG = Config.getbool ('main.debug', True)
 TEMPLATE_DEBUG = DEBUG
 
-INTERNAL_IPS = ['127.0.0.1']    # needed for what? A: debug in templates
+INTERNAL_IPS = ['127.0.0.1'] # needed for what? A: debug in templates
 #INTERNAL_IPS = ['127.0.0.1', '::1']
 
 
@@ -75,50 +69,42 @@ INSTALLED_APPS = (
     'django.contrib.sessions',      # only needed for database-backed session
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',         # flatpages dependence
-    'django.contrib.flatpages',
 
     'core',
     'tinymce4',     # only used to get staticfiles
     'apps.news',
     'apps.links',
-    'apps.content',
+#    'apps.content',
     'apps.support',
     'apps.cms',
+    'apps.polls',
+    #'apps.erp',
+    'apps.erp.apps.ErpAppConfig',
 )
 
 
-# manage.py dumpdata [app...] --indent 2 --database dev
-DATABASES = {
-    'dev': {
-        'ENGINE':   'django.db.backends.sqlite3',
-        'NAME':     rootdir ('db', 'normal.db'),
+# manage.py dumpdata [app...] --indent 2 --database sqlite
+_DATABASES = {
+    'sqlite': {     # development backend
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join (BASE_DIR, 'db.sqlite3'),
     },
-    'mysql': {
+    'mysql': {      # production backend
         'ENGINE':   'django.db.backends.mysql',
-        #'HOST':     '/var/run/mysqld/mysqld.sock',     # default
-        #'HOST':            Config.get ('database.hostname'),
         'NAME':     Config.get ('database.name', ''),
         'USER':     Config.get ('database.user', ''),
         'PASSWORD': Config.get ('database.password', ''),
-        #'CONN_MAX_AGE': 3600,
-        #'CONN_MAX_AGE': 0 if DEBUG else 3600
-        #'OPTIONS':  { 'read_default_file': '/path/to/my.cnf' },
-        # https://docs.djangoproject.com/en/1.7/ref/databases/#connecting-to-the-database
-        # Remember: CREATE DATABASE <dbname> CHARACTER SET utf8;
-        # Note: Django don't create INODB tables by default!
-        # UPDATE: Did create INODB by default now (Django 1.8)
-        # But does not use utf8 by default!
+        'CONN_MAX_AGE': 0 if DEBUG else 3600,
+        #'OPTIONS':  {
+        #   'read_default_file': '/srv/www/normal.no/my.cnf'
+        #   'init_command': 'SET storage_engine=INNODB', # and set charset
+        #   # Note: Django uses mysql default storage engine by default
+        # },
     },
 }
-DATABASES['default'] = DATABASES['dev' if DEBUG else 'mysql']
-del DATABASES['dev']
-del DATABASES['mysql']
-
-#del DATABASES['dev' if not DEBUG else 'mysql']
-#if DEBUG: del DATABASES['mysql']
-#DATABASES['default'] = DATABASES['mysql']
-#DATABASES['default'] = DATABASES[Config.get('dbengine', 'dev')]
+DATABASES = {
+    'default': _DATABASES[Config.get ('database.backend', 'sqlite')]
+}
 
 
 ## Cache
@@ -127,43 +113,54 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'TIMEOUT': 3600,    # default ttl?
     }
-#    'dev': {
-#        'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
-#    }
 }
-#CACHES['default'] = CACHES.get ('dev' if DEBUG else 'live')
 if DEBUG: CACHES['default'] = {
     'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
 }
 
 
 ## Templates
-TEMPLATE_DIRS = (
-    rootdir ('django', 'templates'),
-)
+loaders = [ # template_loaders
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+]
+if not DEBUG:   # Enable template caching
+    loaders = [('django.template.loaders.cached.Loader', loaders)]
 
-TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-    'django.core.context_processors.request',
-)   # Note: Only used by dev-site to check request.META.SERVER_NAME
-
-if not DEBUG:   # Enable template caching on the production site.
-    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', defaults.TEMPLATE_LOADERS),)
-
+# https://docs.djangoproject.com/en/1.8/ref/templates/upgrading/
+# Furthermore you should replace django.core.context_processors with
+# django.template.context_processors in the names of context processors.
+# If it sets TEMPLATE_DEBUG to a value that differs from DEBUG, include
+# that value under the 'debug' key in 'OPTIONS'.
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [ os.path.join (BASE_DIR, 'templates') ],
+        'OPTIONS': {
+            'loaders': loaders,
+            #'string_if_invalid': '{{MISSING}}',
+            'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS +
+                ('django.core.context_processors.request',) # used by dev to check request.META.SERVER_NAME
+        },
+    },
+]
+del loaders
 
 
 ## Static & media files
 STATICFILES_DIRS = (
-    rootdir ('django', 'static'),
+    os.path.join (BASE_DIR, 'static'),
 )
 
 STATIC_URL = '/static/'
-STATIC_ROOT = rootdir ('htdocs', 'static')
+STATIC_ROOT = os.path.join (BASE_DIR, '..', 'htdocs', 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = rootdir ('htdocs', 'media')
+MEDIA_ROOT = os.path.join (BASE_DIR, '..', 'htdocs', 'media')
 
 
 # Note: these are invoked in reverse order for the response.
+# @todo can use default?
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -172,16 +169,12 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware', # Note: must be last!
 ]
 
 
 ROOT_URLCONF = 'website.urls'
 
 WSGI_APPLICATION = 'website.wsgi.application'
-
-# contrib.site (required by contrib.flatpages)
-SITE_ID = 1
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
@@ -271,52 +264,41 @@ LOGGING = {
             'filters': ['debug'],
         },
 
-#        'null': {
-#            'class': 'logging.NullHandler',
-#        },
-
         'file:catch-all': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'catch-all.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'catch-all.log'),
             'formatter': 'verbose',
         },
 
         'file:apps': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'apps.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'apps.log'),
             'formatter': 'verbose',
         },
 
         'file:django': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'django.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'django.log'),
             'formatter': 'verbose',
         },
 
         'file:db': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'db.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'db.log'),
             'formatter': 'verbose',
         },
 
         'file:request': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'request.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'request.log'),
             'formatter': 'verbose',
         },
 
         'file:security': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'security.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'security.log'),
             'formatter': 'verbose',
         },
-
-#        'file:error': {
-#            'level': 'ERROR',
-#            'class': 'logging.FileHandler',
-#            'formatter': 'verbose',
-#            'filename': rootdir ('django', 'logs', 'error.log'),
-#        },
     },
 
 
@@ -340,21 +322,5 @@ LOGGING = {
         'debug': {
             '()': 'django.utils.log.RequireDebugTrue',
         },
-#        'nodebug': {
-#            '()': 'django.utils.log.RequireDebugFalse'
-#        },
     },
 }
-
-# XXX
-# $ django/manage.py check
-#   ValueError: Unable to configure handler 'file:apps': [Errno 13]
-#   Permission denied: '/srv/www/normal.no/logs/apps.log'
-# Fix1: Add torkel to www-data, and chmod -R g+w logs/*.log
-# Fix2: Disable logging
-# Q: Howto detect if running through manage.py?
-#if not os.access (rootdir('logs'), os.W_OK):
-# Note: logs/ is owned by 'torkel'. better to be owned by root!
-#       and more secure if not writable by www-data/apache
-if not os.access (rootdir ('logs', 'apps.log'), os.W_OK):
-    del LOGGING

@@ -1,0 +1,52 @@
+{% extends "admin/app_index.html" %}
+
+<!-- Needed by nav-global.html. @todo can move to that file? -->
+{% block extrahead %}
+<link rel="stylesheet" href="{{STATIC_URL}}erp/style.css" />
+{% endblock %}
+
+{% block nav-global %}
+{% include "erp/nav-global.html" %}
+{% endblock %}
+
+
+{% block footer %}
+<div id="footer">
+– By failing to prepeare, you are preparing to fail!
+</div>
+{% endblock %}
+
+
+{% block sidebar %}
+<div id="content-related">
+  <div class="module">
+    <h2>Menu</h2>
+
+    <h3>Create</h3>
+    <p class="small" style="margin-top: .5em">
+    <a href="{% url 'admin:erp_contact_add' %}">Contact</a> |
+    <a href="{% url 'admin:erp_task_add' %}">Task</a> |
+    <a href="{% url 'admin:erp_reminder_add' %}">Reminder</a> |
+    <a href="{% url 'admin:erp_note_add' %}">Note</a>
+    </p>
+
+    <h3>View</h3>
+    <ul class="actionlist">
+      <li><a href="{% url 'admin:erp_contact_changelist' %}">Contacts</a>
+      <li><a href="{% url 'admin:erp_task_changelist' %}">Tasks</a>
+      <li><a href="{% url 'admin:erp_reminder_changelist' %}">Reminders</a>
+      <li><a href="{% url 'admin:erp_note_changelist' %}">Notes</a>
+    </ul>
+
+    <h3>Pages</h3>
+    <ul class="actionlist">
+      <li><a href="{% url 'erp-index' %}">Index («tavla»)</a>
+      <li><a href="{% url 'erp-mypage' %}">My Page</a>
+    </ul>
+    <!--
+    <h3><a href="{% url 'erp-index' %}">Index («tavla»)</a></h3>
+    <h3><a href="{% url 'erp-mypage' %}">My Page</a></h3>
+    -->
+  </div>
+</div>
+{% endblock %}

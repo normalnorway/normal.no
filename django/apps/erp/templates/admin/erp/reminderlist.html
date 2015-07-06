@@ -1,0 +1,28 @@
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Date</th>
+      <th>Title</th>
+      <th>Time untill</th>
+      <th>Alarm</th>
+    <!--
+      <th>Location</th>
+    -->
+    </tr>
+  </thead>
+
+  {% for item in reminders %}
+  <tr>
+    <td>{{ item.type }}</td>
+    <td>{{ item.date|date:"D d. b" }}. ({{ item.date|time:"H:i" }})</td>
+    <td><a href="{% url 'admin:erp_reminder_change' item.pk %}">
+      {{ item.title }}</a></td>
+    <td>{{ item.date|timeuntil }}</td>
+    <td>{{ item.alarm }}</td>
+    <!--
+    <td>{{ item.location }}</td>
+    -->
+  </tr>
+  {% endfor %}
+</table>

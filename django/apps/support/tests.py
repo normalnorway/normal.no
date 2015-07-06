@@ -4,7 +4,7 @@ import datetime
 import json
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from website.settings import rootdir
+from website.settings import BASE_DIR
 from .models import Petition
 from .forms import MemberForm
 
@@ -32,7 +32,7 @@ class MyTestCase (TestCase):
 
     def test_new_member (self):
         # @todo use apps.support.add_new_member
-        filename = rootdir ('db', 'newmembers')
+        filename = os.path.join (BASE_DIR, os.path.pardir, 'db', 'newmembers')
         open (filename, 'w').close()    # clear file
         born = datetime.date (1977, 01, 20)
         data = {

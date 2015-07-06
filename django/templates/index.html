@@ -1,5 +1,6 @@
 {% extends "base.html" %}
+{% load cms %}
 
 {% block content %}
-{% get_content "forside" %}
+{% cms_content "forside" %}
 {% endblock %}

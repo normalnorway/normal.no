@@ -1,19 +1,11 @@
 #!/bin/sh -e
 
-## Git Submodules
-#git submodule init
-#git submodule update
-# Note: Submodules are check out in a detached state:
-#(cd django/apps/news/newsgrab && git co master)
+# Bootstrap a development system
 
-# Update: submodules are no longer used
 pip install -r requirements.txt
 
-## Fetch (test) database
-if [ ! -e db/normal.db ]; then
-    echo "Fetching db/normal.db"
-    (cd db && wget --quiet http://torkel.normal.no/normal.db)
-fi
+sh mkdirs.sh
 
-## Create directories
-mkdir -p logs
+python django/manage.py migrate
+
+echo Now run: python django/manage.py runserver

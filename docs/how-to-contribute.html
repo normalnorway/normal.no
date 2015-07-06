@@ -1,23 +1,3 @@
-<!--
-TODO:
-@deb node-less to regenerate css files (add to docs/install also)
-can make changes directly on github
-url-namespace. can link to wiki
-html5. define browser support (lowest IE version)
-coding standards
-  Python 2.6 and Django 1.6 only! :(
-rename CONTRIBUTING.md?
-Github: Howto clone the repo and send pull requests
-Github: Howto use the issue tracker
-gitk / gitg
-unit test: ./manage.py test
-http://effectivedjango.com/
-
-TODO Styling:
-css for <code>
-more line-spacing?
--->
-
 <!-- markdown don't touches stuff inside block tags, but head is not
 a block tag, so it messes it up. Therefor we wrapp head inside a div
 even tough it's not legal html -->
@@ -47,8 +27,25 @@ even tough it's not legal html -->
 </style>
 </div>
 
+<!--
+TODO:
+url-namespace. can link to wiki
+html5. define browser support (lowest IE version)
+rename CONTRIBUTING.md?
+Github: Howto clone the repo and send pull requests
+Github: Howto use the issue tracker
+gitk / gitg
+unit test: ./manage.py test
+http://effectivedjango.com/
+
+TODO Styling:
+css for <code>
+more line-spacing?
+-->
+
 <div class="toc">
 <ul>
+<li><a href="#guide-utviking-av-normalno">Guide: Utviking av normal.no</a><ul>
 <li><a href="#innledning">Innledning</a></li>
 <li><a href="#installasjon">Installasjon</a><ul>
 <li><a href="#windows">Windows</a></li>
@@ -63,13 +60,19 @@ even tough it's not legal html -->
 <li><a href="#hvordan-sende-endringer">Hvordan sende endringer?</a></li>
 <li><a href="#github">Github</a></li>
 </ul>
+</li>
+</ul>
 </div>
+<h1 id="guide-utviking-av-normalno">Guide: Utviking av normal.no</h1>
 <!--
+Komme i gang med utvikling
+==========================
+
 Hvordan komme i gang
 ====================
 -->
 
-<p><em>Sist oppdatert: 2015-04-10</em></p>
+<p><em>Sist oppdatert: 2015-06-10</em></p>
 <p><strong>Denne guiden hjelper deg å komme i gang med å gjøre endringer i koden
 eller designet til Normals nettsider – <a href="http://normal.no">normal.no</a>.</strong></p>
 <p>Er noe uklart ta kontakt med <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#116;&#111;&#114;&#107;&#101;&#108;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;">&#116;&#111;&#114;&#107;&#101;&#108;&#64;&#110;&#111;&#114;&#109;&#97;&#108;&#46;&#110;&#111;</a> eller
@@ -82,37 +85,36 @@ samtidig – bruker vi et <a href="http://no.wikipedia.org/wiki/Versjonskontroll
 GNU/Linux, men de samme prinsipper gjelder for Windows, Mac, eller andre
 Linux-distribusjoner.</p>
 <h2 id="innledning">Innledning</h2>
+<p>Skal du bare gjøre endringer i innhold (tekst og bilder), er ikke dette
+guiden for deg. Slike endringer gjøres via admin-grensesnittet:
+<a href="https://normal.no/admin/">https://normal.no/admin/</a></p>
 <p>Hvis du kun skal endre designet (html- og css-maler) virker nok denne
 guiden noe overveldene, og du kan hoppe over punktene <code>Installasjon</code> og
 <code>Django</code>, og du trenger ikke å installere noe ekstra på
 maskinen din – selv om Git annbefales på det varmeste! Git brukes for
 å laste ned alle filene og sende endringer tilbake. Hvis du synes det
 blir for knotete, kan også filene lastes ned her: <a href="https://github.com/normalnorway/normal.no/tree/master/django/templates">Html maler</a>;
-<a href="https://github.com/normalnorway/normal.no/tree/master/django/static">css,javascript og bilder</a>.</p>
+<a href="https://github.com/normalnorway/normal.no/tree/master/django/static">css, javascript og bilder</a>.</p>
 <p>Hvis du ikke kan programmere eller ikke har noe erfaring med Python eller
 webutvikling, burde du kanskje heller finne noe annet å bidra med. Hvis
 du derimot er teknisk annlagt, lærer fort, og brenner for oppgaven; sjekk
-ut denne videoen:
-<a href="http://www.youtube.com/watch?v=zTNA0MtZwso">Python Web Development: Understanding Django for Beginners</a>.</p>
-<p>Skal du bare gjøre endringer i innhold (tekst og bilder), er ikke dette
-guiden for deg. Slike endringer gjøres via admin-grensesnittet:
-<a href="https://normal.no/admin/">https://normal.no/admin/</a></p>
+ut denne videoen: <a href="http://www.youtube.com/watch?v=zTNA0MtZwso">Python Web Development: Understanding Django for Beginners</a>.</p>
 <h2 id="installasjon">Installasjon</h2>
 <h3 id="windows">Windows</h3>
-<p>Forfatter har ikke tilgang til Windows, så her må du klare deg selv. Men
-det burde være grei skuring. Hvis du setter opp på Windows så bidra
+<p>Forfatteren har ikke tilgang til Windows, så her må du klare deg selv.
+Men det burde være grei skuring. Hvis du setter opp på Windows så bidra
 gjerne til denne guiden ved å skrive ned hvordan du gjorde det. Her er
-noen lenker som hjelper deg på vei:</p>
+noen lenker som kan hjelpe deg på vei:</p>
 <ul>
 <li><a href="http://msysgit.github.io/">GIT for Windows</a></li>
 <li><a href="https://www.python.org/downloads/windows/">Python for Windows</a></li>
-<li><a href="https://docs.djangoproject.com/en/1.7/howto/windows/">Django for Windows</a></li>
+<li><a href="https://docs.djangoproject.com/en/dev/howto/windows/">Django for Windows</a></li>
 <li><a href="http://www.youtube.com/watch?v=rIVwVOpwpsA">Video: How to install Django in Windows 7</a></li>
 </ul>
 <h3 id="mac-osx">Mac / OSX</h3>
 <p>Apple sitt operativsystem er Unix-basert, så se seksjonen under. Men
 istedenfor å bruke <code>apt-get</code> for å installere pakker (programmer) kan du
-bruke <a href="http://brew.sh/">Homebrew</a>. </p>
+bruke <a href="http://brew.sh/">Homebrew</a>.</p>
 <h3 id="linuxunix">Linux/Unix</h3>
 <p><em>Start et terminalprogram og lim inn kommandoene under.</em></p>
 <p>Først må du installere noen programmer (pakker) som prosjektet trenger
@@ -281,7 +283,7 @@ tilgjengelig for alle.</p>
 <!--
 Hvis du blir en aktiv bidragsyter, gir vi deg gjerne skrivetilgang.
 
-https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/working-with-git/
+https://docs.djangoproject.com/en/dev/internals/contributing/writing-code/working-with-git/
 
 How to Get Started with Github - Beginner Tutorial
 https://www.youtube.com/watch?v=73I5dRucCds

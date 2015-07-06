@@ -1,10 +1,11 @@
+import os
 import json
-from website.settings import rootdir
+from website.settings import BASE_DIR
 
 # File object to write new members to. Use add_new_member() instead
 # of directly writing to this file.
 try:
-    _new_member_fp = open (rootdir ('db', 'newmembers'), 'a')
+    _new_member_fp = open (os.path.join (BASE_DIR, '..', 'db', 'newmembers'), 'a')
 except IOError, ex:
     import logging
     logging.critical ('Can not open newmembers file: ' + ex.strerror)

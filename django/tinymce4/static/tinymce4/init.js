@@ -1,6 +1,10 @@
 /**
  * DjangoMCE - Django TinyMCE4 plugin.
  *
+ * TinyMCE namespace: window.tinymce
+ *
+ * Our namespace: window.djangomce
+ *
  * Note: editor.dom is tinymce.dom.DOMUtils
  * http://www.tinymce.com/wiki.php/api4:class.tinymce.dom.DOMUtils
  *
@@ -19,6 +23,7 @@
 /* Our private namespace */
 window._djangomce =
 {
+//    config: {},
     cache: {},
 
     setup: function (editor)
@@ -158,7 +163,10 @@ tinymce.init ({
     //extended_valid_elements: "@[itemscope|itemtype|itemid|itemprop|content],div,span,time[datetime],h1[title],h2[title],h3[title]",
 
     // Need this to get absolute urls in image plugin (upload)
+    // Don't touch/change url. (Do not convert to relative urls)
     convert_urls : false,
+    // Can also do this. Might be more robust/safer:
+    // document_base_url: document.location.origin + '/',
     // this might also fix it:
     // keep convert_urls at its default (true) + relative_urls = false
     // Use absolute urls. (URLs returned from the MCFileManager)
@@ -175,6 +183,15 @@ tinymce.init ({
     //toolbar: "insertfile
     //preview_styles
     //fontsizeselect
+
+    // Extra drop-down in add link popup to add class to link.
+    /*
+    link_class_list: [
+        {title: 'None', value: ''},
+        {title: 'Internal', value: ''}
+        {title: 'External', value: 'external-link'},
+    ],
+    */
 
     // Custom class to be added to anchors or tables, since these are
     // invisible by default. Note: visual=true (default) adds dashed border.
