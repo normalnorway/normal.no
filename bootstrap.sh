@@ -1,14 +1,11 @@
 #!/bin/sh -e
 
+# Bootstrap a development system
+
 pip install -r requirements.txt
 
-# @todo bootstrap db
-#if [ ! -e db/normal.db ]; then
+sh mkdirs.sh
 
-mkdir -p logs
+python django/manage.py migrate
 
-chgrp www-data django/logs
-chmod g+w django/logs
-
-chown root:www-data db/newmembers
-chmod u=rw,g=w,o=   db/newmembers   # write-only for the apache user
+echo Now run: python django/manage.py runserver
