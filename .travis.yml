@@ -10,37 +10,8 @@ install:
   - npm install -g --production less
 
 before_script:
+  - sh mkdirs.sh
   - django/manage.py migrate
 
 script:
   - make test
-
-
-# Travis-CI Notes
-#
-# If you leave the python key out of your .travis.yml, Travis CI
-# will use Python 2.7.
-#
-# Travis CI pre-installs a few packages in each virtualenv by
-# default to ease running tests:
-# * pytest
-# * nose
-# * mock
-#
-# http://docs.travis-ci.com/user/languages/python/#Testing-Against-Multiple-Versions-of-Dependencies-(e.g.-Django-or-Flask)
-# 
-# http://docs.travis-ci.com/user/ci-environment/
-# services: [mongodb, memcached]
-# services: redis-server
-#
-# MySQL on Travis CI is started on boot, binds to 127.0.0.1 and
-# requires authentication. You can connect using the username
-# “travis” or “root” and a blank password.
-#
-# before_script:
-#   - mysql -e 'create database normalno;'
-# @todo use bootstrap.sh instead
-#
-# @todo test against postgres
-# addons:
-#   postgresql: "9.3"
