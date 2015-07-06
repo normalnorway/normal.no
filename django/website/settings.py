@@ -7,18 +7,13 @@
 # SESSION_COOKIE_AGE                        # default is 2 weeks
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True    # default is False
 
-import os
 from django.conf import global_settings as defaults
 
+import os
 BASE_DIR = os.path.dirname (os.path.dirname (__file__))
-_ROOT_DIR = os.path.realpath (os.path.join (__file__, '../../../'))
-
-def rootdir (*args):    # rename mk_filename
-    """Constructs a path relative to the project root directory"""
-    return os.path.join (_ROOT_DIR, *args)
 
 from .siteconfig import SiteConfig
-Config = SiteConfig (rootdir ('site.ini'))
+Config = SiteConfig (os.path.join (BASE_DIR, os.path.pardir, 'site.ini'))
 
 
 DEFAULT_FROM_EMAIL = 'post@normal.no'
@@ -49,11 +44,10 @@ USE_TZ = False
 #DATETIME_FORMAT = DATE_FORMAT + ', k\l. ' + TIME_FORMAT
 
 
-#DEBUG = not os.path.exists (rootdir ('NODEBUG'))
 DEBUG = Config.getbool ('main.debug', True)
 TEMPLATE_DEBUG = DEBUG
 
-INTERNAL_IPS = ['127.0.0.1']    # needed for what? A: debug in templates
+INTERNAL_IPS = ['127.0.0.1'] # needed for what? A: debug in templates
 #INTERNAL_IPS = ['127.0.0.1', '::1']
 
 
@@ -93,7 +87,7 @@ INSTALLED_APPS = (
 _DATABASES = {
     'sqlite': {     # development backend
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join (_ROOT_DIR, 'db.sqlite3'),
+        'NAME': os.path.join (BASE_DIR, 'db.sqlite3'),
     },
     'mysql': {      # production backend
         'ENGINE':   'django.db.backends.mysql',
@@ -155,14 +149,14 @@ del loaders
 
 ## Static & media files
 STATICFILES_DIRS = (
-    rootdir ('django', 'static'),
+    os.path.join (BASE_DIR, 'static'),
 )
 
 STATIC_URL = '/static/'
-STATIC_ROOT = rootdir ('htdocs', 'static')
+STATIC_ROOT = os.path.join (BASE_DIR, '..', 'htdocs', 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = rootdir ('htdocs', 'media')
+MEDIA_ROOT = os.path.join (BASE_DIR, '..', 'htdocs', 'media')
 
 
 # Note: these are invoked in reverse order for the response.
@@ -270,52 +264,41 @@ LOGGING = {
             'filters': ['debug'],
         },
 
-#        'null': {
-#            'class': 'logging.NullHandler',
-#        },
-
         'file:catch-all': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'catch-all.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'catch-all.log'),
             'formatter': 'verbose',
         },
 
         'file:apps': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'apps.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'apps.log'),
             'formatter': 'verbose',
         },
 
         'file:django': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'django.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'django.log'),
             'formatter': 'verbose',
         },
 
         'file:db': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'db.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'db.log'),
             'formatter': 'verbose',
         },
 
         'file:request': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'request.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'request.log'),
             'formatter': 'verbose',
         },
 
         'file:security': {
             'class': 'logging.FileHandler',
-            'filename': rootdir ('django', 'logs', 'security.log'),
+            'filename': os.path.join (BASE_DIR, 'logs', 'security.log'),
             'formatter': 'verbose',
         },
-
-#        'file:error': {
-#            'level': 'ERROR',
-#            'class': 'logging.FileHandler',
-#            'formatter': 'verbose',
-#            'filename': rootdir ('django', 'logs', 'error.log'),
-#        },
     },
 
 
@@ -339,21 +322,5 @@ LOGGING = {
         'debug': {
             '()': 'django.utils.log.RequireDebugTrue',
         },
-#        'nodebug': {
-#            '()': 'django.utils.log.RequireDebugFalse'
-#        },
     },
 }
-
-# XXX
-# $ django/manage.py check
-#   ValueError: Unable to configure handler 'file:apps': [Errno 13]
-#   Permission denied: '/srv/www/normal.no/logs/apps.log'
-# Fix1: Add torkel to www-data, and chmod -R g+w logs/*.log
-# Fix2: Disable logging
-# Q: Howto detect if running through manage.py?
-#if not os.access (rootdir('logs'), os.W_OK):
-# Note: logs/ is owned by 'torkel'. better to be owned by root!
-#       and more secure if not writable by www-data/apache
-if not os.access (rootdir ('django', 'logs'), os.W_OK):
-    del LOGGING
