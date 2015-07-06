@@ -70,7 +70,7 @@ urlpatterns = [
 
     # Note: Should be last! (At least after password reset links)
     url(r'^admin/', include (admin.site.urls)), # @todo add namespace
-    #(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, temporarily closed due to maintenance!</strong>')),
+    #url(r'^admin/', lambda nil: HttpResponse ('<strong>Sorry, temporarily closed due to maintenance!</strong>')),
 ]
 
 
