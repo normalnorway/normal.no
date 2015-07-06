@@ -125,7 +125,7 @@ loaders = [ # template_loaders
     'django.template.loaders.app_directories.Loader',
 ]
 if not DEBUG:   # Enable template caching
-    loaders = ('django.template.loaders.cached.Loader', loaders)
+    loaders = [('django.template.loaders.cached.Loader', loaders)]
 
 # https://docs.djangoproject.com/en/1.8/ref/templates/upgrading/
 # Furthermore you should replace django.core.context_processors with
