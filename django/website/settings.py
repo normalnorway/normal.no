@@ -73,15 +73,13 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'core',
+    'core',         # needed?
     'tinymce4',     # only used to get staticfiles
     'apps.news',
     'apps.links',
-#    'apps.content',
     'apps.support',
     'apps.cms',
     'apps.polls',
-    #'apps.erp',
     'apps.erp.apps.ErpAppConfig',
 )
 
