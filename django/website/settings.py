@@ -50,7 +50,7 @@ USE_TZ = False
 DEBUG = Config.getbool ('main.debug', True)
 TEMPLATE_DEBUG = DEBUG
 
-INTERNAL_IPS = ['127.0.0.1'] # needed for what? A: debug in templates
+INTERNAL_IPS = ['127.0.0.1']
 #INTERNAL_IPS = ['127.0.0.1', '::1']
 
 
@@ -95,16 +95,11 @@ _DATABASES = {
         'NAME':     Config.get ('database.name', ''),
         'USER':     Config.get ('database.user', ''),
         'PASSWORD': Config.get ('database.password', ''),
-        'CONN_MAX_AGE': 0 if DEBUG else 3600,
-        #'OPTIONS':  {
-        #   'read_default_file': '/srv/www/normal.no/my.cnf'
-        #   'init_command': 'SET storage_engine=INNODB', # and set charset
-        #   # Note: Django uses mysql default storage engine by default
-        # },
+        'CONN_MAX_AGE': 3600,
     },
 }
 DATABASES = {
-    'default': _DATABASES[Config.get ('database.backend', 'sqlite')]
+    'default': _DATABASES[Config.get('database.backend','sqlite')]
 }
 
 
@@ -121,16 +116,14 @@ if DEBUG: CACHES['default'] = {
 
 
 ## Templates
-loaders = [ # template_loaders
+_loaders = [
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 ]
 if not DEBUG:   # Enable template caching
-    loaders = [('django.template.loaders.cached.Loader', loaders)]
+    _loaders = [('django.template.loaders.cached.Loader', _loaders)]
 
 # https://docs.djangoproject.com/en/1.8/ref/templates/upgrading/
-# Furthermore you should replace django.core.context_processors with
-# django.template.context_processors in the names of context processors.
 # If it sets TEMPLATE_DEBUG to a value that differs from DEBUG, include
 # that value under the 'debug' key in 'OPTIONS'.
 TEMPLATES = [
@@ -138,15 +131,15 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [ os.path.join (BASE_DIR, 'templates') ],
         'OPTIONS': {
-            'loaders': loaders,
+            #'debug': TEMPLATE_DEBUG,
+            'loaders': _loaders,
             'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-                'django.core.context_processors.request', # needed?
+                'django.template.context_processors.request', # needed?
                 'core.context_processors.siteconfig',
             ),
         },
     },
 ]
-del loaders
 #TEMPLATES[0]['OPTIONS']['string_if_invalid'] = '{{NULL}}',
 
 
@@ -163,8 +156,7 @@ MEDIA_ROOT = os.path.join (BASE_DIR, '..', 'htdocs', 'media')
 
 
 # Note: these are invoked in reverse order for the response.
-# @todo can use default?
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -172,7 +164,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'django.middleware.security.SecurityMiddleware',
+)
 
 
 ROOT_URLCONF = 'website.urls'
@@ -187,7 +180,6 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # between sessions. It can therefore only be auto-generated once, and must
 # then be written to persistent storage and loaded on each subsequent run.
 SECRET_KEY = Config.get ('main.secret', 'x' * 50)
-# @todo fail if missing!
 
 if not DEBUG and SECRET_KEY == 'x'*50:
     import sys, base64
@@ -203,100 +195,87 @@ if not DEBUG and SECRET_KEY == 'x'*50:
 # messages with ERROR or CRITICAL level are sent to AdminEmailHandler, as
 # long as the DEBUG setting is set to False.
 
-_LEVEL = 'DEBUG' if DEBUG else 'INFO'
+# Note: Different logging setup for debug/dev than for production.
 
-LOGGING = {
+# Debug: Logs everything with level >= INFO to the console
+_LOGGING_DEBUG = {
+    'version': 1,
+
+    'loggers': {
+        '': {   # catch-all
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'formatters': {
+        'simple': { 'format': '%(levelname)s %(message)s' },
+    },
+}
+
+
+# Production: Log to files in django/logs/*.log
+_LEVEL = 'INFO'
+_LOGGING_LIVE = {
     'version': 1,
     'disable_existing_loggers': False,
 
     'loggers':
     {
         '': {
-            'handlers': ['file:catch-all', 'console'],
-            'level': _LEVEL,
+            'handlers': ['file:error'],
+            'level': 'ERROR',
         },
-
-        # @todo catch all level>=ERROR into errors.log?
-        # Q: Howto log all errors into errors.log?
-        #    can not remove propagate:False bellow
-        #    handlers += 'file:error' and filter on that handler
-
         'apps': {
-            'handlers': ['file:apps', 'console'],
+            'handlers': ['file:apps', 'file:error'],
             'level': _LEVEL,
             'propagate': False,
         },
-
         'django': {
-            'handlers': ['file:django', 'console'],
+            'handlers': ['file:django', 'file:error'],
             'level': _LEVEL,
             'propagate': False,
         },
-
-        'django.db.backends': {
-            'handlers': ['file:db'],
-            'level': 'INFO',    # don't log all sql queries
-            'propagate': False,
-        },
-        'django.db.backends.schema': {
-            'handlers': ['file:db'],
-            'level': 'DEBUG',   # log sql that modifies the schema
-            'propagate': False,
-        },
-
         'django.security': {
-            'handlers': ['file:security'],
+            'handlers': ['file:security', 'file:error'],
             'level': _LEVEL,
             'propagate': False,
         },
-
         'django.request': {
-            'handlers': ['file:request'],
-            'level': 'INFO',    # all request are logged at DEBUG
+            'handlers': ['file:request', 'file:error'],
+            'level': 'INFO',
             'propagate': False,
-        }, # @todo possible to filter out Not found? they are ~98%
+        },  # @todo possible to filter out Not found? they are ~98%
     },
-
 
     'handlers':
     {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'level': 'DEBUG', # is this the default?
-            'formatter': 'simple',
-            'filters': ['debug'],
-        },
-
-        'file:catch-all': {
+        'file:error': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join (BASE_DIR, 'logs', 'catch-all.log'),
+            'level': 'ERROR',
+            'filename': os.path.join (BASE_DIR, 'logs', 'error.log'),
             'formatter': 'verbose',
         },
-
         'file:apps': {
             'class': 'logging.FileHandler',
             'filename': os.path.join (BASE_DIR, 'logs', 'apps.log'),
-            'formatter': 'verbose',
+            'formatter': 'apps',
         },
-
         'file:django': {
             'class': 'logging.FileHandler',
             'filename': os.path.join (BASE_DIR, 'logs', 'django.log'),
             'formatter': 'verbose',
         },
-
-        'file:db': {
-            'class': 'logging.FileHandler',
-            'filename': os.path.join (BASE_DIR, 'logs', 'db.log'),
-            'formatter': 'verbose',
-        },
-
         'file:request': {
             'class': 'logging.FileHandler',
             'filename': os.path.join (BASE_DIR, 'logs', 'request.log'),
             'formatter': 'verbose',
         },
-
         'file:security': {
             'class': 'logging.FileHandler',
             'filename': os.path.join (BASE_DIR, 'logs', 'security.log'),
@@ -304,28 +283,23 @@ LOGGING = {
         },
     },
 
-
     # https://docs.python.org/2/library/logging.html#logrecord-attributes
     'formatters': {
         'verbose': {
             'format' : "%(asctime)s %(levelname)s [%(name)s] : %(message)s",
             'datefmt' : "%Y-%m-%d %H:%M:%S",
         },
-#        'custom': {
-#            # Like verbose, but add function name. Only use for own code (apps.)
-#            'format' : "%(asctime)s %(levelname)s [%(name)s:%(funcName)s] : %(message)s",
-#            'datefmt' : "%Y-%m-%d %H:%M:%S",
-#        },
+        'apps': { # like verbose but add function name
+            'format' : "%(asctime)s %(levelname)s [%(name)s:%(funcName)s] : %(message)s",
+            'datefmt' : "%Y-%m-%d %H:%M:%S",
+        },
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
     },
-
-    'filters': {
-        'debug': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        },
-    },
 }
+
+LOGGING = _LOGGING_DEBUG if DEBUG else _LOGGING_LIVE
+
 
 del Config  # release memory
