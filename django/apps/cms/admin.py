@@ -1,20 +1,43 @@
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.conf.urls import url
 from django.contrib import admin
 from .models import Page, Content, File
-
-# can put save buttons on top?
+from .forms import PageForm
 
 admin.site.register (Content)
 
 
 @admin.register (Page)
 class PageAdmin (admin.ModelAdmin):
-    ordering = 'url',
+    fields = 'title', 'url', 'content'
     list_display = 'url', 'title',
+    ordering = 'url',
     search_fields = 'url', 'title', 'content'
+    form = PageForm
+    #save_on_top = True # looks ugly
+
     def get_readonly_fields (self, request, obj=None):
+        '''Make url read-only for existing pages'''
+        if request.user.is_superuser: return []
         return [] if obj is None else ['url']
-    # @todo filter on startswith(/). filter on url depth
+
+    def get_form (self, request, obj=None, **kwargs):
+        '''Add request.user to the form so it can be used for validation'''
+        form_class = super (PageAdmin, self).get_form (request, obj, **kwargs)
+        if obj: return form_class
+        # note: form_class and self.form is not the same
+        # a: think it's because django modifies it. @see form_class.__mro__
+        cls = type (form_class.__name__, (form_class,), dict(_user=request.user))
+        return cls
+        #return type ('SomeName', (form_class,), {'_user': request.user})
+        # @todo add this (shorter) solution as comment here:
+        # http://stackoverflow.com/a/9191583
+
+    # note: save_form is *not* documented, so might be unsafe api
+#    def save_form (self, request, form, change):
+#        from django.forms import ValidationError
+#        raise ValidationError ('dette gikk ikke')
 
 
 
@@ -22,23 +45,36 @@ class PageAdmin (admin.ModelAdmin):
 class FileAdmin (admin.ModelAdmin):
     ordering = 'name',
     readonly_fields = 'size', 'mimetype',
-    list_display = 'name', 'file', 'mimetype', 'size',
+    #readonly_fields = '_size', 'mimetype',
+    list_display = 'name', 'file', 'mimetype', '_size',
     list_filter = 'mimetype',
     actions = 'action_download',
 
+    def _size (self, obj):
+        from django.template.defaultfilters import filesizeformat
+        return filesizeformat (obj.size)
+    _size.admin_order_field = 'size'
+
+    # @todo filter on file size? <10k, <100k, <1M, <10M, >10M
+
     def get_urls (self):
-        from django.conf.urls import url
+        wrap = self.admin_site.admin_view
         return [
-            url (r'^upload/$', self.view_upload),
-            #url (r'^(?P<member_id>\d+)/prev/$', self.prev_view),
-            #url (r'^send-giro/$', self.admin_site.admin_view (self.send_giro_view)),
+            url (r'^upload_multiple/$', wrap (self.upload_multiple_view), name='file-upload-multiple'),
         ] + super (FileAdmin, self).get_urls()
 
-    def view_upload (self, request):
-        from django.shortcuts import render
-        return render (request, 'file/upload.html', dict(foo=321))
-        #return render (request, 'admin/cms/file/upload.html', dict(foo=321))
-        #return render (request, 'cms/file_upload.html', dict(foo=321))
+
+    def upload_multiple_view (self, request):
+        # Can not use bulk create since Model.save() won't be called.
+        #File.objects.bulk_create (File(file=f) for f in request.FILES.getlist ('cmsfiles'))
+
+        files = request.FILES.getlist ('cmsfiles')
+        for uploaded_file in files:
+            File.objects.create (file=uploaded_file)
+
+        self.message_user (request, 'Uploaded %d files' % len(files))
+        return redirect ('admin:cms_file_changelist')
+
 
     # Note: Creates zipfile in memory
     # Note: WinZip interprets all file names as CP437, also known as DOS Latin.

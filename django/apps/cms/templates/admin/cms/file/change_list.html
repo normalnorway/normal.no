@@ -1,6 +1,32 @@
 {% extends "admin/change_list.html" %}
 
+{% block extrahead %}
+{{ block.super }}
+<script>
+function foobar() {
+  el = document.getElementById ('cms-file-upload-multiple');
+  el.onchange = function (ev) {
+    ev.target.form.submit();
+    //el.form.submit();
+  };
+  el.click();
+}
+</script>
+{% endblock %}
+
+
 {% block object-tools-items %}
 {{ block.super }}
-<li><a href="upload">Upload multiple</a></li>
+<li><a href="javascript:foobar()">Upload multiple</a></li>
+{% endblock %}
+
+
+{% block footer %}
+<form method = "post" style="display:none"
+      id="must-have-a-name"
+      enctype="multipart/form-data"
+      action="{% url 'admin:file-upload-multiple' %}">{% csrf_token %}
+  <input id="cms-file-upload-multiple" type="file" name="cmsfiles" multiple />
+  <input type="submit" value="Upload" />
+</form>
 {% endblock %}

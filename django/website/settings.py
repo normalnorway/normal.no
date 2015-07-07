@@ -78,9 +78,9 @@ INSTALLED_APPS = (
     'apps.news',
     'apps.links',
     'apps.support',
-    'apps.cms',
     'apps.polls',
     'apps.erp.apps.ErpAppConfig',
+    'apps.cms.apps.CmsAppConfig',
 )
 
 

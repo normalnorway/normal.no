@@ -1,12 +1,11 @@
 {% extends "base.html" %}
-
 {% block extratitle %} » {{ page.title }}{% endblock %}
 
-{% block content %}
 
+{% block content %}
 {{ page.content|safe }}
 
-{% if user.is_staff %}
+{% if perms.cms.change_page %}
 <p><a href="{% url "page-update" pk=page.pk %}"
    accesskey="e" class="admin-edit-link">Rediger</a></p>
 {% endif %}
