@@ -2,7 +2,13 @@
 
 # Run this on the production server to update the code
 
-echo -n Last god commit
+if [ -n "$(git status -s -uno --porcelain)" ]; then
+    echo "Aborting! Working tree is not clean:"
+    git status -s -uno --porcelain
+    exit 1
+fi
+
+echo -n commit
 git rev-parse master
 
 git pull

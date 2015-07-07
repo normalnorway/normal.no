@@ -10,7 +10,7 @@ install:
   - npm install -g --production less
 
 before_script:
-  - sh mkdirs.sh
+  - sh mkdirs.sh ; true
   - django/manage.py migrate
 
 script:
