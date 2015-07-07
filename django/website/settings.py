@@ -15,6 +15,9 @@ BASE_DIR = os.path.dirname (os.path.dirname (__file__))
 from .siteconfig import SiteConfig
 Config = SiteConfig (os.path.join (BASE_DIR, os.path.pardir, 'site.ini'))
 
+# Add piwiki visitor tracking javascript code
+# @todo prefix with SITE_?
+PIWIKI = Config.getbool ('main.piwiki', False)
 
 DEFAULT_FROM_EMAIL = 'post@normal.no'
 
@@ -138,13 +141,15 @@ TEMPLATES = [
         'DIRS': [ os.path.join (BASE_DIR, 'templates') ],
         'OPTIONS': {
             'loaders': loaders,
-            #'string_if_invalid': '{{MISSING}}',
-            'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS +
-                ('django.core.context_processors.request',) # used by dev to check request.META.SERVER_NAME
+            'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS + (
+                'django.core.context_processors.request', # needed?
+                'core.context_processors.siteconfig',
+            ),
         },
     },
 ]
 del loaders
+#TEMPLATES[0]['OPTIONS']['string_if_invalid'] = '{{NULL}}',
 
 
 ## Static & media files
@@ -324,3 +329,5 @@ LOGGING = {
         },
     },
 }
+
+del Config  # release memory

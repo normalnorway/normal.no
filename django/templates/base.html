@@ -35,24 +35,14 @@
     {# Needed? Have lang attr on html element #}
     <meta property="og:locale" content="nb_NO" />
 
-    {% comment %}
-    don't put on front page!
-    need xmlns:og="http://ogp.me/ns#" ?
-    <meta property="og:url"         content="http://normal.no" />
-    $ curl -X POST -F "id=http://normal.no" -F "scrape=true" -F "locale=fr_fr" "https://graph.facebook.com" -s
-    {% endcomment %}
-
-    {% block extrahead %}
-    {% endblock %}
-    {# todo: put <style> tag around block? #}
-    {% block extrastyle %}
-    {% endblock %}
+    {% block extrahead %}{% endblock %}
+    {% block extrastyle %}{% endblock %}
   </head>
 
   <body>
     <div id="wrapper" itemscope itemtype="http://schema.org/NGO">
 
-      {% if request.META.SERVER_NAME == "dev.normal.no" %}
+      {% if config.debug %}
       <div style="background-color:red; font-weight: bold; text-align: center;">dev.normal.no</div>
       {% endif %}
 
@@ -91,7 +81,7 @@
 
     </div>  {# wrapper #}
 
-    {% if not debug %}
+    {% if config.piwiki %}
     <script type="text/javascript">
       var _paq = _paq || [];
       _paq.push(['trackPageView']);
