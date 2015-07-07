@@ -1,6 +1,8 @@
-from django.core.urlresolvers import reverse
 from django.db import models
+from django.core.urlresolvers import reverse
+from django.utils.text import slugify
 from tinymce4.models import HtmlField
+from .validators import validate_url_path
 
 
 class Content (models.Model):
@@ -11,11 +13,8 @@ class Content (models.Model):
 
     def __unicode__ (self): return self.name
 
-    class Meta:
-        verbose_name_plural = 'content'
-
-#    def get_absolute_url (self):
-#        return reverse ('admin:cms_content_change', args=[self.pk])
+#    class Meta:
+#        verbose_name_plural = 'content'
 
 
 
@@ -26,73 +25,56 @@ class File (models.Model):
     size = models.IntegerField (editable=False) # default = -1
     mimetype = models.CharField (max_length=50, blank=True, editable=False)
     description = models.TextField (blank=True)
-    # fields: upload_date? (can check the file), charset?
-    # image fields: caption, copyright, copyright_url (attribution), comment?
 
-    # Can use property to detect when image changes, and only
-    # auto-detect mimetype when changed.
-    # file = property(get_file, set_file)
-
-    # Note: can't use self.file.{path,url} before save() is called
+    # Note: self.file.{path,url} might be changed by super().save(),
+    # to make them unique (prefix is added).
     def save (self, *args, **kwargs):
-        #is_new = self.pk is None
-        #print type(self.file.file)
-        self.size = self.file.size
-        self.mimetype = getattr (self.file.file, 'content_type', '')
-        if not self.name:   # set name from filename
-            # @todo limit length of name
-            #self.name = self.file.file.name.split ('.', 1)[0]
-            # self.file.name            url (q: what about self.file.url?)
-            # self.file.file.name       path
-            #filename = os.path.basename (self.file.file.name)
-            filename = self.file.name.split ('/')[-1]
-            filename = filename.replace('_', ' ') # undo django's transform
-            self.name = filename.split ('.', 1)[0]
+        if self.size is None:
+            self.size = self.file.size
+        if not self.mimetype:
+            self.mimetype = getattr (self.file.file, 'content_type', '')
+        if not self.name:
+            self.file.save (self.file.name, self.file.file, save=False)
+            self.name = self.name_from_filename()
         super(File, self).save (*args, **kwargs)
+
+    def name_from_filename (self):
+        name = self.file.name           # url path
+        name = name.split ('/')[-1]     # split filename from path
+        name = name.split ('.', 1)[0]   # remove extension
+        name = name.replace('_', ' ')   # undo django's transform
+        name = name[0:self.file.field.max_length]   # limit length
+        return name
 
     def __unicode__ (self):
         return self.name
 
-    # delete file when object is deleted
+    # Note: the delete() method for an object is not necessarily
+    # called when deleting objects in bulk using a QuerySet.
+    # So better to use a signal. Or just keep the files around.
 #    def delete (self, *args, **kwargs):
 #        self.file.delete (save=False)
 
 
 
 class Page (models.Model):
-    url = models.CharField (max_length=150, unique=True) # rename address?
-    title = models.CharField (max_length=75)    # unique=True?
+    title = models.CharField (max_length=75, unique=True)
+    url = models.CharField (max_length=83, unique=True, validators=[validate_url_path])
     content = HtmlField()
-    #css = models.TextField (blank=True, help_text='Extra css styles')
-    # published = models.BooleanField()
-    # in_menu = models.BooleanField()   # menu_name: default to title
-    # template = models.CharField (max_length=75)
-    # extra_acl: to allow users to edit a subset of the pages
-    # changed = models.DateTimeField (auto_add_now=True)
-    # og:description - A brief description of the content, usually between 2 and 4 sentences. This will displayed below the title of the post on Facebook.
-    # og:image, fb:app_id
-    # og:url <-- use reverse(page-detail)?
+
+    def save (self, *args, **kwargs):
+        if not self.url: # populate url from title
+            self.url = '/sider/' + slugify (self.title)
+        if not self.url.endswith('/'): self.url += '/'
+        super(Page, self).save (*args, **kwargs)
+
+    def get_absolute_url (self):
+        return self.url
 
     def __unicode__ (self):
         return self.title
 
-    def save (self, *args, **kwargs):
-        # @todo prepend / if missing
-        if not self.url: # populate url from title
-            from django.utils.text import slugify
-            self.url = slugify (self.title)
-        super(Page, self).save (*args, **kwargs)
-
-    # returns canonical url
-    # @todo don't hardcode prefix (sider).
-    #       but then need named view in global urls.py
-    def get_absolute_url (self):
-        return self.url if self.url[0]=='/' else '/sider/' + self.url
-
-#    def get_absolute_url (self):
-#        return reverse ('page-detail', args=[self.pk])
-
-#    class Meta:
-#        permissions = (
-#            ('can_change_gs', 'Can change GS-pages')
-#        )
+    class Meta:
+        permissions = (
+            ('create_root_pages', 'Can create non-restricted page urls'),
+        )
