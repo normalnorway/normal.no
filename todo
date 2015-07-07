@@ -47,9 +47,6 @@ https://github.com/django-extensions/django-extensions/blob/master/README.rst
 
 can add own system checks: https://docs.djangoproject.com/en/1.8/topics/checks/
 
-rename branch production -> live
-  http://stackoverflow.com/questions/13858276/how-can-i-find-all-commits-that-are-in-one-branch-but-not-in-another-using-git
-
 https://coveralls.io/  check code test coverage after each push
 
 Switch from db to file based sessions?
@@ -62,3 +59,10 @@ a regular basis, for example as a daily cron job.
 bug: footer renders wrongly in IE < 9  http://netrenderer.com/index.php
 
 git-hook that rejects commits with whitespace errors
+
+support old news links? well, they where to cgi-script
+  A: should not matter! support it!
+  "Inga Marte angrer ikke utblåsningen"
+
+support old links
+  https://docs.djangoproject.com/en/1.4//ref/contrib/redirects/
