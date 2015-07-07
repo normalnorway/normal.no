@@ -140,6 +140,7 @@ TEMPLATES = [
         },
     },
 ]
+del _loaders
 #TEMPLATES[0]['OPTIONS']['string_if_invalid'] = '{{NULL}}',
 
 
@@ -302,10 +303,6 @@ _LOGGING_LIVE = {
 }
 
 LOGGING = _LOGGING_DEBUG if DEBUG else _LOGGING_LIVE
-if DEBUG:
-    del _LOGGING_LIVE
-else:
-    del _LOGGING_DEBUG
-
+if DEBUG: del _LOGGING_LIVE else: del _LOGGING_DEBUG
 
 del Config  # release memory
