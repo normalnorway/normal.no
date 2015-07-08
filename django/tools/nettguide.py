@@ -81,7 +81,6 @@ while dlindex+1 < len(dllist):          ## For each section
 #         IMPORT
 # -----------------------
 
-import initdjango
 from apps.links.models import Category as LinkCategory
 from apps.links.models import Link
 

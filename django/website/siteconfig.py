@@ -53,7 +53,6 @@ class SiteConfig (object):
 
 # Only used for testing
 if __name__ == '__main__':
-    import os
     filename = os.path.dirname (__file__)
     filename = os.path.join (filename, os.path.pardir, os.path.pardir, 'site.ini')
     cfg = SiteConfig (filename)

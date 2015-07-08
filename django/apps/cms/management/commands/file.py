@@ -1,6 +1,6 @@
 import os
 from django.core.management.base import BaseCommand, CommandError
-from django.core.files import File as DjangoFile
+#from django.core.files import File as DjangoFile
 from apps.cms.models import File
 
 # TODO

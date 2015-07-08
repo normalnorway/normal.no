@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib import messages
+#from django.contrib import messages
 
 
 def mypage (request):

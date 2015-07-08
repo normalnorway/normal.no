@@ -4,8 +4,6 @@ flatpages -> Page
 apps.content.Content -> Content
 """
 
-import initdjango
-from datetime import datetime
 from django.contrib.flatpages.models import FlatPage
 from apps.content.models import Content as OldContent
 from apps.cms.models import Page, Content

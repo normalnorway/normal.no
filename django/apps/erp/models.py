@@ -91,9 +91,6 @@ class TaskLog (models.Model):   # not in use
 
 # ------------------------[ Reminder ]------------------------
 
-def _foobar (*args):
-    return None
-
 class Reminder (models.Model):
     # @type event, todo, meeting
     type = models.ForeignKey ('ReminderType')
