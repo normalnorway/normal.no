@@ -2,7 +2,6 @@ import datetime, calendar
 
 def _flatten (lst): return sum (lst, [])
 
-# @todo has_key -> in
 
 class MyCalendar (calendar.HTMLCalendar):
     def __init__ (self, marks=None):
@@ -65,7 +64,7 @@ class DateMarks (object):
 
     def get_month_marks (self, year, month):
         '''Returns dict where days are keys'''
-        if not self.years.has_key (year): return {}
+        if not year in self.years: return {}
         #return self.years[year][month] # faster
         return dict(self.years[year][month])
 
@@ -78,11 +77,10 @@ if __name__ == '__main__':
     marks.add (datetime.date (2015,6,29), title='Pule', url='sex.com', csscls=['red', 'blue'])
     marks.add (datetime.date (2015,7,5), title='Grille')
 
-    from pprint import pprint
+#    from pprint import pprint
 #    pprint (marks.years[2015])
 #    pprint (marks.get_month_marks (2015, 6))
 
-    def _flatten (lst): return sum (lst, [])
 
     mlst = marks.get_month_marks (2015, 6)[29]
     print ' '.join (_flatten ([obj.csscls for obj in mlst]))

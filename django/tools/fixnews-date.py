@@ -10,7 +10,6 @@ Before running this script, remember to:
 Old articles have time set to 00:00:00
 """
 
-import initdjango
 import sqlite3
 from datetime import datetime
 from django.db import transaction

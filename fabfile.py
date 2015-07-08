@@ -6,7 +6,7 @@ Not in use!
 """
 
 import os
-from fabric.api import env, local, lcd, cd, run, get, put
+from fabric.api import env, local, lcd, cd, run
 from fabric.api import settings
 #from fabric.contrib.console import confirm
 

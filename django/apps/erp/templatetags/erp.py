@@ -1,4 +1,4 @@
-import datetime, calendar
+import datetime
 from django import template
 from apps.erp.models import Task, Reminder, Note
 #from django.utils.safestring import mark_safe

@@ -1,6 +1,7 @@
 import os
 from uuid import uuid4
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+#from django.core.management.base import CommandError
 from django.core.files import File as DjangoFile
 #from django.conf import settings
 from apps.cms.models import File
