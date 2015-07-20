@@ -2,6 +2,8 @@
 # http://docs.travis-ci.com/user/customizing-the-build/
 # http://docs.travis-ci.com/user/installing-dependencies/
 
+# @todo can cache build of lxml?
+
 language: python
 python: 2.7
 
@@ -18,6 +20,7 @@ before_script:
   - sh mkdirs.sh ; true
   - make -C django/static/css/
   - django/manage.py migrate
+  - django/manage.py collectstatic --noinput -i \*.less -i Makefile
   # @todo move this to Makefile? then do: make init
 
 script:
