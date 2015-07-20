@@ -10,6 +10,8 @@ function $get (id) {
 function ajax_upload (form, on_load, on_error)
 {
     var xhr = new XMLHttpRequest();
+    //xhr.onload = on_load || null;
+    //xhr.onerror = on_error || function () { ... };
     if (on_load)
 	xhr.onload = on_load;
     if (on_error)
@@ -23,7 +25,7 @@ function ajax_upload (form, on_load, on_error)
 }
 
 
-// rename callback on_success? success_cb, error_cb
+// rename callback on_success or on_load? success_cb, error_cb
 function get_json (url, callback)  // @todo on_error
 {
     // XXX does error() exists?

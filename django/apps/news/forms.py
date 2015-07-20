@@ -14,6 +14,7 @@ DATETIME_INPUT_FORMATS = [
 #    '%d. %B %Y', '%d. %b %Y',   # 24. desember 2015, 24. des. 2015
 ]
 DATETIME_INPUT_FORMATS += [s+' %H:%M' for s in DATETIME_INPUT_FORMATS]
+# @todo also allow dot as separator. e.g., "kl. 14.00" (sprakradet.no)
 
 
 class NewArticleForm (forms.Form):

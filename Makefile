@@ -1,27 +1,28 @@
-.PHONY: bugfix minor test
+.PHONY: relase deploy wip test livetest
 
 all:
 	@echo I do nothing by default!
 
-bugfix:
-	git commit -m bugfix
+# @todo rename make-relase
+release:
+	@echo finish me
+	#sh minify-js.sh
+	# ensure clean working tree
+	# git fetch
+	# git checkout live
+	# git rebase master	# origin/master?
+	# or: git pull origin/master --rebase
+	# @todo might fail if can't fast-forward
+	# git push live
+	# git checkout master
 
-minor:
-	git commit -m minor
+wip:
+	git commit -am wip
 
 
-## Done on local dev system
-# Note: Can not have local changes. Can do git stash push + pop.
-# 1) Merge changes from 'master' into 'production'.
-# 2) Push the changes.
-master-to-production:
-	git checkout production
-	git merge master
-	git push
-	git checkout master
-
-activate: master-to-production
-	ssh normal.no '(cd /srv/www/normal.no ; ./update.sh)'
+#activate: make-release
+deploy:
+	ssh normal.no '(cd /srv/www/normal.no ; sh update.sh)'
 	# @todo run livetest after and abort if it fails
 	# @todo run django tests before (and abort on failure)
 
@@ -37,5 +38,6 @@ test:
 
 # Test the live site: http://normal.no
 # @todo test this after activate new version, and rollback if test fails
+# rename livetest?
 test-live:
 	python test/livesite.py

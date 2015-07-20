@@ -66,3 +66,7 @@ support old news links? well, they where to cgi-script
 
 support old links
   https://docs.djangoproject.com/en/1.4//ref/contrib/redirects/
+
+http://www.soyoucode.com/2011/minify-html-output-django
+https://code.djangoproject.com/wiki/StripWhitespaceMiddleware
+https://pypi.python.org/pypi/django-htmlmin
