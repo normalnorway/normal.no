@@ -55,6 +55,7 @@ urlpatterns = [
 #    url(r'^(?P<url>[-/\w]+/)$', cms_views.PageDetail.as_view()),
 #    url(r'^(?P<slug>[-a-z0-9/]+/)$', cms_views.PageDetail.as_view()),
 ]
+#] + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 # Hack to serve MEDIA_ROOT in dev mode

@@ -329,6 +329,8 @@ tinymce.init ({
     // Handle file upload
     file_browser_callback: function (field_name, url, type, win)
     {
+        // Q: url param
+        // Q: when is win != window?
         //console.log (type, field_name, url);
 	if (type == 'file') {
             editor = tinymce.activeEditor;

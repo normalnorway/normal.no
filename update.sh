@@ -1,5 +1,9 @@
 #!/bin/sh -e
 
+# @todo make sure all files in django/logs/*.log is writable by www-data
+# $ chown www-data.www-data django/logs/*.log
+# $ chmod g+w django/logs/error.log
+
 # Run this on the production server to update the code
 
 if [ -n "$(git status -s -uno --porcelain)" ]; then
@@ -9,7 +13,7 @@ if [ -n "$(git status -s -uno --porcelain)" ]; then
 fi
 
 echo -n commit
-git rev-parse master
+git rev-parse live
 
 git pull
 

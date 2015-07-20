@@ -50,11 +50,12 @@ table td.number {
     {{ form.city.label_tag }} {{ form.city }}
   </p>
 
-  <!--
+  {% comment %}
   <p class="required {% if form.choice.errors %}{{ form.error_css_class }}{% endif %}">
   Note: Can not do this bellow, since two fields inside same p-element
   {{ form.choice.errors }}
-  -->
+  {% endcomment %}
+
   {% if form.choice.errors %}
   <ul class="errorlist"><li>Velg hvilken modell du ønsker under.</li></ul>
   {% endif %}
@@ -125,11 +126,12 @@ i timen.</small></p>
 
 <h2>Underskrifter</h2>
 
-<!--
+{% comment %}
 <p>Viser siste 50 av {{ count }} underskrifter:</p>
 @todo min() template tag
 @todo handle non-public signers
--->
+{% endcomment %}
+
 <p>Viser siste {% if count > 50 %} 50 {% else %} {{count}} {% endif %}
 av {{ count }} underskrifter:</p>
 
