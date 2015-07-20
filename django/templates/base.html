@@ -1,3 +1,4 @@
+{% load static from staticfiles %}
 <!DOCTYPE html>
 <html lang="nb">  {# Or use nb-NO? #}
   <head>
@@ -10,14 +11,9 @@
           title="Siste nyheter" href="/nyheter/rss/" />
 
     {% if not debug %}
-    {# @todo {% load static from staticfiles %} #}
-    <link rel="stylesheet" href="{{STATIC_URL}}css/all.css" />
-    {% endif %}
-
-    {% if debug %}
-    <style>
-      html { border-right: 6px solid maroon; border-left: 6px solid maroon; }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/all.css' %}" />
+    {% else %}
+    <style>html { border-right: 6px solid maroon; border-left: 6px solid maroon; }</style>
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/base.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/style.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/classes.less" />

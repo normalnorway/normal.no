@@ -145,6 +145,8 @@ del loaders
 
 
 ## Static & media files
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 STATICFILES_DIRS = (
     os.path.join (BASE_DIR, 'static'),
 )
@@ -165,7 +167,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+    # https://docs.djangoproject.com/en/1.8/ref/settings/#secure-browser-xss-filter
+    #'django.middleware.security.SecurityMiddleware',
 )
 
 
@@ -226,6 +229,10 @@ _LOGGING_LIVE = {
     'version': 1,
     'disable_existing_loggers': False,
 
+    # @todo need catch-all logger at warning level? warnings.log
+    # @todo catch-all.log on srv1 no longer in use
+    # XXX server error not sendt as email!
+    #       because propagate=False on django.request?
     'loggers':
     {
         '': {

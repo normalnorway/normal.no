@@ -1,7 +1,9 @@
 {% extends "base.html" %}
-{# @todo move to links/index.html #}
+{% load static from staticfiles %}
+{# @todo move to links/index.html? or move to cms.Links? #}
 
 {% block extratitle %} » Nettguide{% endblock %}
+{# Blogger | Nettguide | Normal Norway #}
 {# extrahead: og:title=Nettguide ? #}
 
 {% block extrastyle %}
@@ -40,12 +42,16 @@
   {% for link in cat.data|dictsort:"name" %}
   <li>
     <a href="{{link.url}}">{{link.name}}</a>
-    {% if link.lang %}<img src="{{STATIC_URL}}images/lang/{{link.lang}}.gif"> {% endif %}
-    <!--
-    {% if link.text %}
-    – {{ link.text }}
+    {% if link.lang %}
+    {% with 'images/lang/'|add:link.lang|add:'.gif' as flag_url %}
+    <img src="{% static flag_url %}" />
+    {# <img src="{{STATIC_URL}}images/lang/{{link.lang}}.gif"> #}
+    {% endwith %}
     {% endif %}
-    -->
+
+    {% comment %}
+    {% if link.text %} – {{ link.text }}{% endif %}
+    {% endcomment %}
   </li>
   {% endfor %}
 </ul>
