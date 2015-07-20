@@ -30,7 +30,8 @@ deploy:
 # Offline tests
 test:
 	(cd django && ./manage.py check)
-	(cd django && ./manage.py test)
+	#(cd django && ./manage.py test)
+	(cd django && ./manage.py test -v 2)
 	$(MAKE) -C django/static/css/ test
 	@#python django/tests.py  # already run by django manage.py test
 	@#@todo jslint

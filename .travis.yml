@@ -16,7 +16,9 @@ install:
 
 before_script:
   - sh mkdirs.sh ; true
+  - make -C django/static/css/
   - django/manage.py migrate
+  # @todo move this to Makefile? then do: make init
 
 script:
   - make test
