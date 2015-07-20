@@ -26,7 +26,7 @@ django/manage.py check
 make -C django/static/css check
 make -C django/static/css
 
-django/manage.py collectstatic --noinput -i \*.less -i Makefile -i todo
+django/manage.py collectstatic --noinput -i \*.less -i Makefile
 (cd htdocs/static/css/ ; ls *.css | egrep -v 'all.css|tinymce.css' | xargs rm)
 
 touch django/website/wsgi.py
