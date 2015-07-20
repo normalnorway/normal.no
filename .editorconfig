@@ -1,25 +1,23 @@
 # http://editorconfig.org/
 
-# 4 space indent: Python & Javascript
-# 2 space indent: HTML & CSS
+# 4 space indent: Python, Javascript, CSS
+# 2 space indent: HTML
 
 root = true
 
-# [*]
+#[*]
 charset = utf-8
-
 tab_width = 8
-
 indent_style = space
 
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{py,js}]
+[*.{py,js,css}]
 indent_size = 4
 
-[*.{html,css,yaml}]
+[*.{html,yaml}]
 indent_size = 2
 
 [Makefile]

@@ -140,7 +140,7 @@ TEMPLATES = [
         },
     },
 ]
-del loaders
+del _loaders
 #TEMPLATES[0]['OPTIONS']['string_if_invalid'] = '{{NULL}}',
 
 

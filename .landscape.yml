@@ -1,0 +1,28 @@
+# https://docs.landscape.io/configuration.html
+# https://docs.landscape.io/advanced.html
+# http://prospector.readthedocs.org/en/master/profiles.html
+
+# Ignoring a Single Error on a Line
+# for file in get_files():  # noqa
+
+#doc-warnings: yes
+#test-warnings: no
+#strictness: veryhigh
+#max-line-length: 120
+
+#uses: [django]
+#autodetect: no
+
+
+# Do not check auto-generated code
+ignore-paths:
+  - migrations/
+#ignore-patterns:
+#  - ^django/apps/*/migrations/*.py
+
+
+# Disable some warnings
+# E704: Multiple statements on one line
+pep8:
+  disable: [E704]
+  full: true
