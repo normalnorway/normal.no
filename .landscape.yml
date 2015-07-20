@@ -21,8 +21,11 @@ ignore-paths:
 #  - ^django/apps/*/migrations/*.py
 
 
-# Disable some warnings
+# Disable some warnings:
 # E704: Multiple statements on one line
+# Note: Errors bellow only active when: pep8.full = true
+# E211: Whitespace before '('
+# E231: Missing whitespace after ','
 pep8:
-  disable: [E704]
+  disable: [E704, E211]
   full: true
