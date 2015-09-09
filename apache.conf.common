@@ -6,6 +6,9 @@
     ServerAlias     test.normal.no
 
     ServerAdmin     torkel@normal.no
+    TransferLog     /dev/null
+    #CustomLog       /dev/null combined
+    ErrorLog        /srv/www/normal.no/logs/error
 
     WSGIScriptAlias /   /srv/www/normal.no/django/website/wsgi.py
     WSGIProcessGroup    django
@@ -22,29 +25,6 @@
 	Options +SymLinksIfOwnerMatch
     </Directory>
 
-    ## Logging
-    #RewriteRule \.(png|jpg|jpeg|css|js)$ - [E=dontlog]
-    #SetEnvIfNoCase Request_URI "\.png$" dontlog
-    #SetEnvIfNoCase Request_URI "\.jpe?g$" dontlog
-    #SetEnvIfNoCase Request_URI "\.css$" dontlog
-    #SetEnvIfNoCase Request_URI "\.js$" dontlog
-    SetEnvIfNoCase Request_URI "\.(png|jpe?g|css|js)$" dontlog
-    # @todo /irc/ => dontlog
-
-    LogFormat "%a %{%Y-%m-%dT%H:%M:%S}t %>s \"%r\" %B %D %k" myformat
-
-    ErrorLog    /srv/www/normal.no/logs/error
-    CustomLog   /srv/www/normal.no/logs/access  myformat                env=!dontlog
-    CustomLog   /srv/www/normal.no/logs/refer   "%a %{Referer}i => %U"  env=!dontlog
-    CustomLog   /srv/www/normal.no/logs/agent   "%a %{User-agent}i"     env=!dontlog
-    # Transfer: ip, time, status, request, size, time-taken, keepalive count
-    # Refer:    ip, refer, request url
-    # Agent:    ip, user-agent
-
-    # @todo rotate logs
-    # CustomLog "|rotatelogs /var/log/access_log 86400" common
-
-
     ## Expire
     # @todo enable
     #ExpiresActive On
@@ -52,6 +32,13 @@
     #ExpiresByType image/ico "access plus 1 month"
     #ExpiresByType image/*   "access plus 1 month"  # OK?
     #ExpiresByType text/css  "access plus 1 week"
+
+    # Testing out ...
+    <Directory /srv/www/normal.no/htdocs/static/>
+        ExpiresActive On
+        ExpiresByType image/png "access plus 6 month"
+        ExpiresByType text/css  "access plus 1 month"
+    </Directory>
 
 
     # SetOutputFilter DEFLATE  ???
