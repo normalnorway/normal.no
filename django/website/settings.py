@@ -48,7 +48,6 @@ USE_TZ = False
 
 
 DEBUG = Config.getbool ('main.debug', True)
-TEMPLATE_DEBUG = DEBUG
 
 INTERNAL_IPS = ['127.0.0.1']
 #INTERNAL_IPS = ['127.0.0.1', '::1']
@@ -131,7 +130,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [ os.path.join (BASE_DIR, 'templates') ],
         'OPTIONS': {
-            #'debug': TEMPLATE_DEBUG,
+            #'debug': True, # default if DEBUG=True
             'loaders': _loaders,
             'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS + (
                 'django.template.context_processors.request', # needed?
