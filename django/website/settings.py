@@ -302,7 +302,10 @@ _LOGGING_LIVE = {
 }
 
 LOGGING = _LOGGING_DEBUG if DEBUG else _LOGGING_LIVE
-del _LOGGING_DEBUG if not DEBUG else _LOGGING_LIVE
+if DEBUG:
+    del _LOGGING_LIVE
+else:
+    del _LOGGING_DEBUG
 
 
 del Config  # release memory
