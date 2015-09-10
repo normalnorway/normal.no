@@ -191,13 +191,10 @@ if not DEBUG and SECRET_KEY == 'x'*50:
 
 ## Logging
 
-# By default, Django configures the django.request logger so that all
-# messages with ERROR or CRITICAL level are sent to AdminEmailHandler, as
-# long as the DEBUG setting is set to False.
-
 # Note: Different logging setup for debug/dev than for production.
+# DEBUG: Logs everything with level >= INFO to the console
+# LIVE:  Log to files in django/logs/*.log
 
-# Debug: Logs everything with level >= INFO to the console
 _LOGGING_DEBUG = {
     'version': 1,
 
@@ -218,12 +215,11 @@ _LOGGING_DEBUG = {
     },
 }
 
-
-# Production: Log to files in django/logs/*.log
+# @todo also log warnings in catch-all logger?
 _LEVEL = 'INFO'
 _LOGGING_LIVE = {
     'version': 1,
-    'disable_existing_loggers': False,
+    #'disable_existing_loggers': False,
 
     'loggers':
     {
@@ -247,7 +243,8 @@ _LOGGING_LIVE = {
             'propagate': False,
         },
         'django.request': {
-            'handlers': ['file:request', 'file:error'],
+            #'handlers': ['file:request', 'file:error'],
+            'handlers': ['file:request', 'file:error', 'mail_admins'],
             'level': 'INFO',
             'propagate': False,
         },  # @todo possible to filter out Not found? they are ~98%
@@ -281,6 +278,11 @@ _LOGGING_LIVE = {
             'filename': os.path.join (BASE_DIR, 'logs', 'security.log'),
             'formatter': 'verbose',
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
     },
 
     # https://docs.python.org/2/library/logging.html#logrecord-attributes
@@ -300,6 +302,7 @@ _LOGGING_LIVE = {
 }
 
 LOGGING = _LOGGING_DEBUG if DEBUG else _LOGGING_LIVE
+del _LOGGING_DEBUG if not DEBUG else _LOGGING_LIVE
 
 
 del Config  # release memory
