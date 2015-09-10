@@ -13,6 +13,7 @@
 [main]
 debug = true
 secret = some-secret-key
+piwiki = on
 
 [database]
 name = dbname

@@ -12,3 +12,6 @@ https://github.com/normalnorway/normal.no/issues/1
 http://www.w3.org/2003/12/semantic-extractor.html
   No top-level heading (h1) found, no outline extracted.
   @todo add h1 to frontpage (and all other pages?)
+
+Android web browser & https: https://piwik.normal.no/piwik.js
+  invalid cert

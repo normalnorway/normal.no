@@ -19,7 +19,7 @@ install:
 before_script:
   - sh mkdirs.sh ; true
   - make -C django/static/css/
-  - django/manage.py migrate
+# - django/manage.py migrate  # not needed. manage.py test does it
   - django/manage.py collectstatic --noinput -i \*.less -i Makefile
   # @todo move this to Makefile? then do: make init
 

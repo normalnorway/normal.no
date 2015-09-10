@@ -70,3 +70,5 @@ support old links
 http://www.soyoucode.com/2011/minify-html-output-django
 https://code.djangoproject.com/wiki/StripWhitespaceMiddleware
 https://pypi.python.org/pypi/django-htmlmin
+
+/var/www/owncloud/.htaccess

@@ -18,3 +18,6 @@ http://normal.no/login & logout
 
 Use ManifestStaticFilesStorage. So MD5 hash is appended to filename.
 https://docs.djangoproject.com/en/1.8/ref/contrib/staticfiles/#manifeststaticfilesstorage
+
+Server Error (500): Own page. Saying the incident is logged, and an link
+to the issue tracker
