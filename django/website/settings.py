@@ -227,8 +227,6 @@ _LOGGING_LIVE = {
 
     # @todo need catch-all logger at warning level? warnings.log
     # @todo catch-all.log on srv1 no longer in use
-    # XXX server error not sendt as email!
-    #       because propagate=False on django.request?
     'loggers':
     {
         '': {
@@ -311,5 +309,6 @@ _LOGGING_LIVE = {
 
 LOGGING = _LOGGING_DEBUG if DEBUG else _LOGGING_LIVE
 if DEBUG: del _LOGGING_LIVE else: del _LOGGING_DEBUG
+
 
 del Config  # release memory
