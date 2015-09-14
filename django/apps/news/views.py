@@ -150,6 +150,7 @@ til <a href="mailto:post@normal.no">post@normal.no</a>. Takk!
     # Note: Article.published only true if validation passes and user
     # has the add_article permission.
     def _save (self, data):
+        data.pop ('locale', None) # tmp hack: must remove unwanted keys (from newsgrab)
         obj = Article (**data)
         try:
             obj.full_clean()
