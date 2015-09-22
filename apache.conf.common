@@ -7,7 +7,6 @@
 
     ServerAdmin     torkel@normal.no
     TransferLog     /dev/null
-    #CustomLog       /dev/null combined
     ErrorLog        /srv/www/normal.no/logs/error
 
     WSGIScriptAlias /   /srv/www/normal.no/django/website/wsgi.py
@@ -15,13 +14,15 @@
 
     Alias /static/      /srv/www/normal.no/htdocs/static/
     Alias /media/       /srv/www/normal.no/htdocs/media/
-    #Alias /favicon.ico /srv/www/normal.no/htdocs/static/favicon.ico
-    #Alias /robots.txt  /srv/www/normal.no/htdocs/static/robots.txt
+
+    Redirect 404 /favicon.ico
+    Redirect 404 /robots.txt
+    Redirect 404 /cgi-bin/viewnews
+
+    #Redirect permanent /cgi-bin/viewnews http://old.normal.no/cgi-bin/viewnews
 
     <Directory /srv/www/normal.no/htdocs/media/files>
-	# @todo move to (site) global scope?
 	AddDefaultCharset utf-8
-	# I like symlinks
 	Options +SymLinksIfOwnerMatch
     </Directory>
 
@@ -42,10 +43,15 @@
 
 
     # SetOutputFilter DEFLATE  ???
+    # update: google pagespeeds says ok on ecryption
 
 
     ## Access control (ACL)
+    # @todo remove apache 2.2 support
     <Directory /srv/www/normal.no/htdocs>
+	Options none
+	AllowOverride none
+
         <IfModule mod_authz_core.c>
             # Apache 2.4
             Require all granted
@@ -54,11 +60,6 @@
             # Apache 2.2
             Allow from all
         </IfModule>
-
-        # @todo move these to virtual-host scope?
-        # update: only allowed for 'Options'. better to drop. should be default
-        Options none
-        AllowOverride none
     </Directory>
 
     <Directory /srv/www/normal.no/django/website>
