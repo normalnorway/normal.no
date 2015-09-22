@@ -20,6 +20,7 @@
 
     # Make old links into the news archive work
     Redirect permanent /cgi-bin/viewnews http://old.normal.no/cgi-bin/viewnews
+    Redirect permanent /cgi-bin/rss http://normal.no/rss/
 
     <Directory /srv/www/normal.no/htdocs/media/files>
 	AddDefaultCharset utf-8
