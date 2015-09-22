@@ -17,9 +17,9 @@
 
     Redirect 404 /favicon.ico
     Redirect 404 /robots.txt
-    Redirect 404 /cgi-bin/viewnews
 
-    #Redirect permanent /cgi-bin/viewnews http://old.normal.no/cgi-bin/viewnews
+    # Make old links into the news archive work
+    Redirect permanent /cgi-bin/viewnews http://old.normal.no/cgi-bin/viewnews
 
     <Directory /srv/www/normal.no/htdocs/media/files>
 	AddDefaultCharset utf-8
