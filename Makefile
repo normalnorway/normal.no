@@ -1,11 +1,33 @@
-.PHONY: relase deploy wip test livetest
+.PHONY: all pill wip bugfix minor deploy test livetest
 
 all:
 	@echo I do nothing by default!
 
+pull:
+	echo Rebasing from upstream branch ...
+	git stash
+	git pull --rebase
+	git stash pop
+
+wip:
+	git commit -am wip
+
+bugfix:
+	git commit -am bugfix
+
+minor:
+	git commit -am minor
+
+
+#activate: make-release
+# @todo run livetest as last step and abort (rollback) if it fails
+deploy: test
+	ssh normal.no '(cd /srv/www/normal.no ; sh update.sh)'
+
+
 # @todo rename make-relase
-release:
-	@echo finish me
+#release:
+#	@echo finish me
 	#sh minify-js.sh
 	# ensure clean working tree
 	# git fetch
@@ -16,29 +38,15 @@ release:
 	# git push live
 	# git checkout master
 
-wip:
-	git commit -am wip
 
-
-#activate: make-release
-deploy:
-	ssh normal.no '(cd /srv/www/normal.no ; sh update.sh)'
-	# @todo run livetest after and abort if it fails
-	# @todo run django tests before (and abort on failure)
-
-
-# Offline tests
+# Run tests
+# @todo jslint
 test:
 	(cd django && ./manage.py check)
-	#(cd django && ./manage.py test)
 	(cd django && ./manage.py test -v 2)
 	$(MAKE) -C django/static/css/ test
-	@#python django/tests.py  # already run by django manage.py test
-	@#@todo jslint
 
 
 # Test the live site: http://normal.no
-# @todo test this after activate new version, and rollback if test fails
-# rename livetest?
-test-live:
+livetest:
 	python test/livesite.py
