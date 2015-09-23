@@ -5,7 +5,7 @@
     ServerAlias     qrw3w45sx7niqcpg.onion
     ServerAlias     test.normal.no
 
-    ServerAdmin     torkel@normal.no
+    ServerAdmin     it@normal.no
     TransferLog     /dev/null
     ErrorLog        /srv/www/normal.no/logs/error
 
