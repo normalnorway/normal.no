@@ -1,3 +1,4 @@
+{% load cms %}
 <!DOCTYPE html>
 <html lang="nb">  {# Or use nb-NO? #}
   <head>
@@ -42,6 +43,8 @@
   <body>
     <div id="wrapper" itemscope itemtype="http://schema.org/NGO">
 
+      <div id="inner">
+
       {% if config.debug %}
       <div style="background-color:red; font-weight: bold; text-align: center;">dev.normal.no</div>
       {% endif %}
@@ -78,8 +81,14 @@
       {% if debug %}
       <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
       {% endif %}
+      </div>
+
+      </div> {# inner #}
+
+      <div id="sidebar">{% cms_content "sidebar" %}</div>
 
     </div>  {# wrapper #}
+
 
     {% if config.piwiki %}
     <script type="text/javascript">

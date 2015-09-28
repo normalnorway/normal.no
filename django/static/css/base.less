@@ -11,26 +11,38 @@ body {
     font-family: sans-serif;
     color: #111;
     background-color: #b0b0b0;
-    margin: 2em auto;
-    max-width: 56em;    // @todo use pixels (tinymce width is in pixels)
+    margin: 2em 0;
 }
 
+#wrapper {  // this is the outer element (body is parent)
+    width: 933px;
+    margin: 0 auto;
+}
 
-
-/**
- * Page layout / document structure.
- *
- * Listed in same order as used in document.
- *
- * @todo use these semantic elements? article, section, nav, time
- */
-
-#wrapper {  // @todo better name. this is outer element (body is parent)
+#inner {
+    float: left;
+    width: 680px;
     background-color: white;
 }
 
+#sidebar {
+    float: left;
+    width: 220px;
+    background-color: white;
+    font-size: 90%;
+    padding: 10px 8px;
+    margin-left: 28px;
+    border-radius: 3px;
+}
 
-//header { }
+#sidebar h1, #sidebar h2, #sidebar h3, #sidebar h4 {
+    margin:0;
+}
+
+#sidebar ul {
+    margin: 4px 0;
+    padding-left: 16px;
+}
 
 
 #content {
