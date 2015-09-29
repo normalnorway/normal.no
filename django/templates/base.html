@@ -10,14 +10,14 @@
     <link rel="alternate" type="application/rss+xml"
           title="Siste nyheter" href="/nyheter/rss/" />
 
-    {% if not debug %}
+    {% if not config.debug %}
     {# @todo {% load static from staticfiles %} #}
     <link rel="stylesheet" href="{{STATIC_URL}}css/all.css" />
     {% endif %}
 
-    {% if debug %}
+    {% if config.debug %}
     <style>
-      html { border-right: 6px solid maroon; border-left: 6px solid maroon; }
+      html { border-right: 8px solid maroon; border-left: 8px solid maroon; }
     </style>
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/base.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/style.less" />
@@ -45,9 +45,11 @@
 
       <div id="inner">
 
+      <!--
       {% if config.debug %}
       <div style="background-color:red; font-weight: bold; text-align: center;">dev.normal.no</div>
       {% endif %}
+      -->
 
       <header>
         <div id="menu">{% include "menu.html" %}</div>
