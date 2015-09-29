@@ -1,5 +1,5 @@
-{% load cms %}
 <!DOCTYPE html>
+{% load cms %}
 <html lang="nb">  {# Or use nb-NO? #}
   <head>
     <meta charset="utf-8" />
@@ -78,14 +78,36 @@
 
       <footer>{% include "footer.html" %}</footer>
 
+      <!--
       {% if debug %}
       <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
       {% endif %}
-      </div>
+      -->
 
       </div> {# inner #}
 
-      <div id="sidebar">{% cms_content "sidebar" %}</div>
+      <div id="sidebar">
+        <header>
+          <div class="follow-widget">
+            <a href="https://www.facebook.com/NormalNorway" title="Facebook">
+              <img src="{{STATIC_URL}}/images/widgets/facebook.png" width="16" height="16" alt="Facebook" />
+            </a>
+            <a href="https://twitter.com/NormalNorway" title="Twitter">
+              <img src="{{STATIC_URL}}/images/widgets/twitter.png" width="16" height="16" alt="Twitter" />
+            </a>
+            <a href="https://plus.google.com/NORMALNorge" title="Google+">
+              <img src="{{STATIC_URL}}/images/widgets/google_plus.png" width="16" height="16" alt="Google+" />
+            </a>
+            <a href="https://www.youtube.com/user/normalnorway" title="YouTube">
+              <img src="{{STATIC_URL}}/images/widgets/youtube.png" width="16" height="16" alt="YouTube" />
+            </a>
+            <a href="//nyheter/rss/" title="RSS Feed">
+              <img src="{{STATIC_URL}}/images/widgets/feed.png" width="16" height="16" alt="RSS Feed (nyheter)" />
+            </a>
+          </div>
+        </header>
+        <div class="content">{% cms_content "sidebar" %}</div>
+      </div>
 
     </div>  {# wrapper #}
 
