@@ -22,6 +22,22 @@
     Redirect permanent /cgi-bin/viewnews http://old.normal.no/cgi-bin/viewnews
     Redirect permanent /cgi-bin/rss http://normal.no/rss/
 
+    # Testing reverse proxy ...
+    # The ProxyPreserveHost will make sure the Host header in the
+    # request is not rewritten. The lack of a ProxyPassReverse will
+    # make sure that there is no rewriting done on the response.
+    # Update: Must rewrite Host header so the access to piwik.normal.no
+    #         is done with piwik.normal.no as host.
+    #ProxyPreserveHost On
+    ProxyPass /piwik http://piwik.normal.no
+
+    # ProxyPassReverse
+
+    # Q: Can do this instead?
+    # should be ok for piwik.js. but piwik.js posts to piwik.php
+    #Alias /piwik.js /srv/www/piwik/htdocs/piwik.js
+
+
     <Directory /srv/www/normal.no/htdocs/media/files>
 	AddDefaultCharset utf-8
 	Options +SymLinksIfOwnerMatch

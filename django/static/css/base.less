@@ -11,26 +11,64 @@ body {
     font-family: sans-serif;
     color: #111;
     background-color: #b0b0b0;
-    margin: 2em auto;
-    max-width: 56em;    // @todo use pixels (tinymce width is in pixels)
+    margin: 2em 0;
 }
 
+#wrapper {  // this is the outer element (body is parent)
+    width: 940px;   // inner.width + sidebar.width + sidebar.margin-left
+    margin: 0 auto;
+//    border: 1px dashed black;
+}
 
-
-/**
- * Page layout / document structure.
- *
- * Listed in same order as used in document.
- *
- * @todo use these semantic elements? article, section, nav, time
- */
-
-#wrapper {  // @todo better name. this is outer element (body is parent)
+#inner {
+    float: left;
+    width: 730px;
     background-color: white;
 }
 
+#sidebar {
+    float: left;
+    width: 200px;
+    background-color: #f3f3f3;
+    margin-left: 10px;
 
-//header { }
+    border-radius: 3px;
+//    border-top: 40px solid #222;
+//    padding: 10px 8px;
+}
+
+#sidebar header {
+    // q: border top radius?
+    background-color: #222;
+    height: 2.8rem;
+}
+
+#sidebar header div.follow-widget {
+    text-align: center;
+    padding-top: 0.66rem;
+}
+
+#sidebar header .follow-widget a {
+    padding: 0 4px;
+}
+
+#sidebar div.content {
+    font-size: 90%;
+    line-height: 1.667;
+    padding-left: 12px;
+    padding-top: 8px;
+    padding-right: 6px;
+}
+
+#sidebar ul a:hover {
+    text-decoration: underline;
+}
+
+//#sidebar h1, #sidebar h2, #sidebar h3, #sidebar h4 { margin:0; }
+#sidebar ul {
+    margin: 4px 0;
+    padding-left: 16px;
+}
 
 
 #content {

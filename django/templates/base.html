@@ -1,5 +1,6 @@
 {% load static from staticfiles %}
 <!DOCTYPE html>
+{% load cms %}
 <html lang="nb">  {# Or use nb-NO? #}
   <head>
     <meta charset="utf-8" />
@@ -10,10 +11,14 @@
     <link rel="alternate" type="application/rss+xml"
           title="Siste nyheter" href="/nyheter/rss/" />
 
-    {% if not debug %}
+    {% if not config.debug %}
     <link rel="stylesheet" href="{% static 'css/all.css' %}" />
-    {% else %}
-    <style>html { border-right: 6px solid maroon; border-left: 6px solid maroon; }</style>
+    {% endif %}
+
+    {% if config.debug %}
+    <style>
+      html { border-right: 8px solid maroon; border-left: 8px solid maroon; }
+    </style>
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/base.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/style.less" />
     <link rel="stylesheet/less" href="{{STATIC_URL}}css/classes.less" />
@@ -38,9 +43,13 @@
   <body>
     <div id="wrapper" itemscope itemtype="http://schema.org/NGO">
 
+      <div id="inner">
+
+      <!--
       {% if config.debug %}
       <div style="background-color:red; font-weight: bold; text-align: center;">dev.normal.no</div>
       {% endif %}
+      -->
 
       <header>
         <div id="menu">{% include "menu.html" %}</div>
@@ -71,11 +80,39 @@
 
       <footer>{% include "footer.html" %}</footer>
 
+      <!--
       {% if debug %}
       <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
       {% endif %}
+      -->
+
+      </div> {# inner #}
+
+      <div id="sidebar">
+        <header>
+          <div class="follow-widget">
+            <a href="https://www.facebook.com/NormalNorway" title="Facebook">
+              <img src="{{STATIC_URL}}/images/widgets/facebook.png" width="16" height="16" alt="Facebook" />
+            </a>
+            <a href="https://twitter.com/NormalNorway" title="Twitter">
+              <img src="{{STATIC_URL}}/images/widgets/twitter.png" width="16" height="16" alt="Twitter" />
+            </a>
+            <a href="https://plus.google.com/+NORMALNorge" title="Google+">
+              <img src="{{STATIC_URL}}/images/widgets/google_plus.png" width="16" height="16" alt="Google+" />
+            </a>
+            <a href="https://www.youtube.com/user/normalnorway" title="YouTube">
+              <img src="{{STATIC_URL}}/images/widgets/youtube.png" width="16" height="16" alt="YouTube" />
+            </a>
+            <a href="/nyheter/rss/" title="RSS Feed">
+              <img src="{{STATIC_URL}}/images/widgets/feed.png" width="16" height="16" alt="RSS Feed (nyheter)" />
+            </a>
+          </div>
+        </header>
+        <div class="content">{% cms_content "sidebar" %}</div>
+      </div>
 
     </div>  {# wrapper #}
+
 
     {% if config.piwiki %}
     <script type="text/javascript">

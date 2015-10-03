@@ -8,8 +8,8 @@
 mkdir -p htdocs/media
 for dir in cms tinymce; do
     path=htdocs/media/$dir
-    test -e $path && continue
-    mkdir $path
+    #test -e $path && continue
+    test -e $path || mkdir $path
     chmod g+w $path
     chgrp www-data $path
 done
