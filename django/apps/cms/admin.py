@@ -27,7 +27,7 @@ class PageAdmin (admin.ModelAdmin):
     def get_form (self, request, obj=None, **kwargs):
         '''Add request.user to the form so it can be used for validation'''
         form_class = super (PageAdmin, self).get_form (request, obj, **kwargs)
-        if obj: return form_class
+#        if obj: return form_class  # short-circut for existing objects
         # note: form_class and self.form is not the same
         # a: think it's because django modifies it. @see form_class.__mro__
         cls = type (form_class.__name__, (form_class,), dict(_user=request.user))
