@@ -25,6 +25,18 @@ fffe	light/pale yellow
 
 5db176	some sort of green (lime, kiwi)
 
+bbce66  emcdda-stats, green
+edf0d6  emcdda-stats, light green
+
+4f8cd0  HEF-green
+
+8ac247  forebygging.no green
+efefef  gray
+414042  warm dark
+333333  warm darker
+222222  menu
+
+
 
 div.container {
     background-color: #F0F0F0;
@@ -60,3 +72,5 @@ http://designmodo.com/design/
 http://www.ofsubstance.org.au/resources/253-interview-professor-robin-room
 
 http://christoph.ruegg.name/blog/git-howto-revert-a-commit-already-pushed-to-a-remote-reposit.html
+
+https://www.howtoforge.com/tutorial/server-monitoring-with-munin-and-monit-on-debian/

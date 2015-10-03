@@ -1,4 +1,4 @@
-.PHONY: all pill wip bugfix minor deploy test livetest
+.PHONY: all pull wip bugfix minor deploy test livetest
 
 all:
 	@echo I do nothing by default!
