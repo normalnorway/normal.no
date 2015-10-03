@@ -6,7 +6,7 @@
 
 # Uploaded media
 mkdir -p htdocs/media
-for dir in cms tinymce; do
+for dir in cms tinymce cms/file cms/page; do
     path=htdocs/media/$dir
     #test -e $path && continue
     test -e $path || mkdir $path

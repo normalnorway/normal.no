@@ -61,6 +61,10 @@ class Page (models.Model):
     title = models.CharField (max_length=75, unique=True)
     url = models.CharField (max_length=83, unique=True, validators=[validate_url_path])
     content = HtmlField()
+    modified = models.DateTimeField (auto_now=True)
+    published = models.BooleanField (default=True, help_text='When unchekced the page is not globally accessible.')
+    summary = models.TextField (blank=True, help_text='Short summary used when sharing the page on social media.')
+    image = models.FileField (blank=True, upload_to='cms/page', help_text='Image used when sharing the page on social media. When unset, Normals logo is used.')
 
     def save (self, *args, **kwargs):
         if not self.url: # populate url from title

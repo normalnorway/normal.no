@@ -3,6 +3,8 @@
 *.bak
 .*.swp
 
+/gfx
+
 /django/logs/
 site.ini
 

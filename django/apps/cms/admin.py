@@ -10,10 +10,12 @@ admin.site.register (Content)
 
 @admin.register (Page)
 class PageAdmin (admin.ModelAdmin):
-    fields = 'title', 'url', 'content'
-    list_display = 'url', 'title',
+    fields = 'title', 'url', 'content', 'published', 'summary', 'image',
+    list_display = 'url', 'title', 'modified', 'published',
     ordering = 'url',
     search_fields = 'url', 'title', 'content'
+    list_filter = 'published',
+    date_hierarchy = 'modified'
     form = PageForm
     #save_on_top = True # looks ugly
 
