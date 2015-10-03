@@ -27,6 +27,8 @@ make -C django/static/css check
 make -C django/static/css
 
 django/manage.py collectstatic --noinput -i \*.less -i Makefile
-(cd htdocs/static/css/ ; ls *.css | egrep -v 'all.css|tinymce.css' | xargs rm)
+# Update: Can't do this when using ManifestStaticFileStorage
+#         will delete css/all.f5706c9f57c9.css
+#(cd htdocs/static/css/ ; ls *.css | egrep -v 'all.css|tinymce.css' | xargs rm)
 
 touch django/website/wsgi.py
