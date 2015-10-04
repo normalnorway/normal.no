@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.html import mark_safe
 from django.contrib import messages
 from django.views.generic.edit import UpdateView
 #from django.views.generic.edit import UpdateView, FormView, CreateView
@@ -43,9 +44,8 @@ class PageUpdate (UpdateView):
 
 
 def page (request, url):
-    page = get_object_or_404 (Page, url = '/'+url)
-    #page.content = mark_safe (page.content)
-    # @todo do in HTMLField.__get__
+    page = get_object_or_404 (Page, published=True, url = '/'+url)
+    page.content = mark_safe (page.content)  # @todo do in HTMLField.__get__
     # https://groups.google.com/forum/#!topic/django-users/JCzBlKGntv4
     return render (request, 'cms/page_detail.html', {'page': page})
 
