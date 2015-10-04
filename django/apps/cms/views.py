@@ -43,11 +43,15 @@ class PageUpdate (UpdateView):
         return super (PageUpdate, self).form_valid (form)
 
 
+from django.utils.http import http_date
 def page (request, url):
     page = get_object_or_404 (Page, published=True, url = '/'+url)
     page.content = mark_safe (page.content)  # @todo do in HTMLField.__get__
     # https://groups.google.com/forum/#!topic/django-users/JCzBlKGntv4
-    return render (request, 'cms/page_detail.html', {'page': page})
+    #return render (request, 'cms/page_detail.html', {'page': page})
+    response = render (request, 'cms/page_detail.html', {'page': page})
+    response['Last-Modified'] = http_date (float(page.modified.strftime('%s')))
+    return response
 
 
 
