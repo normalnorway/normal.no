@@ -10,7 +10,7 @@ admin.site.register (Content)
 
 @admin.register (Page)
 class PageAdmin (admin.ModelAdmin):
-    fields = 'title', 'url', 'content', 'published', 'summary', 'image',
+    fields = 'published', 'title', 'url', 'content', 'summary', 'image',
     list_display = 'url', 'title', 'modified', 'published',
     ordering = 'url',
     search_fields = 'url', 'title', 'content'

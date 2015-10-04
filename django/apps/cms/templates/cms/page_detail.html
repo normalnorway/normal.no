@@ -1,13 +1,79 @@
 {% extends "base.html" %}
 {% block extratitle %} » {{ page.title }}{% endblock %}
 
+{% comment %}
+https://developers.facebook.com/docs/reference/opengraph/object-type/article
+  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"
+TODO: move og-tags from header to article wrapper div?
+
+article:author
+article:modified_time
+article:published_time
+article:publisher
+article:section
+article:tag
+fb:profile_id Profile The Facebook ID of a user that can be followed
+
+https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
+{% endcomment %}
+
+{% block extrahead %}
+<meta property="og:type" content="article" />
+<meta property="og:updated_time" content="{{ page.modified|date:"c" }}" />
+<meta property="og:url" content="{{ page.url }}" />
+<meta property="og:title" content="{{ page.title|escape }} | Normal Norway" />
+{% if page.summary %}
+<meta property="og:description" content="{{ page.summary.strip|escape }}" />
+{% endif %}
+{% if page.image %}
+<meta property="og:image" content="{{ page.image.url }}" />
+{% endif %}
+{% endblock %}
+
+{% load static from staticfiles %}
 
 {% block content %}
-{{ page.content|safe }}
+
+<a name="til-toppen"></a> {# @todo move to page top in base.html #}
 
 {% if perms.cms.change_page %}
-<p><a href="{% url "page-update" pk=page.pk %}"
-   accesskey="e" class="admin-edit-link">Rediger</a></p>
+<a href="{% url "page-update" pk=page.pk %}" accesskey="e">
+  <img src="{% static 'cms/edit-pencil-18x18.png' %}"
+       height="18" width="18"
+       style="float:right; padding-top:10px;" /></a>
 {% endif %}
+
+{% comment %}
+{% if perms.cms.change_page %}
+<p style="float:right"><a href="{% url "page-update" pk=page.pk %}" accesskey="e" class="admin-edit-link">Rediger</a></p>
+{% endif %}
+{% endcomment %}
+
+<h1>{{ page.title|escape }}</h1>
+
+{% if page.image %}
+<img src="{{ page.image.url }}" width="300" style="float:right; padding: 0 0 8px 12px;" />
+{% endif %}
+
+{{ page.content }}
+
+{% comment %}
+{% if perms.cms.change_page %}
+<p style="float:right"><a href="{% url "page-update" pk=page.pk %}" accesskey="e" class="admin-edit-link">Rediger</a></p>
+{% endif %}
+{% endcomment %}
+
+{% if perms.cms.change_page %}
+<a href="{% url "page-update" pk=page.pk %}" accesskey="e">
+  <img src="{% static 'cms/edit-pencil-18x18.png' %}"
+       height="18" width="18"
+       style="float:right; padding-top:15px;" /></a>
+{% endif %}
+
+
+<p style="padding-top:1.66ex" class="strong"><a href="#til-toppen">
+  <img src="{% static 'cms/arrow-circle-top-16x16.png' %}"
+       height="16" width="16" style="vertical-align:middle"/>
+Til toppen</a></p>
 
 {% endblock %}
