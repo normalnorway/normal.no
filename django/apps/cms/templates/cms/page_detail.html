@@ -57,6 +57,9 @@ https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
 
 {{ page.content }}
 
+{# @todo also add machine parsable format? #}
+<div class="smaller gray">Oppdatert: {{ page.modified }}</div>
+
 {% comment %}
 {% if perms.cms.change_page %}
 <p style="float:right"><a href="{% url "page-update" pk=page.pk %}" accesskey="e" class="admin-edit-link">Rediger</a></p>
