@@ -25,7 +25,7 @@ class PageAdmin (admin.ModelAdmin):
             'fields': ('title', ('url', 'published'), 'content'),
         }),
         ('Social media', {
-            'fields': ('summary', 'image', 'image_show', 'image_width'),
+            'fields': ('summary', 'image', ('image_show', 'image_width')),
         }),
     )
 
