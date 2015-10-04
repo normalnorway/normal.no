@@ -64,7 +64,9 @@ class Page (models.Model):
     modified = models.DateTimeField (auto_now=True)
     published = models.BooleanField (default=True, help_text='When unchekced the page is not globally accessible.')
     summary = models.TextField (blank=True, help_text='Short summary used when sharing the page on social media.')
-    image = models.FileField (blank=True, upload_to='cms/page', help_text='Image used when sharing the page on social media. When unset, Normals logo is used.')
+    image = models.ImageField (blank=True, upload_to='cms/page', help_text='Image used when sharing the page on social media. When unset, Normals logo is used.')
+    image_show = models.BooleanField (default=True, help_text='Show social-media image at top of the page.')
+    image_width = models.PositiveSmallIntegerField (blank=True, null=True, help_text='Use this to override the image size.')
 
     def save (self, *args, **kwargs):
         if not self.url: # populate url from title

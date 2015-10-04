@@ -10,7 +10,7 @@ admin.site.register (Content)
 
 @admin.register (Page)
 class PageAdmin (admin.ModelAdmin):
-    fields = 'published', 'title', 'url', 'content', 'summary', 'image',
+    #fields = 'published', 'title', 'url', 'content', 'summary', 'image',
     list_display = 'url', 'title', 'modified', 'published',
     ordering = 'url',
     search_fields = 'url', 'title', 'content'
@@ -18,6 +18,16 @@ class PageAdmin (admin.ModelAdmin):
     date_hierarchy = 'modified'
     form = PageForm
     #save_on_top = True # looks ugly
+
+    fieldsets = (
+        (None, {
+            #'fields': ('published', 'title', 'url', 'content'),
+            'fields': ('title', ('url', 'published'), 'content'),
+        }),
+        ('Social media', {
+            'fields': ('summary', 'image', 'image_show', 'image_width'),
+        }),
+    )
 
     def get_readonly_fields (self, request, obj=None):
         '''Make url read-only for existing pages'''
