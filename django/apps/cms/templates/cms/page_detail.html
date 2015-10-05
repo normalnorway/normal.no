@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load static from staticfiles %}
+
 {% block extratitle %} » {{ page.title }}{% endblock %}
 
 {% comment %}
@@ -15,7 +17,8 @@ article:tag
 fb:profile_id Profile The Facebook ID of a user that can be followed
 
 https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
-{% endcomment %}
+
+<link rel="author license" href="/about">
 
 {% block extrahead %}
 <meta property="og:type" content="article" />
@@ -23,61 +26,54 @@ https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
 <meta property="og:url" content="http://normal.no{{ page.url }}" />
 <meta property="og:title" content="{{ page.title|escape }} | Normal Norway" />
 {% if page.summary %}
-<meta property="og:description" content="<strong>Normal arbeider for en hensiktsmessig regulering av cannabis i Norge</strong><br />{{ page.summary.strip|escape }}" />
+<meta property="og:description" content="{{ page.summary.strip|escape }}" />
 {% endif %}
 {% if page.image %}
-<meta property="og:image" content="{{ page.image.url }}" />
+<meta property="og:image" content="http://normal.no/{{ page.image.url }}" />
 {% endif %}
 {% endblock %}
+{% endcomment %}
 
-{% load static from staticfiles %}
+
 
 {% block content %}
 
-<a name="til-toppen"></a> {# @todo move to page top in base.html #}
+<article itemscope itemtype="http://schema.org/Article">
 
-{% if perms.cms.change_page %}
-<a href="{% url "page-update" pk=page.pk %}" accesskey="e">
-  <img src="{% static 'cms/edit-pencil-18x18.png' %}"
-       height="18" width="18"
-       style="float:right; padding-top:10px;" /></a>
-{% endif %}
+  <meta itemprop="dateModified" content="{{page.modified.isoformat}}" />
+  {% if page.summary %}
+  <meta itemprop="description" content="{{ page.summary|escape }}" />
+  {% endif %}
+  {# @todo: keywords, text, image #}
 
-{% comment %}
-{% if perms.cms.change_page %}
-<p style="float:right"><a href="{% url "page-update" pk=page.pk %}" accesskey="e" class="admin-edit-link">Rediger</a></p>
-{% endif %}
-{% endcomment %}
+  {#<meta itemprop="license" content="http://creativecommons.org/licenses/by-sa/4.0/" />#}
 
-<h1>{{ page.title|escape }}</h1>
+  {% if perms.cms.change_page %}
+  <a href="{% url "page-update" pk=page.pk %}" accesskey="e"><img src="{% static 'cms/edit-pencil-18x18.png' %}" height="18" width="18" style="float:right; padding-top:10px;" /></a>
+  {% endif %}
 
-{% if page.image and page.image_show %}
-<img src="{{ page.image.url }}" width="{{page.image_width|default:'300'}}"
-     style="float:right; padding: 0 0 8px 12px;" />
-{% endif %}
+  <h1 itemprop="headline">{{ page.title|escape }}</h1>
 
-{{ page.content }}
+  {% if page.show_image and page.image %}
+  <img src="{{ page.image.url }}" width="{{page.image_width|default:300}}"
+       style="float:right; padding: 0 0 8px 12px;" />
+  {% endif %}
 
-{# @todo also add machine parsable format? #}
-<div class="smaller gray">Oppdatert: {{ page.modified }}</div>
+  <div itemprop="articleBody">
+  {{ page.content }}
+  </div>
 
-{% comment %}
-{% if perms.cms.change_page %}
-<p style="float:right"><a href="{% url "page-update" pk=page.pk %}" accesskey="e" class="admin-edit-link">Rediger</a></p>
-{% endif %}
-{% endcomment %}
+  <div class="smaller gray">Oppdatert: {{ page.modified }}</div>
 
-{% if perms.cms.change_page %}
-<a href="{% url "page-update" pk=page.pk %}" accesskey="e">
-  <img src="{% static 'cms/edit-pencil-18x18.png' %}"
-       height="18" width="18"
-       style="float:right; padding-top:15px;" /></a>
-{% endif %}
+  {% if perms.cms.change_page %}
+  <a href="{% url "page-update" pk=page.pk %}" accesskey="e"> <img src="{% static 'cms/edit-pencil-18x18.png' %}" height="18" width="18" style="float:right; padding-top:15px;" /></a>
+  {% endif %}
 
+  <p style="padding-top:1.66ex" class="strong"><a href="#til-toppen">
+    <img src="{% static 'cms/arrow-circle-top-16x16.png' %}"
+         height="16" width="16" style="vertical-align:middle"/>
+  Til toppen</a></p>
 
-<p style="padding-top:1.66ex" class="strong"><a href="#til-toppen">
-  <img src="{% static 'cms/arrow-circle-top-16x16.png' %}"
-       height="16" width="16" style="vertical-align:middle"/>
-Til toppen</a></p>
+</article>
 
 {% endblock %}

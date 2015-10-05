@@ -14,6 +14,7 @@ wip:
 
 bugfix:
 	git commit -am bugfix
+	git push
 
 minor:
 	git commit -am minor

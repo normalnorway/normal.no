@@ -27,6 +27,9 @@
     <script src="{{STATIC_URL}}js/less.js"></script>
     {% endif %}
 
+    <link rel="author" href="mailto:post@normal.no" />
+    <link rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" />
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Normal – Norsk organisasjon for reform av marihuanalovgivningen" />
     <meta property="og:description" content="Normal arbeider for en hensiktsmessig regulering av cannabis i Norge" />
@@ -40,16 +43,11 @@
     {% block extrastyle %}{% endblock %}
   </head>
 
-  <body>
+  <body id="til-toppen">
+
     <div id="wrapper" itemscope itemtype="http://schema.org/NGO">
 
       <div id="inner">
-
-      <!--
-      {% if config.debug %}
-      <div style="background-color:red; font-weight: bold; text-align: center;">dev.normal.no</div>
-      {% endif %}
-      -->
 
       <header>
         <div id="menu">{% include "menu.html" %}</div>
