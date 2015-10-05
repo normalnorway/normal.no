@@ -6,16 +6,9 @@
     <meta charset="utf-8" />
     <title>{%block title%}Normal{%endblock title%}{%block extratitle%}{%endblock%}</title>
 
-    <meta property="fb:app_id" content="452143391620790" />
-
-    <link rel="alternate" type="application/rss+xml"
-          title="Siste nyheter" href="/nyheter/rss/" />
-
     {% if not config.debug %}
     <link rel="stylesheet" href="{% static 'css/all.css' %}" />
-    {% endif %}
-
-    {% if config.debug %}
+    {% else %}
     <style>
       html { border-right: 8px solid maroon; border-left: 8px solid maroon; }
     </style>
@@ -29,15 +22,23 @@
 
     <link rel="author" href="mailto:post@normal.no" />
     <link rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" />
+    <link rel="alternate" type="application/rss+xml" title="Siste nyheter" href="/nyheter/rss/" />
+
+    <meta property="fb:app_id" content="452143391620790" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Normal – Norsk organisasjon for reform av marihuanalovgivningen" />
+    <meta property="og:locale" content="nb_NO" />
+
+    <meta property="og:description" content="{{ og.description|default:'Normal arbeider for en hensiktsmessig regulering av cannabis i Norge' }}" />
+    <meta property="og:title" content="{{ og.title|default:'Normal Norway' }}" />
+    <meta property="og:image" content="http://normal.no{{ og.image|default:'/static/images/logo-300.png' }}" />
+    {% comment %}
     <meta property="og:description" content="Normal arbeider for en hensiktsmessig regulering av cannabis i Norge" />
-    {# @todo override title per subpage #}
     <meta property="og:title" content="Normal Norway" />
     <meta property="og:image" content="http://normal.no/static/images/logo-300.png" />
-    {# Needed? Have lang attr on html element #}
-    <meta property="og:locale" content="nb_NO" />
+    <meta prefix="fb: http://ogp.me/ns/fb#" property="fb:app_id" content="115190258555800" />
+    {% endcomment %}
 
     {% block extrahead %}{% endblock %}
     {% block extrastyle %}{% endblock %}
@@ -78,11 +79,11 @@
 
       <footer>{% include "footer.html" %}</footer>
 
-      <!--
       {% if debug %}
+      <!--
       <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
-      {% endif %}
       -->
+      {% endif %}
 
       </div> {# inner #}
 

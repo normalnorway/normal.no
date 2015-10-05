@@ -53,7 +53,12 @@ def _page_last_modified (request, url):
 def page (request, url):
     page = get_object_or_404 (Page, published=True, url = '/'+url)
     page.content = mark_safe (page.content)  # @todo do in HTMLField.__get__
-    return render (request, 'cms/page_detail.html', {'page': page})
+    opengraph = {
+        'title':        page.title + ' | Normal',
+        'description':  page.summary,
+        'image':        page.image.url if page.image else None,
+    }
+    return render (request, 'cms/page_detail.html', {'page': page, 'og': opengraph})
 
 
 

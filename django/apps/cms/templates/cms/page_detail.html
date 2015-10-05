@@ -54,7 +54,7 @@ https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
 
   <h1 itemprop="headline">{{ page.title|escape }}</h1>
 
-  {% if page.show_image and page.image %}
+  {% if page.image_show and page.image %}
   <img src="{{ page.image.url }}" width="{{page.image_width|default:300}}"
        style="float:right; padding: 0 0 8px 12px;" />
   {% endif %}
