@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.html import mark_safe
 from django.contrib import messages
+from django.utils.html import mark_safe
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import condition
 from django.views.generic.edit import UpdateView
-#from django.views.generic.edit import UpdateView, FormView, CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from .models import Page, Content, File
@@ -43,15 +43,17 @@ class PageUpdate (UpdateView):
         return super (PageUpdate, self).form_valid (form)
 
 
-from django.utils.http import http_date
+
+def _page_last_modified (request, url):
+    try: return Page.objects.get (url='/'+url, published=True).modified
+    except Page.DoesNotExist:
+        return None
+
+@condition(last_modified_func=_page_last_modified)
 def page (request, url):
     page = get_object_or_404 (Page, published=True, url = '/'+url)
     page.content = mark_safe (page.content)  # @todo do in HTMLField.__get__
-    # https://groups.google.com/forum/#!topic/django-users/JCzBlKGntv4
-    #return render (request, 'cms/page_detail.html', {'page': page})
-    response = render (request, 'cms/page_detail.html', {'page': page})
-    response['Last-Modified'] = http_date (float(page.modified.strftime('%s')))
-    return response
+    return render (request, 'cms/page_detail.html', {'page': page})
 
 
 
