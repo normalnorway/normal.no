@@ -24,6 +24,9 @@
     <link rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" />
     <link rel="alternate" type="application/rss+xml" title="Siste nyheter" href="/nyheter/rss/" />
 
+    {# Need both rel=license and itemprop=license? #}
+    <meta itemprop="license" content="http://creativecommons.org/licenses/by-sa/4.0/" />
+
     <meta property="fb:app_id" content="452143391620790" />
 
     <meta property="og:type" content="website" />
@@ -80,9 +83,7 @@
       <footer>{% include "footer.html" %}</footer>
 
       {% if debug %}
-      <!--
       <pre class="debug">{% for q in sql_queries %}{{q.time}}s : {{q.sql}}<br>{% endfor %}</pre>
-      -->
       {% endif %}
 
       </div> {# inner #}
@@ -123,7 +124,7 @@
         g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
       })();
     </script>
-    <noscript><p><img src="//piwik.normal.no/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+    <noscript><p><img src="//normal.no/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
     {% endif %}
 
   </body>

@@ -40,13 +40,19 @@ https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
 
 <article itemscope itemtype="http://schema.org/Article">
 
+  {# Note: all these fields are required for Article. #}
+  {# Q: So better to use empty value for description? #}
+  <meta itemprop="datePublished" content="2015-10-01T00:00:00" />
   <meta itemprop="dateModified" content="{{page.modified.isoformat}}" />
   {% if page.summary %}
   <meta itemprop="description" content="{{ page.summary|escape }}" />
   {% endif %}
-  {# @todo: keywords, text, image #}
-
-  {#<meta itemprop="license" content="http://creativecommons.org/licenses/by-sa/4.0/" />#}
+  {% if page.image %}
+  <meta itemprop="image" content="http://normal.no{{ page.image.url }}" />
+  {% else %}
+  <meta itemprop="image" content="http://normal.no/media/tinymce/Logo3a.png" />
+  {% endif %}
+  {# @todo: keywords, text #}
 
   {% if perms.cms.change_page %}
   <a href="{% url "page-update" pk=page.pk %}" accesskey="e"><img src="{% static 'cms/edit-pencil-18x18.png' %}" height="18" width="18" style="float:right; padding-top:10px;" /></a>
