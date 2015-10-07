@@ -61,6 +61,7 @@ class Page (models.Model):
     title = models.CharField (max_length=75, unique=True)
     url = models.CharField (max_length=83, unique=True, validators=[validate_url_path])
     content = HtmlField()
+    created = models.DateTimeField (auto_now_add=True)
     modified = models.DateTimeField (auto_now=True)
     published = models.BooleanField (default=True, help_text='When unchekced the page is not globally accessible.')
     summary = models.TextField (blank=True, help_text='Short summary used when sharing the page on social media.')

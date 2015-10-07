@@ -41,8 +41,8 @@ https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
 <article itemscope itemtype="http://schema.org/Article">
 
   {# Note: all these fields are required for Article. #}
-  {# Q: So better to use empty value for description? #}
-  <meta itemprop="datePublished" content="2015-10-01T00:00:00" />
+  {# Q: So better to use empty value for description? or default #}
+  <meta itemprop="datePublised" content="{{page.created.isoformat}}" />
   <meta itemprop="dateModified" content="{{page.modified.isoformat}}" />
   {% if page.summary %}
   <meta itemprop="description" content="{{ page.summary|escape }}" />
@@ -65,9 +65,7 @@ https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
        style="float:right; padding: 0 0 8px 12px;" />
   {% endif %}
 
-  <div itemprop="articleBody">
-  {{ page.content }}
-  </div>
+  <div itemprop="articleBody">{{ page.content }}</div>
 
   <div class="smaller gray">Oppdatert: {{ page.modified }}</div>
 
