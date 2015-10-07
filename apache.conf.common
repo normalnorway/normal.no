@@ -32,55 +32,46 @@
     #Alias /piwik/piwik.js /srv/www/piwik/htdocs/piwik.js
 
 
-    <Directory /srv/www/normal.no/htdocs/media/files>
-	AddDefaultCharset utf-8
-	Options +SymLinksIfOwnerMatch
-    </Directory>
-
     ## Expire
-    # @todo enable
     #ExpiresActive On
     #ExpiresByType image/png "access plus 1 month"
     #ExpiresByType image/ico "access plus 1 month"
     #ExpiresByType image/*   "access plus 1 month"  # OK?
     #ExpiresByType text/css  "access plus 1 week"
 
-    # Testing out ...
     <Directory /srv/www/normal.no/htdocs/static/>
         ExpiresActive On
-        ExpiresByType image/png "access plus 6 month"
-        ExpiresByType text/css  "access plus 1 month"
+        ExpiresByType image/png  "access plus 6 month"
+        ExpiresByType image/jpeg "access plus 6 month"
+        ExpiresByType text/css   "access plus 1 month"
+        ExpiresByType application/javascript "access plus 1 month"
+    </Directory>
+
+    # @todo enable for whole htdocs/media/*
+    <Directory /srv/www/normal.no/htdocs/media/tinymce/>
+        ExpiresActive On
+        ExpiresByType image/png  "access plus 1 year"
+        ExpiresByType image/jpeg "access plus 1 year"
+        # @todo these images shall never change, so use 10 year?
     </Directory>
 
 
-    # SetOutputFilter DEFLATE  ???
-    # update: google pagespeeds says ok on ecryption
+    ## Directory and file configuration
 
-
-    ## Access control (ACL)
-    # @todo remove apache 2.2 support
     <Directory /srv/www/normal.no/htdocs>
+        Require all granted
 	Options none
 	AllowOverride none
+    </Directory>
 
-        <IfModule mod_authz_core.c>
-            # Apache 2.4
-            Require all granted
-        </IfModule>
-        <IfModule !mod_authz_core.c>
-            # Apache 2.2
-            Allow from all
-        </IfModule>
+    <Directory /srv/www/normal.no/htdocs/media/files>
+	AddDefaultCharset utf-8
+	Options +SymLinksIfOwnerMatch
     </Directory>
 
     <Directory /srv/www/normal.no/django/website>
         <Files wsgi.py>
-            <IfModule mod_authz_core.c>
-                Require all granted
-            </IfModule>
-            <IfModule !mod_authz_core.c>
-                Allow from all
-            </IfModule>
+            Require all granted
         </Files>
     </Directory>
 
