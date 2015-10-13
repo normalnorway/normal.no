@@ -3,62 +3,19 @@
 
 {% block extratitle %} » {{ page.title }}{% endblock %}
 
-{% comment %}
-https://developers.facebook.com/docs/reference/opengraph/object-type/article
-  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"
-TODO: move og-tags from header to article wrapper div?
-
-article:author
-article:modified_time
-article:published_time
-article:publisher
-article:section
-article:tag
-fb:profile_id Profile The Facebook ID of a user that can be followed
-
-https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
-
-<link rel="author license" href="/about">
-
-{% block extrahead %}
-<meta property="og:type" content="article" />
-<meta property="og:updated_time" content="{{ page.modified|date:"c" }}" />
-<meta property="og:url" content="http://normal.no{{ page.url }}" />
-<meta property="og:title" content="{{ page.title|escape }} | Normal Norway" />
-{% if page.summary %}
-<meta property="og:description" content="{{ page.summary.strip|escape }}" />
-{% endif %}
-{% if page.image %}
-<meta property="og:image" content="http://normal.no/{{ page.image.url }}" />
-{% endif %}
-{% endblock %}
-{% endcomment %}
-
-
-
 {% block content %}
-
 <article itemscope itemtype="http://schema.org/Article">
 
-  {# Note: all these fields are required for Article. #}
-  {# Q: So better to use empty value for description? or default #}
+  {% if perms.cms.change_page %}<a href="{% url "page-update" pk=page.pk %}" accesskey="e"><img src="{{STATIC_URL}}cms/edit-pencil-18x18.png" height="18" width="18" style="float:right; padding-top:10px;" /></a>{% endif %}
+
+  {# Note: all these fields are required for schema.org/Article #}
   <meta itemprop="datePublised" content="{{page.created.isoformat}}" />
   <meta itemprop="dateModified" content="{{page.modified.isoformat}}" />
-  {% if page.summary %}
   <meta itemprop="description" content="{{ page.summary|escape }}" />
-  {% endif %}
-  {% if page.image %}
-  <meta itemprop="image" content="http://normal.no{{ page.image.url }}" />
-  {% else %}
-  <meta itemprop="image" content="http://normal.no/media/tinymce/Logo3a.png" />
-  {% endif %}
-  {# @todo: keywords, text #}
+  <meta itemprop="image" content="http://normal.no{% if page.image %}{{page.image.url}}{% else %}/media/tinymce/Logo3a.png{% endif %}" />
+  {# @todo: keywords, text (wrap all textual content), description:default?  #}
 
-  {% if perms.cms.change_page %}
-  <a href="{% url "page-update" pk=page.pk %}" accesskey="e"><img src="{% static 'cms/edit-pencil-18x18.png' %}" height="18" width="18" style="float:right; padding-top:10px;" /></a>
-  {% endif %}
-
-  <h1 itemprop="headline">{{ page.title|escape }}</h1>
+  <h1 itemprop="name headline">{{ page.title|escape }}</h1>
 
   {% if page.image_show and page.image %}
   <img src="{{ page.image.url }}" width="{{page.image_width|default:300}}"
@@ -67,17 +24,16 @@ https://wordpress.org/plugins/wonderm00ns-simple-facebook-open-graph-tags/
 
   <div itemprop="articleBody">{{ page.content }}</div>
 
-  <div class="smaller gray">Oppdatert: {{ page.modified }}</div>
+  <time class="smaller gray"
+        itemprop="dateModified" datetime="{{page.modified.isoformat}}">
+    Oppdatert: {{ page.modified }}</time>
 
   {% if perms.cms.change_page %}
-  <a href="{% url "page-update" pk=page.pk %}" accesskey="e"> <img src="{% static 'cms/edit-pencil-18x18.png' %}" height="18" width="18" style="float:right; padding-top:15px;" /></a>
+  <a href="{% url "page-update" pk=page.pk %}" accesskey="e"><img src="{{STATIC_URL}}cms/edit-pencil-18x18.png" height="18" width="18" style="float:right; padding-top:15px;" /></a>
   {% endif %}
 
   <p style="padding-top:1.66ex" class="strong"><a href="#til-toppen">
     <img src="{% static 'cms/arrow-circle-top-16x16.png' %}"
-         height="16" width="16" style="vertical-align:middle"/>
-  Til toppen</a></p>
-
+         height="16" width="16" style="vertical-align:middle"/> Til toppen</a></p>
 </article>
-
 {% endblock %}
