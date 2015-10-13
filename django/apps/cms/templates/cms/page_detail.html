@@ -9,7 +9,7 @@
   {% if perms.cms.change_page %}<a href="{% url "page-update" pk=page.pk %}" accesskey="e"><img src="{{STATIC_URL}}cms/edit-pencil-18x18.png" height="18" width="18" style="float:right; padding-top:10px;" /></a>{% endif %}
 
   {# Note: all these fields are required for schema.org/Article #}
-  <meta itemprop="datePublised" content="{{page.created.isoformat}}" />
+  <meta itemprop="datePublished" content="{{page.created.isoformat}}" />
   <meta itemprop="dateModified" content="{{page.modified.isoformat}}" />
   <meta itemprop="description" content="{{ page.summary|escape }}" />
   <meta itemprop="image" content="http://normal.no{% if page.image %}{{page.image.url}}{% else %}/media/tinymce/Logo3a.png{% endif %}" />
