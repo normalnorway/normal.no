@@ -12,7 +12,7 @@
   <meta itemprop="datePublished" content="{{page.created.isoformat}}" />
   <meta itemprop="dateModified" content="{{page.modified.isoformat}}" />
   <meta itemprop="description" content="{{ page.summary|escape }}" />
-  <meta itemprop="image" content="http://normal.no{% if page.image %}{{page.image.url}}{% else %}/media/tinymce/Logo3a.png{% endif %}" />
+  <meta itemprop="image" content="http://normal.no{% if page.image %}{{page.image.url}}{% else %}{{STATIC_URL}}images/avatar.png{% endif %}" />
   {# @todo: keywords, text (wrap all textual content), description:default?  #}
 
   <h1 itemprop="name headline">{{ page.title|escape }}</h1>
