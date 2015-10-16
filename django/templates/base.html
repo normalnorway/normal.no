@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% load static from staticfiles %}
 {% load cms %}
-<html lang="nb">  {# Or use nb-NO? #}
+<html lang="nb-NO">
   <head>
     <meta charset="utf-8" />
     <title>{%block title%}Normal{%endblock title%}{%block extratitle%}{%endblock%}</title>
@@ -24,24 +24,13 @@
     <link rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" />
     <link rel="alternate" type="application/rss+xml" title="Siste nyheter" href="/nyheter/rss/" />
 
-    {# Need both rel=license and itemprop=license? #}
-    <meta itemprop="license" content="http://creativecommons.org/licenses/by-sa/4.0/" />
-
     <meta property="fb:app_id" content="452143391620790" />
-
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Normal – Norsk organisasjon for reform av marihuanalovgivningen" />
     <meta property="og:locale" content="nb_NO" />
-
-    <meta property="og:description" content="{{ og.description|default:'Normal arbeider for en hensiktsmessig regulering av cannabis i Norge' }}" />
+    <meta property="og:site_name" content="Normal – Norsk organisasjon for reform av marihuanalovgivningen" />
     <meta property="og:title" content="{{ og.title|default:'Normal Norway' }}" />
-    <meta property="og:image" content="http://normal.no{{ og.image|default:'/static/images/logo-300.png' }}" />
-    {% comment %}
-    <meta property="og:description" content="Normal arbeider for en hensiktsmessig regulering av cannabis i Norge" />
-    <meta property="og:title" content="Normal Norway" />
-    <meta property="og:image" content="http://normal.no/static/images/logo-300.png" />
-    <meta prefix="fb: http://ogp.me/ns/fb#" property="fb:app_id" content="115190258555800" />
-    {% endcomment %}
+    <meta property="og:description" content="{{ og.description|default:'Normal arbeider for en hensiktsmessig regulering av cannabis i Norge' }}" />
+    <meta property="og:image" content="http://normal.no{{ og.image|default:'/static/images/avatar.png' }}" />
 
     {% block extrahead %}{% endblock %}
     {% block extrastyle %}{% endblock %}
@@ -49,15 +38,12 @@
 
   <body id="til-toppen">
 
-    <div id="wrapper" itemscope itemtype="http://schema.org/NGO">
+    <div id="wrapper">
 
       <div id="inner">
 
       <header>
         <div id="menu">{% include "menu.html" %}</div>
-        {% block header %}
-        {# not in use #}
-        {% endblock %}
       </header>
 
       {# MAIN CONTENT #}
@@ -92,16 +78,16 @@
         <header>
           <div class="follow-widget">
             <a href="https://www.facebook.com/NormalNorway" title="Facebook">
-              <img src="{{STATIC_URL}}/images/widgets/facebook.png" width="16" height="16" alt="Facebook" />
+              <img src="{{STATIC_URL}}images/widgets/facebook.png" width="16" height="16" alt="Facebook" />
             </a>
             <a href="https://twitter.com/NormalNorway" title="Twitter">
-              <img src="{{STATIC_URL}}/images/widgets/twitter.png" width="16" height="16" alt="Twitter" />
+              <img src="{{STATIC_URL}}images/widgets/twitter.png" width="16" height="16" alt="Twitter" />
             </a>
             <a href="https://www.youtube.com/user/normalnorway" title="YouTube">
-              <img src="{{STATIC_URL}}/images/widgets/youtube.png" width="16" height="16" alt="YouTube" />
+              <img src="{{STATIC_URL}}images/widgets/youtube.png" width="16" height="16" alt="YouTube" />
             </a>
             <a href="/nyheter/rss/" title="RSS Feed">
-              <img src="{{STATIC_URL}}/images/widgets/feed.png" width="16" height="16" alt="RSS Feed (nyheter)" />
+              <img src="{{STATIC_URL}}images/widgets/feed.png" width="16" height="16" alt="RSS Feed (nyheter)" />
             </a>
           </div>
         </header>
@@ -127,5 +113,61 @@
     <noscript><p><img src="//normal.no/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
     {% endif %}
 
+    {# https://developers.google.com/structured-data/site-name #}
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "Normal Norge",
+      "alternateName": "Normal Norway",
+      "url": "http://normal.no/",
+      "license": "http://creativecommons.org/licenses/by-sa/4.0/"
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NGO",
+      "name": "Normal Norge",
+      "alternateName": "Normal Norway",
+      "legalName": "Norsk organisasjon for reform av marihuanalovgivningen",
+      "foundingDate": "1995-11-18",
+      "url": "http://normal.no/",
+      "email": "post@normal.no",
+      "telephone": "+47 993 25 961",
+      "logo": "http://normal.no/static/images/avatar.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "NO",
+        "addressLocality": "Oslo",
+        "postalCode": "0181",
+        "streetAddress": "Arbeidersamfunnets plass 1"
+      },
+      "parentOrganization": {
+        "name": "NORML",
+        "url": "http://norml.org"
+      },
+      "member": {
+        "name": "Fagrådet – Rusfeltets hovedorganisasjon",
+        "url": "http://rusfeltet.no"
+      },
+      {# https://developers.google.com/structured-data/customize/contact-points #}
+      "contactPoint": [ {
+        "@type": "ContactPoint",
+        "telephone": "+4799325961",
+        "contactType": "customer service",
+        "availableLanguage": ["Norwegian", "English", "Swedish"],
+        "areaServed": ["NO", "SE", "DK", "FI", "IS"]
+      } ],
+      {# https://developers.google.com/structured-data/customize/social-profiles #}
+      "sameAs": [
+        "https://twitter.com/NormalNorway",
+        "https://www.facebook.com/NormalNorway",
+        "https://www.youtube.com/user/normalnorway",
+        "https://plus.google.com/+NORMALNorge/posts"
+      ]
+    }
+    </script>
   </body>
 </html>

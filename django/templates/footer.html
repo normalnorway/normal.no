@@ -1,29 +1,21 @@
 {% load static from staticfiles %}
-<div itemscope itemprop="address" itemtype="http://schema.org/PostalAddress">
-
+<div>
   <div style="float:left;">
     <h3>Kontakt</h3>
-    <div> {# @todo drop this div, and use address instead #}
-      <address>
-        <span itemprop="name">Normal</span><br />
-        <span itemprop="streetAddress">
-          <a href="http://g.co/maps/7uyez" style="color:inherit">Hjelmsgate 3</a>
-        </span><br />
-        <span itemprop="postalCode">0355</span>
-        <span itemprop="addressLocality">Oslo</span>
-        <meta itemprop="addressCountry" content="Norway" />
-      </address>
-    </div>
+    <address>
+      Normal<br />
+      <a href="http://g.co/maps/7uyez" style="color:inherit">Hjelmsgate 3</a><br />
+      0355 Oslo
+    </address>
   </div>
 
   <div style="float:left; margin-left:40px">
     <h3>&nbsp;</h3>
     <div>
-      Telefon: <span itemprop="telephone">993 25 961</span><br />
-      E-post: <a href="mailto:post@normal.no" rel="author" itemprop="email">post@normal.no</a><br />
+      Telefon: <a href="tel:+4799325961">993 25 961</a><br />
+      E-post: <a href="mailto:post@normal.no">post@normal.no</a>
     </div>
   </div>
-
 </div>
 
 
