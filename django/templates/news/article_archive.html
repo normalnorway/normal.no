@@ -1,32 +1,16 @@
 {% extends "base.html" %}
+{% load cms %}
 
 {% block extratitle %} » Nyhetsarkiv{% endblock %}
 
 {% block content %}
-{# Q: better with two levels? div#app-news div.view-archive #}
 <div id="news-archive">
 
   <h1>Nyhetsarkiv</h1>
 
-  {% if perms.news.add_article %}
-  <form method="post" action="{% url 'news-new' %}">
-    {% csrf_token %}
-    <strong>Ny lenke:</strong>
-    <input type="url" name="url" size="40" required />
-    &nbsp; <input type="submit" value="Legg til" />
-  </form>
-  <br>
-  {% else %}
-  {# @todo better to just show the form here (with custom labels) #}
-  <p class="strong"><a href="{% url 'news-new' %}">Klikk her hvis du har
-  et nyhetstips.</a></p>
-  {% endif %}
-
-  {% comment %}
-  <p class="strong">I nyhetsarktivet finner du lenker til de fleste
-  cannabis-relaterte saker omtalt i norsk media. I tillegg til en del
-  utenlandske saker.</p>
-  {% endcomment %}
+  <p>
+  {% cms_content "nyheter-top" %}
+  </p>
 
   <div class="aside">
     <h3>Årstall</h3>
@@ -35,7 +19,8 @@
     {% endfor %}
   </div>
 
-  <p class="small">Det er {{page_obj.paginator.count}} nyheter i arkivet.</p>
+  <div class="small strong">Det er {{page_obj.paginator.count}} nyheter i
+  arkivet.</div>
 
   <div class="main">
     <p>{% include "news/paginator.html" %}</p>
