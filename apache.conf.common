@@ -29,7 +29,12 @@
     # Save some money by reverse proxy piwik.normal.no into
     # normal.no urlspace. Then don't need separate SSL certificate.
     ProxyPass /piwik http://piwik.normal.no
-    ProxyPreserveHost On
+
+    # update: did not work with this
+#    ProxyPreserveHost On
+
+    # Note: If prepending a slash, must do on both src and dst!
+    #ProxyPass /piwik/ http://piwik.normal.no/
 
     # Q: Does this work? Should be ok for piwik.js, but not piwik.php.
     # Note: piwik.js posts to piwik.php
