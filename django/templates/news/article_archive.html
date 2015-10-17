@@ -8,9 +8,25 @@
 
   <h1>Nyhetsarkiv</h1>
 
-  <p>
   {% cms_content "nyheter-top" %}
-  </p>
+
+  <h3>Søk i arkivet</h3>
+
+  <div style="border: 0px dashed black; padding: 12px; background-color: #eee;">
+  <script>  {# Google search #}
+    (function() {
+      var cx = '004823761881989726086:bufke4urq4q';
+      var gcse = document.createElement('script');
+      gcse.type = 'text/javascript';
+      gcse.async = true;
+      gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+          '//cse.google.com/cse.js?cx=' + cx;
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(gcse, s);
+    })();
+  </script>
+  <gcse:search></gcse:search>
+  </div>
 
   <div class="aside">
     <h3>Årstall</h3>
@@ -19,13 +35,14 @@
     {% endfor %}
   </div>
 
-  <div class="small strong">Det er {{page_obj.paginator.count}} nyheter i
-  arkivet.</div>
+  <h3>Arkivet, kronologisk</h3>
+
+  <div class="strong">Antall nyheter: {{page_obj.paginator.count}}</div>
 
   <div class="main">
     <p>{% include "news/paginator.html" %}</p>
     {% include "news/article_archive_common.html" %}
-    <br><p>{% include "news/paginator.html" %}</p>
+    <p>{% include "news/paginator.html" %}</p>
   </div>
 
   <div class="clear"></div>
