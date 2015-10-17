@@ -7,7 +7,7 @@ from .models import Article
 class ArticleAdmin (admin.ModelAdmin):
     ordering = ('-date',)
     date_hierarchy = 'date'
-    fields = ('date', ('url', 'url_is_canonical'), 'title', 'summary', 'body', 'image_url', 'published')
+    fields = ('date', ('url', 'url_is_canonical'), 'title', 'summary', 'body', 'image_url', 'published', 'user')
     search_fields = ('title', 'summary', 'body', 'url')
     actions = ('action_publish',)
     list_display = ('_date', 'title', '_domain', 'published', 'has_summary', 'has_body')

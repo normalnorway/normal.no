@@ -3,6 +3,13 @@
 
 {% block extratitle %} » Nyhetsarkiv{% endblock %}
 
+{# HACK: will duplicate these tags. Better to create OpenGraphMixin to use with the views #}
+{% block extrahead %}
+<meta property="og:title" content="Normals nyhetsarkiv" />
+<meta property="og:description" content="I arkivet finner du nesten alle norske cannabisnyheter fra 1996 og frem til i dag." />
+{% endblock %}
+
+
 {% block content %}
 <div id="news-archive">
 
