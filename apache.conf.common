@@ -25,6 +25,13 @@
     Redirect permanent /pht/  http://old.normal.no/pht/
     Redirect permanent /mmm/  http://old.normal.no/mmm/
     Redirect permanent /gmm/  http://old.normal.no/gmm/
+    Redirect permanent /txt/  http://old.normal.no/txt/
+    #Redirect permanent /christiania/  http://old.normal.no/christiania/
+    # Preserve some more old links
+    Redirect permanent /omn.html       /om-normal/
+    Redirect permanent /cannabis.html  /om-cannabis/
+    Redirect permanent /hjelpn.htm     /stott/
+    Redirect permanent /nettguide.htm  /nettguide/
 
     # Save some money by reverse proxy piwik.normal.no into
     # normal.no urlspace. Then don't need separate SSL certificate.
