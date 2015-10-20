@@ -4,13 +4,18 @@
 {% block extratitle %} » {{ page.title }}{% endblock %}
 
 {% block content %}
-<article itemscope itemtype="http://schema.org/Article">
 
-  {% if perms.cms.change_page %}<a href="{% url "page-update" pk=page.pk %}" accesskey="e"><img src="{{STATIC_URL}}cms/edit-pencil-18x18.png" height="18" width="18" style="float:right; padding-top:10px;" /></a>{% endif %}
+{% if perms.cms.change_page %}
+<div id="app-cms-page">
+  <a href="{% url "page-update" pk=page.pk %}"> </a>
+  <a href="{% url "admin:cms_page_change" page.pk %}"> </a>
+</div>
+{% endif %}
+
+<article itemscope itemtype="http://schema.org/Article">
 
   {# Note: all these fields are required for schema.org/Article #}
   <meta itemprop="datePublished" content="{{page.created.isoformat}}" />
-  <meta itemprop="dateModified" content="{{page.modified.isoformat}}" />
   <meta itemprop="description" content="{{ page.summary|escape }}" />
   <meta itemprop="image" content="http://normal.no{% if page.image %}{{page.image.url}}{% else %}{{STATIC_URL}}images/avatar.png{% endif %}" />
   {# @todo: keywords, text (wrap all textual content), description:default?  #}
@@ -18,22 +23,15 @@
   <h1 itemprop="name headline">{{ page.title|escape }}</h1>
 
   {% if page.image_show and page.image %}
-  <img src="{{ page.image.url }}" width="{{page.image_width|default:300}}"
-       style="float:right; padding: 0 0 8px 12px;" />
+  <img class="sos-media" src="{{ page.image.url }}" width="{{page.image_width|default:300}}" />
   {% endif %}
 
   <div itemprop="articleBody">{{ page.content }}</div>
 
-  <time class="smaller gray"
-        itemprop="dateModified" datetime="{{page.modified.isoformat}}">
+  <time itemprop="dateModified" datetime="{{page.modified.isoformat}}">
     Oppdatert: {{ page.modified }}</time>
 
-  {% if perms.cms.change_page %}
-  <a href="{% url "page-update" pk=page.pk %}" accesskey="e"><img src="{{STATIC_URL}}cms/edit-pencil-18x18.png" height="18" width="18" style="float:right; padding-top:15px;" /></a>
-  {% endif %}
+  <div class="icon-top"><a href="#til-toppen"></a></div>
 
-  <p style="padding-top:1.66ex" class="strong"><a href="#til-toppen">
-    <img src="{% static 'cms/arrow-circle-top-16x16.png' %}"
-         height="16" width="16" style="vertical-align:middle"/> Til toppen</a></p>
 </article>
 {% endblock %}
