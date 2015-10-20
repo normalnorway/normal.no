@@ -1,10 +1,8 @@
 #!/bin/sh -e
 
-# @todo make sure all files in django/logs/*.log is writable by www-data
-# $ chown www-data.www-data django/logs/*.log
-# $ chmod g+w django/logs/error.log
+# Run this on the production server to update the code.
 
-# Run this on the production server to update the code
+# @todo undo/revert option to check out last good commit
 
 if [ -n "$(git status -s -uno --porcelain)" ]; then
     echo "Aborting! Working tree is not clean:"
@@ -15,20 +13,35 @@ fi
 echo -n commit
 git rev-parse live
 
+do_migrate()
+{
+    sh mkdirs.sh
+    django/manage.py migrate
+}
+
+do_check()
+{
+    django/manage.py check
+
+    make -C django/static/css check
+    make -C django/static/css
+}
+
+do_static()
+{
+    django/manage.py collectstatic --noinput -i \*.less -i Makefile
+    # Note: This will copy more than needed.
+}
+
 git pull
 
-sh mkdirs.sh
-
-django/manage.py migrate
-
-django/manage.py check
-
-make -C django/static/css check
-make -C django/static/css
-
-django/manage.py collectstatic --noinput -i \*.less -i Makefile
-# Update: Can't do this when using ManifestStaticFileStorage
-#         will delete css/all.f5706c9f57c9.css
-#(cd htdocs/static/css/ ; ls *.css | egrep -v 'all.css|tinymce.css' | xargs rm)
+if [ x$1 == xfull ];
+then
+    # Q: if these fail, will script abort?
+    do_migrate
+    do_check
+    do_static
+    # make livetest
+fi
 
 touch django/website/wsgi.py
