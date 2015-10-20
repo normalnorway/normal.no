@@ -36,26 +36,22 @@ class Article (models.Model):   # NewsLink
     pub_objects = PubArticleManager() # objects where published is True
 
     # Fields
-    # @todo remove index on user?
     user =      models.ForeignKey (settings.AUTH_USER_MODEL, blank=True, null=True)
     pubdate =   models.DateTimeField (auto_now_add=True)
     url =       models.URLField (unique=True, null=True, max_length=255) # Note: MySQL does not allow unique CharFields to have a max_length > 255 :(
-    date =      models.DateTimeField (null=True, help_text='Date of news article (url), not the day we posted it.')
+    date =      models.DateTimeField (null=True, db_index=True, help_text='Date of news article (url), not the day we posted it.')
     title =     models.CharField (max_length=128)
     summary =   models.TextField (help_text=u'Just copy the "ingress" into this field.')
     body =      models.TextField (blank=True, help_text='Our comment to this news story. Usually empty.')
     image_url = models.URLField (blank=True) # note: max_length=200
-    published = models.BooleanField (default=True, db_index=True)
+    published = models.BooleanField (default=True)
     url_is_canonical = models.BooleanField ('Is canonical?', default=False)
     # note: url_is_canonical=False really means we don't know, so it's
     #       better to use NullBooleanField or choices=('Y', 'N', 'U')
 
     def get_date (self):
         """Time might be empty. Returns datetime.date or datetime.datetime"""
-        # @todo howto format date like this: 5. mars 2015, kl 22:51
-        if self.date.time() == _empty_time: return self.date.date()
-        return self.date
-        #return self.date if self.date.time()!=_empty_time else self.date.date()
+        return self.date if self.date.time()!=_empty_time else self.date.date()
 
     def __unicode__ (self):
         return self.title
