@@ -20,22 +20,19 @@ p.abstract {
 
 {% block content %}
 
-  <h1>Nyhetskommentar</h1>
+<h1>Nyhetskommentar</h1>
 
-  <h2>{{ article.title }}</h2>
-  <p class="date">Publisert: {{ article.get_date }}</p>
-  <p class="abstract">{{ article.summary }}</p>
+<h2>{{ article.title }}</h2>
+<p class="date">Publisert: {{ article.get_date }}</p>
+<p class="abstract">{{ article.summary }}</p>
 
-  {% if article.url %}
-  {% comment %}
-  <p><em>Kilde: <a href="{{article.url}}">{{article.url}}</a></em></p>
-  {% endcomment %}
-  <p><a href="{{article.url}}">{{article.url}}</a></em></p>
-  {% endif %}
+{% if article.url %}
+<p><a href="{{article.url}}">{{article.url}}</a></p>
+{% endif %}
 
-  {% if article.body %}
-  {# @todo if body&url => prefix with Normals kommentar? #}
-  <p class="body">{{ article.body|safe }}</p>
-  {% endif %}
+{% if article.body %}
+{% if article.url %}<h3>Normals kommentar</h3>{% endif %}
+<p class="body">{{ article.body|safe }}</p>
+{% endif %}
 
 {% endblock %}

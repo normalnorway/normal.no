@@ -11,6 +11,14 @@
 
 
 {% block content %}
+
+{% if perms.news.change_article %}
+<div id="admin-buttons">
+  <a href="{% url 'admin:news_article_changelist' %}"></a>
+</div>
+{% endif %}
+
+
 <div id="news-archive">
 
   <h1>Nyhetsarkiv</h1>
@@ -53,5 +61,7 @@
   </div>
 
   <div class="clear"></div>
+
+  <div class="icon-top"><a href="#til-toppen"></a></div>
 </div>
 {% endblock %}

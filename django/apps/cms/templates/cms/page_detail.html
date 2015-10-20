@@ -6,7 +6,7 @@
 {% block content %}
 
 {% if perms.cms.change_page %}
-<div id="app-cms-page">
+<div id="admin-buttons">
   <a href="{% url "page-update" pk=page.pk %}"> </a>
   <a href="{% url "admin:cms_page_change" page.pk %}"> </a>
 </div>

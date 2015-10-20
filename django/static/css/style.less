@@ -65,6 +65,17 @@ nav , article { // most browsers have this as their default
 }
 
 
+
+div.icon-top {
+    margin: 1.33rem 0 0 0;
+    padding-left: 16px + 6px;
+    background: url('/static/cms/arrow-circle-top-16x16.png') no-repeat left center;
+}
+div.icon-top a:after {
+    content: 'Til toppen';
+}
+
+
 // @todo prefix with app-cms?
 article img.sos-media {
     float:right;
@@ -76,21 +87,13 @@ article time {
     font-size: smaller;
 }
 
-article div.icon-top {
-    margin: 1.33rem 0 0 0;
-    padding-left: 16px + 6px;
-    background: url('/static/cms/arrow-circle-top-16x16.png') no-repeat left center;
-}
-article div.icon-top a:after {
-    content: 'Til toppen';
-}
 
-#app-cms-page {
+#admin-buttons {
     position: absolute;
     top: 8px;
     left: 10px;
 }
-#app-cms-page a {
+#admin-buttons a {
     display: inline-block;
     width: 18px;
     height: 18px;

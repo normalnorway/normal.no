@@ -53,6 +53,10 @@ class Article (models.Model):   # NewsLink
         """Time might be empty. Returns datetime.date or datetime.datetime"""
         return self.date if self.date.time()!=_empty_time else self.date.date()
 
+    def get_url (self):
+        """If no own comment (body), then link directly to the external url"""
+        return self.get_absolute_url() if self.body else self.url
+
     def __unicode__ (self):
         return self.title
 

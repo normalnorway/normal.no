@@ -49,6 +49,7 @@ USE_TZ = False
 # Testing. Note: Will affect both admin and template
 USE_L10N = False
 DATETIME_FORMAT = r'j. F Y, k\l. H:i'
+DATE_FORMAT = 'j. F Y'  # some news articles don't have time
 
 
 DEBUG = Config.getbool ('main.debug', True)
