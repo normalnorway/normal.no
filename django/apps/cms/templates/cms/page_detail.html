@@ -23,7 +23,7 @@
   <h1 itemprop="name headline">{{ page.title|escape }}</h1>
 
   {% if page.image_show and page.image %}
-  <img class="sos-media" src="{{ page.image.url }}" width="{{page.image_width|default:300}}" />
+  <img class="sos-media" src="{{ page.image.url }}" width="{{page.image_width|default:300}}" alt="Main image" />
   {% endif %}
 
   <div itemprop="articleBody">{{ page.content }}</div>

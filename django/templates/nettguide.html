@@ -44,7 +44,7 @@
     <a href="{{link.url}}">{{link.name}}</a>
     {% if link.lang %}
     {% with 'images/lang/'|add:link.lang|add:'.gif' as flag_url %}
-    <img src="{% static flag_url %}" />
+    <img src="{% static flag_url %}" alt="Flag" />
     {# <img src="{{STATIC_URL}}images/lang/{{link.lang}}.gif"> #}
     {% endwith %}
     {% endif %}
