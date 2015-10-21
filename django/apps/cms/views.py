@@ -45,7 +45,8 @@ class PageUpdate (UpdateView):
 
 
 def _page_last_modified (request, url):
-    try: return Page.objects.get (url='/'+url, published=True).modified
+    try:
+        return Page.objects.only('modified').get (url='/'+url, published=True).modified
     except Page.DoesNotExist:
         return None
 
