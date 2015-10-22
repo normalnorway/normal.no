@@ -46,6 +46,15 @@ USE_TZ = False
 #TIME_FORMAT = 'H:i'
 #DATETIME_FORMAT = DATE_FORMAT + ', k\l. ' + TIME_FORMAT
 
+# Testing. Note: Will affect both admin and template
+USE_L10N = False
+DATETIME_FORMAT = r'j. F Y, k\l. H:i'
+DATE_FORMAT = 'j. F Y'  # some news articles don't have time
+
+# Testing. Only use english. Update: Worked fine, except for english month
+# names on the public part. @todo try to change locale of wsgi process
+#USE_I18N = False
+
 
 DEBUG = Config.getbool ('main.debug', True)
 

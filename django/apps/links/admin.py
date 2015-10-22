@@ -1,57 +1,28 @@
+import urlparse
 from django.contrib import admin
-from django.forms.models import fields_for_model
 from .models import Link, Category
-import re
 
+
+@admin.register (Link)
 class LinkAdmin (admin.ModelAdmin):
-    list_display = ('name', 'category', 'url_')
-    list_filter = ('category',)
-    ordering = ('name',)
-    search_fields = ('name',)
-    #ordering = ('category',)
-    #ordering = ('category__name',)
+    list_display = ('name', 'category', 'lang', 'url_')
+    list_filter = ('category', 'lang')
+    ordering = ('category__name', 'name',)
+    search_fields = ('name', 'url')
 
-    # Dynamically construct fieldset
-    def __init__ (self, *args, **kwargs):
-        super(LinkAdmin,self).__init__ (*args, **kwargs)
-        fields = fields_for_model (self.model).keys()
-        fields.remove ('comment')
-        fields.remove ('lang')
-        self.fieldsets = (
-            (None, { 'fields': (fields) }),
-            ('Extra', {
-                'fields':   ('lang', 'comment'),
-                #'fields':   ('comment',),
-                'classes':  ('collapse',),
-            }),
-        )
-    # @todo convert into decorator?
-    # http://stackoverflow.com/questions/2420516/how-to-collapse-just-one-field-in-django-admin
     # @fieldsets_collapse (['comment'], label='Internal')
+    # http://stackoverflow.com/questions/2420516/how-to-collapse-just-one-field-in-django-admin
 
-    # @todo use urlparse.urlsplit instead of regex
     def url_ (self, obj):
-        m = self.url_.regex.match (obj.url)
-        if not m:
-            return '<a href="%s">(internal)</a>' % (obj.url,)
-        s = m.group(1)
-        if m.end() == len(obj.url):
-            return '<a href="%s">%s</a>' % (obj.url, s)
-        else:
-            return '<a href="%s" title="%s">%s &hellip;</a>' % (obj.url, obj.url, s)
+        o = urlparse.urlsplit (obj.url)
+        if o.path=='/' and not o.query:
+            return '<a href="%s">%s</a>' % (obj.url, o.hostname)
+        return '<a href="%s" title="%s">%s &hellip;</a>' % (obj.url, obj.url, o.hostname)
     url_.allow_tags = True
     url_.short_description = 'URL'
     url_.admin_order_field = 'url'
-    url_.regex = re.compile (r'^https?://([^/]+)(/?)', re.I)
 
 
-
+@admin.register (Category)
 class CategoryAdmin (admin.ModelAdmin):
     list_display = 'name',
-#    list_display = 'pk', 'name',
-#    list_editable = 'name',
-
-
-admin.site.register (Link, LinkAdmin)
-admin.site.register (Category, CategoryAdmin)
-#admin.site.register (Category)

@@ -1,13 +1,7 @@
 {# List all articles #}
-
+{# @todo wrap each object in schema.org/NewsArticle? #}
 {% for news in object_list %}
-  {% if news.body %}
-    <h3><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h3>
-  {% else %}
-    <h3><a href="{{ news.url }}">{{ news.title }}</a></h3>
-  {% endif %}
+  <h3><a href="{{ news.get_url }}">{{ news.title }}</a></h3>
   <div class="strong">{{ news.summary }}</div>
   <div style="color:#444"><small>» {{ news.get_date }}</small></div>
 {% endfor %}
-
-{# @todo Gå til toppen-lenke #}
