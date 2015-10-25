@@ -36,24 +36,30 @@ MANAGERS = ADMINS
 # Localization
 LANGUAGE_CODE = 'nb-no'
 TIME_ZONE = 'Europe/Oslo'
-USE_I18N = True     # translate messages
-USE_L10N = True     # format according to the current locale (LANGUAGE_CODE)
+#USE_I18N = True     # translate messages
+#USE_L10N = True     # format according to the current locale (LANGUAGE_CODE)
 USE_TZ = False
 
+# Note: Django does not use the C locale. When disabling USE_I18N
+# then it will affect both translation of messsages and month names.
+# Both in admin and in the public templates.
+# Better fix: Own template filter to format norwegian dates.
+
+# Update. Testing other aproach ...
+# Note: Will use english text but norwegian data format (in admin)
+LANGUAGE_CODE = 'en-us'
+USE_I18N = False
+USE_L10N = False
+# Note: Don't use month names in DATE_FORMAT (the are not translated).
+DATE_FORMAT = 'd/m/Y'
+DATETIME_FORMAT = DATE_FORMAT + r' k\l. H:i'
+#DATETIME_FORMAT = DATE_FORMAT + r', k\l. H:i'
+
 # Note: These are not active when USE_L10N is True
-# Q: howto change these without own: locale/nb/formats.py ?
+# Must use this instead: FORMAT_MODULE_PATH = 'core.formats'
 #DATE_FORMAT = 'j. F Y'
 #TIME_FORMAT = 'H:i'
 #DATETIME_FORMAT = DATE_FORMAT + ', k\l. ' + TIME_FORMAT
-
-# Testing. Note: Will affect both admin and template
-USE_L10N = False
-DATETIME_FORMAT = r'j. F Y, k\l. H:i'
-DATE_FORMAT = 'j. F Y'  # some news articles don't have time
-
-# Testing. Only use english. Update: Worked fine, except for english month
-# names on the public part. @todo try to change locale of wsgi process
-#USE_I18N = False
 
 
 DEBUG = Config.getbool ('main.debug', True)
@@ -118,9 +124,9 @@ CACHES = {
         'TIMEOUT': 3600,    # default ttl?
     }
 }
-if DEBUG: CACHES['default'] = {
-    'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
-}
+#if DEBUG: CACHES['default'] = {
+#    'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+#}
 
 
 ## Templates

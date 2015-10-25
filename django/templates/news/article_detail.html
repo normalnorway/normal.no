@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
+{# Note: if not url and not body -- does not make sense #}
+
 {# @todo redirect to url if no body? q: but what if url is dead? #}
 {# @todo dont put styles in extrastyle. and wrap in div#app-news-detail #}
-{# @todo s/Nyhetskommentar/Nyhetssak/g? if allowing empty url #}
 
-{% block extratitle %} » Nyhetskommentar{% endblock %}
+{% block extratitle %} » Nyheter{% endblock %}
 
 {% block extrastyle %}
 <style>
@@ -20,10 +21,17 @@ p.abstract {
 
 {% block content %}
 
+{% if article.url and article.body %}
 <h1>Nyhetskommentar</h1>
+{% else %}
+<h1>Nyhetsak</h1>
+{% endif %}
 
 <h2>{{ article.title }}</h2>
-<p class="date">Publisert: {{ article.get_date }}</p>
+
+<p class="date">Publisert: <time itemprop="datePublished"
+  datetime="{{article.get_date.isoformat}}">{{ article.get_date }}</time></p>
+
 <p class="abstract">{{ article.summary }}</p>
 
 {% if article.url %}

@@ -28,8 +28,8 @@
 
   <div itemprop="articleBody">{{ page.content }}</div>
 
-  <time itemprop="dateModified" datetime="{{page.modified.isoformat}}">
-    Oppdatert: {{ page.modified }}</time>
+  <p class="gray">Oppdatert: <time itemprop="dateModified"
+    datetime="{{page.modified.isoformat}}">{{ page.modified|date }}</time></p>
 
   <div class="icon-top"><a href="#til-toppen"></a></div>
 
