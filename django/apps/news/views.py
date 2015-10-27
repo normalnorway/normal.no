@@ -57,14 +57,15 @@ til <a href="mailto:post@normal.no">post@normal.no</a>. Takk!
     # @todo this list can be auto-build from required fields on Article
     _required_fields = set(('url', 'date', 'title', 'summary'))
 
+    # Fields to copy from newsgrab into news.Article
+    _all_fields = ('url', 'date', 'title', 'image_url', 'summary', 'url_is_canonical')
+
     @staticmethod
     def _get_metadata (url):
         """Get OpenGraph metadata for url"""
         urlobj = urlparse.urlsplit (url)
         if not urlobj.netloc.endswith ('.no'): return {}
         meta = get_opengraph_data (url)
-        meta.pop ('type', None)
-        meta.pop ('site_name', None)
         if meta.has_key (u'description'):
             meta[u'summary'] = meta.pop (u'description', u'')
         if meta.has_key ('image'):
@@ -150,10 +151,8 @@ til <a href="mailto:post@normal.no">post@normal.no</a>. Takk!
     # Note: Article.published only true if validation passes and user
     # has the add_article permission.
     def _save (self, data):
-        # @todo use whitelist instead of blacklist
-        data.pop ('locale', None)   # tmp hack: must remove unwanted keys (from newsgrab)
-        data.pop ('locality', None) # tmp hack
-        obj = Article (**data)
+        newdata = { key: data[key] for key in data if key in self._all_fields }
+        obj = Article (**newdata)
         try:
             obj.full_clean()
         except ValidationError as ex:
