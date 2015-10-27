@@ -35,7 +35,7 @@ do_static()
 
 git pull
 
-if [ x$1 == xfull ];
+if [ x$1 = xfull ];
 then
     # Q: if these fail, will script abort?
     do_migrate
