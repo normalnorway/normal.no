@@ -10,33 +10,49 @@ html {
 body {
     font-family: sans-serif;
     color: #111;
-//    background: url('/static/images/bg-leaves.png') repeat;
-//    background-color: #b0b0b0;
     background-color: #bbdbea;
-    margin: 2em 0;
+    margin: 20px 0 50px 0;
 }
 
-#wrapper {  // this is the outer element (body is parent)
+#wrapper { // this is the outer element (body is parent)
     width: 980px;   // inner.width + sidebar.width + sidebar.margin-left
     margin: 0 auto;
-//    border: 1px dashed black;
 }
 
 #toparea {
 //    width: 770px;   // match width of main content area
     margin-bottom: 20px;
+    padding: 0 10px;
 }
 
-#toparea .gsc-control-cse {
+#toparea table.layout {
+    width: 100%;
+}
+
+#toparea .logo {
+    width: 222px;           // note: should match logo width
+    padding-right: 30px;    // spacing between logo and slogan
+    padding-top: 3px;       // hack: valign logo and slogan
+}
+
+#toparea .slogan {
+    width: 300px;
+    font-size: 10pt;
+    color: #636363;
+    font-weight: bolder;
+}
+
+#toparea .search .gsc-control-cse {
     background-color: inherit !important;
     border: 0;
     margin: 0;
     padding: 0;
+    // This is the last table column. It must be growable, i.e. accept.
+    // extra horizontal space.
+//    width: 300px;
+//    margin-left: auto;      // insert extra space on the left
 }
 
-#toparea table {
-    width: 100%;
-}
 
 
 #inner {
@@ -44,24 +60,29 @@ body {
     width: 770px;
     background-color: white;
     margin-bottom: 2em;
-    border-radius: 0 0 3px 3px;
+    border-radius: 4px 4px 0 0;
 }
+
+#inner header ul#nav {
+    border-radius: 4px 4px 0 0;
+}
+#inner header ul#nav li:first-child a {
+    border-radius: 4px 0 0 0;
+}
+
 
 #sidebar {
     float: left;
     width: 200px;
     background-color: white;
-//    background-color: #f3f3f3;
     margin-left: 10px;
-    // Note: Will only use rounded corner on the bottom. Since the top
-    // is bellow the black header.
-    border-radius: 3px;
+    border-radius: 4px 4px 0 0;
 }
 
 #sidebar header {
     background-color: #222;
     height: 2.8rem;
-    //border-radius: 3px 3px 0 0;
+    border-radius: 4px 4px 0 0;
 }
 
 #sidebar header div.follow-widget {

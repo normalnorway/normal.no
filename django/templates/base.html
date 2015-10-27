@@ -41,28 +41,12 @@
     <div id="wrapper">
 
       <div id="toparea">
-        <table><tr>
-
-          <td>
-          <img src="{{STATIC_URL}}images/logo-top.png" alt="Normals logo"
-               width="200" height="43" style="margin-left: 6px" />
+        <table class="layout"><tr>
+          <td class="logo">
+            <img src="{{STATIC_URL}}images/logo-top.png" alt="Normals logo" width="222" height="48" />
           </td>
-
-          <script>
-            (function() {
-              var cx = '004823761881989726086:g1fvg9pfbvk';
-              var gcse = document.createElement('script');
-              gcse.type = 'text/javascript';
-              gcse.async = true;
-              gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-                  '//cse.google.com/cse.js?cx=' + cx;
-              var s = document.getElementsByTagName('script')[0];
-              s.parentNode.insertBefore(gcse, s);
-            })();
-          </script>
-
-          <td><gcse:search></gcse:search></td>
-
+          <td class="slogan">For en fornuftig og<br />regulert cannabislovgivning</td>
+          <td class="search"><gcse:search></gcse:search></td>
         </tr></table>
       </div>
 
@@ -122,6 +106,19 @@
 
     </div>  {# wrapper #}
 
+    {# Google custom search #}
+    <script>
+      (function() {
+        var cx = '004823761881989726086:g1fvg9pfbvk';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+            '//cse.google.com/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+      })();
+    </script>
 
     {% if config.piwiki %}
     <script type="text/javascript">
