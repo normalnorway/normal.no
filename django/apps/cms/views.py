@@ -5,7 +5,14 @@ from django.views.decorators.http import condition
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from .models import Page, Content, File
+from .models import Page, Content, File, Info
+
+
+class InfoList (ListView):
+    model = Info
+
+class InfoDetail (DetailView):
+    model = Info
 
 
 class FileSelect (ListView):
