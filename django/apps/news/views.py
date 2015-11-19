@@ -182,6 +182,12 @@ class OnlyPublishedMixin (object):
         return Article.pub_objects.order_by ('-date')
 
 
+# self: model, object_list, options, queryset, request
+# Combine mixins
+#class OnlyPublishedMixin (_OnlyPublishedMixin, CacheMixin):
+#    pass
+
+
 class ArchiveView (OnlyPublishedMixin, ArchiveIndexView):
     date_field = 'date'
     paginate_by = 50

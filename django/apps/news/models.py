@@ -36,6 +36,8 @@ class Article (models.Model):   # NewsLink
     pub_objects = PubArticleManager() # objects where published is True
 
     # Fields
+    # @todo drop index on user field
+    # CREATE INDEX "news_article_e8701ad4" ON "news_article" ("user_id");
     user =      models.ForeignKey (settings.AUTH_USER_MODEL, blank=True, null=True)
     pubdate =   models.DateTimeField (auto_now_add=True)
     url =       models.URLField (unique=True, null=True, max_length=255) # Note: MySQL does not allow unique CharFields to have a max_length > 255 :(

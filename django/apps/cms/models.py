@@ -85,3 +85,17 @@ class Page (models.Model):
         permissions = (
             ('create_root_pages', 'Can create non-restricted page urls'),
         )
+
+
+class Info (models.Model):
+    '''Short info/note'''
+    date = models.DateTimeField (auto_now_add = True)
+    title = models.CharField (max_length=100)
+    summary = models.TextField()
+    body = HtmlField (blank=True)
+    image = models.ImageField (blank=True, upload_to='cms/info')
+
+    def __unicode__ (self): return self.title
+
+    class Meta:
+        verbose_name_plural = 'Info'
