@@ -148,7 +148,7 @@ TEMPLATES = [
             #'debug': True, # default if DEBUG=True
             'loaders': _loaders,
             'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-                'django.template.context_processors.request', # needed?
+                'django.template.context_processors.request', # needed? A: used in templates/news/article_new.html but not needed
                 'core.context_processors.siteconfig',
             ),
         },
