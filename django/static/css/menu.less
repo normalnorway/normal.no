@@ -1,5 +1,6 @@
 // can drop #nav and use '#menu > ul' - but less compatible
 
+@top_menu_height: 2.6rem;
 
 @bg: #222;
 @fg: #ddd;
@@ -26,30 +27,42 @@
 
 
 
+#inner header ul#nav {
+    border-radius: 4px 4px 0 0;
+}
+#inner header ul#nav > li:first-child > a {
+    border-radius: 4px 0 0 0;
+}
+
+
+
 #nav {
     width: 100%;
     float: left;
     background-color: @bg;
+//    height: @top_menu_height;
 }
 
-// making only the top-level menu entries float. ie6 error. ie7 ok?
-// @todo use ul.top is more compatible
+// Make the root level menu entries floatable.
+// @todo use ul.top is a more compatible selector
 #nav > li {
     float: left;
     border-right: 1px solid @border;
+    height: @top_menu_height;   // goes here (and not on #nav) so the last separator line has correct hight
+}
+
+#nav li {
+    line-height: @top_menu_height;  // vertical align text
 }
 
 #nav a {
     display: block;
-    padding: 10px 12px;
-    text-decoration: none;
+    padding: 0 12px;
     color: @fg;
     background-color: @bg;
+    text-decoration: none;
 }
 
-#nav a > img {
-    display:block;  // else extra vspace is added to the image
-}
 
 #nav a:hover {
     color: @fgactive;

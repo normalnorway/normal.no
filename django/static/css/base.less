@@ -1,14 +1,17 @@
 // Good artists copy, great artists steal. -- Pablo Picasso
 
-// rename site.css
-// @import reset.css ?
-
 html {
     min-height: 100%;
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+// note: side menu not inside nav
+nav { // @todo better to set base to 12 and increase on body text
+    font-size: 12px;
 }
 
 body {
-    font-family: sans-serif;
     color: #111;
     background-color: #bbdbea;
     margin: 20px 0 50px 0;
@@ -63,13 +66,6 @@ body {
     border-radius: 4px 4px 0 0;
 }
 
-#inner header ul#nav {
-    border-radius: 4px 4px 0 0;
-}
-#inner header ul#nav li:first-child a {
-    border-radius: 4px 0 0 0;
-}
-
 
 #sidebar {
     float: left;
@@ -81,7 +77,7 @@ body {
 
 #sidebar header {
     background-color: #222;
-    height: 2.8rem;
+    height: 2.6rem;     // note: should match top-menu height
     border-radius: 4px 4px 0 0;
 }
 
@@ -109,11 +105,12 @@ body {
 //#sidebar h1, #sidebar h2, #sidebar h3, #sidebar h4 { margin:0; }
 #sidebar ul {
     margin: 4px 0;
-    padding-left: 16px;
+    padding: 0 4px 4px 8px;
 }
 
 #sidebar ul li {
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+    list-style: none;
 }
 
 #sidebar header div.follow-widget a {

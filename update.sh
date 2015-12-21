@@ -10,7 +10,7 @@ if [ -n "$(git status -s -uno --porcelain)" ]; then
     exit 1
 fi
 
-echo -n commit
+echo -n "commit "
 git rev-parse live
 
 do_migrate()
