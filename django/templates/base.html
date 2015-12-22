@@ -109,6 +109,7 @@
 
     </div>  {# wrapper #}
 
+    {% if not config.debug %}
     {# Google custom search #}
     <script>
       (function() {
@@ -122,6 +123,7 @@
         s.parentNode.insertBefore(gcse, s);
       })();
     </script>
+    {% endif %}
 
     {% if config.piwiki %}
     <script type="text/javascript">
