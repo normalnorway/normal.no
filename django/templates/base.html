@@ -33,14 +33,18 @@
     <meta property="og:title" content="{{ og.title|default:'Normal Norge' }}" />
     <meta property="og:description" content="{{ og.description|default:'For en fornuftig og regulert cannabislovgivning' }}" />
 
-    <script>{# Mark the active menu item with css-class 'selected' #}
+    <script>{# Mark the active menu item with css-class 'selected' (ie9) #}
 document.addEventListener ('DOMContentLoaded', function() {
+  if (document.children[0].classList) {# IE9 support #}
+    var add_class = function (node, name) { node.classList.add (name); }
+  else
+    var add_class = function (node, name) { node.className += ' ' + name; }
   try {
     var elem = document.querySelector ('ul#nav li > a[href="' + window.location.pathname + '"]');
-    elem.classList.add ('selected');
+    add_class (elem, 'selected');
     {# If sub-item, then do the same to the parent item #}
     for (var i=0, e=elem; i<3; i++) e = e.parentElement;
-    if (e.tagName == 'LI') e.firstChild.classList.add ('selected');
+    if (e.tagName == 'LI') add_class (e.firstChild, 'selected');
   } catch (ex) { {# ignore errors #} }
 });
     </script>
