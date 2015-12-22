@@ -3,16 +3,18 @@
 @top_menu_height: 2.6rem;
 
 @bg: #222;
-@fg: #ddd;
+@fg: #ccc;
 @border: #d5d5d5;
-@fgactive: white;
-@bgactive: darkred;
+@fg_hover: white;   // not needed? very subtle effect
+@bg_hover: darkred;
+@bg_selected: #026801;
+//@fg_selected: white;
 
 /*
-@fg: #000033;		// text color for active element
-@fgactive: white;	// text color for active element
+@fg: #000033;		// text color for active (hover) element
+@fgactive: white;	// text color for active (hover) element
 @bg: #6699ff;		// background color
-@bgactive: #446699;	// background color for active element
+@bgactive: #446699;	// background color for active (hover) element
 */
 
 
@@ -63,13 +65,23 @@
     text-decoration: none;
 }
 
+#nav > li > a {
+    font-weight: bold;
+}
+
+
+#nav a.selected {
+//    color: @fg_selected;
+    background-color: @bg_selected;
+    font-weight: bold;
+}
 
 #nav a:hover {
-    color: @fgactive;
-    background-color: @bgactive;
+    color: @fg_hover;
+    background-color: @bg_hover;
 }
 //#nav li:hover {
-//    background-color: @bgactive;
+//    background-color: @bg_hover;
 //}
 
 // sub-menu
