@@ -5,13 +5,15 @@ from models import Petition
 
 # TODO:
 #
+# Make paying member the default choice
+#
 # MemberForm.name validate: two words, so people don't just
 # write their first name. Or use two fields?
 #
 # https://normal.no/bli-medlem/
 # hva innebærer det å være aktiv. bunntekst
 #
-# Validate zipcode on MemberForm. Someone wrote: u' 936'
+# Validate zipcode on MemberForm (change type to int?). Someone wrote: u' 936'
 # Probably because field has max_length=4 and therefore
 # can only write 4 chars in the form. If the first char is
 # a space, then the fourth char is silently ignored.

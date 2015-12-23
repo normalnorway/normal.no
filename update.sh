@@ -29,8 +29,12 @@ do_check()
 
 do_static()
 {
-    django/manage.py collectstatic --noinput -i \*.less -i Makefile
-    # Note: This will copy more than needed.
+    django/manage.py collectstatic --noinput \
+        -i Makefile         \
+        -i \*.less          \
+        -i less.js          \
+        -i less-\*.min.js   \
+        -i todo
 }
 
 git pull
