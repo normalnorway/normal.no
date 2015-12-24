@@ -43,6 +43,12 @@ class TestUrls (TestCase):
 
 class TestRedirects (TestCase):
     '''Test all (permantent) redirect views/urls'''
+    # @todo use assertRedirects (response, expected_url, status_code=301);
+#    response = self.client.head ('/medlem/')
+#    self.assertRedirects (response, '/bli-medlem')
+    def _test_medlem (self):
+        self.assertRedirects (self.client.head ('/medlem/'), '/bli-medlem')
+
     def test_medlem (self):
         res = self.client.head ('/medlem/')
         self.assertEqual (res.status_code, 301)
