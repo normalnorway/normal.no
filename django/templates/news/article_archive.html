@@ -28,19 +28,7 @@
   <h3>Søk i arkivet</h3>
 
   <div style="border: 0px dashed black; padding: 12px; background-color: #eee;">
-  <script>  {# Google search #}
-    (function() {
-      var cx = '004823761881989726086:bufke4urq4q';
-      var gcse = document.createElement('script');
-      gcse.type = 'text/javascript';
-      gcse.async = true;
-      gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-          '//cse.google.com/cse.js?cx=' + cx;
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(gcse, s);
-    })();
-  </script>
-  <gcse:search></gcse:search>
+    <div id='cse-news' style='width: 100%;'>Laster søk &hellip;</div>
   </div>
 
   <div class="aside">
@@ -64,4 +52,25 @@
 
   <div class="icon-top"><a href="#til-toppen"></a></div>
 </div>
+{% endblock %}
+
+
+{% block extrafoot %}
+{% if not config.debug %}
+<script>
+  {# Note: Google search code is already by the main search box #}
+  google.setOnLoadCallback(function() {
+    var customSearchOptions = {};
+    var orderByOptions = {};
+    orderByOptions['keys'] = [{label: 'Relevance', key: ''} , {label: 'Date', key: 'date'}];
+    customSearchOptions['enableOrderBy'] = true;
+    customSearchOptions['orderByOptions'] = orderByOptions;
+    //customSearchOptions['overlayResults'] = true;
+    var customSearchControl =   new google.search.CustomSearchControl('004823761881989726086:bufke4urq4q', customSearchOptions);
+    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+    var options = new google.search.DrawOptions();
+    customSearchControl.draw('cse-news', options);
+  }, true);
+</script>
+{% endif %}
 {% endblock %}

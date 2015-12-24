@@ -67,7 +67,7 @@ document.addEventListener ('DOMContentLoaded', function() {
             </a>
           </td>
           <td class="slogan">For en fornuftig og<br />regulert cannabislovgivning</td>
-          <td class="search"><gcse:search></gcse:search></td>
+          <td class="search"><div id="cse-main"></div></td>
         </tr></table>
       </div>
 
@@ -127,22 +127,6 @@ document.addEventListener ('DOMContentLoaded', function() {
 
     </div>  {# wrapper #}
 
-    {% if not config.debug %}
-    {# Google custom search #}
-    <script>
-      (function() {
-        var cx = '004823761881989726086:g1fvg9pfbvk';
-        var gcse = document.createElement('script');
-        gcse.type = 'text/javascript';
-        gcse.async = true;
-        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-            '//cse.google.com/cse.js?cx=' + cx;
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(gcse, s);
-      })();
-    </script>
-    {% endif %}
-
     {% if config.piwiki %}
     <script>
       var _paq = _paq || [];
@@ -157,6 +141,27 @@ document.addEventListener ('DOMContentLoaded', function() {
       })();
     </script>
     <noscript><p><img src="//normal.no/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+    {% endif %}
+
+    {% if not config.debug %}
+    <script src='//www.google.com/jsapi' type='text/javascript'></script>
+    {# Google custom search. Note: Must use v1 javascript code so more than one search box per page is accepted. (Newsarchive also uses.) #}
+    <script>
+      google.load('search', '1', {language: 'no', style: google.loader.themes.V2_DEFAULT});
+      google.setOnLoadCallback(function() {
+        var customSearchOptions = {};
+        var orderByOptions = {};
+        orderByOptions['keys'] = [{label: 'Relevance', key: ''} , {label: 'Date', key: 'date'}];
+        customSearchOptions['enableOrderBy'] = true;
+        customSearchOptions['orderByOptions'] = orderByOptions;
+        customSearchOptions['overlayResults'] = true;
+        customSearchOptions['enableImageSearch'] = true;
+        var customSearchControl =   new google.search.CustomSearchControl('004823761881989726086:g1fvg9pfbvk', customSearchOptions);
+        customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+        var options = new google.search.DrawOptions();
+        customSearchControl.draw('cse-main', options);
+      }, true);
+    </script>
     {% endif %}
 
     {% if request_path == "/" %}
@@ -210,5 +215,6 @@ document.addEventListener ('DOMContentLoaded', function() {
     }
     </script>
     {% endif %}
+    {% block extrafoot %}{% endblock %}
   </body>
 </html>
