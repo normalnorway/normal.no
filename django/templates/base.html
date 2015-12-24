@@ -159,6 +159,7 @@ document.addEventListener ('DOMContentLoaded', function() {
     <noscript><p><img src="//normal.no/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
     {% endif %}
 
+    {% if request_path == "/" %}
     {# https://developers.google.com/structured-data/site-name #}
     <script type="application/ld+json">
     {
@@ -208,5 +209,6 @@ document.addEventListener ('DOMContentLoaded', function() {
       ]
     }
     </script>
+    {% endif %}
   </body>
 </html>
