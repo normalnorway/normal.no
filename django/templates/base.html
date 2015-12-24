@@ -20,6 +20,8 @@
     <script src="{{STATIC_URL}}js/less.js"></script>
     {% endif %}
 
+    <link rel="canonical" href="https://normal.no{{request_path}}" />{# Must match og:url #}
+
     <link rel="author" href="mailto:post@normal.no" />
     <link rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" />
     <link rel="alternate" type="application/rss+xml" title="Siste nyheter" href="/nyheter/rss/" />
@@ -27,7 +29,7 @@
     <meta property="fb:app_id" content="452143391620790" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="nb_NO" />
-    <meta property="og:url" content="http://normal.no{{request_path}}" />
+    <meta property="og:url" content="https://normal.no{{request_path}}" />
     <meta property="og:image" content="http://normal.no{{ og.image|default:'/static/images/avatar.png' }}" />
     <meta property="og:site_name" content="Normal – Norsk organisasjon for reform av marihuanalovgivningen" />
     <meta property="og:title" content="{{ og.title|default:'Normal Norge' }}" />

@@ -1,4 +1,9 @@
 # encoding: utf-8
+
+# IMPORTANT: The canonical url (and og:url) is set from request.path,
+# therefore only *one* url should point to each page (view). So no
+# url-aliasing is allowed; use a (permanent) redirect instead.
+
 from django.conf.urls import include, url
 from django.http import HttpResponse
 from django.views.generic.base import RedirectView
