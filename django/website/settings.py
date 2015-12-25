@@ -118,15 +118,14 @@ DATABASES = {
 
 
 ## Cache
+# Note: LocMemCache with 300 seconds time is the default.
 CACHES = {
     'default': { # This is a thread-safe, per-process cache.
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'TIMEOUT': 3600,    # default ttl?
+#        'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+        'TIMEOUT': 3600,
     }
 }
-#if DEBUG: CACHES['default'] = {
-#    'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
-#}
 
 
 ## Templates

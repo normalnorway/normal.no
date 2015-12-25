@@ -12,11 +12,15 @@
     WSGIScriptAlias /   /srv/www/normal.no/django/website/wsgi.py
     WSGIProcessGroup    django
 
+    # Q: can do this instead? DocumentRoot /srv/www/normal.no/htdocs
     Alias /static/      /srv/www/normal.no/htdocs/static/
     Alias /media/       /srv/www/normal.no/htdocs/media/
 
     Redirect 404 /favicon.ico
     Redirect 404 /robots.txt
+
+    # better/faster to put redirects here than in urls.py
+    #Redirect permanent /medlem/    /bli-medlem/
 
     # Make old links into the news archive work
     Redirect permanent /cgi-bin/viewnews  http://old.normal.no/cgi-bin/viewnews
