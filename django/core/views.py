@@ -1,5 +1,5 @@
 """
-Global views -- i.e., don't tied to any app or model.
+Global views -- i.e., don't tied to any app/model.
 """
 
 from core.shortcuts import render_to
@@ -10,6 +10,12 @@ def index (request):
     return {}
 
 
+
+from utils.mailchimp import MailChimp
+from django.conf import settings
+
+mailchimp = MailChimp (settings.MAILCHIMP_API_KEY)
+
 @render_to ('newsletter.html')
 def newsletter (request):
-    return {}
+    return {'campaigns': mailchimp.get_campaigns} # note: lazy evaluation

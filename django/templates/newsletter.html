@@ -4,9 +4,12 @@
 
 {% comment %}
 Can search engines find my campaign archives?
-- No. We've turned off Google Archiving for campaign archives for
+A: No! Have turned off Google Archiving for campaign archives for
   security and privacy purposes.
 @todo make each campaign available at /nyhetsbrev/<id>
+@todo group by year
+@todo better to sync regularly to the database (then pagination and
+      grouping by year is much easier)
 {% endcomment %}
 
 {% block content %}
@@ -15,31 +18,24 @@ Can search engines find my campaign archives?
 
 <p>Normals nyhetsbrev er en e-postliste med lavt volum. Du vil motta
 (maks) én ukentlig e-post med en cannabispolitisk oppsumering, samt
-informasjon om Normals aktiviteter.</p>
-
-<p>Ønsker du å delta i prosjektgrupper, har vi egne e-postlister for
-dette. Kontakt <a href="mailto:post@normal.no">post@normal.no</a>
-for mer informasjon.</p>
+informasjon om Normals aktiviteter. Vi bruker også nyhetsbrevet til å
+sende ut viktige meldinger.</p>
 
 <h3>Abonnér</h3>
 
-<a href="http://eepurl.com/S3rFH">Klikk her for å melde deg på.</a>
+<a href="http://eepurl.com/S3rFH"><strong>Meld deg på nyhetsbrevet her.</strong></a>
 
 <h3>Arkiv</h3>
 
-<table>
-<tr><td>15/05/2015</td><td><a href="http://us8.campaign-archive1.com/?u=83f55d24d6e9ba83485358741&id=d13d6a136b">Normal Nyhetsbrev #12</a></td>
-<tr><td>06/11/2014 &nbsp;</td><td><a href="http://us8.campaign-archive1.com/?u=83f55d24d6e9ba83485358741&id=c43a871206">Normal Nyhetsbrev #11</a></td>
-<tr><td>29/09/2014</td><td><a href="http://us8.campaign-archive2.com/?u=83f55d24d6e9ba83485358741&id=90f8ebf350">Normals Nyhetsbrev #10</a></td>
-<tr><td>10/09/2014</td><td><a href="http://us8.campaign-archive2.com/?u=83f55d24d6e9ba83485358741&id=213373064d">Normals Nyhetsbrev #9</a></td>
-<tr><td>20/08/2014</td><td><a href="http://us8.campaign-archive2.com/?u=83f55d24d6e9ba83485358741&id=b72ff6b516">Normals Nyhetsbrev</a></td>
-<tr><td>20/07/2014</td><td><a href="http://us8.campaign-archive2.com/?u=83f55d24d6e9ba83485358741&id=815755a72b">Nyhetsbrev #7</a></td>
-<tr><td>02/07/2014</td><td><a href="http://us8.campaign-archive2.com/?u=83f55d24d6e9ba83485358741&id=01dbf23181">Nyhetsbrev #6</a></td>
-<tr><td>18/06/2014</td><td><a href="http://us8.campaign-archive2.com/?u=83f55d24d6e9ba83485358741&id=3380358b64">Nyhetsbrev #5</a></td>
-<tr><td>04/06/2014</td><td><a href="http://us8.campaign-archive1.com/?u=83f55d24d6e9ba83485358741&id=53d8f4a818">Nyhetsbrev #4</a></td>
-<tr><td>21/05/2014</td><td><a href="http://us8.campaign-archive1.com/?u=83f55d24d6e9ba83485358741&id=a2c25695a7">Normals Nyhetsbrev #3</a></td>
-<tr><td>06/05/2014</td><td><a href="http://us8.campaign-archive1.com/?u=83f55d24d6e9ba83485358741&id=5ff6f58668">Normals nyhetsbrev #2</a></td>
-<tr><td>01/05/2014</td><td><a href="/nyhetsbrev/1/">Normals Nyhetsbrev #1</a></td>
-</table>
+{% load cache %}
+{% cache 259200 newsletter-archive %}
+<ul style="list-style:none;margin:0;padding:0;">
+  {% for item in campaigns %}
+  {# todo: <li>{{item.send_time}}&ensp;<a href="{{item.id}}/">{{item.title}}</a></li>#}
+  <li>{{item.send_time}}&ensp;<a href="http://us8.campaign-archive2.com/?u=83f55d24d6e9ba83485358741&id={{item.id}}">{{item.title}}</a></li>
+  {% endfor %}
+  <li>01.05.2014&ensp;<a href="1/">Nyhetsbrev #1</a></li>
+</ul>
+{% endcache %}
 
 {% endblock %}
