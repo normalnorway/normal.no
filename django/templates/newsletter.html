@@ -10,6 +10,7 @@ A: No! Have turned off Google Archiving for campaign archives for
 @todo group by year
 @todo better to sync regularly to the database (then pagination and
       grouping by year is much easier)
+@todo add last-modified and/or expire
 {% endcomment %}
 
 {% block content %}
@@ -32,7 +33,7 @@ sende ut viktige meldinger.</p>
 <ul style="list-style:none;margin:0;padding:0;">
   {% for item in campaigns %}
   {# todo: <li>{{item.send_time}}&ensp;<a href="{{item.id}}/">{{item.title}}</a></li>#}
-  <li>{{item.send_time}}&ensp;<a href="http://us8.campaign-archive2.com/?u=83f55d24d6e9ba83485358741&id={{item.id}}">{{item.title}}</a></li>
+  <li>{{item.send_time}}&ensp;<a href="http://us8.campaign-archive2.com/?u=83f55d24d6e9ba83485358741&amp;id={{item.id}}">{{item.title}}</a></li>
   {% endfor %}
   <li>01.05.2014&ensp;<a href="1/">Nyhetsbrev #1</a></li>
 </ul>
