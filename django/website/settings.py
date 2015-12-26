@@ -4,6 +4,7 @@
 # $ python manage.py diffsettings
 #
 
+# SESSION_COOKIE_SECURE <-- enable? only allow session over https
 # SESSION_COOKIE_AGE                        # default is 2 weeks
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True    # default is False
 
@@ -56,9 +57,9 @@ LANGUAGE_CODE = 'en-us'
 USE_I18N = False
 USE_L10N = False
 # Note: Don't use month names in DATE_FORMAT (the are not translated).
-DATE_FORMAT = 'd/m/Y'
-DATETIME_FORMAT = DATE_FORMAT + r' k\l. H:i'
-#DATETIME_FORMAT = DATE_FORMAT + r', k\l. H:i'
+DATE_FORMAT = 'd.m.Y'
+#DATETIME_FORMAT = DATE_FORMAT + r' k\l. H:i'
+DATETIME_FORMAT = DATE_FORMAT + r', k\l. H:i'
 
 # Note: These are not active when USE_L10N is True
 # Must use this instead: FORMAT_MODULE_PATH = 'core.formats'
