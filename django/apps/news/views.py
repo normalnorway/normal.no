@@ -46,7 +46,7 @@ class NewArticleView (View):
     template_name = 'news/article_new.html'
 
     _MSG_SUCCESS = u'Takk for nyhetstipset: %s'
-    _MSG_HAVE_IT = u'Denne lenken har vi allerede i arkivet.'
+    _MSG_HAVE_IT = u'Takk, men denne lenken har vi allerede i arkivet.'
     _MSG_FOREIGN = mark_safe (u'''
 Nyhetsarkivet er for norske nyhetssaker. Lenken du sendte er til en
 utenlandsk adresse. Hvis du fortsatt mener saken er relevant, send den
@@ -188,10 +188,25 @@ class OnlyPublishedMixin (object):
 #    pass
 
 
-class ArchiveView (OnlyPublishedMixin, ArchiveIndexView):
-    date_field = 'date'
+# Not using Djangos generic date view since date_list is not lazily evaluated
+#class ArchiveView (OnlyPublishedMixin, ArchiveIndexView):
+#    date_field = 'date'
+#    paginate_by = 50
+#    allow_empty = True
+    #allow_future = True    # ~50% faster sql query
+
+# Create own archive view that does lazy evaluation on date_list
+from django.views.generic.list import ListView
+class ArchiveView (OnlyPublishedMixin, ListView):
+    template_name = 'news/article_archive.html'
     paginate_by = 50
-    #allow_empty = True
+    allow_empty = True
+    def get_context_data (self, **kwargs):
+        ctx = super (ArchiveView,self).get_context_data (**kwargs)
+        ctx['date_list'] = Article.objects.dates ('date', 'year', order='DESC')
+        return ctx
+#    def date_list (self):  # shorter. but can't emulate ArchiveIndexView 100%
+#        return Article.objects.dates ('date', 'year', order='DESC')
 
 
 # @todo show months in reversed order?
