@@ -5,7 +5,14 @@ from django.views.decorators.http import condition
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from .models import Page, Content, File
+from .models import Page, Content, File, Info
+
+
+class InfoList (ListView):
+    model = Info
+
+class InfoDetail (DetailView):
+    model = Info
 
 
 class FileSelect (ListView):
@@ -45,7 +52,8 @@ class PageUpdate (UpdateView):
 
 
 def _page_last_modified (request, url):
-    try: return Page.objects.get (url='/'+url, published=True).modified
+    try:
+        return Page.objects.only('modified').get (url='/'+url, published=True).modified
     except Page.DoesNotExist:
         return None
 

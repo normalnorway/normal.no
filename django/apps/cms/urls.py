@@ -16,4 +16,7 @@ urlpatterns = [
          permission_required ('cms.change_content', raise_exception=True)(
              views.ContentUpdate.as_view()),
          name='content-update'),
+
+    url (r'^info/$',             views.InfoList.as_view(),   name='info-list'),
+    url (r'^info/(?P<pk>\d+)/$', views.InfoDetail.as_view(), name='info-detail'),
 ]

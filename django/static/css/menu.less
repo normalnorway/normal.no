@@ -1,17 +1,20 @@
 // can drop #nav and use '#menu > ul' - but less compatible
 
+@top_menu_height: 2.6rem;
 
 @bg: #222;
-@fg: #ddd;
+@fg: #ccc;
 @border: #d5d5d5;
-@fgactive: white;
-@bgactive: darkred;
+@fg_hover: white;   // not needed? very subtle effect
+@bg_hover: darkred;
+@bg_selected: #026801;
+//@fg_selected: white;
 
 /*
-@fg: #000033;		// text color for active element
-@fgactive: white;	// text color for active element
+@fg: #000033;		// text color for active (hover) element
+@fgactive: white;	// text color for active (hover) element
 @bg: #6699ff;		// background color
-@bgactive: #446699;	// background color for active element
+@bgactive: #446699;	// background color for active (hover) element
 */
 
 
@@ -26,37 +29,59 @@
 
 
 
+#inner header ul#nav {
+    border-radius: 4px 4px 0 0;
+}
+#inner header ul#nav > li:first-child > a {
+    border-radius: 4px 0 0 0;
+}
+
+
+
 #nav {
     width: 100%;
     float: left;
     background-color: @bg;
+//    height: @top_menu_height;
 }
 
-// making only the top-level menu entries float. ie6 error. ie7 ok?
-// @todo use ul.top is more compatible
+// Make the root level menu entries floatable.
+// @todo use ul.top is a more compatible selector
 #nav > li {
     float: left;
     border-right: 1px solid @border;
+    height: @top_menu_height;   // goes here (and not on #nav) so the last separator line has correct hight
+}
+
+#nav li {
+    line-height: @top_menu_height;  // vertical align text
 }
 
 #nav a {
     display: block;
-    padding: 10px 12px;
-    text-decoration: none;
+    padding: 0 12px;
     color: @fg;
     background-color: @bg;
+    text-decoration: none;
 }
 
-#nav a > img {
-    display:block;  // else extra vspace is added to the image
+#nav > li > a {
+    font-weight: bold;
+}
+
+
+#nav a.selected {
+//    color: @fg_selected;
+    background-color: @bg_selected;
+    font-weight: bold;
 }
 
 #nav a:hover {
-    color: @fgactive;
-    background-color: @bgactive;
+    color: @fg_hover;
+    background-color: @bg_hover;
 }
 //#nav li:hover {
-//    background-color: @bgactive;
+//    background-color: @bg_hover;
 //}
 
 // sub-menu

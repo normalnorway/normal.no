@@ -46,7 +46,7 @@ class NewArticleView (View):
     template_name = 'news/article_new.html'
 
     _MSG_SUCCESS = u'Takk for nyhetstipset: %s'
-    _MSG_HAVE_IT = u'Denne lenken har vi allerede i arkivet.'
+    _MSG_HAVE_IT = u'Takk, men denne lenken har vi allerede i arkivet.'
     _MSG_FOREIGN = mark_safe (u'''
 Nyhetsarkivet er for norske nyhetssaker. Lenken du sendte er til en
 utenlandsk adresse. Hvis du fortsatt mener saken er relevant, send den
@@ -57,14 +57,15 @@ til <a href="mailto:post@normal.no">post@normal.no</a>. Takk!
     # @todo this list can be auto-build from required fields on Article
     _required_fields = set(('url', 'date', 'title', 'summary'))
 
+    # Fields to copy from newsgrab into news.Article
+    _all_fields = ('url', 'date', 'title', 'image_url', 'summary', 'url_is_canonical')
+
     @staticmethod
     def _get_metadata (url):
         """Get OpenGraph metadata for url"""
         urlobj = urlparse.urlsplit (url)
         if not urlobj.netloc.endswith ('.no'): return {}
         meta = get_opengraph_data (url)
-        meta.pop ('type', None)
-        meta.pop ('site_name', None)
         if meta.has_key (u'description'):
             meta[u'summary'] = meta.pop (u'description', u'')
         if meta.has_key ('image'):
@@ -150,10 +151,8 @@ til <a href="mailto:post@normal.no">post@normal.no</a>. Takk!
     # Note: Article.published only true if validation passes and user
     # has the add_article permission.
     def _save (self, data):
-        # @todo use whitelist instead of blacklist
-        data.pop ('locale', None)   # tmp hack: must remove unwanted keys (from newsgrab)
-        data.pop ('locality', None) # tmp hack
-        obj = Article (**data)
+        newdata = { key: data[key] for key in data if key in self._all_fields }
+        obj = Article (**newdata)
         try:
             obj.full_clean()
         except ValidationError as ex:
@@ -183,10 +182,31 @@ class OnlyPublishedMixin (object):
         return Article.pub_objects.order_by ('-date')
 
 
-class ArchiveView (OnlyPublishedMixin, ArchiveIndexView):
-    date_field = 'date'
+# self: model, object_list, options, queryset, request
+# Combine mixins
+#class OnlyPublishedMixin (_OnlyPublishedMixin, CacheMixin):
+#    pass
+
+
+# Not using Djangos generic date view since date_list is not lazily evaluated
+#class ArchiveView (OnlyPublishedMixin, ArchiveIndexView):
+#    date_field = 'date'
+#    paginate_by = 50
+#    allow_empty = True
+    #allow_future = True    # ~50% faster sql query
+
+# Create own archive view that does lazy evaluation on date_list
+from django.views.generic.list import ListView
+class ArchiveView (OnlyPublishedMixin, ListView):
+    template_name = 'news/article_archive.html'
     paginate_by = 50
-    #allow_empty = True
+    allow_empty = True
+    def get_context_data (self, **kwargs):
+        ctx = super (ArchiveView,self).get_context_data (**kwargs)
+        ctx['date_list'] = Article.objects.dates ('date', 'year', order='DESC')
+        return ctx
+#    def date_list (self):  # shorter. but can't emulate ArchiveIndexView 100%
+#        return Article.objects.dates ('date', 'year', order='DESC')
 
 
 # @todo show months in reversed order?

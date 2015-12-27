@@ -1,6 +1,7 @@
-rate limit loggin attempts
+rate limit loggin attempts? best done by an app-firewall
 
-no-cache and/or Expires: -1 on generated pages
+set no-cache + Expires: now on generated pages?
+or just let browser do theirdefault? works fine now without explicit no-cache
 
 always redirect after POST, so not posting twice / browser shows warning
 
@@ -9,36 +10,13 @@ http://www.websiteoptimization.com/speed/tweak/redirect/
 http://packages.python.org/django-markdown/
 
 https://github.com/h5bp/html5-boilerplate/blob/master/.htaccess
-https://github.com/h5bp/html5-boilerplate/
 
 enable broken link notification middleware? but with whitelist
-RewriteRule pattern -  [R=404] [other_flags]	# favicon.ico robots.txt ++
-
-not needed on production server:
-  static/js/less-1.4.1.min.js
-  static/js/less.js
-
-# The [G] flag forces the server to return a 410 Gone status with the
-# response. This indicates that a resource used to be available, but is
-# no longer available.
-RewriteRule oldproduct - [G,NC]
-Do this for old news archive?
-  /cgi-bin/searchnews/
-  /cgi-bin/rss
-  /cgi-bin/viewnews?view=1242825757
-Or just redirect to old.normal.no?
-  If url not found and url found on old website => redirect
 
 compress and merge javascript
   @deb uglifyjs
   https://developers.google.com/closure/compiler/
   https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/submitting-patches/#compressing-javascript
-
-postfix js and css filenames with git hash, and set to never expire
-set images to never expire; and don't allow to change content after creation
-
-/srv/www/normal.no/normal.no.crt ==> ../certs/normal.no.crt
-/srv/www/normal.no/normal.no.key ==> ../certs/normal.no.key
 
 -- remove stale permissions (run as part of regular maintenance?)
 delete from auth_permission where content_type_id not in (select id from django_content_type);
@@ -56,19 +34,13 @@ SESSION_FILE_PATH = tempfile.gettempdir()	# default
 manage.py clearsessions. It’s recommended to call this command on
 a regular basis, for example as a daily cron job.
 
-bug: footer renders wrongly in IE < 9  http://netrenderer.com/index.php
-
 git-hook that rejects commits with whitespace errors
 
-support old news links? well, they where to cgi-script
-  A: should not matter! support it!
-  "Inga Marte angrer ikke utblåsningen"
-
-support old links
-  https://docs.djangoproject.com/en/1.4//ref/contrib/redirects/
+replace RedirectView in urls.py with the redirect app?
+https://docs.djangoproject.com/en/1.9/ref/contrib/redirects/
 
 http://www.soyoucode.com/2011/minify-html-output-django
 https://code.djangoproject.com/wiki/StripWhitespaceMiddleware
 https://pypi.python.org/pypi/django-htmlmin
 
-/var/www/owncloud/.htaccess
+see /var/www/owncloud/.htaccess

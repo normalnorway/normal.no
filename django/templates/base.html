@@ -20,6 +20,8 @@
     <script src="{{STATIC_URL}}js/less.js"></script>
     {% endif %}
 
+    <link rel="canonical" href="https://normal.no{{request_path}}" />{# Must match og:url #}
+
     <link rel="author" href="mailto:post@normal.no" />
     <link rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" />
     <link rel="alternate" type="application/rss+xml" title="Siste nyheter" href="/nyheter/rss/" />
@@ -27,10 +29,27 @@
     <meta property="fb:app_id" content="452143391620790" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="nb_NO" />
-    <meta property="og:site_name" content="Normal – Norsk organisasjon for reform av marihuanalovgivningen" />
-    <meta property="og:title" content="{{ og.title|default:'Normal Norway' }}" />
-    <meta property="og:description" content="{{ og.description|default:'Normal arbeider for en hensiktsmessig regulering av cannabis i Norge' }}" />
+    <meta property="og:url" content="https://normal.no{{request_path}}" />
     <meta property="og:image" content="http://normal.no{{ og.image|default:'/static/images/avatar.png' }}" />
+    <meta property="og:site_name" content="Normal – Norsk organisasjon for reform av marihuanalovgivningen" />
+    <meta property="og:title" content="{{ og.title|default:'Normal Norge' }}" />
+    <meta property="og:description" content="{{ og.description|default:'For en fornuftig og regulert cannabislovgivning' }}" />
+
+    <script>{# Mark the active menu item with css-class 'selected' (ie9) #}
+document.addEventListener ('DOMContentLoaded', function() {
+  if (document.children[0].classList) {# IE9 support #}
+    var add_class = function (node, name) { node.classList.add (name); }
+  else
+    var add_class = function (node, name) { node.className += ' ' + name; }
+  try {
+    var elem = document.querySelector ('ul#nav li > a[href="' + window.location.pathname + '"]');
+    add_class (elem, 'selected');
+    {# If sub-item, then do the same to the parent item #}
+    for (var i=0, e=elem; i<3; i++) e = e.parentElement;
+    if (e.tagName == 'LI') add_class (e.firstChild, 'selected');
+  } catch (ex) { {# ignore errors #} }
+});
+    </script>
 
     {% block extrahead %}{% endblock %}
     {% block extrastyle %}{% endblock %}
@@ -39,6 +58,18 @@
   <body id="til-toppen">
 
     <div id="wrapper">
+
+      <div id="toparea">
+        <table class="layout"><tr>
+          <td class="logo">
+            <a href="/" rel="home" title="Forsiden">
+              <img src="{{STATIC_URL}}images/logo-top.png" alt="Normals logo" width="222" height="48" />
+            </a>
+          </td>
+          <td class="slogan">For en fornuftig og<br />regulert cannabislovgivning</td>
+          <td class="search"><div id="cse-main"></div></td>
+        </tr></table>
+      </div>
 
       <div id="inner">
 
@@ -96,9 +127,8 @@
 
     </div>  {# wrapper #}
 
-
     {% if config.piwiki %}
-    <script type="text/javascript">
+    <script>
       var _paq = _paq || [];
       _paq.push(['trackPageView']);
       _paq.push(['enableLinkTracking']);
@@ -113,6 +143,25 @@
     <noscript><p><img src="//normal.no/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
     {% endif %}
 
+    {% if not config.debug %}
+    <script src='//www.google.com/jsapi' type='text/javascript'></script>
+    {# Google custom search. Note: Must use v1 javascript code so more than one search box per page is accepted. (Newsarchive also uses.) #}
+    <script>
+      google.load('search', '1', {language: 'no', style: google.loader.themes.V2_DEFAULT});
+      google.setOnLoadCallback(function(){
+        new google.search.CustomSearchControl('004823761881989726086:g1fvg9pfbvk', {
+          overlayResults:     true,
+          enableImageSearch:  true,
+          enableOrderBy:      true,
+          orderByOptions: {
+            keys: [{label: 'Relevans', key: ''} , {label: 'Dato', key: 'date'}]
+          }
+        }).draw('cse-main');
+      }, true);
+    </script>
+    {% endif %}
+
+    {% if request_path == "/" %}
     {# https://developers.google.com/structured-data/site-name #}
     <script type="application/ld+json">
     {
@@ -152,14 +201,6 @@
         "name": "Fagrådet – Rusfeltets hovedorganisasjon",
         "url": "http://rusfeltet.no"
       },
-      {# https://developers.google.com/structured-data/customize/contact-points #}
-      "contactPoint": [ {
-        "@type": "ContactPoint",
-        "telephone": "+4799325961",
-        "contactType": "customer service",
-        "availableLanguage": ["Norwegian", "English", "Swedish"],
-        "areaServed": ["NO", "SE", "DK", "FI", "IS"]
-      } ],
       {# https://developers.google.com/structured-data/customize/social-profiles #}
       "sameAs": [
         "https://twitter.com/NormalNorway",
@@ -170,5 +211,7 @@
       ]
     }
     </script>
+    {% endif %}
+    {% block extrafoot %}{% endblock %}
   </body>
 </html>

@@ -2,10 +2,16 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.conf.urls import url
 from django.contrib import admin
-from .models import Page, Content, File
+from .models import Page, Content, File, Info
 from .forms import PageForm
 
 admin.site.register (Content)
+
+
+@admin.register (Info)
+class InfoAdmin (admin.ModelAdmin):
+    list_display = 'date', 'title'
+    date_hierarchy = 'date'
 
 
 @admin.register (Page)

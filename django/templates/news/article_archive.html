@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% load cms %}
 
 {% block extratitle %} » Nyhetsarkiv{% endblock %}
@@ -28,31 +29,24 @@
   <h3>Søk i arkivet</h3>
 
   <div style="border: 0px dashed black; padding: 12px; background-color: #eee;">
-  <script>  {# Google search #}
-    (function() {
-      var cx = '004823761881989726086:bufke4urq4q';
-      var gcse = document.createElement('script');
-      gcse.type = 'text/javascript';
-      gcse.async = true;
-      gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-          '//cse.google.com/cse.js?cx=' + cx;
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(gcse, s);
-    })();
-  </script>
-  <gcse:search></gcse:search>
+    <div id='cse-news' style='width: 100%;'>Venter på Google &hellip;</div>
   </div>
 
+  {% load cache %}
+  {% cache 86400 news-sidebar-year %}
   <div class="aside">
     <h3>Årstall</h3>
     {% for date in date_list %}
     <p class="strong"><a href="{% url 'news-archive-year' date.year %}">{{date.year}}</a></p>
     {% endfor %}
   </div>
+  {% endcache %}
 
   <h3>Arkivet, kronologisk</h3>
 
   <div class="strong">Antall nyheter: {{page_obj.paginator.count}}</div>
+
+  {# <div>Viser {{object_list.count}} av {{page_obj.paginator.count}} nyheter.</div> #}
 
   <div class="main">
     <p>{% include "news/paginator.html" %}</p>
@@ -64,4 +58,20 @@
 
   <div class="icon-top"><a href="#til-toppen"></a></div>
 </div>
+{% endblock %}
+
+
+{% block extrafoot %}
+{% if not config.debug %}
+<script>  {# Note: Google search code is already by the main search box #}
+  google.setOnLoadCallback(function(){
+    new google.search.CustomSearchControl('004823761881989726086:bufke4urq4q', {
+      enableOrderBy:      true,
+      orderByOptions: {
+        keys: [{label: 'Relevans', key: ''} , {label: 'Dato', key: 'date'}]
+      }
+    }).draw('cse-news');
+  }, true);
+</script>
+{% endif %}
 {% endblock %}

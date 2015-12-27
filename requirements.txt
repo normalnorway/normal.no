@@ -1,20 +1,12 @@
+# $ pip install -r requirements.txt
 # Note: You don't have to install everything just for doing development!
-# pip install -r requirements.txt
 
-Django>=1.8
+Django >= 1.8 , < 1.9
 Pillow
-
-# Only needed for: docs/how-to-contribute.md
-#Markdown
-
-#Fabric
-
-# This is a virtual package that depends on 'MySQL-python'
-#mysql
+mysql
 
 # apps.news
 git+https://github.com/normalnorway/newsgrab.git#egg=newsgrab
-#git+https://github.com/normalnorway/newsgrab.git#egg=newsgrab-dev
 
 # socialmedia
 #oauth2client

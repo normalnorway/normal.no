@@ -85,3 +85,22 @@ class Page (models.Model):
         permissions = (
             ('create_root_pages', 'Can create non-restricted page urls'),
         )
+
+
+#from datetime import datetime
+class Info (models.Model):
+    '''Short info/note. News about the organization'''
+    #date = models.DateTimeField (auto_now_add = True)
+    #date = models.DateTimeField (default = datetime.now)
+    date = models.DateTimeField ()
+    title = models.CharField (max_length=100)
+    summary = models.TextField ()
+    image = models.ImageField (blank=True, upload_to='cms/info')
+    body = HtmlField (blank=True)
+
+    def __unicode__ (self):
+        return self.title
+
+    class Meta:
+        ordering = '-date',
+        verbose_name_plural = 'Info'

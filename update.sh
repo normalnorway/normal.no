@@ -10,7 +10,7 @@ if [ -n "$(git status -s -uno --porcelain)" ]; then
     exit 1
 fi
 
-echo -n commit
+echo -n "commit "
 git rev-parse live
 
 do_migrate()
@@ -29,13 +29,17 @@ do_check()
 
 do_static()
 {
-    django/manage.py collectstatic --noinput -i \*.less -i Makefile
-    # Note: This will copy more than needed.
+    django/manage.py collectstatic -v0 --noinput \
+        -i Makefile         \
+        -i \*.less          \
+        -i less.js          \
+        -i less-\*.min.js   \
+        -i todo
 }
 
 git pull
 
-if [ x$1 == xfull ];
+if [ x$1 = xfull ];
 then
     # Q: if these fail, will script abort?
     do_migrate

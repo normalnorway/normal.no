@@ -4,6 +4,7 @@
 # $ python manage.py diffsettings
 #
 
+# SESSION_COOKIE_SECURE <-- enable? only allow session over https
 # SESSION_COOKIE_AGE                        # default is 2 weeks
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True    # default is False
 
@@ -18,6 +19,11 @@ Config = SiteConfig (os.path.join (BASE_DIR, os.path.pardir, 'site.ini'))
 # Add piwiki visitor tracking javascript code
 # @todo prefix with SITE_?
 PIWIKI = Config.getbool ('main.piwiki', False)
+
+#MAILCHIMP_API_KEY = Config.get ('mailchimp-api-key')
+# Will fail on startup with: KeyError: 'main.mailchimp-api-key'
+MAILCHIMP_API_KEY = Config.get ('mailchimp-api-key', '')
+# Will fail in socket.py: gaierror – [Errno -2] Name or service not known
 
 DEFAULT_FROM_EMAIL = 'post@normal.no'
 
@@ -36,24 +42,30 @@ MANAGERS = ADMINS
 # Localization
 LANGUAGE_CODE = 'nb-no'
 TIME_ZONE = 'Europe/Oslo'
-USE_I18N = True     # translate messages
-USE_L10N = True     # format according to the current locale (LANGUAGE_CODE)
+#USE_I18N = True     # translate messages
+#USE_L10N = True     # format according to the current locale (LANGUAGE_CODE)
 USE_TZ = False
 
+# Note: Django does not use the C locale. When disabling USE_I18N
+# then it will affect both translation of messsages and month names.
+# Both in admin and in the public templates.
+# Better fix: Own template filter to format norwegian dates.
+
+# Update. Testing other aproach ...
+# Note: Will use english text but norwegian data format (in admin)
+LANGUAGE_CODE = 'en-us'
+USE_I18N = False
+USE_L10N = False
+# Note: Don't use month names in DATE_FORMAT (the are not translated).
+DATE_FORMAT = 'd.m.Y'
+#DATETIME_FORMAT = DATE_FORMAT + r' k\l. H:i'
+DATETIME_FORMAT = DATE_FORMAT + r', k\l. H:i'
+
 # Note: These are not active when USE_L10N is True
-# Q: howto change these without own: locale/nb/formats.py ?
+# Must use this instead: FORMAT_MODULE_PATH = 'core.formats'
 #DATE_FORMAT = 'j. F Y'
 #TIME_FORMAT = 'H:i'
 #DATETIME_FORMAT = DATE_FORMAT + ', k\l. ' + TIME_FORMAT
-
-# Testing. Note: Will affect both admin and template
-USE_L10N = False
-DATETIME_FORMAT = r'j. F Y, k\l. H:i'
-DATE_FORMAT = 'j. F Y'  # some news articles don't have time
-
-# Testing. Only use english. Update: Worked fine, except for english month
-# names on the public part. @todo try to change locale of wsgi process
-#USE_I18N = False
 
 
 DEBUG = Config.getbool ('main.debug', True)
@@ -112,14 +124,13 @@ DATABASES = {
 
 
 ## Cache
+# Note: LocMemCache with 300 seconds time is the default.
 CACHES = {
     'default': { # This is a thread-safe, per-process cache.
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'TIMEOUT': 3600,    # default ttl?
+#        'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+        'TIMEOUT': 3600,
     }
-}
-if DEBUG: CACHES['default'] = {
-    'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
 }
 
 
@@ -142,7 +153,7 @@ TEMPLATES = [
             #'debug': True, # default if DEBUG=True
             'loaders': _loaders,
             'context_processors': defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-                'django.template.context_processors.request', # needed?
+                'django.template.context_processors.request', # needed? A: used in templates/news/article_new.html but not needed
                 'core.context_processors.siteconfig',
             ),
         },

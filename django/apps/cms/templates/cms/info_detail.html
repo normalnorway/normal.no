@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block extratitle %} » {{ object.title }}{% endblock %}
+
+{% block extrastyle %}
+<style>
+p.summary {
+  font-weight: bold;
+  font-size: 112%;
+  line-height: 1.5;
+  margin: 6px 0;
+}
+h2 {
+  margin-top: 14px;
+}
+h3 {
+  color: #222;
+  font-weight: bold;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>{{ object.title }}</h1>
+
+<p class="summary">{{ object.summary }}</p>
+
+<p class="gray smaller">Publisert:
+  <time datetime="{{ object.date.isoformat }}">{{ object.date }}</time></p>
+
+{{ object.body|safe }}
+
+{% endblock %}

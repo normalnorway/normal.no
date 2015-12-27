@@ -21,7 +21,7 @@ before_script:
   - make -C django/static/css/
 # - django/manage.py migrate  # not needed. manage.py test does it
   - django/manage.py collectstatic --noinput -i \*.less -i Makefile
-  # @todo move this to Makefile? then do: make init
+  # @todo replace with update.sh do_static
 
 script:
   - make test

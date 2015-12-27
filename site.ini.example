@@ -14,6 +14,7 @@
 debug = true
 secret = some-secret-key
 piwiki = on
+mailchimp-api-key = 005be65075993f9ae70abe27adf091ee-us8
 
 [database]
 name = dbname

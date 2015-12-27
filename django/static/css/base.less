@@ -1,46 +1,92 @@
 // Good artists copy, great artists steal. -- Pablo Picasso
 
-// rename site.css
-// @import reset.css ?
-
 html {
     min-height: 100%;
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+// note: side menu not inside nav
+nav { // @todo better to set base to 12 and increase on body text
+    font-size: 12px;
 }
 
 body {
-    font-family: sans-serif;
     color: #111;
-    background-color: #b0b0b0;
-    margin: 2em 0;
+    background-color: #bbdbea;
+    margin: 20px 0 50px 0;
 }
 
-#wrapper {  // this is the outer element (body is parent)
+#wrapper { // this is the outer element (body is parent)
     width: 980px;   // inner.width + sidebar.width + sidebar.margin-left
     margin: 0 auto;
-//    border: 1px dashed black;
 }
+
+#toparea {
+//    width: 770px;   // match width of main content area
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+#toparea table.layout {
+    width: 100%;
+}
+
+#toparea .logo {
+    width: 222px;           // note: should match logo width
+    padding-right: 30px;    // spacing between logo and slogan
+    padding-top: 3px;       // hack: valign logo and slogan
+}
+
+#toparea .slogan {
+    width: 300px;
+    font-size: 10pt;
+    color: #636363;
+    font-weight: bolder;
+}
+
+// Google Custom Search Engine
+#toparea .search .gsc-control-cse {
+    background-color: inherit !important;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    // This is the last table column. It must be growable, i.e. accept.
+    // extra horizontal space.
+//    width: 300px;
+//    margin-left: auto;      // insert extra space on the left
+}
+
+/* Note: Can't change color of button with css, since it's an image.
+   Do it here instead: https://cse.google.com/
+input.gsc-search-button {
+    background-color: #cecece !important;
+}
+*/
+
+
 
 #inner {
     float: left;
     width: 770px;
     background-color: white;
+    margin-bottom: 2em;
+    border-radius: 4px 4px 0 0;
 }
+
 
 #sidebar {
     float: left;
     width: 200px;
-    background-color: #f3f3f3;
+    background-color: white;
     margin-left: 10px;
-
-    border-radius: 3px;
-//    border-top: 40px solid #222;
-//    padding: 10px 8px;
+    border-radius: 4px 4px 0 0;
 }
 
 #sidebar header {
-    // q: border top radius?
     background-color: #222;
-    height: 2.8rem;
+    height: 2.6rem;     // note: should match top-menu height
+    border-radius: 4px 4px 0 0;
 }
 
 #sidebar header div.follow-widget {
@@ -57,7 +103,7 @@ body {
     line-height: 1.667;
     padding-left: 12px;
     padding-top: 8px;
-    padding-right: 6px;
+    padding-right: 10px;
 }
 
 #sidebar ul a:hover {
@@ -67,7 +113,16 @@ body {
 //#sidebar h1, #sidebar h2, #sidebar h3, #sidebar h4 { margin:0; }
 #sidebar ul {
     margin: 4px 0;
-    padding-left: 16px;
+    padding: 0 4px 4px 8px;
+}
+
+#sidebar ul li {
+    margin-bottom: 8px;
+    list-style: none;
+}
+
+#sidebar header div.follow-widget a {
+    margin: 0 6px;
 }
 
 
@@ -101,7 +156,7 @@ footer {
     padding: 0;
     padding-left: 1em;
     padding-right: 1em;
-    padding-bottom: 1em;
+//    padding-bottom: 1em;
     margin: 20px 30px 20px 30px;
     // @todo don't use both padding and margin
 }
@@ -118,6 +173,19 @@ footer address {
     font-style: normal;
 }
 
+
+footer div.license {
+    padding-top: 1.33rem;
+    color: gray;
+    font-size: x-small;
+    text-align: center;
+}
+footer div.license a {
+    color: inherit;
+}
+footer div.license a:hover {
+    text-decoration: underline;
+}
 
 pre.debug {
     margin: 0;

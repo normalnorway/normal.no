@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block extrastyle %}
+<style>
+p.summary {
+  font-weight: bold;
+  margin: 6px 0;
+}
+div.read-more {
+  font-size: smaller;
+}
+time {
+  font-size: smaller;
+  color: gray;
+}
+h3 {
+  color: #222;
+  font-weight: bold;
+}
+</style>
+{% endblock %}
+
+{% block extratitle %} » Aktuelt{% endblock %}
+
+{% block content %}
+<div id="cms-info-list">
+
+<h1>Aktuelle nyheter fra <abbr title="Norks organisasjon for reform av marihuananlovgivningen">Normal</abbr> og rusfeltet</h1>
+
+{% for item in object_list %}
+
+{# <h3><a href="{% url 'info-detail' pk=item.pk %}">{{ item.title }}</a></h3> #}
+<h3>{{ item.title }}</h3>
+
+<time datetime="{{ item.date.isoformat }}">{{ item.date.date }}</time>
+
+<p class="summary">{{ item.summary }}</p>
+
+<div class="read-more"><a href="{% url 'info-detail' pk=item.pk %}">» Les mer</a></div>
+
+{% endfor %}
+
+</div>
+{% endblock %}

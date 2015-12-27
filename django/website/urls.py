@@ -1,4 +1,9 @@
 # encoding: utf-8
+
+# IMPORTANT: The canonical url (and og:url) is set from request.path,
+# therefore only *one* url should point to each page (view). So no
+# url-aliasing is allowed; use a (permanent) redirect instead.
+
 from django.conf.urls import include, url
 from django.http import HttpResponse
 from django.views.generic.base import RedirectView
@@ -17,10 +22,10 @@ urlpatterns = [
     url(r'^nyhetsbrev/1/$', TemplateView.as_view (template_name='newsletter-1.html')),
 
     # Redirect deprecated urls
-    # @todo alias with ascii-only url (stott -> støtt)
     # @todo /om/ -> /om/normal/ alias
     # @todo can redirect to named view instead? a: no, using cms.Page
     url(r'^medlem/$', RedirectView.as_view (url='/bli-medlem/', permanent=True)),
+    url(r'^stott/$', RedirectView.as_view (url=u'/støtt/', permanent=True)),
     url(r'^rss/$', RedirectView.as_view (url='/nyheter/rss/', permanent=True)),
     url(u'^gruppesøksmaal/$', RedirectView.as_view (url='/sider/gruppesoksmaal/', permanent=True)),
     url(r'^frivillig/$', RedirectView.as_view (url='/sider/frivillig/', permanent=True)),
