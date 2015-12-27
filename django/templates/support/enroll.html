@@ -1,31 +1,37 @@
 {% extends "base.html" %}
+
 {% load cms %}
 
 {% block extratitle %} » Bli medlem{% endblock %}
 
 {% block extrahead %}
-{{ form.media }}
+{# {{ form.media }} #}
 <style>
-textarea#id_comment {
-  vertical-align:text-top;
-}
-form .helptext {
-  margin-left: 150px;
-  font-size: smaller;
-}
-form ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+form textarea {
+  vertical-align: text-top;
 }
 form label {
   display: inline-block;
   min-width: 140px;
 }
-form p.required:after {
+{# @todo move bellow to base.less? #}
+form ul.form > li {
+  margin: 10px 0;
+}
+form ul.form > li > ul:not(.errorlist) {
+  margin-top: 6px;
+}
+form label.required:after {
   content: " *";
   font-size: small;
 }
+{% comment %}
+// don't work with form.as_li (type medlemskap => star is wrongly placed)
+form li.required:after {
+  content: " *";
+  font-size: small;
+}
+{% endcomment %}
 </style>
 {% endblock %}
 
@@ -39,11 +45,10 @@ form p.required:after {
 {% endif %}
 
 <form method="post">{% csrf_token %}
-  {{ form.as_p }}
+  <ul class="form">{{ form.as_ul }}</ul>
   <input type="submit" value="Bli medlem" />
 </form>
 
-<br>
-{% cms_content "innmelding-bunn" %}
+<br> {% cms_content "innmelding-bunn" %}
 
 {% endblock %}
