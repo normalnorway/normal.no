@@ -11,11 +11,20 @@ def index (request):
 
 
 
+## /newsletter/
+
 from utils.mailchimp import MailChimp
 from django.conf import settings
 
-mailchimp = MailChimp (settings.MAILCHIMP_API_KEY)
+#mailchimp = None
+#if settings.MAILCHIMP_API_KEY:
+#    mailchimp = MailChimp (settings.MAILCHIMP_API_KEY)
+
+mailchimp = MailChimp (settings.MAILCHIMP_API_KEY) if settings.MAILCHIMP_API_KEY else None
+# or use config.mailchimp in core/context_processors.py (like piwik) ?
+# or: MailChimp(None) => all operations is nop
+# @todo log/warn missing api-key?
 
 @render_to ('newsletter.html')
 def newsletter (request):
-    return {'campaigns': mailchimp.get_campaigns} # note: lazy evaluation
+    return {'campaigns': mailchimp.get_campaigns if mailchimp else None}

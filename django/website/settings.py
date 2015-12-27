@@ -20,9 +20,9 @@ Config = SiteConfig (os.path.join (BASE_DIR, os.path.pardir, 'site.ini'))
 # @todo prefix with SITE_?
 PIWIKI = Config.getbool ('main.piwiki', False)
 
-MAILCHIMP_API_KEY = Config.get ('mailchimp-api-key')
+#MAILCHIMP_API_KEY = Config.get ('mailchimp-api-key')
 # Will fail on startup with: KeyError: 'main.mailchimp-api-key'
-#MAILCHIMP_API_KEY = Config.get ('main.mailchimp-api-key', '')
+MAILCHIMP_API_KEY = Config.get ('mailchimp-api-key', '')
 # Will fail in socket.py: gaierror – [Errno -2] Name or service not known
 
 DEFAULT_FROM_EMAIL = 'post@normal.no'

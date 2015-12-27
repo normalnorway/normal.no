@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load cache %}
+
 {% block extratitle %} » Nyhetsbrev{% endblock %}
 
 {% comment %}
@@ -24,11 +26,11 @@ sende ut viktige meldinger.</p>
 
 <h3>Abonnér</h3>
 
-<a href="http://eepurl.com/S3rFH"><strong>Meld deg på nyhetsbrevet her.</strong></a>
+<p><a href="http://eepurl.com/S3rFH"><strong>Meld deg på nyhetsbrevet her.</strong></a></p>
 
+{% if campaigns %}
 <h3>Arkiv</h3>
 
-{% load cache %}
 {% cache 259200 newsletter-archive %}
 <ul style="list-style:none;margin:0;padding:0;">
   {% for item in campaigns %}
@@ -38,5 +40,6 @@ sende ut viktige meldinger.</p>
   <li>01.05.2014&ensp;<a href="1/">Nyhetsbrev #1</a></li>
 </ul>
 {% endcache %}
+{% endif %}
 
 {% endblock %}
