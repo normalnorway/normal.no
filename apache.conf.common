@@ -11,6 +11,7 @@
 
     WSGIScriptAlias /   /srv/www/normal.no/django/website/wsgi.py
     WSGIProcessGroup    django
+    #WSGIApplicationGroup %{RESOURCE} ??
 
     # Q: can do this instead? DocumentRoot /srv/www/normal.no/htdocs
     Alias /static/      /srv/www/normal.no/htdocs/static/

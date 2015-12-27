@@ -29,7 +29,7 @@ do_check()
 
 do_static()
 {
-    django/manage.py collectstatic --noinput \
+    django/manage.py collectstatic -v0 --noinput \
         -i Makefile         \
         -i \*.less          \
         -i less.js          \
