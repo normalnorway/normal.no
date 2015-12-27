@@ -148,18 +148,15 @@ document.addEventListener ('DOMContentLoaded', function() {
     {# Google custom search. Note: Must use v1 javascript code so more than one search box per page is accepted. (Newsarchive also uses.) #}
     <script>
       google.load('search', '1', {language: 'no', style: google.loader.themes.V2_DEFAULT});
-      google.setOnLoadCallback(function() {
-        var customSearchOptions = {};
-        var orderByOptions = {};
-        orderByOptions['keys'] = [{label: 'Relevance', key: ''} , {label: 'Date', key: 'date'}];
-        customSearchOptions['enableOrderBy'] = true;
-        customSearchOptions['orderByOptions'] = orderByOptions;
-        customSearchOptions['overlayResults'] = true;
-        customSearchOptions['enableImageSearch'] = true;
-        var customSearchControl =   new google.search.CustomSearchControl('004823761881989726086:g1fvg9pfbvk', customSearchOptions);
-        customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
-        var options = new google.search.DrawOptions();
-        customSearchControl.draw('cse-main', options);
+      google.setOnLoadCallback(function(){
+        new google.search.CustomSearchControl('004823761881989726086:g1fvg9pfbvk', {
+          overlayResults:     true,
+          enableImageSearch:  true,
+          enableOrderBy:      true,
+          orderByOptions: {
+            keys: [{label: 'Relevans', key: ''} , {label: 'Dato', key: 'date'}]
+          }
+        }).draw('cse-main');
       }, true);
     </script>
     {% endif %}
